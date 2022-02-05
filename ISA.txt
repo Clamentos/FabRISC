@@ -1,14 +1,14 @@
 final version i guess
 
 data transfer {
-	
+
 	F |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)| 					mem[rs2 + imm]
 	G |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)| 			mem[rs2 + (rs3 * imm)]
 	I |OPCODE(09)|MOD(03)|RD(05)|RS1(05)|RS2(05)|RS3(05)| 				mem[rs1 + (rs2 * rs3)]
 }
 
 control transfer {
-	
+
 	  |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
 	  ...
 }
@@ -21,10 +21,15 @@ control transfer {
 111110 00000xx ... 111110 01111xx 		16
 111111 0000000 ... 111111 0111111 		64
 
+
+NOTE:
+
+    make vector reduction as separate "thing"
+
 _______________________________________________________________________________________________________________________________
 
 computational {
-	
+
 	(ALU INT & FP reg-reg-reg) {
 
 		A |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
@@ -34,7 +39,11 @@ computational {
 			00xx -> scalar
 			01xx -> vector-scalar
 			10xx -> vector-vector
-			11xx -> reduction
+
+			1100 -> vector-scalar VLEN
+            1101 -> vector-vector VLEN
+            1110 -> vector-VMOD VLEN
+            1111 -> scalar SLEN
 
 			(xx is length: 8, 16, 32, 64)
 	}
@@ -45,12 +54,16 @@ computational {
 
 		MOD(04):
 
-			00xx -> scalar
-			01xx -> vector-scalar
-			10xx -> vector-vector
-			11xx -> reduction
+            00xx -> scalar
+            01xx -> vector-scalar
+            10xx -> vector-vector
 
-			(xx is length: 8, 16, 32, 64)
+            1100 -> vector-scalar VLEN
+            1101 -> vector-vector VLEN
+            1110 -> vector-VMOD VLEN
+            1111 -> scalar SLEN
+
+            (xx is length: 8, 16, 32, 64)
 	}
 
 	(ALU SHIFT & SPECIAL reg-imm) {
@@ -103,7 +116,7 @@ computational {
 }
 
 data transfer {
-	
+
 
 }
 _______________________________________________________________________________________________________________________________
@@ -129,3 +142,34 @@ ________________________________________________________________________________
 	[A] (...) High Arithmetic Left Shift--------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
 	[A] (...) High Arithmetic Right Shift-------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
 
+    [A] (...) Logical Left Shift----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) Logical Right Shift---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) High Logical Left Shift-----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) High Logical Right Shift----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+    [A] (...) Left Rotate-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) Right Rotate----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) Bit Reversal----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+    [A] (...) Bitwise AND-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) Bitwise NAND----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) Bitwise OR------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) Bitwise NOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) Bitwise XOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	[A] (...) Bitwise XNOR----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+    [A] (...) Carry less Multiplication---------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+
+    [B] (...) I .Addition-----------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I .Uns. Addition------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I .Subtraction--------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I .Uns. Subtraction---------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Multiplication-----------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Uns. Multiplication------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. High Multiplication------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Uns. High Multiplication-------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Multiply Acc-------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Uns. Multiply Acc--------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. High Multiply Acc--------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. High Uns. Multiply Acc.--------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Division-----------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Uns. Division------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Remainder----------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+	[B] (...) I. Uns. Remainder-----------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|

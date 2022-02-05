@@ -54,7 +54,7 @@ Formats {
 _______________________________________________________________________________________________________________________________
 
 Computational { 22
-	
+
 	- [A] (...) Addition--------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
 	- [A] (...) Uns. Addition---------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
 	- [A] (...) Subtraction-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
@@ -76,20 +76,20 @@ Computational { 22
 	- [A] (...) High Arithmetic Left Shift--------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
 	- [A] (...) High Arithmetic Right Shift-------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
 
-	[A] (...) Logical Left Shift----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Logical Right Shift---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) High Logical Left Shift-----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) High Logical Right Shift----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Left Rotate-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Right Rotate----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Bit Swap--------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Bitwise AND-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Bitwise NAND----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Bitwise OR------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Bitwise NOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Bitwise XOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Bitwise XNOR----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-	[A] (...) Carryless Multiplication----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Logical Left Shift----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Logical Right Shift---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) High Logical Left Shift-----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) High Logical Right Shift----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Left Rotate-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Right Rotate----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Bit Swap--------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Bitwise AND-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Bitwise NAND----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Bitwise OR------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Bitwise NOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Bitwise XOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Bitwise XNOR----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+	- [A] (...) Carry less Multiplication---------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
 	[A] (...) Count Ones------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| XXXXX |
 	[A] (...) Count Leading Ones----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| XXXXX |
 	[A] (...) Count Trailing Ones---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| XXXXX |
@@ -97,22 +97,22 @@ Computational { 22
 	[A] (...) Count Leading Zeros---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| XXXXX |
 	[A] (...) Count Trailing Zeros--------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| XXXXX |
 
-	[C] (...) I .Addition-----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| 4
-	[C] (...) I .Uns. Addition------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I .Subtraction--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I .Uns. Subtraction---------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Multiplication-----------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Uns. Multiplication------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. High Multiplication------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Uns. High Multiplication-------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Multiply Acc-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Uns. Multiply Acc--------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. High Multiply Acc--------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. High Uns. Multiply Acc.--------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Division-----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Uns. Division------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Remainder----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Uns. Remainder-----------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I .Addition-----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| 4
+	- [C] (...) I .Uns. Addition------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I .Subtraction--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I .Uns. Subtraction---------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Multiplication-----------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Uns. Multiplication------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. High Multiplication------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Uns. High Multiplication-------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Multiply Acc-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Uns. Multiply Acc--------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. High Multiply Acc--------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. High Uns. Multiply Acc.--------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Division-----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Uns. Division------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Remainder----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Uns. Remainder-----------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
 
 	[D] (...) I. Arithmetic Left Shift----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| 1
 	[D] (...) I. Arithmetic Right Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
@@ -138,9 +138,9 @@ Computational { 22
 
 
 	[?] (...) Addition Carry--------------------(?????) 1
-	[?] (...) Uns. Addition Carry---------------(?????) 
-	[?] (...) Subtraction Borrow----------------(?????) 
-	[?] (...) Uns. Subtraction Borrow-----------(?????) 
+	[?] (...) Uns. Addition Carry---------------(?????)
+	[?] (...) Subtraction Borrow----------------(?????)
+	[?] (...) Uns. Subtraction Borrow-----------(?????)
 
 	[F] (...) Carry Arithmetic Left Shift-------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)| 1
 	[F] (...) Carry Arithmetic Right Shift------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
@@ -152,9 +152,9 @@ Computational { 22
 	[F] (...) High Carry Logical Right Shift----(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
 
 	[?] (...) I .Addition Carry-----------------(?????) 1
-	[?] (...) I .Uns. Addition Carry------------(?????) 
-	[?] (...) I .Subtraction Borrow-------------(?????) 
-	[?] (...) I .Uns. Subtraction Borrow--------(?????) 
+	[?] (...) I .Uns. Addition Carry------------(?????)
+	[?] (...) I .Subtraction Borrow-------------(?????)
+	[?] (...) I .Uns. Subtraction Borrow--------(?????)
 
 	[G] (...) I. Carry Arithmetic Left Shift----(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)| 2
 	[G] (...) I. Carry Arithmetic Right Shift---(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
@@ -184,7 +184,7 @@ Computational { 22
 }
 
 Data Transfer {
-	
+
 	...
 }
 
@@ -208,7 +208,7 @@ Data Transfer {
 
 
 MODE(06) {
-	
+
 	000000 -> scalar int 1
 	000001 -> scalar int 2
 	000010 -> scalar int 4
@@ -238,43 +238,43 @@ MODE(06) {
 	010111 -> scalar fp 8 (rounding mode 3)
 
 	011000 -> ...
-	011001 -> 
-	011010 -> 
-	011011 -> 
-	011100 -> 
-	011101 -> 
-	011110 -> 
-	011111 -> 
-	100000 -> 
-	100001 -> 
-	100010 -> 
-	100011 -> 
-	100100 -> 
-	100101 -> 
-	100110 -> 
-	100111 -> 
-	101000 -> 
-	101001 -> 
-	101010 -> 
-	101011 -> 
-	101100 -> 
-	101101 -> 
-	101110 -> 
-	101111 -> 
-	110000 -> 
-	110001 -> 
-	110010 -> 
-	110011 -> 
-	110100 -> 
-	110101 -> 
-	110110 -> 
-	110111 -> 
-	111000 -> 
-	111001 -> 
-	111010 -> 
-	111011 -> 
-	111100 -> 
-	111101 -> 
-	111110 -> 
-	111111 -> 
+	011001 ->
+	011010 ->
+	011011 ->
+	011100 ->
+	011101 ->
+	011110 ->
+	011111 ->
+	100000 ->
+	100001 ->
+	100010 ->
+	100011 ->
+	100100 ->
+	100101 ->
+	100110 ->
+	100111 ->
+	101000 ->
+	101001 ->
+	101010 ->
+	101011 ->
+	101100 ->
+	101101 ->
+	101110 ->
+	101111 ->
+	110000 ->
+	110001 ->
+	110010 ->
+	110011 ->
+	110100 ->
+	110101 ->
+	110110 ->
+	110111 ->
+	111000 ->
+	111001 ->
+	111010 ->
+	111011 ->
+	111100 ->
+	111101 ->
+	111110 ->
+	111111 ->
 }
