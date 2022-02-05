@@ -1,0 +1,658 @@
+Formats {
+
+	LEGEND {
+
+		"OPCODE" -> operation code
+		"MOD" -> operation mode
+		"RMD" -> rounding mode (FP only)
+		"RD" -> register destination
+		"RS1" -> register source 1
+		"RS2" -> register source 2
+		"RS3" -> register source 3
+		"LEN" -> immediate length
+		"IM1" -> immediate 1
+		"IM2" -> Immediate 2
+	}
+
+	Computational {
+
+		A |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|                        [S_INT / V_INT       ] (R) 52
+		B |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|                [S_FP  / V_FP        ] (R) 07
+		C |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IM1(08/24)|             [S_INT / V_INT       ] (I) 23
+		D |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)|                        [S_INT / V_INT SHIFTS] (I) 19
+		E |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IM1(08/24)|     [S_FP  / V_FP        ] (I) 05
+	}
+
+	|OPCODE(12)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+
+	Data Transfer {
+
+		F |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)| 												07
+		G |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|										10
+		H |OPCODE(07)|MOD(04)|RD/RS1(05)|IMM(32)|														02
+		I |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)| 											12
+		J |OPCODE(08)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|RMD(02)|									07
+	}
+
+	Control Transfer {
+
+		L |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)| 													12
+		M |OPCODE(07)|RD(05) |LEN(01)|IM1(19/35)|														01
+		N |OPCODE(07)|RD(05) |RS1(05)|LEN(01)|IM1(14/30)| 												01
+		O |OPCODE(07)|MOD(02)|RS1(05)|IM1(18)| 															04
+	}
+
+	System & Compressed {
+
+		P |OPCODE(08)|MOD(02)|RD/RS1(03)|RS2(03)| 														06
+		Q |OPCODE(07)|RS1(03)|IM1(06)| 																	26
+		R |OPCODE(08)|IM1(08)| 																			02
+		S |OPCODE(11)|RD/RS1(05)| 																		01
+	}
+}
+_______________________________________________________________________________________________________________________________
+
+Computational { (15) [instructions: 111]
+
+	FIX MULTIWORD SHIFTS
+	
+	[A] (...) Addition--------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. Addition---------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Subtraction-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. Subtraction------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Addition Carry--------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. Addition Carry---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Subtraction Borrow----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. Subtraction Borrow-----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Multiplication--------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. Multiplication---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Multiplication---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. High Multiplication----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Multiply Acc----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. Multiply Acc-----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Multiply Acc-----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Uns. Multiply Acc.-----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Division--------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. Division---------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Remainder-------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Uns. Remainder--------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+
+	[A] (...) Arithmetic Left Shift-------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Arithmetic Right Shift------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Carry Arithmetic Left Shift-------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Carry Arithmetic Right Shift------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Logical Left Shift----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Logical Right Shift---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Carry Logical Left Shift----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Carry Logical Right Shift---------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Arithmetic Left Shift--------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Arithmetic Right Shift-------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Carry Arithmetic Left Shift--(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Carry Arithmetic Right Shift-(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Logical Left Shift-----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Logical Right Shift----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Carry Logical Left Shift-----(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) High Carry Logical Right Shift----(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+
+	[A] (...) Left Rotate-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Right Rotate----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Bit Swap--------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Bitwise AND-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Bitwise NAND----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Bitwise OR------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Bitwise NOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Bitwise XOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Bitwise XNOR----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Carryless Multiplication----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| -
+	[A] (...) Count Ones------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| xxxxx | -
+	[A] (...) Count Leading Ones----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| xxxxx | -
+	[A] (...) Count Trailing Ones---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| xxxxx | -
+	[A] (...) Count Zeros-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| xxxxx | -
+	[A] (...) Count Leading Zeros---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| xxxxx | -
+	[A] (...) Count Trailing Zeros--------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)| xxxxx | -
+
+	[B] (...) FP. Addition----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| -
+	[B] (...) FP. Subtraction-------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| -
+	[B] (...) FP. Multiplication----------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| -
+	[B] (...) FP. Division----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| -
+	[B] (...) FP. Multiply Acc------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| -
+	[B] (...) FP. Nth Root----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| -
+
+	[C] (...) I .Addition-----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I .Uns. Addition------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I .Subtraction--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I .Uns. Subtraction---------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I .Addition Carry-----------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I .Uns. Addition Carry------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I .Subtraction Borrow-------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I .Uns. Subtraction Borrow--------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Multiplication-----------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Uns. Multiplication------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. High Multiplication------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Uns. High Multiplication-------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Multiply Acc-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Uns. Multiply Acc--------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. High Multiply Acc--------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. High Uns. Multiply Acc.--------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Division-----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Uns. Division------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Remainder----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Uns. Remainder-----------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+
+	[D] (...) I. Arithmetic Left Shift----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Arithmetic Right Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Carry Arithmetic Left Shift----(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Carry Arithmetic Right Shift---(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Logical Left Shift-------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Logical Right Shift------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Carry Logical Left Shift-------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Carry Logical Right Shift------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) HI. Arithmetic Left Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) HI. Arithmetic Right Shift--------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) HI. Carry Arithmetic Left Shift---(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) HI. Carry Arithmetic Right Shift--(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) HI. Logical Left Shift------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) HI. Logical Right Shift-----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) HI. Carry Logical Left Shift------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) HI. Carry Logical Right Shift-----(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Left Rotate--------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Right Rotate-------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+	[D] (...) I. Bit Swap-----------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| -
+
+	[C] (...) I. Bitwise AND--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Bitwise NAND-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Bitwise OR---------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Bitwise NOR--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Bitwise XOR--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Bitwise XNOR-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+	[C] (...) I. Carryless Multiplication-------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| -
+
+	[E]	(...) Imm. FP. Addition-----------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)| -
+	[E]	(...) Imm. FP. Subtraction--------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)| -
+	[E]	(...) Imm. FP. Multiplication-----------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)| -
+	[E]	(...) Imm. FP. Division-----------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)| -
+	[E]	(...) Imm. FP. Multiply Acc-------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)| -
+
+	NOTE {
+
+		MOD(04):
+
+			0000 -> scalar  8
+			0001 -> scalar 16
+			0010 -> scalar 32
+			0011 -> scalar 64
+
+			0100 -> vector-vector  8
+			0101 -> vector-vector 16
+			0110 -> vector-vector 32
+			0111 -> vector-vector 64
+			1000 -> vector-vector VLEN
+
+			1001 -> vector-scalar  8
+			1010 -> vector-scalar 16
+			1011 -> vector-scalar 32
+			1100 -> vector-scalar 64
+			1101 -> vector-scalar VLEN
+
+			1110 -> vector VLEN, VMOD
+			1111 -> unused
+	}
+
+	[H] (...) Set Bit Field---------------------(?????) |OPCODE(07)|MOD(04)|RD/RS1(05)|IMM(32)| 	2
+	[H] (...) Get Bit Field---------------------(?????) |OPCODE(07)|MOD(04)|RD/RS1(05)|IMM(32)|
+}
+
+Data Transfer { (opcodes: 25) [instructions: 38]
+	
+	[F] (...) Load------------------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) Unsigned Load---------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) Store-----------------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)|
+
+	[G] (...) Scaled Load-----------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+	[G] (...) Scaled Unsigned Load--------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+	[G] (...) Scaled Store----------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+
+	[G] (...) Load Linked-----------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+	[G] (...) Unsigned Load Linked--------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+	[G] (...) Store Cond.-----------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+
+	[F] (...) FP Load---------------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) FP Store--------------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)|
+
+	[G] (...) Scaled FP Load--------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+	[G] (...) Scaled FP Store-------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+
+
+	NOTE {
+
+		MOD(02):
+
+			00 -> 8b
+			01 -> 16b
+			10 -> 32b
+			11 -> 64b
+	}
+
+
+   *[H] (...) Block Load------------------------(?????) |OPCODE(07)|MOD(03)|RS1(05)|IMM(32)|
+   *[H] (...) Block Store-----------------------(?????) |OPCODE(07)|MOD(03)|RS1(05)|IMM(32)|
+
+	
+	NOTE {
+
+		MOD(03):
+
+			0000 -> scalar
+			0001 -> vector
+			0010 -> special *
+			0011 -> -
+			0100 -> implicit scalar
+			0101 -> implicit vector
+			0110 -> implicit special *
+			0111 -> -
+	}
+
+
+	[F] (...) Vector Load-----------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) Vector Store----------------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)|
+
+	[G] (...) Scaled Vector Load----------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+	[G] (...) Scaled Vector Store---------------(?????) |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)|
+
+
+	NOTE {
+
+		MOD(02):
+
+			00 -> integer
+			01 -> FP
+			10 -> strided?
+			11 -> strided?
+	}
+
+
+	[I] (...) Cond. Move If True----------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) Cond. Move If EQ------------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) Cond. Move If NE------------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) Cond. Move If LT------------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) Cond. Move If unsigned LT---------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) Cond. Move If LE------------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) Cond. Move If Unsigned LE---------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+
+
+	NOTE {
+
+		MOD(02):
+
+			00: scalar int -> scalar int
+			01: vector int -> vector int
+			10: scalar int -> vector int
+			11: -
+	}
+
+
+	[I] (...) FP Cond. Move If True-------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) FP Cond. Move If EQ---------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) FP Cond. Move If NE---------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) FP Cond. Move If LT---------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	[I] (...) FP Cond. Move If LE---------------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+
+
+	NOTE {
+
+		MOD(02):
+
+			00: scalar FP -> scalar FP
+			01: vector FP -> vector FP
+			10: scalar FP -> vector FP
+			11: -
+	}
+
+
+	[J] (...) EX. Cond. Move If True------------(?????) |OPCODE(08)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|RMD(02)|
+	[J] (...) EX. Cond. Move If EQ--------------(?????) |OPCODE(08)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|RMD(02)|
+	[J] (...) EX. Cond. Move If NE--------------(?????) |OPCODE(08)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|RMD(02)|
+	[J] (...) EX. Cond. Move If LT--------------(?????) |OPCODE(08)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|RMD(02)|
+	[J] (...) EX. Cond. Move If unsigned LT-----(?????) |OPCODE(08)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|RMD(02)|
+	[J] (...) EX. Cond. Move If LE--------------(?????) |OPCODE(08)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|RMD(02)|
+	[J] (...) EX. Cond. Move If Unsigned LE-----(?????) |OPCODE(08)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|RMD(02)|
+
+
+	NOTE {
+
+		MOD(02):
+
+			00: scalar int -> scalar FP
+			01: scalar FP -> scalar int
+			10: vector int -> vector FP
+			11: vector FP -> vector int
+	}
+}
+
+Control Transfer { (opcodes: 28) [instructions: 29]
+	
+	[F] (...) Branch If EQ----------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) Branch If NE----------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) Branch If LT----------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) Uns. Branch If LT-----------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) Branch If LE----------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) Uns. Branch If LE-----------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+
+	[F] (...) FP. Branch If EQ------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) FP. Branch If NE------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) FP. Branch If LT------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+	[F] (...) FP. Branch If LE------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|RS2(05)|IM1(13)|
+
+	[L] (...) Imm. Branch If EQ-----------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Uns. Imm. Branch If EQ------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Imm. Branch If NE-----------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Uns. Imm. Branch If NE------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Imm. Branch If LT-----------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Imm. Branch If LT Uns.------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Imm. Branch If LE-----------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Imm. Branch If LE Uns.------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+
+	[L] (...) Imm. FP. Branch If EQ-------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Imm. FP. Branch If NE-------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Imm. FP. Branch If LT-------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+	[L] (...) Imm. FP. Branch If LE-------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
+
+
+	NOTE {
+
+		MOD(02):
+
+			00 -> 8b
+			01 -> 16b
+			10 -> 32b
+			11 -> 64b
+	}
+
+
+	[O] (...) Branch If Test--------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(18)|
+
+
+	NOTE {
+
+		MOD(02):
+
+			00 -> EQZ
+			01 -> LTZ
+			10 -> LEZ
+			11 -> ODD
+	}
+
+	[O] (...) FP Branch If Test-----------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(18)|
+
+
+	NOTE {
+
+		MOD(02):
+
+			00 -> EQZ
+			01 -> LTZ
+			10 -> LEZ
+			11 -> -
+	}
+
+	[O] (...) Branch If Flag--------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(18)|
+	[O] (...) Branch If Flag2-------------------(?????) |OPCODE(07)|MOD(02)|RS1(05)|IM1(18)|
+
+
+	NOTE {
+
+		Branch If Flag MOD(02):
+
+			00 -> COVR
+			01 -> CUND
+			10 -> OVFL
+			11 -> UNFL
+
+		Branch If Flag2 MOD(02):
+
+			00 -> DIV0
+			01 -> -
+			10 -> -
+			11 -> TRUE
+	}
+
+	[M] (...) Function Call---------------------(?????) |OPCODE(07)|RD(05) |LEN(01)|IM1(19/35)|
+	[N] (...) Displacement Function Call--------(?????) |OPCODE(07)|RD(05) |RS1(05)|LEN(01)|IM1(14/30)|
+	[R] (...) Function Return-------------------(?????) |OPCODE(11)|RD/RS1(05)|
+}
+
+System { (opcodes: 7) [instructions: 18]
+	
+	[S] (...)  No Operation---------------------(?????) |OPCODE(11)|xxxxx|
+    [S] (...)  User Event Return----------------(?????) |OPCODE(11)|xxxxx|
+  * [S] (...)  Supervisor Event Return----------(?????) |OPCODE(11)|xxxxx|
+  	[S] (...)  Fence Loads----------------------(?????) |OPCODE(11)|xxxxx|
+	[S] (...)  Fence Stores---------------------(?????) |OPCODE(11)|xxxxx|
+	[S] (...)  Fence Loads and Stores-----------(?????) |OPCODE(11)|xxxxx|
+	[S] (...)  Fence Instructions---------------(?????) |OPCODE(11)|xxxxx|
+	[S] (...)  Transaction Begin----------------(?????) |OPCODE(11)|xxxxx|
+    [S] (...)  Transaction End------------------(?????) |OPCODE(11)|xxxxx|
+    [S] (...)  Transaction Abort----------------(?????) |OPCODE(11)|xxxxx|
+    [S] (...)  Transaction Check----------------(?????) |OPCODE(11)|RD/RS1(05)|
+
+  * [?] (...)  Move Special Register------------(?????)
+  * [K] (...)  Cache Operation------------------(?????) |OPCODE(09)|RS1(05)|RS2(05)|IM1(13)|
+  * [K] (...)  TLB Operation--------------------(?????) |OPCODE(09)|RS1(05)|RS2(05)|IM1(13)|
+  * [?] (...)  Manipulate Special Register------(?????)
+    [?] (...)  System Call----------------------(?????)
+    [?] (...)  Wait For Interrupt---------------(?????)
+    [?] (...)  Breakpoint Trigger---------------(?????)
+}
+
+Compressed { (...) [...]
+
+	[P] (...) Comp. Load
+	[P] (...) Comp. Store
+	[P] (...) Comp. FP Load
+	[P] (...) Comp. FP Store
+	
+	[P] (...) Comp. Addition
+	[P] (...) Comp. Subtraction
+	[P] (...) Comp. FP Addition
+	[P] (...) Comp. FP Subtraction
+	[P] (...) ...
+	[P] (...) ...
+
+	[Q] (...) Comp. Addition Immediate_8
+	[Q] (...) Comp. Addition Immediate_16
+	[Q] (...) Comp. Addition Immediate_32
+	[Q] (...) Comp. Addition Immediate_64
+	[Q] (...) Comp. Branch If EQZ
+	[Q] (...) Comp. Branch If NEZ
+	[Q] (...) Comp. Branch if LTZ_8
+	[Q] (...) Comp. Branch if LTZ_16
+	[Q] (...) Comp. Branch if LTZ_32
+	[Q] (...) Comp. Branch if LTZ_64
+	[Q] (...) Comp. Branch if LEZ_8
+	[Q] (...) Comp. Branch if LEZ_16
+	[Q] (...) Comp. Branch if LEZ_32
+	[Q] (...) Comp. Branch if LEZ_64
+	[Q] (...) Comp. Logical LSH Immediate_8
+	[Q] (...) Comp. Logical LSH Immediate_16
+	[Q] (...) Comp. Logical LSH Immediate_32
+	[Q] (...) Comp. Logical LSH Immediate_64
+	[Q] (...) Comp. Logical RSH Immediate_8
+	[Q] (...) Comp. Logical RSH Immediate_16
+	[Q] (...) Comp. Logical RSH Immediate_32
+	[Q] (...) Comp. Logical RSH Immediate_64
+	[Q] (...) Comp. Arithmetic RSH Immediate_8
+	[Q] (...) Comp. Arithmetic RSH Immediate_16
+	[Q] (...) Comp. Arithmetic RSH Immediate_32
+	[Q] (...) Comp. Arithmetic RSH Immediate_64
+
+	[R] (...) Comp. Jump
+	[R] (...) Comp. Register Jump
+	[R] (...) Comp. Function Call
+	[R] (...) Comp. Register Function Call
+}
+________________________________________________________________________________________________________________________________
+
+Registers {
+	
+	Scalar {
+
+		INT & FP
+
+		32 / 64 bits wide
+
+		$00--------(function parameter    00)
+		$01--------(function parameter    01)
+		$02--------(function parameter    02)
+		$03--------(function parameter    03)
+
+		$04--------(function return value 00)
+		$05--------(function return value 01)
+
+		$06--------(saved register        00)
+		$07--------(saved register        01)
+		$08--------(saved register        02)
+		$09--------(saved register        03)
+		$10--------(saved register        04)
+		$11--------(saved register        05)
+		$12--------(saved register        06)
+		$13--------(saved register        07)
+		$14--------(saved register        08)
+		$15--------(saved register        09)
+		$16--------(saved register        10)
+		$17--------(saved register        11)
+		$18--------(saved register        12)
+		$19--------(saved register        13)
+
+		$20--------(temporary register    00)
+		$21--------(temporary register    01)
+		$22--------(temporary register    02)
+		$23--------(temporary register    03)
+		$24--------(temporary register    04)
+		$25--------(temporary register    05)
+		$26--------(temporary register    06)
+		$27--------(temporary register    07)
+
+		$28--------(global pointer          )
+		$29--------(return value            )
+		$30--------(stack pointer           )
+		$31--------(frame pointer           )
+	}
+
+	Vector {
+
+		INT & FP
+
+		256 / 512 bits wide
+
+		$00--------()
+		$01--------()
+		$02--------()
+		$03--------()
+		$04--------()
+		$05--------()
+		$06--------()
+		$07--------()
+		$08--------()
+		$09--------()
+		$10--------()
+		$11--------()
+		$12--------()
+		$13--------()
+		$14--------()
+		$15--------()
+		$16--------()
+		$17--------()
+		$18--------()
+		$19--------()
+		$20--------()
+		$21--------()
+		$22--------()
+		$23--------()
+		$24--------()
+		$25--------()
+		$26--------()
+		$27--------()
+		$28--------()
+		$29--------()
+		$30--------()
+		$31--------()
+	}
+
+	Special {
+
+		$14--------(extra gpr                        )
+		$15--------(extra gpr                        )
+		$16--------(extra gpr                        )
+		$17--------(extra gpr                        )
+		$18--------(extra gpr                        )
+		$19--------(extra gpr                        )
+		$20--------(extra gpr                        )
+		$21--------(extra gpr                        )
+
+		$24--------(BP0 -> Breakpoint register 0     )
+		$25--------(BP1 -> Breakpoint register 1     )
+		$26--------(BP2 -> Breakpoint register 2     )
+		$27--------(BP3 -> Breakpoint register 3     )
+		$28--------(BP4 -> Breakpoint register 4     )
+		$29--------(BP5 -> Breakpoint register 5     )
+		$30--------(BP6 -> Breakpoint register 6     )
+		$31--------(BP7 -> Breakpoint register 7     )
+
+		$04--------(BPM -> Breakpoint Modes          )
+		$02--------(VMSK -> Vector Mask              )
+		$03--------(HIGH -> High Register            )
+
+		$00--------(PC -> Program Counter            )
+		$08--------(UPC -> User PC                   )
+		$09--------(UCSR -> User CSR                 )
+		$13--------(VFLG -> Vector Flags             )
+
+	*	$01--------(CSR -> Control & Status Register )
+	*	$10--------(SPC -> Supervisor PC             )
+	*	$11--------(SCSR -> Supervisor CSR           )
+	*	$22--------(K0 -> Kernel Register 0          )
+	*	$23--------(K1 -> Kernel Register 1          )
+	*	$05--------(ETP -> Event Table Pointer       )
+	*	$06--------(PTP -> Page Table Pointer        )
+	*	$07--------(PID -> Process ID                )
+	*	$12--------(??)
+	}
+
+	CSR Bit Layout {
+
+		- COVR (1) flag
+		- CUND (1) flag
+		- OVFL (1) flag
+		- UNFL (1) flag
+		- DIV0 (1) flag
+		- ???? (1) flag
+
+		- LLEN (2)
+		- VLEN (5/6)
+		- VMOD (1)
+
+		- TRANSACTION DEPTH (7)
+
+		- SUPERVISOR MODE                   (1)
+		- CONSISTENCY MODE                  (1)
+		- BOOT MODE                         (1)
+		- ENABLE PAGING                     (1)
+		- ENABLE AUTO EXCEPTIONS            (1)
+		- ENABLE USER INTERRUPTS            (1)
+		- ENABLE SUPERVISOR INTERRUPTS      (1)
+		- EVENT TRIGGERED                   (1)
+		- HALT EXECUTION                    (1)
+
+		- RMD (2)
+
+		>> remaining bits are unused
+	}
+}
+
+
+
+|exponent(03)|mantissa(05)| -> 8
+|exponent(05)|mantissa(11)| -> 16
+|exponent(06)|mantissa(10)| -> 24
+|exponent(08)|mantissa(24)| -> 32
+|exponent(11)|mantissa(53)| -> 64
