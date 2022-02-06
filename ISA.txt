@@ -1,26 +1,21 @@
 final version i guess
 
-data transfer {
 
-	F |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|IM1(13)| 					mem[rs2 + imm]
-	G |OPCODE(07)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08)| 			mem[rs2 + (rs3 * imm)]
-	I |OPCODE(09)|MOD(03)|RD(05)|RS1(05)|RS2(05)|RS3(05)| 				mem[rs1 + (rs2 * rs3)]
+
+
+
+possible opcode mappings {
+
+    000000 xxxxxxx ... 001111 xxxxxxx 		16      opcode length: 06
+    010000 0xxxxxx ... 101111 1xxxxxx 		64      opcode length: 07
+    110000 00xxxxx ... 110111 11xxxxx 		32      opcode length: 08
+    111000 000xxxx ... 111011 111xxxx 		32      opcode length: 09
+    111100 0000xxx ... 111100 1111xxx 		16      opcode length: 10
+    111110 00000xx ... 111110 01111xx 		16      opcode length: 11
+    111111 0000000 ... 111111 0111111 		64      opcode length: 13
+
+    - add length 15
 }
-
-control transfer {
-
-	  |OPCODE(07)|MOD(02)|RS1(05)|IM1(08)|IM2(10)|
-	  ...
-}
-
-000000 xxxxxxx ... 001111 xxxxxxx 		16
-010000 0xxxxxx ... 101111 1xxxxxx 		64
-110000 00xxxxx ... 110111 11xxxxx 		32
-111000 000xxxx ... 111011 111xxxx 		32
-111100 0000xxx ... 111100 1111xxx 		16
-111110 00000xx ... 111110 01111xx 		16
-111111 0000000 ... 111111 0111111 		64
-
 
 NOTE:
 
@@ -36,16 +31,16 @@ computational {
 
 		MOD(04):
 
-			00xx -> scalar
-			01xx -> vector-scalar
-			10xx -> vector-vector
+			00ll -> scalar
+			01ll -> vector-scalar
+			10ll -> vector-vector
 
 			1100 -> vector-scalar VLEN
             1101 -> vector-vector VLEN
             1110 -> vector-VMOD VLEN
             1111 -> scalar SLEN
 
-			(xx is length: 8, 16, 32, 64)
+			(ll is length: 8, 16, 32, 64)
 	}
 
 	(ALU INT & FP reg-reg-imm) {
@@ -54,16 +49,16 @@ computational {
 
 		MOD(04):
 
-            00xx -> scalar
-            01xx -> vector-scalar
-            10xx -> vector-vector
+            00ll -> scalar
+            01ll -> vector-scalar
+            10ll -> vector-vector
 
             1100 -> vector-scalar VLEN
             1101 -> vector-vector VLEN
             1110 -> vector-VMOD VLEN
             1111 -> scalar SLEN
 
-            (xx is length: 8, 16, 32, 64)
+            (ll is length 8, 16, 32, 64)
 	}
 
 	(ALU SHIFT & SPECIAL reg-imm) {
@@ -72,19 +67,19 @@ computational {
 
 		MOD(04):
 
-            00xx -> scalar
-            01xx -> vector-scalar
-            10xx -> undefined
+            00ll -> scalar
+            01ll -> vector-scalar
+            10ll -> undefined
 
             1100 -> vector-scalar VLEN
             1101 -> undefined
             1110 -> undefined
             1111 -> scalar SLEN
 
-            (xx is length: 8, 16, 32, 64)
+            (ll is length: 8, 16, 32, 64)
 	}
 
-	(ALU SPECIAL reg) {
+	(ALU SPECIAL reg-reg-reg-reg) {
 
 		D |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
 
@@ -96,9 +91,21 @@ computational {
 			11
 	}
 
-	(ALU SPECIAL imm) {
+    (ALU SPECIAL_2 reg-reg-reg) {
 
-		E |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
+        E |OPCODE(15)|MOD(02)|DST(05)|SRC1(05)|SRC2(05)|
+
+        MOD(02):
+
+			00
+			01
+			10
+			11
+    }
+
+    (ALU SPECIAL reg-reg-imm) {
+
+		F |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|     ??
 
 		MOD(02):
 
@@ -111,8 +118,41 @@ computational {
 
 data transfer {
 
+    (MEMORY DISPLACEMENT (r + i)) {
 
+        G |OPCODE(06)|MOD(02)|RD/RS1(05)|RS2(05)|LEN(02)|IM1(12/28/44)|
+
+        MOD(02):
+
+            00 -> 8
+            01 -> 16
+            10 -> 32
+            11 -> 64
+    }
+
+    (MEMORY INDEXED (r1 + (r2 * imm * mod))) {
+
+        H |OPCODE(06)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|LEN(01)|IM1(08/24)|
+
+        MOD(02):
+
+            00 -> 8
+            01 -> 16
+            10 -> 32
+            11 -> 64
+    }
+
+    (MEMORY INDEXED (r1 + (r2 * r3 * mod))) {
+
+        I |OPCODE(09)|MOD(03)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+
+        MOD(03):
+
+            ...
+    }
 }
+
+...
 _______________________________________________________________________________________________________________________________
 
 COMPUTATIONAL {
