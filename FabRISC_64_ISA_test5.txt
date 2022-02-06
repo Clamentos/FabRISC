@@ -114,26 +114,26 @@ Computational { 22
 	- [C] (...) I. Remainder----------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
 	- [C] (...) I. Uns. Remainder-----------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
 
-	[D] (...) I. Arithmetic Left Shift----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| 1
-	[D] (...) I. Arithmetic Right Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-	[D] (...) HI. Arithmetic Left Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-	[D] (...) HI. Arithmetic Right Shift--------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) I. Arithmetic Left Shift----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)| 1
+	- [D] (...) I. Arithmetic Right Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) HI. Arithmetic Left Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) HI. Arithmetic Right Shift--------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
 
-	[D] (...) I. Logical Left Shift-------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-	[D] (...) I. Logical Right Shift------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-	[D] (...) HI. Logical Left Shift------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-	[D] (...) HI. Logical Right Shift-----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-	[D] (...) I. Left Rotate--------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-	[D] (...) I. Right Rotate-------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-	[D] (...) I. Bit Swap-----------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) I. Logical Left Shift-------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) I. Logical Right Shift------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) HI. Logical Left Shift------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) HI. Logical Right Shift-----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) I. Left Rotate--------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) I. Right Rotate-------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
+	- [D] (...) I. Bit Swap-----------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
 
-	[C] (...) I. Bitwise AND--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| 2
-	[C] (...) I. Bitwise NAND-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Bitwise OR---------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Bitwise NOR--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Bitwise XOR--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Bitwise XNOR-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
-	[C] (...) I. Carryless Multiplication-------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Bitwise AND--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)| 2
+	- [C] (...) I. Bitwise NAND-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Bitwise OR---------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Bitwise NOR--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Bitwise XOR--------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Bitwise XNOR-------------------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
+	- [C] (...) I. Carryless Multiplication-------(?????) |OPCODE(09)|MOD(04)|RD(05)|RS1(05)|LEN(01)|IMM(08/16)|
 
 
 
@@ -166,18 +166,18 @@ Computational { 22
 	[G] (...) HI. Carry Logical Right Shift-----(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
 
 
-	[B] (...) FP. Addition----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| 1
-	[B] (...) FP. Subtraction-------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
-	[B] (...) FP. Multiplication----------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
-	[B] (...) FP. Division----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
-	[B] (...) FP. Multiply Acc------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
-	[B] (...) FP. Nth Root----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
+	- [B] (...) FP. Addition----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| 1
+	- [B] (...) FP. Subtraction-------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
+	- [B] (...) FP. Multiplication----------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
+	- [B] (...) FP. Division----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
+	- [B] (...) FP. Multiply Acc------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
+	- [B] (...) FP. Nth Root----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)|
 
-	[E]	(...) Imm. FP. Addition-----------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)| 6
-	[E]	(...) Imm. FP. Subtraction--------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)|
-	[E]	(...) Imm. FP. Multiplication-----------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)|
-	[E]	(...) Imm. FP. Division-----------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)|
-	[E]	(...) Imm. FP. Multiply Acc-------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)|
+	- [E] (...) Imm. FP. Addition-----------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)| 6
+	- [E] (...) Imm. FP. Subtraction--------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)|
+	- [E] (...) Imm. FP. Multiplication-----------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)|
+	- [E] (...) Imm. FP. Division-----------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)|
+	- [E] (...) Imm. FP. Multiply Acc-------------(?????) |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|LEN(01)|RMD(02)|IMM(08/16)|
 
 	[?] (...) Set Bit Field---------------------(?????) |OPCODE(07)|MOD(04)|RD/RS1(05)|IMM(32)| 2
 	[?] (...) Get Bit Field---------------------(?????) |OPCODE(07)|MOD(04)|RD/RS1(05)|IMM(32)|
