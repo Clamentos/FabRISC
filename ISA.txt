@@ -236,3 +236,82 @@ System {
     ...
 }
 ______________________________________________________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________________________________________________
+
+REGISTERS {
+
+    $00----(GPR00 "general purpose register")
+    $01----(GPR01 "general purpose register")
+    $02----(GPR02 "general purpose register")
+    $03----(GPR03 "general purpose register")
+    $04----(GPR04 "general purpose register")
+    $05----(GPR05 "general purpose register")
+    $06----(GPR06 "general purpose register")
+    $07----(GPR07 "general purpose register")
+    $08----(GPR08 "general purpose register")
+    $09----(GPR09 "general purpose register")
+    $10----(GPR10 "general purpose register")
+    $11----(GPR11 "general purpose register")
+    $12----(GPR12 "general purpose register")
+    $13----(GPR13 "general purpose register")
+    $14----(GPR14 "general purpose register")
+    $15----(GPR15 "general purpose register")
+    $16----(GPR16 "general purpose register")
+    $17----(GPR17 "general purpose register")
+    $18----(GPR18 "general purpose register")
+    $19----(GPR19 "general purpose register")
+    $20----(GPR20 "general purpose register")
+    $21----(GPR21 "general purpose register")
+    $22----(GPR22 "general purpose register")
+    $23----(GPR23 "general purpose register")
+    $24----(GPR24 "general purpose register")
+    $25----(GPR25 "general purpose register")
+    $26----(GPR26 "general purpose register")
+    $27----(GPR27 "general purpose register")
+    $28----(GPR28 "general purpose register")
+    $29----(GPR29 "general purpose register")
+    $30----(GPR30 "general purpose register")
+    $31----(GPR31 "general purpose register")
+
+    ---------------------------------------
+
+    %00----(GPR32 "general purpose register")
+    %01----(GPR33 "general purpose register")
+    %02----(GPR34 "general purpose register")
+    %03----(GPR35 "general purpose register")
+    %04----(GPR36 "general purpose register")
+    %05----(GPR37 "general purpose register")
+    %06----(GPR38 "general purpose register")
+    %07----(GPR39 "general purpose register")
+
+    %08----(BPR0 "breakpoint register 0")
+    %09----(BPR1 "breakpoint register 1")
+    %10----(BPR2 "breakpoint register 2")
+    %11----(BPR3 "breakpoint register 3")
+    %12----(BPR4 "breakpoint register 4")
+    %13----(BPR5 "breakpoint register 5")
+    %14----(BPR6 "breakpoint register 6")
+    %15----(BPR7 "breakpoint register 7")
+
+    %16----(BPM "breakpoint modes")
+    %17----(VMSK "vector mask")
+
+    %18----(PC "program counter")
+    %19----(UPC "user program counter")
+    %20----(UCSR "user control & status register")
+    %21----(VFLG "vector flags")
+
+  * %22----(CSR "control & status register")
+  * %23----(SPC "supervisor program counter")
+  * %24----(SCSR "supervisor control & status register")
+  * %25----(K0 "kernel temporary 0")
+  * %26----(K1 "kernel temporary 1")
+  * %27----(ETP "event table pointer")
+  * %28----(PTP "page table pointer")
+  * %29----(PID "process identifier")
+    %30----
+    %31----
+
+    scalar registers are 64 divided into two banks 32 each: one general purpose and the other special purpose. They share integer and floating-point.
+    vector registers are 32 and will have a fixed size of 128, 256 or 512. They share integer and floating point.
+}
