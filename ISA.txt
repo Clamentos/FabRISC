@@ -1,258 +1,238 @@
-final version i guess
+final ISA version (i hope...)
 
+FORMATS {
 
+    NOTE: not normalized
 
+    Computational {
 
+        (ALU r-r) {
 
-possible opcode mappings {
+            A |OPCODE(11)|MOD(06)|RD(05)|RS1(05)|RS2(05)|
 
-    000000 xxxxxxx ... 001111 xxxxxxx 		16      opcode length: 06
-    010000 0xxxxxx ... 101111 1xxxxxx 		64      opcode length: 07
-    110000 00xxxxx ... 110111 11xxxxx 		32      opcode length: 08
-    111000 000xxxx ... 111011 111xxxx 		32      opcode length: 09
-    111100 0000xxx ... 111100 1111xxx 		16      opcode length: 10
-    111110 00000xx ... 111110 01111xx 		16      opcode length: 11
-    111111 0000000 ... 111111 0111111 		64      opcode length: 13
+                MOD(06):
 
-    - add length 15
-}
+                    s000mm -> scalar
+                    s001mm -> v-v
+                    s010mm -> v-s
+                    s011mm -> reduction
+                    s10000 -> scalar LEN
+                    s10001 -> v-v LEN
+                    s10010 -> v-s LEN
+                    s10011 -> reduction LEN
+                    s10100 -> IMOD LEN
 
-NOTE:
+                    (mm is length: 8, 16, 32, 64)
+                    (s is sign mode)
+                    - LEN = length specifier
+                    - IMOD = instruction mode specifier
 
-    make vector reduction as separate "thing"
+                    NOTE: reduction mode only uses RD & RS1. RS2 will be ignored
+        }
 
-_______________________________________________________________________________________________________________________________
+        (ALU r-i) {
 
-computational {
+            B |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| ok
 
-	(ALU INT & FP reg-reg-reg) {
+                MOD(05):
 
-		A |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+                    000mm -> scalar l08
+                    001mm -> scalar l24
+                    010mm -> scalar l40
+                    011mm -> v-s l08
+                    100mm -> v-s l24
+                    101mm -> v-s l40
+                    11000 -> scalar LEN l08
+                    11001 -> scalar LEN l24
+                    11010 -> scalar LEN l40
+                    11011 -> v-s LEN l08
+                    11100 -> v-s LEN l24
+                    11101 -> v-s LEN l40
+                    11110 -> IMOD LEN l08
+                    11111 -> IMOD LEN l24
 
-		MOD(04):
+                    (mm is length: 8, 16, 32, 64)
+                    - LEN = length specifier
+                    - IMOD = instruction mode specifier
+                    - l08, l24, l40 are the imm lengths (in bits)
 
-			00ll -> scalar
-			01ll -> vector-scalar
-			10ll -> vector-vector
+            C |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)|
 
-			1100 -> vector-scalar VLEN
-            1101 -> vector-vector VLEN
-            1110 -> vector-VMOD VLEN
-            1111 -> scalar SLEN
+                MOD(04):
 
-			(ll is length: 8, 16, 32, 64)
-	}
+                    00mm -> scalar
+                    01mm -> v-s
+                    10mm -> //
+                    1100 -> scalar LEN
+                    1101 -> v-s LEN
+                    1110 -> //
+                    1111 -> IMOD LEN
 
-	(ALU INT & FP reg-reg-imm) {
+                    (mm is length: 8, 16, 32, 64)
+                    - LEN = length specifier
+                    - IMOD = instruction mode specifier
 
-		B |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+                    NOTE: // means unused
 
-		MOD(04):
+            D |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|SH(03)|IMM(08/24/40)|
 
-            00ll -> scalar
-            01ll -> vector-scalar
-            10ll -> vector-vector
+                MOD(07):
 
-            1100 -> vector-scalar VLEN
-            1101 -> vector-vector VLEN
-            1110 -> vector-VMOD VLEN
-            1111 -> scalar SLEN
+                    m000 -> [1s set, zero extend]
+                    m001 -> [1s set, one  extend]
+                    m010 -> [0s set, zero extend]
+                    m011 -> [0s set, one  extend]
+                    m100 -> [1s clear, zero extend]
+                    m101 -> [1s clear, one  extend]
+                    m110 -> [0s clear, zero extend]
+                    m111 -> [0s clear, one  extend]
 
-            (ll is length 8, 16, 32, 64)
-	}
+                    (m is mode: 0 scalar, 1 vector)
+        }
 
-	(ALU SHIFT & SPECIAL reg-imm) {
-
-		C |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)|
-
-		MOD(04):
-
-            00ll -> scalar
-            01ll -> vector-scalar
-            10ll -> undefined
-
-            1100 -> vector-scalar VLEN
-            1101 -> undefined
-            1110 -> undefined
-            1111 -> scalar SLEN
-
-            (ll is length: 8, 16, 32, 64)
-	}
-
-	(ALU SPECIAL reg-reg-reg-reg) {
-
-		D |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
-
-		MOD(02):
-
-			00
-			01
-			10
-			11
-	}
-
-    (ALU SPECIAL_2 reg-reg-reg) {
-
-        E |OPCODE(15)|MOD(02)|DST(05)|SRC1(05)|SRC2(05)|
-
-        MOD(02):
-
-			00
-			01
-			10
-			11
+        ...
     }
 
-    (ALU SPECIAL reg-reg-imm) {
+    Memory transfer {
 
-		F |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|     ??
-
-		MOD(02):
-
-			00
-			01
-			10
-			11
-	}
-}
-
-data transfer {
-
-    (MEMORY DISPLACEMENT (r + i)) {
-
-        G |OPCODE(06)|MOD(02)|RD/RS1(05)|RS2(05)|LEN(02)|IM1(12/28/44)|
-
-        MOD(02):
-
-            00 -> 8
-            01 -> 16
-            10 -> 32
-            11 -> 64
-    }
-
-    (MEMORY INDEXED (r1 + (r2 * imm * mod))) {
-
-        H |OPCODE(06)|MOD(02)|RD/RS1(05)|RS2(05)|RS3(05)|LEN(01)|IM1(08/24)|
-
-        MOD(02):
-
-            00 -> 8
-            01 -> 16
-            10 -> 32
-            11 -> 64
-    }
-
-    (MEMORY INDEXED (r1 + (r2 * r3 * mod))) {
-
-        I |OPCODE(09)|MOD(03)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
-
-        MOD(03):
-
-            ...
+        ...
     }
 }
 
-...
-_______________________________________________________________________________________________________________________________
+OPCODE DISTRIBUTION {
 
-COMPUTATIONAL {
+    000000xxxxxx ... 001111xxxxxx 16
+    0100000xxxxx ... 1011111xxxxx 64
+    11000000xxxx ... 11011111xxxx 32
+    111000000xxx ... 111011111xxx 32
+    1111000000xx ... 1111011111xx 32
+    11111000000x ... 11111011111x 32
+    111111000000 ... 111111111111 64
 
-    arithmetic (r-r-r) {
+    max: 272 opcodes
+}
+______________________________________________________________________________________________________________________________________________________________________
+instruction list
 
-        [A] (...) Addition--------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Uns. Addition---------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Subtraction-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Uns. Subtraction------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Multiplication--------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Uns. Multiplication---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Multiply Acc----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Uns. Multiply Acc-----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) High Multiplication---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Uns. High Multiplication----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) High Multiply Acc-----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) High Uns. Multiply Acc.-----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Division--------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Uns. Division---------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Remainder-------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Uns. Remainder--------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Arithmetic Left Shift-------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Arithmetic Right Shift------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) High Arithmetic Left Shift--------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) High Arithmetic Right Shift-------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+NOTE: some instructions don't use all of the MOD combinations available
 
-        [A] (...) FP. Addition----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-    	[A] (...) FP. Subtraction-------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-    	[A] (...) FP. Multiplication----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-    	[A] (...) FP. Division----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-    	[A] (...) FP. Multiply Acc------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-    	[A] (...) FP. Nth Root----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+Computational {
+
+    arithmetic {
+
+        integer { OK
+
+            [A] (...) Addition--------------------------(?????)
+            [A] (...) Subtraction-----------------------(?????)
+            [A] (...) Multiplication--------------------(?????)
+            [A] (...) Multiply Acc----------------------(?????)
+            [A] (...) Division--------------------------(?????)
+            [A] (...) Remainder-------------------------(?????)
+            [A] (...) Left Shift------------------------(?????)
+            [A] (...) Right Shift-----------------------(?????)
+
+            [B] (...) I .Addition-----------------------(?????)
+            [B] (...) I .Subtraction--------------------(?????)
+            [B] (...) I. Multiplication-----------------(?????)
+            [B] (...) I. Multiply Acc-------------------(?????)
+            [B] (...) I. Division-----------------------(?????)
+            [B] (...) I. Remainder----------------------(?????)
+            [C] (...) I. Left Shift---------------------(?????)
+            [C] (...) I. Right Shift--------------------(?????)
+
+            [A] (...) Addition Carry--------------------(?????)
+        	[A] (...) Subtraction Borrow----------------(?????)
+            [A] (...) Carry Left Shift------------------(?????)
+        	[A] (...) Carry Right Shift-----------------(?????)
+            [A] (...) High Carry Left Shift-------------(?????)
+        	[A] (...) High Carry Right Shift------------(?????)
+            [A] (...) High Multiplication---------------(?????)
+            [A] (...) High Multiply Acc-----------------(?????)
+            [A] (...) High Left Shift-------------------(?????)
+            [A] (...) High Right Shift------------------(?????)
+            [B] (...) I. High Multiplication------------(?????)
+            [B] (...) I. High Multiply Acc--------------(?????)
+            [C] (...) HI. Left Shift--------------------(?????)
+            [C] (...) HI. Right Shift-------------------(?????)
+            [C] (...) HI. Carry Left Shift--------------(?????)
+        	[C] (...) HI. Carry Right Shift-------------(?????)
+            [B] (...) I .Addition Carry-----------------(?????)
+        	[B] (...) I .Subtraction Borrow-------------(?????)
+        	[C] (...) I. Carry Left Shift---------------(?????)
+        	[C] (...) I. Carry Right Shift--------------(?????)
+        }
+
+        floating point { OK
+
+            [A] (...) FP. Addition----------------------(?????)
+            [A] (...) FP. Subtraction-------------------(?????)
+            [A] (...) FP. Multiplication----------------(?????)
+            [A] (...) FP. Division----------------------(?????)
+            [A] (...) FP. Multiply Acc------------------(?????)
+            [A] (...) FP. Nth Root----------------------(?????)
+
+            [B] (...) Imm. FP. Addition-----------------(?????)
+            [B] (...) Imm. FP. Subtraction--------------(?????)
+            [B] (...) Imm. FP. Multiplication-----------(?????)
+            [B] (...) Imm. FP. Division-----------------(?????)
+            [B] (...) Imm. FP. Multiply Acc-------------(?????)
+        }
     }
 
-    logic (r-r-r) {
+    logic { OK
 
-        [A] (...) Logical Left Shift----------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Logical Right Shift---------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) High Logical Left Shift-----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) High Logical Right Shift----------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Left Rotate-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Right Rotate----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Bit Reversal----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Bitwise AND-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Bitwise NAND----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Bitwise OR------------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Bitwise NOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Bitwise XOR-----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Bitwise XNOR----------------------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-        [A] (...) Carry less Multiplication---------(?????) |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
+        [A] (...) Left Rotate-----------------------(?????)
+        [A] (...) Right Rotate----------------------(?????)
+        [A] (...) Bit Swap--------------------------(?????)
+        [A] (...) Bitwise AND-----------------------(?????)
+        [A] (...) Bitwise NAND----------------------(?????)
+        [A] (...) Bitwise OR------------------------(?????)
+        [A] (...) Bitwise NOR-----------------------(?????)
+        [A] (...) Bitwise XOR-----------------------(?????)
+        [A] (...) Bitwise XNOR----------------------(?????)
+        [A] (...) Carry-less Multiplication---------(?????)
+
+        [C] (...) I. Left Rotate--------------------(?????)
+        [C] (...) I. Right Rotate-------------------(?????)
+        [C] (...) I. Bit Swap-----------------------(?????)
+        [B] (...) I. Bitwise AND--------------------(?????)
+        [B] (...) I. Bitwise NAND-------------------(?????)
+        [B] (...) I. Bitwise OR---------------------(?????)
+        [B] (...) I. Bitwise NOR--------------------(?????)
+        [B] (...) I. Bitwise XOR--------------------(?????)
+        [B] (...) I. Bitwise XNOR-------------------(?????)
+        [B] (...) I. Carryless Multiplication-------(?????)
     }
 
-    arithmetic (r-r-i) {
+    miscellaneous {
 
-        [B] (...) I .Addition-----------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I .Uns. Addition------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I .Subtraction--------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I .Uns. Subtraction---------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Multiplication-----------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Uns. Multiplication------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. High Multiplication------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Uns. High Multiplication-------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Multiply Acc-------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Uns. Multiply Acc--------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. High Multiply Acc--------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. High Uns. Multiply Acc.--------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Division-----------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Uns. Division------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Remainder----------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Uns. Remainder-----------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+        [D] (...) Get Bit Field---------------------(?????)
+        [D] (...) Set Bit Field---------------------(?????)
 
-        [C] (...) I. Arithmetic Left Shift----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-    	[C] (...) I. Arithmetic Right Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-    	[C] (...) HI. Arithmetic Left Shift---------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-    	[C] (...) HI. Arithmetic Right Shift--------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-
-        [B]	(...) Imm. FP. Addition-----------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-    	[B]	(...) Imm. FP. Subtraction--------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-    	[B]	(...) Imm. FP. Multiplication-----------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-    	[B]	(...) Imm. FP. Division-----------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-    	[B]	(...) Imm. FP. Multiply Acc-------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-    }
-
-    logic (r-r-i) {
-
-        [C] (...) I. Logical Left Shift-------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-        [C] (...) I. Logical Right Shift------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-        [C] (...) HI. Logical Left Shift------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-        [C] (...) HI. Logical Right Shift-----------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-        [C] (...) I. Left Rotate--------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-        [C] (...) I. Right Rotate-------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-        [C] (...) I. Bit Reversal-------------------(?????) |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IMM(06)|
-
-        [B] (...) I. Bitwise AND--------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Bitwise NAND-------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Bitwise OR---------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Bitwise NOR--------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Bitwise XOR--------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Bitwise XNOR-------------------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
-        [B] (...) I. Carryless Multiplication-------(?????) |OPCODE(08)|MOD(04)|RD(05)|RS1(05)|LEN(02)|IMM(08/24/40)|
+        [A] (...) Count Ones------------------------(?????)
+    	[A] (...) Count Leading Ones----------------(?????)
+    	[A] (...) Count Trailing Ones---------------(?????)
+    	[A] (...) Count Zeros-----------------------(?????)
+    	[A] (...) Count Leading Zeros---------------(?????)
+    	[A] (...) Count Trailing Zeros--------------(?????)
     }
 }
+______________________________________________________________________________________________________________________________________________________________________
+
+Memory transfer {
+
+    ...
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+Control transfer {
+
+    ...
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+System {
+
+    ...
+}
+______________________________________________________________________________________________________________________________________________________________________

@@ -137,33 +137,33 @@ Computational { 22
 
 
 
-	[?] (...) Addition Carry--------------------(?????) 1
-	[?] (...) Uns. Addition Carry---------------(?????)
-	[?] (...) Subtraction Borrow----------------(?????)
-	[?] (...) Uns. Subtraction Borrow-----------(?????)
+	- [?] (...) Addition Carry--------------------(?????) 1
+	- [?] (...) Uns. Addition Carry---------------(?????)
+	- [?] (...) Subtraction Borrow----------------(?????)
+	- [?] (...) Uns. Subtraction Borrow-----------(?????)
 
-	[F] (...) Carry Arithmetic Left Shift-------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)| 1
-	[F] (...) Carry Arithmetic Right Shift------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
-	[F] (...) Carry Logical Left Shift----------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
-	[F] (...) Carry Logical Right Shift---------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
-	[F] (...) High Carry Arithmetic Left Shift--(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
-	[F] (...) High Carry Arithmetic Right Shift-(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
-	[F] (...) High Carry Logical Left Shift-----(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
-	[F] (...) High Carry Logical Right Shift----(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	- [F] (...) Carry Arithmetic Left Shift-------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)| 1
+	- [F] (...) Carry Arithmetic Right Shift------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	- [F] (...) Carry Logical Left Shift----------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	- [F] (...) Carry Logical Right Shift---------(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	- [F] (...) High Carry Arithmetic Left Shift--(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	- [F] (...) High Carry Arithmetic Right Shift-(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	- [F] (...) High Carry Logical Left Shift-----(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+	- [F] (...) High Carry Logical Right Shift----(?????) |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
 
-	[?] (...) I .Addition Carry-----------------(?????) 1
-	[?] (...) I .Uns. Addition Carry------------(?????)
-	[?] (...) I .Subtraction Borrow-------------(?????)
-	[?] (...) I .Uns. Subtraction Borrow--------(?????)
+	- [?] (...) I .Addition Carry-----------------(?????) 1
+	- [?] (...) I .Uns. Addition Carry------------(?????)
+	- [?] (...) I .Subtraction Borrow-------------(?????)
+	- [?] (...) I .Uns. Subtraction Borrow--------(?????)
 
-	[G] (...) I. Carry Arithmetic Left Shift----(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)| 2
-	[G] (...) I. Carry Arithmetic Right Shift---(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
-	[G] (...) I. Carry Logical Left Shift-------(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
-	[G] (...) I. Carry Logical Right Shift------(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
-	[G] (...) HI. Carry Arithmetic Left Shift---(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
-	[G] (...) HI. Carry Arithmetic Right Shift--(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
-	[G] (...) HI. Carry Logical Left Shift------(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
-	[G] (...) HI. Carry Logical Right Shift-----(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
+	- [G] (...) I. Carry Arithmetic Left Shift----(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)| 2
+	- [G] (...) I. Carry Arithmetic Right Shift---(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
+	- [G] (...) I. Carry Logical Left Shift-------(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
+	- [G] (...) I. Carry Logical Right Shift------(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
+	- [G] (...) HI. Carry Arithmetic Left Shift---(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
+	- [G] (...) HI. Carry Arithmetic Right Shift--(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
+	- [G] (...) HI. Carry Logical Left Shift------(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
+	- [G] (...) HI. Carry Logical Right Shift-----(?????) |OPCODE(09)|MOD(02)|RD(05)|RS1(05)|RS2(05)|IMM(06)|
 
 
 	- [B] (...) FP. Addition----------------------(?????) |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|RMD(02)| 1
