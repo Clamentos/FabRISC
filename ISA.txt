@@ -9,6 +9,7 @@ FORMATS {
         (ALU r-r) {
 
             A |OPCODE(11)|MOD(06)|RD(05)|RS1(05)|RS2(05)|
+              (lengths: 4 bytes)
 
                 MOD(06):
 
@@ -33,6 +34,7 @@ FORMATS {
         (ALU r-i) {
 
             B |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| ok
+              (lengths: 4, 6, 8 bytes)
 
                 MOD(05):
 
@@ -57,6 +59,7 @@ FORMATS {
                     - l08, l24, l40 are the imm lengths (in bits)
 
             C |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)|
+              (lengths: 4 bytes)
 
                 MOD(04):
 
@@ -75,8 +78,9 @@ FORMATS {
                     NOTE: // means unused
 
             D |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|SH(03)|IMM(08/24/40)|
+              (lengths: 4, 6, 8 bytes)
 
-                MOD(07):
+                MOD(04):
 
                     m000 -> [1s set, zero extend]
                     m001 -> [1s set, one  extend]
@@ -89,13 +93,50 @@ FORMATS {
 
                     (m is mode: 0 scalar, 1 vector)
         }
-
-        ...
     }
 
     Memory transfer {
 
-        ...
+        E |OPCODE(06)|MOD(04)|RD(05)|RS1(05)|IMM(12/28/44)|
+          (lengths: 4, 6, 8 bytes)
+
+            MOD(04):
+
+                00mm -> l12
+                01mm -> l28
+                10mm -> l44
+                11mm -> //
+
+                (mm is length: 8, 16, 32, 64)
+                - l12, l28, l44 are the imm lengths (in bits)
+
+        F |OPCODE(06)|MOD(03)|RD(05)|RS1(05)|RS2(05)|IMM(8/24)|
+
+            MOD(03):
+
+                0mm -> l08
+                1mm -> l24
+
+                (mm is length: 8, 16, 32, 64)
+                - l08, l24 are the imm lengths (in bits)
+
+        G |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+
+            MOD(02):
+
+                00 -> 8
+                01 -> 16
+                10 -> 32
+                11 -> 64
+
+        H |OPCODE(08)|MOD(02)|RD/RS1(05)|IMM(32)|
+
+            MOD(02):
+
+                00 -> file_0
+                01 -> file_1
+                10 -> file_2
+                11 -> //
     }
 }
 
@@ -204,7 +245,7 @@ Computational {
         [B] (...) I. Carryless Multiplication-------(?????)
     }
 
-    miscellaneous {
+    miscellaneous { OK
 
         [D] (...) Get Bit Field---------------------(?????)
         [D] (...) Set Bit Field---------------------(?????)
@@ -221,7 +262,32 @@ ________________________________________________________________________________
 
 Memory transfer {
 
-    ...
+    [E] (...) Memory Load-----------------------(?????)
+    [E] (...) Memory Store----------------------(?????)
+    [G] (...) Scaled Memory Load----------------(?????)
+    [G] (...) Scaled Memory Store---------------(?????)
+    [F] (...) I. Scaled Memory Load-------------(?????)
+    [F] (...) I. Scaled Memory Store------------(?????)
+
+    [E] (...) Vector Memory Load----------------(?????)
+    [E] (...) Vector Memory Store---------------(?????)
+    [G] (...) Vector Scaled Memory Load---------(?????)
+    [G] (...) Vector Scaled Memory Store--------(?????)
+    [F] (...) Vector I. Scaled Memory Load------(?????)
+    [F] (...) Vector I. Scaled Memory Store-----(?????)
+
+    [F] (...) Vector I. Stride Memory Load------(?????)
+    [F] (...) Vector I. Stride Memory Store-----(?????)
+    [G] (...) Vector Stride Memory Load---------(?????)
+    [G] (...) Vector Stride Memory Store--------(?????)
+
+    [F] (...) Load Linked-----------------------(?????)
+    [F] (...) Store Conditional-----------------(?????)
+
+    [H] (...) Block Load------------------------(?????)
+    [H] (...) Block Store-----------------------(?????)
+
+    // insert moves
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -314,4 +380,40 @@ REGISTERS {
 
     scalar registers are 64 divided into two banks 32 each: one general purpose and the other special purpose. They share integer and floating-point.
     vector registers are 32 and will have a fixed size of 128, 256 or 512. They share integer and floating point.
+
+    CSR bit layout {
+
+        - COVR (1) flag
+        - CUND (1) flag
+        - OVFL (1) flag
+        - UNFL (1) flag
+        - DIV0 (1) flag
+        - ???? (1) flag
+
+        - LEN (2) (data type length)
+        - IMOD (3) (instruction mode, see table below)
+        - RMD (2) (rounding modes)
+        - TD (8) (transaction nesting depth counter)
+
+        - SUPERVISOR MODE                   (1)
+		- CONSISTENCY MODE                  (1)
+		- BOOT MODE                         (1)
+		- ENABLE PAGING                     (1)
+		- ENABLE AUTO EXCEPTIONS            (1)
+		- ENABLE USER INTERRUPTS            (1)
+		- ENABLE SUPERVISOR INTERRUPTS      (1)
+		- EVENT TRIGGERED                   (1)
+		- HALT EXECUTION                    (1)
+    }
+
+    IMOD(3):
+
+        000 -> scalar int
+        001 -> v-v int
+        010 -> v-s int
+        011 -> reduction int
+        100 -> scalar fp
+        101 -> v-v fp
+        110 -> v-s fp
+        111 -> reduction fp
 }
