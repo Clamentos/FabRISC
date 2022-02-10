@@ -1,104 +1,115 @@
 final ISA version (i hope...)
+this is just a quick text file, the fancy PDF is on the way...
+______________________________________________________________________________________________________________________________________________________________________
 
-FORMATS {
+INSTRUCTION FORMATS {
 
-    NOTE: not normalized
+    NOTE: these formats are not normalized, the bits are not in their optimal position
+    NOTE: the instructions are listed with: [format] + (mnemonic) + "name" + (altered flags) + {opcode combination}
+    NOTE: // means unused
+    NOTE: * indicates a privileged resource
+
+    quick acronym legend:
+
+        - MOD -> "mode"
+        - RD -> "register destination"
+        - RSn -> "register source n"
+        - OPCODE -> "operation code"
+        - IMn -> "immediate n"
+        - LEN -> length specifier (see CSR bit layout in the REGISTERS section)
+        - IMOD -> instruction mode specifier (see CSR bit layout in the REGISTERS section)
+
+    NOTE: numbers in parentheses specifies the length of the particular field (in bits)
 
     Computational {
 
-        (ALU r-r) {
+        [A] |OPCODE(11)|MOD(06)|RD(05)|RS1(05)|RS2(05)| {
 
-            A |OPCODE(11)|MOD(06)|RD(05)|RS1(05)|RS2(05)|
-              (lengths: 4 bytes)
+            - length: 4 bytes always
 
-                MOD(06):
+            MOD(06):
 
-                    s000mm -> scalar
-                    s001mm -> v-v
-                    s010mm -> v-s
-                    s011mm -> reduction
-                    s10000 -> scalar LEN
-                    s10001 -> v-v LEN
-                    s10010 -> v-s LEN
-                    s10011 -> reduction LEN
-                    s10100 -> IMOD LEN
+                s000mm -> scalar
+                s001mm -> vector-vector
+                s010mm -> vector-scalar
+                s011mm -> reduction
+                s10000 -> scalar LEN
+                s10001 -> vector-vector LEN
+                s10010 -> vector-scalar LEN
+                s10011 -> reduction LEN
+                s10100 -> IMOD LEN
 
-                    (mm is length: 8, 16, 32, 64)
-                    (s is sign mode)
-                    - LEN = length specifier
-                    - IMOD = instruction mode specifier
-
-                    NOTE: reduction mode only uses RD & RS1. RS2 will be ignored
+                (mm is length: 8, 16, 32, 64)
+                (s is sign mode: signed or unsigned)
+                NOTE: reduction mode only uses RD & RS1. RS2 will be ignored
         }
 
-        (ALU r-i) {
+        [B] |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| {
 
-            B |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| ok
-              (lengths: 4, 6, 8 bytes)
+            - lengths: 4, 6, 8 bytes
 
-                MOD(05):
+            MOD(05):
 
-                    000mm -> scalar l08
-                    001mm -> scalar l24
-                    010mm -> scalar l40
-                    011mm -> v-s l08
-                    100mm -> v-s l24
-                    101mm -> v-s l40
-                    11000 -> scalar LEN l08
-                    11001 -> scalar LEN l24
-                    11010 -> scalar LEN l40
-                    11011 -> v-s LEN l08
-                    11100 -> v-s LEN l24
-                    11101 -> v-s LEN l40
-                    11110 -> IMOD LEN l08
-                    11111 -> IMOD LEN l24
+                000mm -> scalar l08
+                001mm -> scalar l24
+                010mm -> scalar l40
+                011mm -> v-s l08
+                100mm -> v-s l24
+                101mm -> v-s l40
+                11000 -> scalar LEN l08
+                11001 -> scalar LEN l24
+                11010 -> scalar LEN l40
+                11011 -> v-s LEN l08
+                11100 -> v-s LEN l24
+                11101 -> v-s LEN l40
+                11110 -> IMOD LEN l08
+                11111 -> IMOD LEN l24
 
-                    (mm is length: 8, 16, 32, 64)
-                    - LEN = length specifier
-                    - IMOD = instruction mode specifier
-                    - l08, l24, l40 are the imm lengths (in bits)
+                (mm is length: 8, 16, 32, 64)
+                - l08, l24, l40 are the immediate lengths (in bits)
+        }
 
-            C |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)|
-              (lengths: 4 bytes)
+        [C] |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)| {
 
-                MOD(04):
+            (lengths: 4 bytes)
 
-                    00mm -> scalar
-                    01mm -> v-s
-                    10mm -> //
-                    1100 -> scalar LEN
-                    1101 -> v-s LEN
-                    1110 -> //
-                    1111 -> IMOD LEN
+            MOD(04):
 
-                    (mm is length: 8, 16, 32, 64)
-                    - LEN = length specifier
-                    - IMOD = instruction mode specifier
+                00mm -> scalar
+                01mm -> v-s
+                10mm -> //
+                1100 -> scalar LEN
+                1101 -> v-s LEN
+                1110 -> //
+                1111 -> IMOD LEN
 
-                    NOTE: // means unused
+                (mm is length: 8, 16, 32, 64)
+        }
 
-            D |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|SH(03)|IMM(08/24/40)|
-              (lengths: 4, 6, 8 bytes)
+        [D] |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|SH(03)|IM1(08/24/40)| {
 
-                MOD(04):
+            (lengths: 4, 6, 8 bytes)
 
-                    m000 -> [1s set, zero extend]
-                    m001 -> [1s set, one  extend]
-                    m010 -> [0s set, zero extend]
-                    m011 -> [0s set, one  extend]
-                    m100 -> [1s clear, zero extend]
-                    m101 -> [1s clear, one  extend]
-                    m110 -> [0s clear, zero extend]
-                    m111 -> [0s clear, one  extend]
+            MOD(04):
 
-                    (m is mode: 0 scalar, 1 vector)
+                m000 -> [1s set,   zero extend]
+                m001 -> [1s set,   one  extend]
+                m010 -> [0s set,   zero extend]
+                m011 -> [0s set,   one  extend]
+                m100 -> [1s clear, zero extend]
+                m101 -> [1s clear, one  extend]
+                m110 -> [0s clear, zero extend]
+                m111 -> [0s clear, one  extend]
+
+                (m is mode: 0 scalar, 1 vector)
         }
     }
 
     Memory transfer {
 
-        E |OPCODE(06)|MOD(04)|RD(05)|RS1(05)|IMM(12/28/44)|
-          (lengths: 4, 6, 8 bytes)
+        [E] |OPCODE(06)|MOD(04)|RD(05)|RS1(05)|IM1(12/28/44)| {
+
+            - lengths: 4, 6, 8 bytes
 
             MOD(04):
 
@@ -109,8 +120,11 @@ FORMATS {
 
                 (mm is length: 8, 16, 32, 64)
                 - l12, l28, l44 are the imm lengths (in bits)
+        }
 
-        F |OPCODE(06)|MOD(03)|RD(05)|RS1(05)|RS2(05)|IMM(8/24)|
+        [F] |OPCODE(06)|MOD(03)|RD(05)|RS1(05)|RS2(05)|IM1(8/24)| {
+
+            - lengths: 4, 6 bytes
 
             MOD(03):
 
@@ -119,17 +133,21 @@ FORMATS {
 
                 (mm is length: 8, 16, 32, 64)
                 - l08, l24 are the imm lengths (in bits)
+        }
 
-        G |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)|
+        [G] |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)| {
+
+            - length: 4 bytes only
 
             MOD(02):
 
-                00 -> 8
-                01 -> 16
-                10 -> 32
-                11 -> 64
+                mm
+                (mm is length: 8, 16, 32, 64)
+        }
 
-        H |OPCODE(08)|MOD(02)|RD/RS1(05)|IMM(32)|
+        [H] |OPCODE(08)|MOD(02)|RD/RS1(05)|IM1(32)|
+
+            - length: 6 bytes only
 
             MOD(02):
 
@@ -137,23 +155,44 @@ FORMATS {
                 01 -> file_1
                 10 -> file_2
                 11 -> //
+
+                NOTE: file_n means which register file (see REGISTERS section).
+    }
+
+    Control transfer {
+
+        ...
+    }
+
+    System {
+
+        ...
     }
 }
 
 OPCODE DISTRIBUTION {
 
-    000000xxxxxx ... 001111xxxxxx 16
-    0100000xxxxx ... 1011111xxxxx 64
-    11000000xxxx ... 11011111xxxx 32
-    111000000xxx ... 111011111xxx 32
-    1111000000xx ... 1111011111xx 32
-    11111000000x ... 11111011111x 32
-    111111000000 ... 111111111111 64
+    - instructions have variable length opcodes
+    - each entry allocates some combinations for its corresponding opcode length
+    - needed to understand how to manipulate the opcode
+    - the opcode will then signify which format the instruction is
 
-    max: 272 opcodes
+    opcode length of 06   ->   000000xxxxxx ... 001111xxxxxx   ->  max combinations: 16
+    opcode length of 07   ->   0100000xxxxx ... 1011111xxxxx   ->  max combinations: 64
+    opcode length of 08   ->   11000000xxxx ... 11011111xxxx   ->  max combinations: 32
+    opcode length of 09   ->   111000000xxx ... 111011111xxx   ->  max combinations: 32
+    opcode length of 10   ->   1111000000xx ... 1111011111xx   ->  max combinations: 32
+    opcode length of 11   ->   11111000000x ... 11111011111x   ->  max combinations: 32
+    opcode length of 12   ->   111111000000 ... 111111111111   ->  max combinations: 64
+
+    - max: 272 opcodes
+    - minimum partition size: 16
+
+    NOTE: x means "don't care"
 }
 ______________________________________________________________________________________________________________________________________________________________________
-instruction list
+
+INSTRUCTION LIST
 
 NOTE: some instructions don't use all of the MOD combinations available
 
@@ -302,84 +341,127 @@ System {
     ...
 }
 ______________________________________________________________________________________________________________________________________________________________________
-______________________________________________________________________________________________________________________________________________________________________
 
 REGISTERS {
 
-    $00----(GPR00 "general purpose register")
-    $01----(GPR01 "general purpose register")
-    $02----(GPR02 "general purpose register")
-    $03----(GPR03 "general purpose register")
-    $04----(GPR04 "general purpose register")
-    $05----(GPR05 "general purpose register")
-    $06----(GPR06 "general purpose register")
-    $07----(GPR07 "general purpose register")
-    $08----(GPR08 "general purpose register")
-    $09----(GPR09 "general purpose register")
-    $10----(GPR10 "general purpose register")
-    $11----(GPR11 "general purpose register")
-    $12----(GPR12 "general purpose register")
-    $13----(GPR13 "general purpose register")
-    $14----(GPR14 "general purpose register")
-    $15----(GPR15 "general purpose register")
-    $16----(GPR16 "general purpose register")
-    $17----(GPR17 "general purpose register")
-    $18----(GPR18 "general purpose register")
-    $19----(GPR19 "general purpose register")
-    $20----(GPR20 "general purpose register")
-    $21----(GPR21 "general purpose register")
-    $22----(GPR22 "general purpose register")
-    $23----(GPR23 "general purpose register")
-    $24----(GPR24 "general purpose register")
-    $25----(GPR25 "general purpose register")
-    $26----(GPR26 "general purpose register")
-    $27----(GPR27 "general purpose register")
-    $28----(GPR28 "general purpose register")
-    $29----(GPR29 "general purpose register")
-    $30----(GPR30 "general purpose register")
-    $31----(GPR31 "general purpose register")
+    - 3 files in total:
 
-    ---------------------------------------
+        - 0 -> scalar file: 32 regs in total (int & fp shared)
+        - 1 -> vector file: 32 regs in total (int & fp shared)
+        - 2 -> special file: 32 regs in total (see below for details)
 
-    %00----(GPR32 "general purpose register")
-    %01----(GPR33 "general purpose register")
-    %02----(GPR34 "general purpose register")
-    %03----(GPR35 "general purpose register")
-    %04----(GPR36 "general purpose register")
-    %05----(GPR37 "general purpose register")
-    %06----(GPR38 "general purpose register")
-    %07----(GPR39 "general purpose register")
 
-    %08----(BPR0 "breakpoint register 0")
-    %09----(BPR1 "breakpoint register 1")
-    %10----(BPR2 "breakpoint register 2")
-    %11----(BPR3 "breakpoint register 3")
-    %12----(BPR4 "breakpoint register 4")
-    %13----(BPR5 "breakpoint register 5")
-    %14----(BPR6 "breakpoint register 6")
-    %15----(BPR7 "breakpoint register 7")
+    file 0 {
 
-    %16----(BPM "breakpoint modes")
-    %17----(VMSK "vector mask")
+        $00----(GPR00 "general purpose register 00")
+        $01----(GPR01 "general purpose register 01")
+        $02----(GPR02 "general purpose register 02")
+        $03----(GPR03 "general purpose register 03")
+        $04----(GPR04 "general purpose register 04")
+        $05----(GPR05 "general purpose register 05")
+        $06----(GPR06 "general purpose register 06")
+        $07----(GPR07 "general purpose register 07")
+        $08----(GPR08 "general purpose register 08")
+        $09----(GPR09 "general purpose register 09")
+        $10----(GPR10 "general purpose register 10")
+        $11----(GPR11 "general purpose register 11")
+        $12----(GPR12 "general purpose register 12")
+        $13----(GPR13 "general purpose register 13")
+        $14----(GPR14 "general purpose register 14")
+        $15----(GPR15 "general purpose register 15")
+        $16----(GPR16 "general purpose register 16")
+        $17----(GPR17 "general purpose register 17")
+        $18----(GPR18 "general purpose register 18")
+        $19----(GPR19 "general purpose register 19")
+        $20----(GPR20 "general purpose register 20")
+        $21----(GPR21 "general purpose register 21")
+        $22----(GPR22 "general purpose register 22")
+        $23----(GPR23 "general purpose register 23")
+        $24----(GPR24 "general purpose register 24")
+        $25----(GPR25 "general purpose register 25")
+        $26----(GPR26 "general purpose register 26")
+        $27----(GPR27 "general purpose register 27")
+        $28----(GPR28 "general purpose register 28")
+        $29----(GPR29 "general purpose register 29")
+        $30----(GPR30 "general purpose register 30")
+        $31----(GPR31 "general purpose register 31")
+    }
 
-    %18----(PC "program counter")
-    %19----(UPC "user program counter")
-    %20----(UCSR "user control & status register")
-    %21----(VFLG "vector flags")
+    file 1 {
 
-  * %22----(CSR "control & status register")
-  * %23----(SPC "supervisor program counter")
-  * %24----(SCSR "supervisor control & status register")
-  * %25----(K0 "kernel temporary 0")
-  * %26----(K1 "kernel temporary 1")
-  * %27----(ETP "event table pointer")
-  * %28----(PTP "page table pointer")
-  * %29----(PID "process identifier")
-    %30----
-    %31----
+        &00----(GPR00 "general purpose register 00")
+        &01----(GPR01 "general purpose register 01")
+        &02----(GPR02 "general purpose register 02")
+        &03----(GPR03 "general purpose register 03")
+        &04----(GPR04 "general purpose register 04")
+        &05----(GPR05 "general purpose register 05")
+        &06----(GPR06 "general purpose register 06")
+        &07----(GPR07 "general purpose register 07")
+        &08----(GPR08 "general purpose register 08")
+        &09----(GPR09 "general purpose register 09")
+        &10----(GPR10 "general purpose register 10")
+        &11----(GPR11 "general purpose register 11")
+        &12----(GPR12 "general purpose register 12")
+        &13----(GPR13 "general purpose register 13")
+        &14----(GPR14 "general purpose register 14")
+        &15----(GPR15 "general purpose register 15")
+        &16----(GPR16 "general purpose register 16")
+        &17----(GPR17 "general purpose register 17")
+        &18----(GPR18 "general purpose register 18")
+        &19----(GPR19 "general purpose register 19")
+        &20----(GPR20 "general purpose register 20")
+        &21----(GPR21 "general purpose register 21")
+        &22----(GPR22 "general purpose register 22")
+        &23----(GPR23 "general purpose register 23")
+        &24----(GPR24 "general purpose register 24")
+        &25----(GPR25 "general purpose register 25")
+        &26----(GPR26 "general purpose register 26")
+        &27----(GPR27 "general purpose register 27")
+        &28----(GPR28 "general purpose register 28")
+        &29----(GPR29 "general purpose register 29")
+        &30----(GPR30 "general purpose register 30")
+        &31----(GPR31 "general purpose register 31")
+    }
 
-    scalar registers are 64 divided into two banks 32 each: one general purpose and the other special purpose. They share integer and floating-point.
-    vector registers are 32 and will have a fixed size of 128, 256 or 512. They share integer and floating point.
+    file 2 {
+
+        %00----(GPR32 "general purpose register")
+        %01----(GPR33 "general purpose register")
+        %02----(GPR34 "general purpose register")
+        %03----(GPR35 "general purpose register")
+        %04----(GPR36 "general purpose register")
+        %05----(GPR37 "general purpose register")
+        %06----(GPR38 "general purpose register")
+        %07----(GPR39 "general purpose register")
+
+        %08----(BPR0 "breakpoint register 0")
+        %09----(BPR1 "breakpoint register 1")
+        %10----(BPR2 "breakpoint register 2")
+        %11----(BPR3 "breakpoint register 3")
+        %12----(BPR4 "breakpoint register 4")
+        %13----(BPR5 "breakpoint register 5")
+        %14----(BPR6 "breakpoint register 6")
+        %15----(BPR7 "breakpoint register 7")
+
+        %16----(BPM "breakpoint modes")
+        %17----(VMSK "vector mask")
+
+        %18----(PC "program counter")
+        %19----(UPC "user program counter")
+        %20----(UCSR "user control & status register")
+        %21----(VFLG "vector flags")
+
+      * %22----(CSR "control & status register")
+      * %23----(SPC "supervisor program counter")
+      * %24----(SCSR "supervisor control & status register")
+      * %25----(K0 "kernel temporary 0")
+      * %26----(K1 "kernel temporary 1")
+      * %27----(ETP "event table pointer")
+      * %28----(PTP "page table pointer")
+      * %29----(PID "process identifier")
+        %30----
+        %31----
+    }
 
     CSR bit layout {
 
@@ -388,6 +470,8 @@ REGISTERS {
         - OVFL (1) flag
         - UNFL (1) flag
         - DIV0 (1) flag
+        - ???? (1) flag
+        - ???? (1) flag
         - ???? (1) flag
 
         - LEN (2) (data type length)
@@ -409,11 +493,12 @@ REGISTERS {
     IMOD(3):
 
         000 -> scalar int
-        001 -> v-v int
-        010 -> v-s int
+        001 -> vector-vector int
+        010 -> vector-scalar int
         011 -> reduction int
         100 -> scalar fp
-        101 -> v-v fp
-        110 -> v-s fp
+        101 -> vector-vector fp
+        110 -> vector-scalar fp
         111 -> reduction fp
 }
+______________________________________________________________________________________________________________________________________________________________________
