@@ -23,25 +23,22 @@ INSTRUCTION FORMATS {
 
     Computational {
 
-        [A] |OPCODE(11)|MOD(06)|RD(05)|RS1(05)|RS2(05)| {
+        [A] |OPCODE(12)|MOD(05)|RD(05)|RS1(05)|RS2(05)| {
 
             - length: 4 bytes always
 
-            MOD(06):
+            MOD(05):
 
-                s000mm -> scalar
-                s001mm -> vector-vector
-                s010mm -> vector-scalar
-                s011mm -> reduction
-                s10000 -> scalar LEN
-                s10001 -> vector-vector LEN
-                s10010 -> vector-scalar LEN
-                s10011 -> reduction LEN
-                s10100 -> IMOD LEN
+                s00mm -> scalar
+                s01mm -> vector-vector
+                s10mm -> vector-scalar
+                s1100 -> scalar LEN
+                s1101 -> vector-vector LEN
+                s1110 -> vector-scalar LEN
+                s1111 -> IMOD LEN
 
                 (mm is length: 8, 16, 32, 64)
                 (s is sign mode: signed or unsigned)
-                NOTE: reduction mode only uses RD & RS1. RS2 will be ignored
         }
 
         [B] |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| {
@@ -103,6 +100,13 @@ INSTRUCTION FORMATS {
 
                 (m is mode: 0 scalar, 1 vector)
         }
+
+        [I] |OPCODE(18)|MOD(04)|RD(05)|RS(05)|    NOTE: used for reduction
+
+            MOD(04):
+
+                00mm -> reduction
+                ...
     }
 
     Memory transfer {
@@ -177,18 +181,59 @@ OPCODE DISTRIBUTION {
     - needed to understand how to manipulate the opcode
     - the opcode will then signify which format the instruction is
 
-    opcode length of 06   ->   000000xxxxxx ... 001111xxxxxx   ->  max combinations: 16
-    opcode length of 07   ->   0100000xxxxx ... 1011111xxxxx   ->  max combinations: 64
-    opcode length of 08   ->   11000000xxxx ... 11011111xxxx   ->  max combinations: 32
-    opcode length of 09   ->   111000000xxx ... 111011111xxx   ->  max combinations: 32
-    opcode length of 10   ->   1111000000xx ... 1111011111xx   ->  max combinations: 32
-    opcode length of 11   ->   11111000000x ... 11111011111x   ->  max combinations: 32
-    opcode length of 12   ->   111111000000 ... 111111111111   ->  max combinations: 64
+    opcode length of {06}   ->   000000xxxxxx ... 001111xxxxxx   ->  max combinations: (16); current: (12)
+    opcode length of {07}   ->   0100000xxxxx ... 1011111xxxxx   ->  max combinations: (64); current: (02)
+    opcode length of {08}   ->   11000000xxxx ... 11011111xxxx   ->  max combinations: (32); current: (02)
+    opcode length of {09}   ->   111000000xxx ... 111011111xxx   ->  max combinations: (32); current: (22)
+    opcode length of {10}   ->   1111000000xx ... 1111011111xx   ->  max combinations: (32); current: (06)
+    opcode length of {11}   ->   11111000000x ... 11111011111x   ->  max combinations: (32); current: (44) <<
+    opcode length of {12}   ->   111111000000 ... 111111111111   ->  max combinations: (64); current: (11)
 
     - max: 272 opcodes
     - minimum partition size: 16
 
     NOTE: x means "don't care"
+    NOTE: the distribution above is deprecated, use vvvv
+
+
+
+
+
+    000000 xxxxxxxxxxxx ... 001111 xxxxxxxxxxxx 16
+    010000 0xxxxxxxxxxx ... 101111 1xxxxxxxxxxx 64
+    110000 00xxxxxxxxxx ... 110111 11xxxxxxxxxx 32
+    111000 000xxxxxxxxx ... 111011 111xxxxxxxxx 32
+    111100 0000xxxxxxxx ... 111101 1111xxxxxxxx 32
+    111110 000000xxxxxx ... 111111 111110xxxxxx 63 << (make it 64 by wasting 1 entry)
+    111111 111111000000 ... 111111 111111111111 64
+
+    - CU ROM addresses (assumes 1:1 mapping from macro op -> micro op (no sequencing))
+
+    000000000 -> 000001111    6
+
+    000010000 -> 000011111    7
+    000100000 -> 000101111    7
+    000110000 -> 000111111    7
+    001000000 -> 001001111    7
+
+    001010000 -> 001011111    8
+    001100000 -> 001101111    8
+
+    001110000 -> 001111111    9
+    010000000 -> 010001111    9
+
+    010010000 -> 010011111    10
+    010100000 -> 010101111    10
+
+    010110000 -> 010111111    12
+    011000000 -> 011001111    12
+    011010000 -> 011011111    12
+    011100000 -> 011111111    12
+
+    011110000 -> 011111111    18
+    100000000 -> 100001111    18
+    100010000 -> 100011111    18
+    100100000 -> 100101111    18
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
