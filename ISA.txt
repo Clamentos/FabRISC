@@ -38,7 +38,6 @@ INSTRUCTION FORMATS {
                 1111 -> IMOD LEN
 
                 (mm is length: 8, 16, 32, 64)
-                (s is sign mode: signed or unsigned)
         }
 
         [B] |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| {
@@ -101,67 +100,69 @@ INSTRUCTION FORMATS {
                 (m is mode: 0 scalar, 1 vector)
         }
 
-        [I] |OPCODE(18)|MOD(04)|RD(05)|RS(05)|    NOTE: used for reduction
+        [I] |OPCODE(18)|MOD(04)|RD(05)|RS(05)|
 
-            MOD(04):
+            NOTE: special format used for
+                    - vector reductions
+                    - casts
+                  depending on the category, different MOD tables apply
 
-                00mm -> reduction
-                ...
+            - length: 4 bytes always
 
-        [J] |OPCODE(07)|MOD(04)|RD/RS(05)| NOTE: used for casts
+            MOD(04): (vector reductions)
 
-            MOD(03):
+                d0mm -> integer reduction
+                d1mm -> fp. reduction
 
-                mmnn
-                mmnn
-                mmnn
+                (d is direction: forwards or backwards)
+
+            MOD(04): (casts)
+
+                0000 -> 8-16
+                0001 -> 8-32
+                0010 -> 8-64
+                0011 -> 16-8
+                0100 -> 16-32
+                0101 -> 16-64
+                0110 -> 32-8
+                0111 -> 32-16
+                1000 -> 32-64
+                1001 -> 64-8
+                1010 -> 64-16
+                1011 -> 64-32
     }
 
     Memory transfer {
 
-        [E] |OPCODE(06)|MOD(04)|RD(05)|RS1(05)|IM1(12/28/44)| {
+        [E] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|IM1(13/29/45)| {
 
             - lengths: 4, 6, 8 bytes
 
             MOD(04):
 
-                00mm -> scalar l12
-                01mm -> scalar l28
-                10mm -> scalar l44
-                1100 -> vector l12
-                1101 -> vector l28
-                1110 -> vector l44
+                00mm -> scalar l13
+                01mm -> scalar l29
+                10mm -> scalar l45
+                1100 -> vector l13
+                1101 -> vector l29
+                1110 -> vector l45
 
                 (mm is length: 8, 16, 32, 64)
-                - l12, l28, l44 are the imm lengths (in bits)
+                - l13, l29, l45 are the imm lengths (in bits)
         }
 
-        [F] |OPCODE(06)|MOD(03)|RD(05)|RS1(05)|RS2(05)|IM1(8/24)| {
+        [F] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|RS2(05)|IM1(8/24)| {
 
             - lengths: 4, 6 bytes
 
-            MOD(03):
+            MOD(04):
 
-                0mm -> l08
-                1mm -> l24
-
-                (mm is length: 8, 16, 32, 64)
-                - l08, l24 are the imm lengths (in bits)
-
-            ---------------------------------------------------
-
-            WARNING: potential replacement with:
-
-                |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|RS2(05)|IM1(8/24)|
-
-                    MOD(04):
-
-                        00mm -> scalar l08
-                        01mm -> scalar l24
-                        1000 -> vector l08 (normal)
-                        1001 -> vector l24 (normal)
-                        1010 -> vector l08 (stride)
-                        1011 -> vector l24 (stride)
+                00mm -> scalar l08
+                01mm -> scalar l24
+                1000 -> vector l08 (normal)
+                1001 -> vector l24 (normal)
+                1010 -> vector l08 (stride)
+                1011 -> vector l24 (stride)
         }
 
         [G] |OPCODE(09)|MOD(03)|RD(05)|RS1(05)|RS2(05)|RS3(05)| {
@@ -172,14 +173,14 @@ INSTRUCTION FORMATS {
 
                 0mm -> scalar
                 100 -> vector
-                101 -> //
+                101 -> stride vector
                 110 -> //
                 111 -> //
 
                 (mm is length: 8, 16, 32, 64)
         }
 
-        [H] |OPCODE(08)|MOD(02)|RD/RS1(05)|IM1(32)|
+        [H] |OPCODE(08)|MOD(02)|RD/RS1(05)|IM1(32)| {
 
             - length: 6 bytes only
 
@@ -191,6 +192,19 @@ INSTRUCTION FORMATS {
                 11 -> //
 
                 NOTE: file_n means which register file (see REGISTERS section).
+        }
+
+        [J] |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)| {
+
+            - length: 4 byte only
+
+            MOD(02):
+
+                00 -> scalar-scalar
+                01 -> vector-vector
+                10 -> scalar-vector
+                11 -> vector-scalar
+        }
     }
 
     Control transfer {
@@ -359,6 +373,23 @@ Computational {
         [B] (...) I. Carryless Multiplication-------(?????)
     }
 
+    vector reduction {
+
+        ...
+    }
+
+    casts {
+
+        [I] (...) Scalar Integer-Integer Cast-------(?????)
+        [I] (...) Scalar FP-FP Cast-----------------(?????)
+        [I] (...) Vector Integer-Integer Cast-------(?????)
+        [I] (...) Vector FP-FP Cast-----------------(?????)
+        [I] (...) Scalar Integer-FP Cast------------(?????)
+        [I] (...) Scalar FP-Integer Cast------------(?????)
+        [I] (...) Vector Integer-FP Cast------------(?????)
+        [I] (...) Vector FP-Integer Cast------------(?????)
+    }
+
     miscellaneous { OK
 
         [D] (...) Get Bit Field---------------------(?????)
@@ -370,10 +401,9 @@ Computational {
     	[A] (...) Count Zeros-----------------------(?????)
     	[A] (...) Count Leading Zeros---------------(?????)
     	[A] (...) Count Trailing Zeros--------------(?????)
-    }
 
-    TODO: reduction instructions
-    TODO: casts
+        TODO: maybe gather / scatter?
+    }
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -386,26 +416,27 @@ Memory transfer {
     [F] (...) I. Scaled Memory Load-------------(?????)
     [F] (...) I. Scaled Memory Store------------(?????)
 
-    [E] (...) Vector Memory Load----------------(?????) .
-    [E] (...) Vector Memory Store---------------(?????) .
-    [G] (...) Vector Scaled Memory Load---------(?????) .
-    [G] (...) Vector Scaled Memory Store--------(?????) .
-    [F] (...) Vector I. Scaled Memory Load------(?????) .
-    [F] (...) Vector I. Scaled Memory Store-----(?????) .
-
-    [F] (...) Vector I. Stride Memory Load------(?????) .
-    [F] (...) Vector I. Stride Memory Store-----(?????) .
-    [G] (...) Vector Stride Memory Load---------(?????) .
-    [G] (...) Vector Stride Memory Store--------(?????) .
-
     [F] (...) Load Linked-----------------------(?????)
     [F] (...) Store Conditional-----------------(?????)
 
     [H] (...) Block Load------------------------(?????)
     [H] (...) Block Store-----------------------(?????)
 
-    TODO: conditional moves
-    TODO: unconditional moves
+    [J] (...) Cond. Move If True----------------(?????)
+	[J] (...) Cond. Move If EQ------------------(?????)
+	[J] (...) Cond. Move If NE------------------(?????)
+	[J] (...) Cond. Move If LT------------------(?????)
+	[J] (...) Cond. Move If GT------------------(?????)
+	[J] (...) Cond. Move If LE------------------(?????)
+	[J] (...) Cond. Move If GE------------------(?????)
+
+    [J] (...) Cond. FP. Move If True------------(?????)
+	[J] (...) Cond. FP. Move If EQ--------------(?????)
+	[J] (...) Cond. FP. Move If NE--------------(?????)
+	[J] (...) Cond. FP. Move If LT--------------(?????)
+	[J] (...) Cond. FP. Move If GT--------------(?????)
+	[J] (...) Cond. FP. Move If LE--------------(?????)
+	[J] (...) Cond. FP. Move If GE--------------(?????)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
