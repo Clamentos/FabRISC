@@ -456,49 +456,53 @@ REGISTERS {
 
     TODO: define ABI
 
-    - 3 files in total:
-
-        - 0 -> scalar file: 32 regs in total (int & fp shared)
-        - 1 -> vector file: 32 regs in total (int & fp shared)
-        - 2 -> special file: 32 regs in total (see below for details)
-
     file 0 {
 
-        $00----(SGPR00 "scalar general purpose register 00")
-        $01----(SGPR01 "scalar general purpose register 01")
-        $02----(SGPR02 "scalar general purpose register 02")
-        $03----(SGPR03 "scalar general purpose register 03")
-        $04----(SGPR04 "scalar general purpose register 04")
-        $05----(SGPR05 "scalar general purpose register 05")
-        $06----(SGPR06 "scalar general purpose register 06")
-        $07----(SGPR07 "scalar general purpose register 07")
-        $08----(SGPR08 "scalar general purpose register 08")
-        $09----(SGPR09 "scalar general purpose register 09")
-        $10----(SGPR10 "scalar general purpose register 10")
-        $11----(SGPR11 "scalar general purpose register 11")
-        $12----(SGPR12 "scalar general purpose register 12")
-        $13----(SGPR13 "scalar general purpose register 13")
-        $14----(SGPR14 "scalar general purpose register 14")
-        $15----(SGPR15 "scalar general purpose register 15")
-        $16----(SGPR16 "scalar general purpose register 16")
-        $17----(SGPR17 "scalar general purpose register 17")
-        $18----(SGPR18 "scalar general purpose register 18")
-        $19----(SGPR19 "scalar general purpose register 19")
-        $20----(SGPR20 "scalar general purpose register 20")
-        $21----(SGPR21 "scalar general purpose register 21")
-        $22----(SGPR22 "scalar general purpose register 22")
-        $23----(SGPR23 "scalar general purpose register 23")
-        $24----(SGPR24 "scalar general purpose register 24")
-        $25----(SGPR25 "scalar general purpose register 25")
-        $26----(SGPR26 "scalar general purpose register 26")
-        $27----(SGPR27 "scalar general purpose register 27")
-        $28----(SGPR28 "scalar general purpose register 28")
-        $29----(SGPR29 "scalar general purpose register 29")
-        $30----(SGPR30 "scalar general purpose register 30")
-        $31----(SGPR31 "scalar general purpose register 31")
+        - 32 scalar general purpose registers
+        - integer & floating point are shared
+
+        $00--------(FNP_00 "function parameter 00")
+		$01--------(FNP_01 "function parameter 01")
+		$02--------(FNP_02 "function parameter 02")
+		$03--------(FNP_03 "function parameter 03")
+
+		$04--------(FNR_00 "function return value 00")
+		$05--------(FNR_01 "function return value 01")
+
+		$06--------(SVR_00 "saved register 00")
+		$07--------(SVR_01 "saved register 01")
+		$08--------(SVR_02 "saved register 02")
+		$09--------(SVR_03 "saved register 03")
+		$10--------(SVR_04 "saved register 04")
+		$11--------(SVR_05 "saved register 05")
+		$12--------(SVR_06 "saved register 06")
+		$13--------(SVR_07 "saved register 07")
+		$14--------(SVR_08 "saved register 08")
+		$15--------(SVR_09 "saved register 09")
+		$16--------(SVR_10 "saved register 10")
+		$17--------(SVR_11 "saved register 11")
+		$18--------(SVR_12 "saved register 12")
+		$19--------(SVR_13 "saved register 13")
+		$20--------(SVR_14 "saved register 14")
+		$21--------(SVR_15 "saved register 15")
+		$22--------(SVR_16 "saved register 16")
+		$23--------(SVR_17 "saved register 17")
+
+		$24--------(TMP_04 "temporary register 04")
+		$25--------(TMP_05 "temporary register 05")
+		$26--------(TMP_06 "temporary register 06")
+		$27--------(TMP_07 "temporary register 07")
+
+		$28--------(GP "global pointer")
+		$29--------(RET "return address")
+		$30--------(SP "stack pointer")
+		$31--------(FP "frame pointer")
     }
 
     file 1 {
+
+        - 32 vector general purpose registers (128-512 bits wide)
+        - integer & floating point are shared
 
         &00----(VGPR00 "vector general purpose register 00")
         &01----(VGPR01 "vector general purpose register 01")
@@ -536,23 +540,23 @@ REGISTERS {
 
     file 2 {
 
-        %00----(SGPR32 "scalar general purpose register 32")
-        %01----(SGPR33 "scalar general purpose register 33")
-        %02----(SGPR34 "scalar general purpose register 34")
-        %03----(SGPR35 "scalar general purpose register 35")
-        %04----(SGPR36 "scalar general purpose register 36")
-        %05----(SGPR37 "scalar general purpose register 37")
-        %06----(SGPR38 "scalar general purpose register 38")
-        %07----(SGPR39 "scalar general purpose register 39")
+        %00----(TMP_05 "temporary register 05")
+        %01----(TMP_06 "temporary register 06")
+        %02----(TMP_07 "temporary register 07")
+        %03----(TMP_08 "temporary register 08")
+        %04----(TMP_09 "temporary register 09")
+        %05----(TMP_10 "temporary register 10")
+        %06----(TMP_11 "temporary register 11")
+        %07----(TMP_12 "temporary register 12")
 
-        %08----(BPR0 "breakpoint register 0")
-        %09----(BPR1 "breakpoint register 1")
-        %10----(BPR2 "breakpoint register 2")
-        %11----(BPR3 "breakpoint register 3")
-        %12----(BPR4 "breakpoint register 4")
-        %13----(BPR5 "breakpoint register 5")
-        %14----(BPR6 "breakpoint register 6")
-        %15----(BPR7 "breakpoint register 7")
+        %08----(BPR_00 "breakpoint register 00")
+        %09----(BPR_01 "breakpoint register 01")
+        %10----(BPR_02 "breakpoint register 02")
+        %11----(BPR_03 "breakpoint register 03")
+        %12----(BPR_04 "breakpoint register 04")
+        %13----(BPR_05 "breakpoint register 05")
+        %14----(BPR_06 "breakpoint register 06")
+        %15----(BPR_07 "breakpoint register 07")
 
         %16----(BPM "breakpoint modes")
         %17----(VMSK "vector mask")
@@ -569,7 +573,8 @@ REGISTERS {
       * %26----(K1 "kernel temporary 1")
       * %27----(ETP "event table pointer")
       * %28----(PTP "page table pointer")
-      * %29----(PID "process identifier")
+
+        %29----
         %30----
         %31----
     }
@@ -599,6 +604,8 @@ REGISTERS {
 		- ENABLE SUPERVISOR INTERRUPTS      (1)
 		- EVENT TRIGGERED                   (1)
 		- HALT EXECUTION                    (1)
+
+        - PID (32)
     }
 
     IMOD(3):
