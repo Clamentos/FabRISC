@@ -25,9 +25,6 @@
 [Q] |OPCODE(16)|
 
 
-
-
-
 5  00000xxxxxxxxxxxxx ... 00111xxxxxxxxxxxxx    8
 7  0100000xxxxxxxxxxx ... 1011111xxxxxxxxxxx    64
 8  11000000xxxxxxxxxx ... 11011111xxxxxxxxxx    32
