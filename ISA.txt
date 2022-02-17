@@ -23,7 +23,7 @@ INSTRUCTION FORMATS {
 
     Computational {
 
-        [A] |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| {
+        [A] |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| { ok
 
             - length: 4 bytes always
 
@@ -40,7 +40,7 @@ INSTRUCTION FORMATS {
                 (mm is length: 8, 16, 32, 64)
         }
 
-        [B] |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| {
+        [B] |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| { ok
 
             - lengths: 4, 6, 8 bytes
 
@@ -65,9 +65,9 @@ INSTRUCTION FORMATS {
                 - l08, l24, l40 are the immediate lengths (in bits)
         }
 
-        [C] |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)| {
+        [C] |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)| { ok
 
-            - lengths: 4 bytes
+            - length: 4 bytes always
 
             MOD(04):
 
@@ -82,22 +82,30 @@ INSTRUCTION FORMATS {
                 (mm is length: 8, 16, 32, 64)
         }
 
-        [D] |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|SH(03)|IM1(08/24/40)| {
+        [D] |OPCODE(05)|MOD(06)|RD(05)|RS1(05)|SH(03)|IM1(08/24/40)| { ok
 
             - lengths: 4, 6, 8 bytes
 
-            MOD(04):
+            MOD(06):
 
-                m000 -> [1s set,   zero extend]
-                m001 -> [1s set,   one  extend]
-                m010 -> [0s set,   zero extend]
-                m011 -> [0s set,   one  extend]
-                m100 -> [1s clear, zero extend]
-                m101 -> [1s clear, one  extend]
-                m110 -> [0s clear, zero extend]
-                m111 -> [0s clear, one  extend]
+                me0000 -> 1s select l08
+                me0001 -> 1s select l24
+                me0010 -> 1s select l40
+
+                me0011 -> 0s select l08
+                me0100 -> 0s select l24
+                me0101 -> 0s select l40
+
+                me0110 -> 1s ignore l08
+                me0111 -> 1s ignore l24
+                me1000 -> 1s ignore l40
+
+                me1001 -> 0s ignore l08
+                me1010 -> 0s ignore l24
+                me1011 -> 0s ignore l40
 
                 (m is mode: 0 scalar, 1 vector)
+                (e is extend mode: 0 zero extend, 1 one extend)
         }
 
         [I] |OPCODE(18)|MOD(04)|RD(05)|RS(05)|
@@ -106,6 +114,8 @@ INSTRUCTION FORMATS {
                     - vector reductions
                     - casts
                   depending on the category, different MOD tables apply
+
+
 
             - length: 4 bytes always
 
@@ -134,9 +144,9 @@ INSTRUCTION FORMATS {
 
     Memory transfer {
 
-        [E] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|IM1(13/29/45)| {
+        [E] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|IM1(13/29)| {
 
-            - lengths: 4, 6, 8 bytes
+            - lengths: 4, 6 bytes
 
             MOD(04):
 
@@ -146,6 +156,16 @@ INSTRUCTION FORMATS {
                 1100 -> vector l13
                 1101 -> vector l29
                 1110 -> vector l45
+
+                -----------------------
+
+                00mm -> scalar l13
+                01mm -> scalar l29
+                1000 -> standard vector l13
+                1001 -> standard vector l29
+                1010 -> stride vector l13
+                1011 -> stride vector l29
+
 
                 (mm is length: 8, 16, 32, 64)
                 - l13, l29, l45 are the imm lengths (in bits)
@@ -209,11 +229,40 @@ INSTRUCTION FORMATS {
 
     Control transfer {
 
-        [K]  {
+        [K] |OPCODE(07)|MOD(03)|RS1(05)|RS2(05)|IM1(12/28)| {
 
             - lengths: 4, 6 bytes
 
+            MOD(03):
 
+                lmm
+
+                (mm is length: 8, 16, 32, 64)
+                - l12, l28, are the imm lengths (in bits)
+        }
+
+        [L] |OPCODE(07)|MOD(03)|RS1(05)|IM1(08)|IM2(09/25)| {
+
+            - lengths: 4, 6 bytes
+
+            MOD(03):
+
+                lmm
+
+                (mm is length: 8, 16, 32, 64)
+                - l09, l25, are the imm lengths (in bits)
+        }
+
+        [M] |OPCODE(07)|MOD(04)|RS1(05)|IM1(16/32)| {
+
+            - lengths: 4, 6 bytes
+
+            MOD(04):
+
+                lfff
+
+                (fff selects the desired flag)
+                - l16, l32, are the imm lengths (in bits)
         }
     }
 
@@ -376,40 +425,89 @@ ________________________________________________________________________________
 
 Memory transfer {
 
-    [E] (...) Memory Load-----------------------(?????)
-    [E] (...) Memory Store----------------------(?????)
-    [G] (...) Scaled Memory Load----------------(?????)
-    [G] (...) Scaled Memory Store---------------(?????)
-    [F] (...) I. Scaled Memory Load-------------(?????)
-    [F] (...) I. Scaled Memory Store------------(?????)
+    loads & stores {
 
-    [F] (...) Load Linked-----------------------(?????)
-    [F] (...) Store Conditional-----------------(?????)
+        [E] (...) Memory Load-----------------------(?????)
+        [E] (...) Memory Store----------------------(?????)
+        [G] (...) Scaled Memory Load----------------(?????)
+        [G] (...) Scaled Memory Store---------------(?????)
+        [F] (...) I. Scaled Memory Load-------------(?????)
+        [F] (...) I. Scaled Memory Store------------(?????)
+    }
 
-    [H] (...) Block Load------------------------(?????)
-    [H] (...) Block Store-----------------------(?????)
+    atomic {
 
-    [J] (...) Cond. Move If True----------------(?????)
-	[J] (...) Cond. Move If EQ------------------(?????)
-	[J] (...) Cond. Move If NE------------------(?????)
-	[J] (...) Cond. Move If LT------------------(?????)
-	[J] (...) Cond. Move If GT------------------(?????)
-	[J] (...) Cond. Move If LE------------------(?????)
-	[J] (...) Cond. Move If GE------------------(?????)
+        [F] (...) Load Linked-----------------------(?????)
+        [F] (...) Store Conditional-----------------(?????)
+    }
 
-    [J] (...) Cond. FP. Move If True------------(?????)
-	[J] (...) Cond. FP. Move If EQ--------------(?????)
-	[J] (...) Cond. FP. Move If NE--------------(?????)
-	[J] (...) Cond. FP. Move If LT--------------(?????)
-	[J] (...) Cond. FP. Move If GT--------------(?????)
-	[J] (...) Cond. FP. Move If LE--------------(?????)
-	[J] (...) Cond. FP. Move If GE--------------(?????)
+    moves {
+
+        [J] (...) Cond. Move If True----------------(?????)
+        [J] (...) Cond. Move If EQ------------------(?????)
+        [J] (...) Cond. Move If NE------------------(?????)
+        [J] (...) Cond. Move If LT------------------(?????)
+        [J] (...) Cond. Move If GT------------------(?????)
+        [J] (...) Cond. Move If LE------------------(?????)
+        [J] (...) Cond. Move If GE------------------(?????)
+
+        [J] (...) Cond. FP. Move If True------------(?????)
+        [J] (...) Cond. FP. Move If EQ--------------(?????)
+        [J] (...) Cond. FP. Move If NE--------------(?????)
+        [J] (...) Cond. FP. Move If LT--------------(?????)
+        [J] (...) Cond. FP. Move If GT--------------(?????)
+        [J] (...) Cond. FP. Move If LE--------------(?????)
+        [J] (...) Cond. FP. Move If GE--------------(?????)
+    }
+
+    miscellaneous {
+
+        [H] (...) Block Load------------------------(?????)
+        [H] (...) Block Store-----------------------(?????)
+    }
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
 Control transfer {
 
-    [?] (...) Branch If Compare-----------------(?????)
+    comparison branches {
+
+        integer {
+
+            [K] (...) Branch If EQ----------------------(?????)
+            [K] (...) Branch If NE----------------------(?????)
+            [K] (...) Branch If LT----------------------(?????)
+            [K] (...) Branch If LE----------------------(?????)
+
+            [L] (...) I. Branch If EQ-------------------(?????)
+            [L] (...) I. Branch If NE-------------------(?????)
+            [L] (...) I. Branch If LT-------------------(?????)
+            [L] (...) I. Branch If LE-------------------(?????)
+        }
+
+        floating point {
+
+            [K] (...) FP. Branch If EQ------------------(?????)
+            [K] (...) FP. Branch If NE------------------(?????)
+            [K] (...) FP. Branch If LT------------------(?????)
+            [K] (...) FP. Branch If LE------------------(?????)
+
+            [L] (...) I. FP. Branch If EQ---------------(?????)
+            [L] (...) I. FP. Branch If NE---------------(?????)
+            [L] (...) I. FP. Branch If LT---------------(?????)
+            [L] (...) I. FP. Branch If LE---------------(?????)
+        }
+    }
+
+    flag branches {
+
+        [M] (...) Branch If Flag--------------------(?????)
+    }
+
+    calls {
+
+        ...
+    }
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
