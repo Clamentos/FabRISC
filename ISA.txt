@@ -23,7 +23,7 @@ INSTRUCTION FORMATS {
 
     Computational {
 
-        [A] |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| { ok
+        [A] |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)| { OK
 
             - length: 4 bytes always
 
@@ -40,7 +40,7 @@ INSTRUCTION FORMATS {
                 (mm is length: 8, 16, 32, 64)
         }
 
-        [B] |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| { ok
+        [B] |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)| { OK
 
             - lengths: 4, 6, 8 bytes
 
@@ -65,7 +65,7 @@ INSTRUCTION FORMATS {
                 - l08, l24, l40 are the immediate lengths (in bits)
         }
 
-        [C] |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)| { ok
+        [C] |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)| { OK
 
             - length: 4 bytes always
 
@@ -82,7 +82,7 @@ INSTRUCTION FORMATS {
                 (mm is length: 8, 16, 32, 64)
         }
 
-        [D] |OPCODE(05)|MOD(06)|RD(05)|RS1(05)|SH(03)|IM1(08/24/40)| { ok
+        [D] |OPCODE(05)|MOD(06)|RD(05)|RS1(05)|SH(03)|IM1(08/24/40)| { OK
 
             - lengths: 4, 6, 8 bytes
 
@@ -108,7 +108,7 @@ INSTRUCTION FORMATS {
                 (e is extend mode: 0 zero extend, 1 one extend)
         }
 
-        [I] |OPCODE(18)|MOD(04)|RD(05)|RS(05)|
+        [I] |OPCODE(18)|MOD(04)|RD(05)|RS(05)| { OK
 
             NOTE: special format used for
                     - vector reductions
@@ -140,24 +140,16 @@ INSTRUCTION FORMATS {
                 1001 -> 64-8
                 1010 -> 64-16
                 1011 -> 64-32
+        }
     }
 
     Memory transfer {
 
-        [E] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|IM1(13/29)| {
+        [E] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|IM1(13/29)| { OK
 
             - lengths: 4, 6 bytes
 
             MOD(04):
-
-                00mm -> scalar l13
-                01mm -> scalar l29
-                10mm -> scalar l45
-                1100 -> vector l13
-                1101 -> vector l29
-                1110 -> vector l45
-
-                -----------------------
 
                 00mm -> scalar l13
                 01mm -> scalar l29
@@ -166,12 +158,11 @@ INSTRUCTION FORMATS {
                 1010 -> stride vector l13
                 1011 -> stride vector l29
 
-
                 (mm is length: 8, 16, 32, 64)
-                - l13, l29, l45 are the imm lengths (in bits)
+                - l13, l29 are the imm lengths (in bits)
         }
 
-        [F] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|RS2(05)|IM1(8/24)| {
+        [F] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|RS2(05)|IM1(8/24)| { OK
 
             - lengths: 4, 6 bytes
 
@@ -179,13 +170,13 @@ INSTRUCTION FORMATS {
 
                 00mm -> scalar l08
                 01mm -> scalar l24
-                1000 -> vector l08 (normal)
-                1001 -> vector l24 (normal)
-                1010 -> vector l08 (stride)
-                1011 -> vector l24 (stride)
+                1000 -> vector l08
+                1001 -> vector l24
+                1010 -> stride vector l08
+                1011 -> stride vector l24
         }
 
-        [G] |OPCODE(09)|MOD(03)|RD(05)|RS1(05)|RS2(05)|RS3(05)| {
+        [G] |OPCODE(09)|MOD(03)|RD(05)|RS1(05)|RS2(05)|RS3(05)| { OK
 
             - length: 4 bytes only
 
@@ -194,13 +185,11 @@ INSTRUCTION FORMATS {
                 0mm -> scalar
                 100 -> vector
                 101 -> stride vector
-                110 -> //
-                111 -> //
 
                 (mm is length: 8, 16, 32, 64)
         }
 
-        [H] |OPCODE(08)|MOD(02)|RD/RS1(05)|IM1(32)| {
+        [H] |OPCODE(08)|MOD(02)|RD/RS1(05)|IM1(32)| { OK
 
             - length: 6 bytes only
 
@@ -209,12 +198,11 @@ INSTRUCTION FORMATS {
                 00 -> file_0
                 01 -> file_1
                 10 -> file_2
-                11 -> //
 
                 NOTE: file_n means which register file (see REGISTERS section).
         }
 
-        [J] |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)| {
+        [J] |OPCODE(10)|MOD(02)|RD(05)|RS1(05)|RS2(05)|RS3(05)| { OK
 
             - length: 4 byte only
 
@@ -264,6 +252,16 @@ INSTRUCTION FORMATS {
                 (fff selects the desired flag)
                 - l16, l32, are the imm lengths (in bits)
         }
+
+        [O] |OPCODE(07)|MOD(01)|RD(05)|IMM(19/35)| {
+
+            - lengths: 4, 6 bytes
+
+            MOD(01):
+
+                0 -> l19
+                1 -> l35
+        }
     }
 
     System {
@@ -299,8 +297,6 @@ ________________________________________________________________________________
 
 INSTRUCTION LIST
 
-NOTE: some instructions don't use all of the MOD combinations available
-
 Computational {
 
     arithmetic {
@@ -313,8 +309,8 @@ Computational {
             [A] (...) Multiply Acc----------------------(?????)
             [A] (...) Division--------------------------(?????)
             [A] (...) Remainder-------------------------(?????)
-            [A] (...) Left Shift------------------------(?????)
-            [A] (...) Right Shift-----------------------(?????)
+            [A] (...) Arithmetic Left Shift-------------(?????)
+            [A] (...) Arithmetic Right Shift------------(?????)
 
             [B] (...) I .Addition-----------------------(?????)
             [B] (...) I .Subtraction--------------------(?????)
@@ -322,29 +318,25 @@ Computational {
             [B] (...) I. Multiply Acc-------------------(?????)
             [B] (...) I. Division-----------------------(?????)
             [B] (...) I. Remainder----------------------(?????)
-            [C] (...) I. Left Shift---------------------(?????)
-            [C] (...) I. Right Shift--------------------(?????)
+            [C] (...) I. Arithmetic Left Shift----------(?????)
+            [C] (...) I. Arithmetic Right Shift---------(?????)
 
             [A] (...) Addition Carry--------------------(?????)
         	[A] (...) Subtraction Borrow----------------(?????)
-            [A] (...) Carry Left Shift------------------(?????)
-        	[A] (...) Carry Right Shift-----------------(?????)
-            [A] (...) High Carry Left Shift-------------(?????)
-        	[A] (...) High Carry Right Shift------------(?????)
+            [A] (...) Carry Arithmetic Left Shift-------(?????)
+        	[A] (...) Carry Arithmetic Right Shift------(?????)
             [A] (...) High Multiplication---------------(?????)
             [A] (...) High Multiply Acc-----------------(?????)
-            [A] (...) High Left Shift-------------------(?????)
-            [A] (...) High Right Shift------------------(?????)
+            [A] (...) High Arithmetic Left Shift--------(?????)
+            [A] (...) High Arithmetic Right Shift-------(?????)
             [B] (...) I. High Multiplication------------(?????)
             [B] (...) I. High Multiply Acc--------------(?????)
-            [C] (...) HI. Left Shift--------------------(?????)
-            [C] (...) HI. Right Shift-------------------(?????)
-            [C] (...) HI. Carry Left Shift--------------(?????)
-        	[C] (...) HI. Carry Right Shift-------------(?????)
+            [C] (...) HI. Arithmetic Left Shift---------(?????)
+            [C] (...) HI. Arithmetic Right Shift--------(?????)
             [B] (...) I .Addition Carry-----------------(?????)
         	[B] (...) I .Subtraction Borrow-------------(?????)
-        	[C] (...) I. Carry Left Shift---------------(?????)
-        	[C] (...) I. Carry Right Shift--------------(?????)
+        	[C] (...) I. Arithmetic Carry Left Shift----(?????)
+        	[C] (...) I. Arithmetic Carry Right Shift---(?????)
         }
 
         floating point { OK
@@ -366,6 +358,8 @@ Computational {
 
     logic { OK
 
+        [A] (...) Logical Left Shift----------------(?????)
+        [A] (...) Logical Right Shift---------------(?????)
         [A] (...) Left Rotate-----------------------(?????)
         [A] (...) Right Rotate----------------------(?????)
         [A] (...) Bit Swap--------------------------(?????)
@@ -377,6 +371,8 @@ Computational {
         [A] (...) Bitwise XNOR----------------------(?????)
         [A] (...) Carry-less Multiplication---------(?????)
 
+        [C] (...) I. Logical Left Shift-------------(?????)
+        [C] (...) I. Logical Right Shift------------(?????)
         [C] (...) I. Left Rotate--------------------(?????)
         [C] (...) I. Right Rotate-------------------(?????)
         [C] (...) I. Bit Swap-----------------------(?????)
@@ -387,14 +383,44 @@ Computational {
         [B] (...) I. Bitwise XOR--------------------(?????)
         [B] (...) I. Bitwise XNOR-------------------(?????)
         [B] (...) I. Carryless Multiplication-------(?????)
+
+        [A] (...) Carry Logical Left Shift-----------(?????)
+        [A] (...) Carry Logical Right Shift----------(?????)
+        [A] (...) High Logical Left Shift------------(?????)
+        [A] (...) High Logical Right Shift-----------(?????)
+        [C] (...) HI. Logical Left Shift-------------(?????)
+        [C] (...) HI. Logical Right Shift------------(?????)
+        [C] (...) I. Logical Carry Left Shift--------(?????)
+        [C] (...) I. Logical Carry Right Shift-------(?????)
     }
 
-    vector reduction {
+    vector reduction { OK
 
-        ...
+        [I] (...) Reduced Addition------------------(?????)
+        [I] (...) Reduced Forward Subtraction-------(?????)
+        [I] (...) Reduced Backward Subtraction------(?????)
+        [I] (...) Reduced Multiplication------------(?????)
+        [I] (...) Reduced Multiply Acc--------------(?????)
+        [I] (...) Reduced Forward Division----------(?????)
+        [I] (...) Reduced Backward Division---------(?????)
+
+        [I] (...) Reduced FP. Addition--------------(?????)
+        [I] (...) Reduced FP. Forward Subtraction---(?????)
+        [I] (...) Reduced FP. Backward Subtraction--(?????)
+        [I] (...) Reduced FP. Multiplication--------(?????)
+        [I] (...) Reduced FP. Multiply Acc----------(?????)
+        [I] (...) Reduced FP. Forward Division------(?????)
+        [I] (...) Reduced FP. Backward Division-----(?????)
+
+        [I] (...) Reduced Bitwise AND---------------(?????)
+        [I] (...) Reduced Bitwise NAND--------------(?????)
+        [I] (...) Reduced Bitwise OR----------------(?????)
+        [I] (...) Reduced Bitwise NOR---------------(?????)
+        [I] (...) Reduced Bitwise XOR---------------(?????)
+        [I] (...) Reduced Bitwise XNOR--------------(?????)
     }
 
-    casts {
+    casts { OK
 
         [I] (...) Scalar Integer-Integer Cast-------(?????)
         [I] (...) Scalar FP-FP Cast-----------------(?????)
