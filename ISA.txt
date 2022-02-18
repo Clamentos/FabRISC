@@ -262,11 +262,45 @@ INSTRUCTION FORMATS {
                 0 -> l19
                 1 -> l35
         }
+
+        [P] |OPCODE(07)|MOD(01)|RD(05)|RS1(05)|IMM(14/30)| {
+
+            - lengths: 4, 6 bytes
+
+            MOD(01):
+
+                0 -> l14
+                1 -> l30
+        }
     }
 
     System {
 
         ...
+    }
+
+    Compressed {
+
+        [P] |OPCODE(08)|MOD(02)|RD/RS1(03)|RS2(03)| {
+
+            - length: 2 byte always
+
+            MOD(02):
+
+                mm
+
+                (mm is length: 8, 16, 32, 64)
+        }
+
+        [Q] |OPCODE(07)|RS1(03)|IM1(06)| {
+
+            - length: 2 byte always
+        }
+
+        [R] |OPCODE(08)|IM1(08)| {
+
+            - length: 2 byte always
+        }
     }
 }
 
@@ -277,21 +311,18 @@ OPCODE DISTRIBUTION {
     - needed to understand how to manipulate the opcode
     - the opcode will then signify which format the instruction is
 
-    opcode length of {06}   ->   000000xxxxxx ... 001111xxxxxx   ->  max combinations: (16); current: (12)
-    opcode length of {07}   ->   0100000xxxxx ... 1011111xxxxx   ->  max combinations: (64); current: (02)
-    opcode length of {08}   ->   11000000xxxx ... 11011111xxxx   ->  max combinations: (32); current: (02)
-    opcode length of {09}   ->   111000000xxx ... 111011111xxx   ->  max combinations: (32); current: (22)
-    opcode length of {10}   ->   1111000000xx ... 1111011111xx   ->  max combinations: (32); current: (06)
-    opcode length of {11}   ->   11111000000x ... 11111011111x   ->  max combinations: (32); current: (44) <<
-    opcode length of {12}   ->   111111000000 ... 111111111111   ->  max combinations: (64); current: (11)
+    opcode length(05) 00000xxxxxxxxxxxxx ... 00111xxxxxxxxxxxxx -> max amount: 08, current: 08 [100 %]
+    opcode length(07) 0100000xxxxxxxxxxx ... 1011111xxxxxxxxxxx -> max amount: 64, current: 45 [70  %]
+    opcode length(08) 11000000xxxxxxxxxx ... 11011111xxxxxxxxxx -> max amount: 32, current: 10 [31  %]
+    opcode length(09) 111000000xxxxxxxxx ... 111011111xxxxxxxxx -> max amount: 32, current: 24 [75  %]
+    opcode length(10) 1111000000xxxxxxxx ... 1111011111xxxxxxxx -> max amount: 32, current: 14 [43  %]
+    opcode length(12) 111110000000xxxxxx ... 111110011111xxxxxx -> max amount: 32, current: 15 [46  %]
+    opcode length(13) 1111101000000xxxxx ... 1111101111111xxxxx -> max amount: 64, current: 46 [71  %]
+    opcode length(18) 111111000000000000 ... 111111000000011111 -> max amount: 32, current: 28 [87  %]
 
-    - max: 272 opcodes
-    - minimum partition size: 16
+    - max: ??? opcodes
 
     NOTE: x means "don't care"
-    NOTE: the distribution above is deprecated, use vvvv
-
-    TODO: make the new distribution
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -384,14 +415,14 @@ Computational {
         [B] (...) I. Bitwise XNOR-------------------(?????)
         [B] (...) I. Carryless Multiplication-------(?????)
 
-        [A] (...) Carry Logical Left Shift-----------(?????)
-        [A] (...) Carry Logical Right Shift----------(?????)
-        [A] (...) High Logical Left Shift------------(?????)
-        [A] (...) High Logical Right Shift-----------(?????)
-        [C] (...) HI. Logical Left Shift-------------(?????)
-        [C] (...) HI. Logical Right Shift------------(?????)
-        [C] (...) I. Logical Carry Left Shift--------(?????)
-        [C] (...) I. Logical Carry Right Shift-------(?????)
+        [A] (...) Carry Logical Left Shift----------(?????)
+        [A] (...) Carry Logical Right Shift---------(?????)
+        [A] (...) High Logical Left Shift-----------(?????)
+        [A] (...) High Logical Right Shift----------(?????)
+        [C] (...) HI. Logical Left Shift------------(?????)
+        [C] (...) HI. Logical Right Shift-----------(?????)
+        [C] (...) I. Logical Carry Left Shift-------(?????)
+        [C] (...) I. Logical Carry Right Shift------(?????)
     }
 
     vector reduction { OK
@@ -532,7 +563,9 @@ Control transfer {
 
     calls {
 
-        ...
+        [O] (...) Function Call---------------------(?????)
+        [P] (...) Function Call Register------------(?????)
+        [?] (...) Function Return-------------------(?????)
     }
 }
 ______________________________________________________________________________________________________________________________________________________________________
@@ -558,6 +591,50 @@ System {
     [?] (...)  System Call----------------------(?????)
     [?] (...)  Wait For Interrupt---------------(?????)
     [?] (...)  Breakpoint Trigger---------------(?????)
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+Compressed {
+
+    [P] (...) Comp. Load
+    [P] (...) Comp. Store
+
+    [P] (...) Comp. Addition
+    [P] (...) Comp. Subtraction
+    [P] (...) Comp. FP Addition
+    [P] (...) Comp. FP Subtraction
+
+    [Q] (...) Comp. Addition Immediate_8
+    [Q] (...) Comp. Addition Immediate_16
+    [Q] (...) Comp. Addition Immediate_32
+    [Q] (...) Comp. Addition Immediate_64
+    [Q] (...) Comp. Branch If EQZ
+    [Q] (...) Comp. Branch If NEZ
+    [Q] (...) Comp. Branch if LTZ_8
+    [Q] (...) Comp. Branch if LTZ_16
+    [Q] (...) Comp. Branch if LTZ_32
+    [Q] (...) Comp. Branch if LTZ_64
+    [Q] (...) Comp. Branch if LEZ_8
+    [Q] (...) Comp. Branch if LEZ_16
+    [Q] (...) Comp. Branch if LEZ_32
+    [Q] (...) Comp. Branch if LEZ_64
+    [Q] (...) Comp. Logical LSH Immediate_8
+    [Q] (...) Comp. Logical LSH Immediate_16
+    [Q] (...) Comp. Logical LSH Immediate_32
+    [Q] (...) Comp. Logical LSH Immediate_64
+    [Q] (...) Comp. Logical RSH Immediate_8
+    [Q] (...) Comp. Logical RSH Immediate_16
+    [Q] (...) Comp. Logical RSH Immediate_32
+    [Q] (...) Comp. Logical RSH Immediate_64
+    [Q] (...) Comp. Arithmetic RSH Immediate_8
+    [Q] (...) Comp. Arithmetic RSH Immediate_16
+    [Q] (...) Comp. Arithmetic RSH Immediate_32
+    [Q] (...) Comp. Arithmetic RSH Immediate_64
+
+    [R] (...) Comp. Jump
+    [Q] (...) Comp. Register Jump
+    [R] (...) Comp. Function Call
+    [Q] (...) Comp. Register Function Call
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -604,6 +681,14 @@ REGISTERS {
 		$29--------(RET "return address")
 		$30--------(SP "stack pointer")
 		$31--------(FP "frame pointer")
+
+        NOTE: the callee must save any "saved register" that he intends to utilize. This is because the caller expects the "saved registers" to retain
+              their value across calls. (callee saved)
+
+        NOTE: the caller must save any "temporary register" before a call if they hold important values. This is because "temporary registers" are not
+              expected to retain their value across calls. (caller saved)
+
+        TODO: reorder the regs ABI to improve the power of compressed instructions
     }
 
     file 1 {
@@ -676,8 +761,8 @@ REGISTERS {
       * %22----(CSR "control & status register")
       * %23----(SPC "supervisor program counter")
       * %24----(SCSR "supervisor control & status register")
-      * %25----(K0 "kernel temporary 0")
-      * %26----(K1 "kernel temporary 1")
+      * %25----(K0 "kernel reserved 0")
+      * %26----(K1 "kernel reserved 1")
       * %27----(ETP "event table pointer")
       * %28----(PTP "page table pointer")
 
@@ -698,6 +783,7 @@ REGISTERS {
         - ???? (1) flag
 
         - LEN (2) (data type length)
+        - VLEN (?) (vector length)
         - IMOD (3) (instruction mode, see table below)
         - RMD (2) (rounding modes)
         - TD (8) (transaction nesting depth counter)
@@ -714,16 +800,5 @@ REGISTERS {
 
         - PID (32)
     }
-
-    IMOD(3):
-
-        000 -> scalar int
-        001 -> vector-vector int
-        010 -> vector-scalar int
-        011 -> reduction int
-        100 -> scalar fp
-        101 -> vector-vector fp
-        110 -> vector-scalar fp
-        111 -> reduction fp
 }
 ______________________________________________________________________________________________________________________________________________________________________

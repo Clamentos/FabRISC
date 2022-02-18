@@ -1,0 +1,246 @@
+This file is concerned with the register file ABI specification
+______________________________________________________________________________________________________________________________________________________________________
+
+FILE 0 {
+
+    - 32 scalar general purpose registers
+    - integer & floating point are shared
+
+    $00--------(FP_00 "function parameter 00")
+    $01--------(FP_01 "function parameter 01")
+    $02--------(FP_02 "function parameter 02")
+    $03--------(FP_03 "function parameter 03")
+
+    $04--------(FR_00 "function return value 00")
+    $05--------(FR_01 "function return value 01")
+
+    $06--------(PR_00 "persistent register 00")
+    $07--------(PR_01 "persistent register 01")
+    $08--------(PR_02 "persistent register 02")
+    $09--------(PR_03 "persistent register 03")
+    $10--------(PR_04 "persistent register 04")
+    $11--------(PR_05 "persistent register 05")
+    $12--------(PR_06 "persistent register 06")
+    $13--------(PR_07 "persistent register 07")
+    $14--------(PR_08 "persistent register 08")
+    $15--------(PR_09 "persistent register 09")
+    $16--------(PR_10 "persistent register 10")
+    $17--------(PR_11 "persistent register 11")
+    $18--------(PR_12 "persistent register 12")
+    $19--------(PR_13 "persistent register 13")
+    $20--------(PR_14 "persistent register 14")
+    $21--------(PR_15 "persistent register 15")
+    $22--------(PR_16 "persistent register 16")
+    $23--------(PR_17 "persistent register 17")
+
+    $24--------(VR_00 "volatile register 00")
+    $25--------(VR_01 "volatile register 01")
+    $26--------(VR_02 "volatile register 02")
+    $27--------(VR_03 "volatile register 03")
+
+    $28--------(GP "global pointer")
+    $29--------(RA "return address")
+    $30--------(SP "stack pointer")
+    $31--------(FP "frame pointer")
+
+    NOTE: the callee must save any "persistent register" that he intends to utilize. This is because the caller expects those registers to retain
+          their value across calls. (callee saved)
+
+    NOTE: the caller must save any "volatile register" before a call if they hold important values. This is because those registers are not
+          expected to retain their value across calls. (caller saved)
+
+    TODO: reorder the regs ABI to improve the power of compressed instructions
+}
+
+FILE 1 {
+
+    - 32 vector general purpose registers (128-512 bits wide)
+    - integer & floating point are shared
+
+    &00----(VGPR_00 "vector general purpose register 00")
+    &01----(VGPR_01 "vector general purpose register 01")
+    &02----(VGPR_02 "vector general purpose register 02")
+    &03----(VGPR_03 "vector general purpose register 03")
+    &04----(VGPR_04 "vector general purpose register 04")
+    &05----(VGPR_05 "vector general purpose register 05")
+    &06----(VGPR_06 "vector general purpose register 06")
+    &07----(VGPR_07 "vector general purpose register 07")
+    &08----(VGPR_08 "vector general purpose register 08")
+    &09----(VGPR_09 "vector general purpose register 09")
+    &10----(VGPR_10 "vector general purpose register 10")
+    &11----(VGPR_11 "vector general purpose register 11")
+    &12----(VGPR_12 "vector general purpose register 12")
+    &13----(VGPR_13 "vector general purpose register 13")
+    &14----(VGPR_14 "vector general purpose register 14")
+    &15----(VGPR_15 "vector general purpose register 15")
+    &16----(VGPR_16 "vector general purpose register 16")
+    &17----(VGPR_17 "vector general purpose register 17")
+    &18----(VGPR_18 "vector general purpose register 18")
+    &19----(VGPR_19 "vector general purpose register 19")
+    &20----(VGPR_20 "vector general purpose register 20")
+    &21----(VGPR_21 "vector general purpose register 21")
+    &22----(VGPR_22 "vector general purpose register 22")
+    &23----(VGPR_23 "vector general purpose register 23")
+    &24----(VGPR_24 "vector general purpose register 24")
+    &25----(VGPR_25 "vector general purpose register 25")
+    &26----(VGPR_26 "vector general purpose register 26")
+    &27----(VGPR_27 "vector general purpose register 27")
+    &28----(VGPR_28 "vector general purpose register 28")
+    &29----(VGPR_29 "vector general purpose register 29")
+    &30----(VGPR_30 "vector general purpose register 30")
+    &31----(VGPR_31 "vector general purpose register 31")
+}
+
+FILE 2 {
+
+    %00--------(VR_04 "volatile register 04")
+    %01--------(VR_05 "volatile register 05")
+    %02--------(VR_06 "volatile register 06")
+    %03--------(VR_07 "volatile register 07")
+
+    %04--------(BR_00 "breakpoint register 00")
+    %05--------(BR_01 "breakpoint register 01")
+    %06--------(BR_02 "breakpoint register 02")
+    %07--------(BR_03 "breakpoint register 03")
+    %08--------(BR_04 "breakpoint register 04")
+    %09--------(BR_05 "breakpoint register 05")
+    %10--------(BR_06 "breakpoint register 06")
+    %11--------(BR_07 "breakpoint register 07")
+
+    %12--------(BM "breakpoint modes")
+
+    %13--------(PC "program counter")
+    %14--------(UEB_0 "user event buffer 0")
+    %15--------(UEB_1 "user event buffer 1")
+    %16--------(VFLG "vector flags")
+    %17--------(VMSK "vector mask")
+
+    %18--------(UETP "user event table pointer")
+
+    %19--------( // )
+    %20--------( // )
+    %21--------( // )
+    %22--------( // )
+
+  * %23--------(CSR "control & status register")
+  * %24--------(SEB_0 "supervisor event buffer 0")
+  * %25--------(SEB_1 "supervisor event buffer 1")
+  * %26--------(SETP "supervisor event table pointer")
+  * %27--------(PTP "page table pointer")
+
+  * %28--------(KR_0 "kernel reserved 0")
+  * %29--------(KR_1 "kernel reserved 1")
+  * %30--------(KR_2 "kernel reserved 2")
+  * %31--------(KR_3 "kernel reserved 3")
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+breakpoint modes {
+
+    breakpoint registers are special registers that can be used for:
+
+        - debugging
+        - specific exception generation
+
+    for each breakpoint register, there is a 4 bit code in the BM register. Depending on the mode and the value of a particular
+    breakpoint register, an event can be triggered.
+
+    modes:
+
+        0000 -> disabled
+        0001 -> break on instruction address
+        0010 -> break on data read address 8
+        0011 -> break on data read address 16
+        0100 -> break on data read address 32
+        0101 -> break on data read address 64
+        0110 -> break on data write address 8
+        0111 -> break on data write address 16
+        1000 -> break on data write address 32
+        1001 -> break on data write address 64
+        1010 -> break on COVR flag
+        1011 -> break on CUND flag
+        1100 -> break on OVFL flag
+        1101 -> break on UNFL flag
+        1110 -> break on DIV0 flag
+        1111 -> //
+
+    for example, setting a value of 0x0000000012345678 in the register BP_0 and a value of 0x0000000000000001 in the BM register will only
+    enable BP_0 with "break on instruction address" mode. This mode will trigger a breakpoint exception if the PC ever reaches a value of
+    0x0000000012345678.
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+special vector registers {
+
+    the VFLG register holds the flags generated by vector instructions. The flags are exactly the same as the scalar flags and each lane has it's own
+    independent set of flags, which means that this register has the same length as any other vector register. In total each flag will be replicated as many
+    times as the number of smallest lane (8 bit lane). For example, if the vector registers are 512 bits long, each flag will be replicated 64 times (512 / 8).
+    This way it becomes possible to check individual flags for each specific lane.
+    NOTE: vector flags should never trap (otherwise it would get messy and too complicated).
+
+    the VMSK register holds the mask bits for conditional vector execution. Each lane will be masked by a single bit that "allows" the particular lane to write
+    the result. For convention a 0 will not mask (allow) and a 1 will mask (not allow). A value of all 0s in VMSK simply results in unconditional vector
+    execution. VMSK can be set to the desired value with dedicated instructions. VMSK dedicates 1 bit for each possible smallest lane (8 bit lane). For example,
+    if the vector registers are 512 bits long, VMSK will be 64 bits long.
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+event buffers {
+
+    there are 4 event buffer registers: 2 for the user and 2 for the supervisor. These registers are used to save the PC and the CSR registers in case of an
+    event. Depending on the privilege of the event, PC and CSR will be saved in different event buffer registers.
+
+    user event:
+
+        PC -> UEB_0
+        CSR -> UEB_1
+
+    supervisor event:
+
+        PC -> SEB_0
+        CSR -> SEB_1
+
+    returning from an event causes the movement of the appropriate event buffers back into PC and CSR.
+    NOTE: the processor automatically moves PC and CSR to and from the appropriate event buffer automatically as soon as an event is triggered.
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+event table pointers {
+
+    these registers are "set and forget" registers whose purpose is to point to the event handling tables. UETP points to the event table dedicated for the user,
+    while SETP points to the event table dedicated for the supervisor.
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+page table pointer {
+
+    this register is a dedicated register used by the MMU to perform the page table walk. on a TLB miss, the processor will fetch the appropriate page table
+    entry from the page table pointer by PTP. Since page tables are unique for every process, this register must be set to the proper address by the kernel
+    during process scheduling.
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+control & status register {
+
+    the CSR register hold a series of bits and flags that affects how the processor operates:
+
+        flags section {
+
+            - COVR (1) flag
+            - CUND (1) flag
+            - OVFL (1) flag
+            - UNFL (1) flag
+            - DIV0 (1) flag
+            - ???? (1) flag
+            - ???? (1) flag
+            - ???? (1) flag
+        }
+
+        instruction behavior {
+
+            - LEN (2) (data type length)
+            - VLEN (?) (vector length)
+            - IMOD (3) (instruction mode, see table below)
+            - RMD (2) (rounding modes)
+        }
+}

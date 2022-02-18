@@ -1,6 +1,14 @@
-[A] |OPCODE(13)|MOD(04)|RD(05)|RS1(05)|RS2(05)|
-[B] |OPCODE(09)|MOD(05)|RD(05)|RS1(05)|IM1(08/24/40)|
-[C] |OPCODE(12)|MOD(04)|RD(05)|RS1(05)|IM1(06)|
-[D] |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|SH(03)|IM1(08/24/40)|
-[I] |OPCODE(18)|MOD(04)|RD(05)|RS(05)|
-[E] |OPCODE(05)|MOD(04)|RD(05)|RS1(05)|IM1(13/29)|
+param 0
+param 1
+ret val
+ret addr
+
+caller save 0
+caller save 1
+caller save 2
+caller save 3
+
+callee save 0
+callee save 1
+callee save 2
+callee save 3
