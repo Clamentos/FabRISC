@@ -57,38 +57,38 @@ FILE 1 {
     - 32 vector general purpose registers (128-512 bits wide)
     - integer & floating point are shared
 
-    &00----(VGPR_00 "vector general purpose register 00")
-    &01----(VGPR_01 "vector general purpose register 01")
-    &02----(VGPR_02 "vector general purpose register 02")
-    &03----(VGPR_03 "vector general purpose register 03")
-    &04----(VGPR_04 "vector general purpose register 04")
-    &05----(VGPR_05 "vector general purpose register 05")
-    &06----(VGPR_06 "vector general purpose register 06")
-    &07----(VGPR_07 "vector general purpose register 07")
-    &08----(VGPR_08 "vector general purpose register 08")
-    &09----(VGPR_09 "vector general purpose register 09")
-    &10----(VGPR_10 "vector general purpose register 10")
-    &11----(VGPR_11 "vector general purpose register 11")
-    &12----(VGPR_12 "vector general purpose register 12")
-    &13----(VGPR_13 "vector general purpose register 13")
-    &14----(VGPR_14 "vector general purpose register 14")
-    &15----(VGPR_15 "vector general purpose register 15")
-    &16----(VGPR_16 "vector general purpose register 16")
-    &17----(VGPR_17 "vector general purpose register 17")
-    &18----(VGPR_18 "vector general purpose register 18")
-    &19----(VGPR_19 "vector general purpose register 19")
-    &20----(VGPR_20 "vector general purpose register 20")
-    &21----(VGPR_21 "vector general purpose register 21")
-    &22----(VGPR_22 "vector general purpose register 22")
-    &23----(VGPR_23 "vector general purpose register 23")
-    &24----(VGPR_24 "vector general purpose register 24")
-    &25----(VGPR_25 "vector general purpose register 25")
-    &26----(VGPR_26 "vector general purpose register 26")
-    &27----(VGPR_27 "vector general purpose register 27")
-    &28----(VGPR_28 "vector general purpose register 28")
-    &29----(VGPR_29 "vector general purpose register 29")
-    &30----(VGPR_30 "vector general purpose register 30")
-    &31----(VGPR_31 "vector general purpose register 31")
+    &00--------(VGPR_00 "vector general purpose register 00")
+    &01--------(VGPR_01 "vector general purpose register 01")
+    &02--------(VGPR_02 "vector general purpose register 02")
+    &03--------(VGPR_03 "vector general purpose register 03")
+    &04--------(VGPR_04 "vector general purpose register 04")
+    &05--------(VGPR_05 "vector general purpose register 05")
+    &06--------(VGPR_06 "vector general purpose register 06")
+    &07--------(VGPR_07 "vector general purpose register 07")
+    &08--------(VGPR_08 "vector general purpose register 08")
+    &09--------(VGPR_09 "vector general purpose register 09")
+    &10--------(VGPR_10 "vector general purpose register 10")
+    &11--------(VGPR_11 "vector general purpose register 11")
+    &12--------(VGPR_12 "vector general purpose register 12")
+    &13--------(VGPR_13 "vector general purpose register 13")
+    &14--------(VGPR_14 "vector general purpose register 14")
+    &15--------(VGPR_15 "vector general purpose register 15")
+    &16--------(VGPR_16 "vector general purpose register 16")
+    &17--------(VGPR_17 "vector general purpose register 17")
+    &18--------(VGPR_18 "vector general purpose register 18")
+    &19--------(VGPR_19 "vector general purpose register 19")
+    &20--------(VGPR_20 "vector general purpose register 20")
+    &21--------(VGPR_21 "vector general purpose register 21")
+    &22--------(VGPR_22 "vector general purpose register 22")
+    &23--------(VGPR_23 "vector general purpose register 23")
+    &24--------(VGPR_24 "vector general purpose register 24")
+    &25--------(VGPR_25 "vector general purpose register 25")
+    &26--------(VGPR_26 "vector general purpose register 26")
+    &27--------(VGPR_27 "vector general purpose register 27")
+    &28--------(VGPR_28 "vector general purpose register 28")
+    &29--------(VGPR_29 "vector general purpose register 29")
+    &30--------(VGPR_30 "vector general purpose register 30")
+    &31--------(VGPR_31 "vector general purpose register 31")
 }
 
 FILE 2 {
@@ -104,24 +104,24 @@ FILE 2 {
     %07--------(BR_03 "breakpoint register 03")
     %08--------(BR_04 "breakpoint register 04")
     %09--------(BR_05 "breakpoint register 05")
-    %10--------(BR_06 "breakpoint register 06")
-    %11--------(BR_07 "breakpoint register 07")
 
-    %12--------(BM "breakpoint modes")
+    %10--------(BM "breakpoint modes")
 
-    %13--------(PC "program counter")
-    %14--------(UEB_0 "user event buffer 0")
-    %15--------(UEB_1 "user event buffer 1")
-    %16--------(VFLG "vector flags")
-    %17--------(VMSK "vector mask")
+    %11--------(PC "program counter")
+    %12--------(UEB_0 "user event buffer 0")
+    %13--------(UEB_1 "user event buffer 1")
+    %14--------(VFLG "vector flags")
+    %15--------(VMSK "vector mask")
 
-    %18--------(UETP "user event table pointer")
+    %16--------(UETP "user event table pointer")
 
-    %19--------( // )
-    %20--------( // )
-    %21--------( // )
-    %22--------( // )
+    %17--------( // )
+    %18--------( // )
 
+  * %19--------(FU0 "file usage 0")
+  * %20--------(FU1 "file usage 1")
+  * %21--------(FU2 "file usage 2")
+  * %22--------(PID "process identifier")
   * %23--------(CSR "control & status register")
   * %24--------(SEB_0 "supervisor event buffer 0")
   * %25--------(SEB_1 "supervisor event buffer 1")
@@ -142,31 +142,49 @@ breakpoint modes {
         - debugging
         - specific exception generation
 
-    for each breakpoint register, there is a 4 bit code in the BM register. Depending on the mode and the value of a particular
+    for each breakpoint register, there is a 5 bit code in the BM register. Depending on the mode and the value of a particular
     breakpoint register, an event can be triggered.
 
     modes:
 
-        0000 -> disabled
-        0001 -> break on instruction address
-        0010 -> break on data read address 8
-        0011 -> break on data read address 16
-        0100 -> break on data read address 32
-        0101 -> break on data read address 64
-        0110 -> break on data write address 8
-        0111 -> break on data write address 16
-        1000 -> break on data write address 32
-        1001 -> break on data write address 64
-        1010 -> break on COVR flag
-        1011 -> break on CUND flag
-        1100 -> break on OVFL flag
-        1101 -> break on UNFL flag
-        1110 -> break on DIV0 flag
-        1111 -> //
+        00000 -> disabled
+        00001 -> break on instruction address
+        00010 -> break on data read address 8
+        00011 -> break on data read address 16
+        00100 -> break on data read address 32
+        00101 -> break on data read address 64
+        00110 -> break on data write address 8
+        00111 -> break on data write address 16
+        01000 -> break on data write address 32
+        01001 -> break on data write address 64
+        01010 -> break on COVR flag
+        01011 -> break on CUND flag
+        01100 -> break on OVFL flag
+        01101 -> break on UNFL flag
+        01110 -> break on DIV0 flag
+        01111 -> break on instruction 16
+        10000 -> break on instruction 32
+        10001 -> break on instruction 48
+        10010 -> break on instruction 64
+        10011 -> //
+        10100 -> //
+        10101 -> //
+        10110 -> //
+        10111 -> //
+        11000 -> //
+        11001 -> //
+        11010 -> //
+        11011 -> //
+        11100 -> //
+        11101 -> //
+        11110 -> //
+        11111 -> //
 
     for example, setting a value of 0x0000000012345678 in the register BP_0 and a value of 0x0000000000000001 in the BM register will only
     enable BP_0 with "break on instruction address" mode. This mode will trigger a breakpoint exception if the PC ever reaches a value of
     0x0000000012345678.
+
+    With 6 BP registers, the total number of bits required for BM are 30 (6*5), this means that BM can be 32 bits only with the remaining upper bits unused.
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -222,25 +240,63 @@ ________________________________________________________________________________
 
 control & status register {
 
-    the CSR register hold a series of bits and flags that affects how the processor operates:
+    the CSR register hold a series of bits and flags that affects how the processor operates.
 
         flags section {
 
-            - COVR (1) flag
-            - CUND (1) flag
-            - OVFL (1) flag
-            - UNFL (1) flag
-            - DIV0 (1) flag
-            - ???? (1) flag
-            - ???? (1) flag
-            - ???? (1) flag
+            - COVR (1) (carry over flag)
+            - CUND (1) (carry under flag)
+            - OVFL (1) (overflow flag)
+            - UNFL (1) (underflow flag)
+            - DIV0 (1) (division by 0 flag)
+            - ZERO (1) (zero flag)
+            - SIGN (1) (sign flag)
+            - //   (1)
         }
 
         instruction behavior {
 
-            - LEN (2) (data type length)
-            - VLEN (?) (vector length)
-            - IMOD (3) (instruction mode, see table below)
-            - RMD (2) (rounding modes)
+            - LEN  (2) (data type length)
+            - VLEN (6) (vector length)
+            - IMOD (3) (instruction mode)
+            - RMD  (2) (floating point rounding modes)
         }
+
+        transactional memory {
+
+            - TRD  (8) (transaction nesting depth counter)
+        }
+
+        system {
+
+            - SUP  (1) (supervisor mode)
+            - BOOT (1) (boot mode)
+            - CON  (1) (consistency mode)
+            - PAG  (1) (enable paging)
+            - EXC  (1) (enable auto exceptions)
+            - UINT (1) (enable user interrupts)
+            - SINT (1) (enable supervisor interrupts)
+            - EVT  (1) (event triggered)
+            - HLT  (1) (halt execution)
+        }
+
+        - //
+        - //
 }
+______________________________________________________________________________________________________________________________________________________________________
+
+process id {
+
+    the PID register holds the current executing process ID. In case of a promoting event, the processor should automatically change
+    the value of this register to the ID of the kernel, for example all 0s. The MMU can to avoid flushing the TLB in during context
+    switches with the help of the PID register to filter accesses to similar logical addresses potentially reducing page misses.
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+file usage registers {
+
+    FU0, FU1, FU2 are three special transparent registers used by the processor to indicate which register in which file was modified since the scheduling
+    of the current process. Each bit represents a single register in the appropriate file and values are automatically set. The supervisor can use this
+    information along with "State dump" and "State restore" instructions to easily and quickly save or restore the state of the processor to and from memory.
+}
+______________________________________________________________________________________________________________________________________________________________________
