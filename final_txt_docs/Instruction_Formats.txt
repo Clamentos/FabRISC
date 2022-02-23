@@ -1,0 +1,376 @@
+This file is concerned with the various instruction formats
+______________________________________________________________________________________________________________________________________________________________________
+
+legend {
+
+    OPCODE -> operation code
+    MOD -> mode
+    RD -> register destination
+    RSn -> register source n
+    IMn -> immediate value n
+    MSK -> mask register
+}
+
+MSK(02) indicates the execution mask for both scalar & vector instructions. FabRISC provides 3 masks that can be selected:
+
+    00 -> always true
+    01 -> mask 0
+    10 -> mask 1
+    11 -> mask 2
+
+masks can be set conditionally with dedicated instructions.
+______________________________________________________________________________________________________________________________________________________________________
+
+TODO: normalize the bits (permute bits to make it easier to decode)
+
+FORMATS:
+
+[A] |OPCODE(11)|MOD(04)|RD(05)|RS1(05)|RS2(05)|MSK(02)| {
+
+    - length: 4B
+
+    MOD(04):
+
+        00mm -> scalar
+        01mm -> vector-vector
+        10mm -> vector-scalar
+        1100 -> scalar LEN
+        1101 -> vector-vector LEN
+        1110 -> vector-scalar LEN
+        1111 -> IMOD LEN
+
+    (mm is data type length: 8, 16, 32, 64)
+
+    this format is used for computational instructions that operate on registers only.
+    RD = RS1 <op> RS2
+}
+
+[B] |OPCODE(07)|MOD(05)|RD(05)|RS1(05)|MSK(02)|IM1(08/24/40)| {
+
+    - lengths: 4B, 6B, 8B
+
+    MOD(05):
+
+        000mm -> scalar l08
+        001mm -> scalar l24
+        010mm -> scalar l40
+        011mm -> vector-scalar l08
+        100mm -> vector-scalar l24
+        101mm -> vector-scalar l40
+        11000 -> scalar LEN l08
+        11001 -> scalar LEN l24
+        11010 -> scalar LEN l40
+        11011 -> vector-scalar LEN l08
+        11100 -> vector-scalar LEN l24
+        11101 -> vector-scalar LEN l40
+        11110 -> IMOD LEN l08
+        11111 -> IMOD LEN l24
+
+    (mm is data type length: 8, 16, 32, 64)
+    (l08, l24, l40 are the immediate lengths in bits)
+
+    this format is used for computational instructions that operate on registers and immediate values.
+    RD = RS1 <op> IMMEDIATE
+}
+
+[C] |OPCODE(10)|MOD(04)|RD(05)|RS1(05)|MSK(02)|IM1(06)| {
+
+    - length: 4B
+
+    MOD(04):
+
+        00mm -> scalar
+        01mm -> v-s
+        10mm -> //
+        1100 -> scalar LEN
+        1101 -> v-s LEN
+        1110 -> //
+        1111 -> IMOD LEN
+
+    (mm is data type length: 8, 16, 32, 64)
+
+    this format is used for shifting instructions that operate on registers and immediate values.
+    RD = RS1 <shift> IMMEDIATE
+}
+
+[D] |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|SH(03)|IM1(08/24/40)| {
+
+    - lengths: 4B, 6B, 8B
+
+    MOD(04):
+
+        ...
+
+    TODO: finish
+}
+
+[I] |OPCODE(16)|MOD(04)|RD/RS1(05)|RS2(05)|MSK(02)| {
+
+    - length: 4B
+
+    MOD(04): (vector reductions)
+
+        00mm -> forwards reduction
+        01mm -> backwards reduction
+        1000 -> forwards reduction LEN
+        1001 -> backwards reduction LEN
+
+    (mm is data type length: 8, 16, 32, 64)
+
+    MOD(04): (casts)
+
+        0000 -> 8-16
+        0001 -> 8-32
+        0010 -> 8-64
+        0011 -> 16-8
+        0100 -> 16-32
+        0101 -> 16-64
+        0110 -> 32-8
+        0111 -> 32-16
+        1000 -> 32-64
+        1001 -> 64-8
+        1010 -> 64-16
+        1011 -> 64-32
+
+    MOD(04): (moves)
+
+        0000 -> file_0 - file_0
+        0001 -> file_1 - file_1
+        0010 -> file_2 - file_2
+        0011 -> file_0 - file_2
+        0100 -> file_2 - file_0
+        ...
+
+        TODO: finish this ^^
+
+    MOD(04): (conditional mask set?)
+
+        0000 -> mask 0
+        0001 -> mask 1
+        0010 -> mask 2
+        ...
+
+        TODO: finish this ^^
+
+    this format is used for 4 kinds of instructions: vector reduction, casts, moves and conditional mask sets.
+    Depending on which is it, the appropriate MOD(04) applies.
+}
+
+[E] |OPCODE(05)|MOD(04)|RD/RS1(05)|RS2(05)|IM1(13/29)| {
+
+    - lengths: 4B, 6B
+
+    MOD(04):
+
+        00mm -> scalar l13
+        01mm -> scalar l29
+        1000 -> standard vector l13
+        1001 -> standard vector l29
+        1010 -> stride vector l13
+        1011 -> stride vector l29
+        1100 -> scalar LEN l13
+        1101 -> scalar LEN l29
+
+    (mm is data type length: 8, 16, 32, 64)
+    (l13, l29 are the imm lengths in bits)
+
+    this format is used for memory loads and stores with various addressing modes
+
+        - base + offset       -> MEMORY[RS2 + IM1]
+        - basic vector stride -> stride(MEMORY[RS2], IM1)
+}
+
+[F] |OPCODE(05)|MOD(04)|RD/RS1(05)|RS2(05)|RS3(05)|IM1(08/24)| {
+
+    - lengths: 4B, 6B
+
+    MOD(04):
+
+        00mm -> scalar l08
+        01mm -> scalar l24
+        1000 -> vector l08
+        1001 -> vector l24
+        1010 -> stride vector l08
+        1011 -> stride vector l24
+        1100 -> scalar LEN l08
+        1101 -> scalar LEN l24
+
+    (mm is data type length: 8, 16, 32, 64)
+    (l08, l24 are the imm lengths in bits)
+
+    this format is used for memory loads and stores with various addressing modes
+
+        - indexed       -> MEMORY[RS1 + (RS2 * IM1)]
+        - vector stride -> stride(MEMORY[RS1 + RS2], IM1)
+}
+
+[G] |OPCODE(07)|MOD(05)|RD/RS1(05)|RS2(05)|RS3(05)|RS4(05)| {
+
+    - length: 4B
+
+    MOD(05):
+
+        000mm -> scalar
+        00100 -> vector
+        00101 -> stride vector
+        00110 -> scalar LEN
+
+    (mm is data type length: 8, 16, 32, 64)
+
+    this format is used for memory loads and stores with various addressing modes
+
+        - register indexed       -> MEMORY[RS1 + (RS2 * RS3)]
+        - register vector stride -> stride(MEMORY[RS1 + RS2], RS3)
+}
+
+[H] |OPCODE(07)|MOD(04)|RD/RS1(05)|IM1(16/32)| {
+
+    - lengths: 4B, 6B
+
+    MOD(04): (block memory operations)
+
+        0000 -> file_0 lower l16
+        0001 -> file_0 upper l16
+        0010 -> file_0 l32
+
+        0011 -> file_1 lower l16
+        0100 -> file_1 upper l16
+        0101 -> file_1 l32
+
+        0110 -> file_2 lower l16
+        0111 -> file_2 upper l16
+        1000 -> file_2 l32
+
+    MOD(04): (flag branches)
+
+        0fff -> flag branch l16
+        1fff -> flag branch l32
+
+    (fff selects the desired flag)
+    (l16, l32 are the imm lengths in bits)
+
+    this format is used for 2 kinds of instructions: block memory operations and flag branches.
+    Depending on which is it, the appropriate MOD(04) applies.
+
+    branches: if(flag == true) {PC = PC+IM1} else {next instruction}
+    block memory: MEMORY[RS1] = file n
+}
+
+[K] |OPCODE(07)|MOD(03)|RS1(05)|RS2(05)|IM1(12/28)| {
+
+    - lengths: 4B, 6B
+
+    MOD(03):
+
+        0mm -> compare branch l12
+        1mm -> compare branch l28
+
+    (mm is data type length: 8, 16, 32, 64)
+    (l12, l28 are the imm lengths in bits)
+
+    this format is used for conditional branches based on register compares performed on-the-fly (no need to save flags).
+    if(RS1-RS2 == condition) {PC = PC+IM1} else {next instruction}
+}
+
+[L] |OPCODE(07)|MOD(03)|RS1(05)|IM2(08)|IM1(09/25)| {
+
+    - lengths: 4B, 6B
+
+    MOD(03):
+
+        0mm -> compare branch l09
+        1mm -> compare branch l25
+
+    (mm is data type length: 8, 16, 32, 64)
+    (l09, l25 are the imm lengths in bits)
+
+    this format is used for conditional branches based on immediate compares performed on-the-fly (no need to save flags)
+    if(RS1-IM2 == condition) {PC = PC+IM1} else {next instruction}
+}
+
+[O] |OPCODE(07)|MOD(01)|RD/RS1(05)|IM1(19/35)| {
+
+    - lengths: 4B, 6B
+
+    MOD(01):
+
+        0 -> l19
+        1 -> l35
+
+    (l19, l35 are the imm lengths in bits)
+
+    this format is used for function calls with immediate values. RAS hint: push
+    calls: RD = address(next instruction); PC = PC + IM1
+}
+
+[P] |OPCODE(07)|MOD(01)|RD(05)|RS1(05)|IM1(14/30)| {
+
+    - lengths: 4B, 6B
+
+    MOD(01):
+
+        0 -> l14
+        1 -> l30
+
+    (l14, l30 are the imm lengths in bits)
+
+    this format is used for function calls with registers immediate values. RAS hint: push
+    RD = address(next instruction); PC = PC + RS1 + IM1
+}
+
+
+TODO: system formats maybe?
+
+
+[Q] |OPCODE(07)|MOD(03)|RD/RS1(03)|RS2(03)| {
+
+    - length: 2B
+
+    MOD(03):
+
+        000
+        ...
+
+    TODO: finish
+}
+[R] |OPCODE(07)|RS1(03)|IM1(06)| {
+
+    - length: 2B
+
+    ...
+
+    TODO: finish
+}
+[S] |OPCODE(07)|IM1(09)| {
+
+    - length: 2B
+
+    ...
+
+    TODO: finish
+}
+
+[T] |OPCODE(07)|MOD(03)|RD/RS1(05)| {
+
+    - length: 2B
+
+    ...
+
+    TODO: finish
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+opcode distribution
+
+opcode length(05): 00000xxxxxxxxxxx ... 00111xxxxxxxxxxx -> max: 8
+opcode length(07): 0100000xxxxxxxxx ... 1101111xxxxxxxxx -> max: 80
+opcode length(10): 1110000000xxxxxx ... 1110011111xxxxxx -> max: 32
+opcode length(11): 11101000000xxxxx ... 11111011111xxxxx -> max: 160
+opcode length(16): 1111110000000000 ... 1111110000111111 -> max: 64
+______________________________________________________________________________________________________________________________________________________________________
+
+micro instruction format {
+
+    |OPCODE()|RD(07)|RS1(07)|RS2(07)|RS3(07)|RS4(07)|RD_EN(1)|RS1_EN(1)|RS2_EN(1)|RS3_EN(1)|RS4_EN(1)|...
+}
+______________________________________________________________________________________________________________________________________________________________________

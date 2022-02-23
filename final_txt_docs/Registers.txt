@@ -1,4 +1,6 @@
-This file is concerned with the register file ABI specification
+This file is concerned with the register ABI specification
+
+FabRISC has 3 register files: 2 general purpose and 1 special purpose
 ______________________________________________________________________________________________________________________________________________________________________
 
 FILE 0 {
@@ -39,22 +41,32 @@ FILE 0 {
     $27--------(VR_03 "volatile register 03")
 
     $28--------(GP "global pointer")
-    $29--------(RA "return address")
-    $30--------(SP "stack pointer")
-    $31--------(FP "frame pointer")
+    $29--------(SP "stack pointer")
+    $30--------(FP "frame pointer")
+    $31--------(RA "return address")
+
+    the processor doesn't actually care how registers are used. All instructions, except compressed, can address any register at any time.
+    this ABI is just a convention to make code more coherent and reliable:
+
+        GP -> points to the global variable space
+        SP -> points to the base of the stack
+        FP -> points to the base of the current stack frame
+        RA -> holds the function return address
+
+    all registers are word bits wide.
 
     NOTE: the callee must save any "persistent register" that he intends to utilize. This is because the caller expects those registers to retain
-          their value across calls. (callee saved)
+    their value across calls. (callee saved)
 
     NOTE: the caller must save any "volatile register" before a call if they hold important values. This is because those registers are not
-          expected to retain their value across calls. (caller saved)
+    expected to retain their value across calls. (caller saved)
 
     TODO: reorder the regs ABI to improve the power of compressed instructions
 }
 
 FILE 1 {
 
-    - 32 vector general purpose registers (128-512 bits wide)
+    - 32 vector general purpose registers
     - integer & floating point are shared
 
     &00--------(VGPR_00 "vector general purpose register 00")
@@ -89,9 +101,19 @@ FILE 1 {
     &29--------(VGPR_29 "vector general purpose register 29")
     &30--------(VGPR_30 "vector general purpose register 30")
     &31--------(VGPR_31 "vector general purpose register 31")
+
+    all registers must have the same length. It is recommended to pick a value between the following extremes:
+
+        - 64  bits minimum (for 32 bit machines)
+        - 128 bits minimum (for 64 bit machines)
+
+        - 512 bits maximum (for both 32 & 64 bit machines)
 }
 
 FILE 2 {
+
+    - 32 special purpose registers of different possible lengths
+    - * are privileged resources
 
     %00--------(VR_04 "volatile register 04")
     %01--------(VR_05 "volatile register 05")
@@ -166,25 +188,15 @@ breakpoint modes {
         10000 -> break on instruction 32
         10001 -> break on instruction 48
         10010 -> break on instruction 64
-        10011 -> //
-        10100 -> //
-        10101 -> //
-        10110 -> //
-        10111 -> //
-        11000 -> //
-        11001 -> //
-        11010 -> //
-        11011 -> //
-        11100 -> //
-        11101 -> //
-        11110 -> //
-        11111 -> //
 
     for example, setting a value of 0x0000000012345678 in the register BP_0 and a value of 0x0000000000000001 in the BM register will only
     enable BP_0 with "break on instruction address" mode. This mode will trigger a breakpoint exception if the PC ever reaches a value of
     0x0000000012345678.
 
     With 6 BP registers, the total number of bits required for BM are 30 (6*5), this means that BM can be 32 bits only with the remaining upper bits unused.
+
+    NOTE: inactive breakpoint registers can still be used as temporary buffers for any purpose, however, this ABI doesn't specify what to do in that case
+    meaning that it's up to the programmers to agree.
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -194,7 +206,9 @@ special vector registers {
     independent set of flags, which means that this register has the same length as any other vector register. In total each flag will be replicated as many
     times as the number of smallest lane (8 bit lane). For example, if the vector registers are 512 bits long, each flag will be replicated 64 times (512 / 8).
     This way it becomes possible to check individual flags for each specific lane.
-    NOTE: vector flags should never trap (otherwise it would get messy and too complicated).
+
+    NOTE: vector flags can trap, however, only 1 trap can be generated per instruction. For example, if a vector-vector division by zero generates 6 DIV0
+    flags, there will be only 1 DIV0 exception and the appropriate DIV0 flags will still be set normally.
 
     the VMSK register holds the mask bits for conditional vector execution. Each lane will be masked by a single bit that "allows" the particular lane to write
     the result. For convention a 0 will not mask (allow) and a 1 will mask (not allow). A value of all 0s in VMSK simply results in unconditional vector
@@ -208,18 +222,19 @@ event buffers {
     there are 4 event buffer registers: 2 for the user and 2 for the supervisor. These registers are used to save the PC and the CSR registers in case of an
     event. Depending on the privilege of the event, PC and CSR will be saved in different event buffer registers.
 
-    user event:
+    any user event:
 
-        PC -> UEB_0
+        PC  -> UEB_0
         CSR -> UEB_1
 
-    supervisor event:
+    any supervisor event:
 
-        PC -> SEB_0
+        PC  -> SEB_0
         CSR -> SEB_1
 
     returning from an event causes the movement of the appropriate event buffers back into PC and CSR.
-    NOTE: the processor automatically moves PC and CSR to and from the appropriate event buffer automatically as soon as an event is triggered.
+
+    NOTE: the processor must move PC and CSR to and from the appropriate event buffer automatically as soon as an event is triggered or returned.
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -233,8 +248,8 @@ ________________________________________________________________________________
 page table pointer {
 
     this register is a dedicated register used by the MMU to perform the page table walk. on a TLB miss, the processor will fetch the appropriate page table
-    entry from the page table pointer by PTP. Since page tables are unique for every process, this register must be set to the proper address by the kernel
-    during process scheduling.
+    entry from the page table pointed by PTP. Since page table addresses are unique for every process, this register must be set to the proper address by the
+    kernel during process scheduling.
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -269,26 +284,29 @@ control & status register {
 
         system {
 
-            - SUP  (1) (supervisor mode)
-            - BOOT (1) (boot mode)
-            - CON  (1) (consistency mode)
-            - PAG  (1) (enable paging)
+          * - SUP  (1) (supervisor mode)
+          * - BOOT (1) (boot mode)
+          * - CON  (1) (consistency mode)
+          * - PAG  (1) (enable paging)
             - EXC  (1) (enable auto exceptions)
-            - UINT (1) (enable user interrupts)
+          * - UINT (1) (enable user interrupts)
             - SINT (1) (enable supervisor interrupts)
-            - EVT  (1) (event triggered)
-            - HLT  (1) (halt execution)
+          * - EVT  (1) (event triggered)
+          * - HLT  (1) (halt execution)
         }
 
         - //
         - //
+
+    NOTE: in case of multi-core systems, BOOT should only concern the bootstrapping core, for example core 0. All the other cores
+    must start in a halted state. Unlocking cores can be done with special waking interrupts.
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
 process id {
 
     the PID register holds the current executing process ID. In case of a promoting event, the processor should automatically change
-    the value of this register to the ID of the kernel, for example all 0s. The MMU can to avoid flushing the TLB in during context
+    the value of this register to the ID of the kernel, for example all 0s. The MMU can to avoid flushing the TLB during context
     switches with the help of the PID register to filter accesses to similar logical addresses potentially reducing page misses.
 }
 ______________________________________________________________________________________________________________________________________________________________________
