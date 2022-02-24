@@ -93,17 +93,6 @@ FORMATS:
     RD = RS1 <shift> IMMEDIATE
 }
 
-[D] |OPCODE(07)|MOD(04)|RD(05)|RS1(05)|SH(03)|IM1(08/24/40)| {
-
-    - lengths: 4B, 6B, 8B
-
-    MOD(04):
-
-        ...
-
-    TODO: finish
-}
-
 [I] |OPCODE(16)|MOD(04)|RD/RS1(05)|RS2(05)|MSK(02)| {
 
     - length: 4B
@@ -134,13 +123,9 @@ FORMATS:
 
     MOD(04): (moves)
 
-        0000 -> file_0 - file_0
-        0001 -> file_1 - file_1
-        0010 -> file_2 - file_2
-        0011 -> file_0 - file_2
-        0100 -> file_2 - file_0
         ...
 
+        // solo tra file esterni
         TODO: finish this ^^
 
     MOD(04): (conditional mask set?)
@@ -152,7 +137,14 @@ FORMATS:
 
         TODO: finish this ^^
 
-    this format is used for 4 kinds of instructions: vector reduction, casts, moves and conditional mask sets.
+    MOD(04): (2op instructions)
+
+        ...
+
+        TODO: finish this ^^
+
+    this format is used for several kinds of instructions: vector reduction, casts, moves, conditional mask sets
+    and special bit counting instructions.
     Depending on which is it, the appropriate MOD(04) applies.
 }
 
