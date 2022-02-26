@@ -48,15 +48,15 @@ COMPUTATIONAL {
             [I] (RMAC)  Reduced Multiply Accumulate----------------------------------(?????)
             [I] (RDIV)  Reduced Division---------------------------------------------(?????)
 
-            [P] (CADD)  Compressed Addition------------------------------------------(?????)
-            [P] (CSUB)  Compressed Subtraction---------------------------------------(?????)
-            [P] (CSUB)  Compressed Multiplication------------------------------------(?????)
-            [P] (CSUB)  Compressed Division------------------------------------------(?????)
+            [Q] (CADD)  Compressed Addition------------------------------------------(?????)
+            [Q] (CSUB)  Compressed Subtraction---------------------------------------(?????)
+            [Q] (CSUB)  Compressed Multiplication------------------------------------(?????)
+            [Q] (CSUB)  Compressed Division------------------------------------------(?????)
 
-            [Q] (CIADD) Compressed Immediate Addition_08-----------------------------(?????)
-            [Q] (CIADD) Compressed Immediate Addition_16-----------------------------(?????)
-            [Q] (CIADD) Compressed Immediate Addition_32-----------------------------(?????)
-            [Q] (CIADD) Compressed Immediate Addition_64-----------------------------(?????)
+            [R] (CIADD) Compressed Immediate Addition_08-----------------------------(?????)
+            [R] (CIADD) Compressed Immediate Addition_16-----------------------------(?????)
+            [R] (CIADD) Compressed Immediate Addition_32-----------------------------(?????)
+            [R] (CIADD) Compressed Immediate Addition_64-----------------------------(?????)
         }
 
         floating point {
@@ -80,10 +80,10 @@ COMPUTATIONAL {
             [I] (RFMAC) Reduced FP. Multiply Accumulate------------------------------(?????)
             [I] (RFDIV) Reduced FP. Division-----------------------------------------(?????)
 
-            [P] (CFADD) Compressed FP. Addition--------------------------------------(?????)
-            [P] (CFSUB) Compressed FP. Subtraction-----------------------------------(?????)
-            [P] (CFMUL) Compressed FP. Multiplication--------------------------------(?????)
-            [P] (CFDIV) Compressed FP. Division--------------------------------------(?????)
+            [Q] (CFADD) Compressed FP. Addition--------------------------------------(?????)
+            [Q] (CFSUB) Compressed FP. Subtraction-----------------------------------(?????)
+            [Q] (CFMUL) Compressed FP. Multiplication--------------------------------(?????)
+            [Q] (CFDIV) Compressed FP. Division--------------------------------------(?????)
         }
     }
 
@@ -149,8 +149,6 @@ COMPUTATIONAL {
     	[I] (CTZ)  Count Zeros-------------------------------------------------------(?????)
     	[I] (CTLZ) Count Leading Zeros-----------------------------------------------(?????)
     	[I] (CTTZ) Count Trailing Zeros----------------------------------------------(?????)
-
-        ...
     }
 
     TODO: finish compressed

@@ -320,10 +320,10 @@ TODO: system formats maybe?
 
     MOD(03):
 
-        000
-        ...
+        0mm -> regs 0-7
+        1mm -> regs 8-15
 
-    TODO: finish
+    (mm is data type length: 8, 16, 32, 64)
 }
 [R] |OPCODE(07)|RS1(03)|IM1(06)| {
 
