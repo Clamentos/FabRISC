@@ -146,6 +146,7 @@ FILE 2 {
   * %19--------(FU0 "file usage 0")-----------------------[width: 32 bits]
   * %20--------(FU1 "file usage 1")-----------------------[width: 32 bits]
   * %21--------(FU2 "file usage 2")-----------------------[width: 32 bits]
+
   * %22--------(PID "process identifier")-----------------[width: 32 bits]
   * %23--------(CSR "control & status register")----------[width: 32 bits]
   * %24--------(SEB_0 "supervisor event buffer 0")--------[width: word]

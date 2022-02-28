@@ -37,7 +37,6 @@ FORMATS:
         1100 -> scalar LEN
         1101 -> vector-vector LEN
         1110 -> vector-scalar LEN
-        1111 -> IMOD LEN
 
     (mm is data type length: 8, 16, 32, 64)
 
@@ -63,8 +62,6 @@ FORMATS:
         11011 -> vector-scalar LEN l08
         11100 -> vector-scalar LEN l24
         11101 -> vector-scalar LEN l40
-        11110 -> IMOD LEN l08
-        11111 -> IMOD LEN l24
 
     (mm is data type length: 8, 16, 32, 64)
     (l08, l24, l40 are the immediate lengths in bits)
@@ -80,12 +77,9 @@ FORMATS:
     MOD(04):
 
         00mm -> scalar
-        01mm -> v-s
-        10mm -> //
-        1100 -> scalar LEN
-        1101 -> v-s LEN
-        1110 -> //
-        1111 -> IMOD LEN
+        01mm -> vector-scalar
+        1000 -> scalar LEN
+        1001 -> vector-scalar LEN
 
     (mm is data type length: 8, 16, 32, 64)
 
@@ -123,6 +117,10 @@ FORMATS:
 
     MOD(04): (moves)
 
+        0000 -> file_0 - file_1
+        0001 -> file_1 - file_0
+        0010 -> file_0 - file_2
+        0011 -> file_2 - file_0
         ...
 
         // solo tra file esterni
@@ -366,3 +364,271 @@ micro instruction format {
     |OPCODE()|RD(07)|RS1(07)|RS2(07)|RS3(07)|RS4(07)|RD_EN(1)|RS1_EN(1)|RS2_EN(1)|RS3_EN(1)|RS4_EN(1)|...
 }
 ______________________________________________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+NOTE: 'x' means don't care
+
+
+[A] |OPCODE(12)|MOD(05)|RA(05)|RB(05)|RC(05)| { OK
+
+    - length: 4B
+
+    MOD(05):
+
+        x mstt
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('s' is sign: 0 signed, 1 unsigned)
+    ('m' is maks: 0 unmasked, 1 masked)
+    NOTE: computational r,r,r
+
+    MOD(05):
+
+        m00tt -> unfenced
+        m01tt -> acquire
+        m10tt -> release
+        m11tt -> acquire & release
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('m' is mask: 0 unmasked, 1 masked)
+    NOTE: atomic memory
+}
+
+[B] |OPCODE(08)|MOD(06)|RA(05)|RB(05)|IMM(08/24/40)| { OK
+
+    - lengths: 4B, 6B
+
+    MOD(06):
+
+        mllstt
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('s' is sign: 0 signed, 1 unsigned)
+    ('ll' is immediate length: 08, 24, 40)
+    ('m' is mask: 0 unmasked, 1 masked)
+    NOTE: computational r,r,i
+}
+
+[C] |OPCODE(16)|MOD(06)|RA(05)|RB(05)| { OK
+
+    - length: 4B
+
+    MOD(06):
+
+        xx mstt
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('s' is sign: 0 signed, 1 unsigned)
+    ('m' is maks: 0 unmasked, 1 masked)
+    NOTE: computational r,r
+
+    MOD(06):
+
+        ...
+
+    NOTE: vector-scalar moves
+
+    MOD(06):
+
+        ms0000 -> 8-16
+        ms0001 -> 8-32
+        ms0010 -> 8-64
+        ms0011 -> 16-8
+        ms0100 -> 16-32
+        ms0101 -> 16-64
+        ms0110 -> 32-8
+        ms0111 -> 32-16
+        ms1000 -> 32-64
+        ms1001 -> 64-8
+        ms1010 -> 64-16
+        ms1011 -> 64-32
+
+    ('s' is sign: 0 signed, 1 unsigned)
+    ('m' is maks: 0 unmasked, 1 masked)
+    NOTE: casts
+}
+
+[D] |OPCODE(06)|MOD(04)|RA(05)|RB(05)|IMM(12/28)| { OK
+
+    - lengths: 4B, 6B
+
+    MOD(04):
+
+        mltt
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('l' is immediate length: 12, 28)
+    ('m' is mask: 0 unmasked, 1 masked)
+    NOTE: scalar memory transfers. address = (RB + IMM)
+
+    MOD(04):
+
+        x aml
+
+    ('l' is immediate length: 12, 28)
+    ('m' is mask: 0 unmasked, 1 masked)
+    ('a' is addressing mode: standard, striding)
+    NOTE: vector memory transfers:
+
+        - standard -> address = (RB + IMM)
+        - striding -> IMM is used to indicate the stride
+}
+
+[E] |OPCODE(06)|MOD(03)|RA(05)|RB(05)|RC(05)|IMM(08/16)| { OK
+
+    - lengths: 4B, 6B
+
+    MOD(03):
+
+        ltt
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('l' is immediate length: 08, 16)
+    NOTE: scalar memory transfers. address = (RB + (RC * IMM))
+
+    MOD(03):
+
+        aml
+
+    ('l' is immediate length: 08, 16)
+    ('m' is mask: 0 unmasked, 1 masked)
+    ('a' is addressing mode: standard, striding)
+    NOTE: vector memory transfers:
+
+        - standard -> address = (RB + (RC * IMM))
+        - striding -> address = (RB + RC), IMM is used to indicate the stride
+}
+
+[F] |OPCODE(08)|MOD(04)|RA(05)|RB(05)|RC(05)|RD(05)| { OK
+
+    - length: 4B
+
+    MOD(04):
+
+        x mtt
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('m' is mask: 0 unmasked, 1 masked)
+    NOTE: scalar memory transfers. address = (RB + (RC * RD))
+
+    MOD(04):
+
+        xx am
+
+    ('m' is mask: 0 unmasked, 1 masked)
+    ('a' is addressing mode: standard, striding)
+    NOTE: vector memory transfers:
+
+        - standard -> address = (RB + (RC * RD))
+        - striding -> address = (RB + RC), RD is used to indicate the stride
+}
+
+[G] |OPCODE(07)|MOD(04)|RD/RS1(05)|IM1(16/32)| { OK
+
+    - lengths: 4B, 6B
+
+    MOD(04):
+
+        0000 -> file_0 lower l16
+        0001 -> file_0 upper l16
+        0010 -> file_0 l32
+
+        0011 -> file_1 lower l16
+        0100 -> file_1 upper l16
+        0101 -> file_1 l32
+
+        0110 -> file_2 lower l16
+        0111 -> file_2 upper l16
+        1000 -> file_2 l32
+
+    NOTE: block memory
+
+    MOD(04):
+
+        lfff -> flag branch
+
+    ('fff' is the flag specifier)
+    ('l' is immediate length: 16, 32)
+    NOTE: flag branches
+}
+
+[H] |OPCODE(07)|MOD(03)|RS1(05)|RS2(05)|IM1(12/28)| { OK
+
+    - lengths: 4B, 6B
+
+    MOD(03):
+
+        ltt
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('l' is immediate length: 12, 28)
+    NOTE: register compare branches
+}
+
+[I] |OPCODE(07)|MOD(03)|RS1(05)|IM2(08)|IM1(09/25)| {
+
+    - lengths: 4B, 6B
+
+    MOD(03):
+
+        ltt
+
+    ('tt' is data type length: 8, 16, 32, 64)
+    ('l' is immediate length: 09, 25)
+    NOTE: immediate compare branches
+}
+
+[J] |OPCODE(07)|MOD(01)|RD/RS1(05)|IM1(19/35)| {
+
+    - lengths: 4B, 6B
+
+    MOD(01):
+
+        0 -> l19
+        1 -> l35
+
+    (l19, l35 are the imm lengths in bits)
+
+    NOTE: immediate function calls (RAS hint: push)
+}
+
+[K] |OPCODE(07)|MOD(01)|RD(05)|RS1(05)|IM1(14/30)| {
+
+    - lengths: 4B, 6B
+
+    MOD(01):
+
+        0 -> l14
+        1 -> l30
+
+    (l14, l30 are the imm lengths in bits)
+
+    NOTE: register function calls (RAS hint: push)
+}
+
+[L] |OPCODE(14)|MOD(03)|RA(03)|RB(05)|RC(05)|MSK(02)| {
+
+    - length: 4B
+
+    MOD(03):
+
+        0mm -> signed
+        1mm -> unsigned
+
+    (mm is data type length: 8, 16, 32, 64)
+    NOTE: conditional mask setting
+}
+
+000000xxxxxxxxxx ... 000111xxxxxxxxxx  08
+0010000xxxxxxxxx ... 1001111xxxxxxxxx  64
+10100000xxxxxxxx ... 11101111xxxxxxxx  80
+111100000000xxxx ... 111101111111xxxx  128
+...
