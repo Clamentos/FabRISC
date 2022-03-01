@@ -1,418 +1,138 @@
 This file is concerned with the list of instructions
 ______________________________________________________________________________________________________________________________________________________________________
 
-COMPUTATIONAL { (121)
-
-    arithmetic {
-
-        integer {
-
-            [A] (ADD)   Addition-----------------------------------------------------(?????) -
-            [A] (SUB)   Subtraction--------------------------------------------------(?????) -
-            [A] (MUL)   Multiplication-----------------------------------------------(?????) -
-            [A] (MAC)   Multiply Accumulate------------------------------------------(?????) -
-            [A] (DIV)   Division-----------------------------------------------------(?????) -
-            [A] (REM)   Remainder----------------------------------------------------(?????) -
-            [A] (ALS)   Arithmetic Left Shift----------------------------------------(?????) -
-            [A] (ARS)   Arithmetic Right Shift---------------------------------------(?????) -
-
-            [B] (IADD)  Immediate Addition-------------------------------------------(?????) -
-            [B] (ISUB)  Immediate Subtraction----------------------------------------(?????) -
-            [B] (IMUL)  Immediate Multiplication-------------------------------------(?????) -
-            [B] (IMAC)  Immediate Multiply Accumulate--------------------------------(?????) -
-            [B] (IDIV)  Immediate Division-------------------------------------------(?????) -
-            [B] (IREM)  Immediate Remainder------------------------------------------(?????) -
-            [C] (IALS)  Immediate Arithmetic Left Shift------------------------------(?????) -
-            [C] (IARS)  Immediate Arithmetic Right Shift-----------------------------(?????) -
-
-            [A] (ADDC)  Addition Carry-----------------------------------------------(?????) -
-        	[A] (SUBC)  Subtraction Carry--------------------------------------------(?????) -
-            [A] (ALSC)  Arithmetic Left Shift Carry----------------------------------(?????) -
-        	[A] (ARSC)  Arithmetic Right Shift Carry---------------------------------(?????) -
-            [A] (HMUL)  High Multiplication------------------------------------------(?????) -
-            [A] (HMAC)  High Multiply Accumulate-------------------------------------(?????) -
-            [A] (HALS)  High Arithmetic Left Shift-----------------------------------(?????) -
-            [A] (HARS)  High Arithmetic Right Shift----------------------------------(?????) -
-            [B] (HIMUL) Immediate High Multiplication--------------------------------(?????) -
-            [B] (IHMAC) Immediate High Multiply Accumulate---------------------------(?????) -
-            [C] (IHALS) Immediate High Arithmetic Left Shift-------------------------(?????) -
-            [C] (IHARS) Immediate High Arithmetic Right Shift------------------------(?????) -
-            [B] (IADDC) Immediate Addition Carry-------------------------------------(?????) -
-        	[B] (ISUBC) Immediate Subtraction Carry----------------------------------(?????) -
-        	[C] (IALSC) Immediate Arithmetic Left Shift Carry------------------------(?????) -
-        	[C] (IARSC) Immediate Arithmetic Right Shift Carry-----------------------(?????) -
-
-            [I] (RADD)  Reduced Addition---------------------------------------------(?????) /
-            [I] (RSUB)  Reduced Subtraction------------------------------------------(?????) /
-            [I] (RMUL)  Reduced Multiplication---------------------------------------(?????) /
-            [I] (RMAC)  Reduced Multiply Accumulate----------------------------------(?????) /
-            [I] (RDIV)  Reduced Division---------------------------------------------(?????) /
-
-            [Q] (CADD)  Compressed Addition------------------------------------------(?????) -
-            [Q] (CSUB)  Compressed Subtraction---------------------------------------(?????) -
-            [Q] (CSUB)  Compressed Multiplication------------------------------------(?????) -
-            [Q] (CSUB)  Compressed Division------------------------------------------(?????) -
-            [Q] (CALS)  Compressed Arithmetic Left Shift-----------------------------(?????) -
-            [Q] (CARS)  Compressed Arithmetic Right Shift----------------------------(?????) -
-
-            [R] (CIADD) Compressed Immediate Addition_08-----------------------------(?????) -
-            [R] (CIADD) Compressed Immediate Addition_16-----------------------------(?????) -
-            [R] (CIADD) Compressed Immediate Addition_32-----------------------------(?????) -
-            [R] (CIADD) Compressed Immediate Addition_64-----------------------------(?????) -
-        }
-
-        floating point {
-
-            [A] (FADD)  FP. Addition-------------------------------------------------(?????) -
-            [A] (FSUB)  FP. Subtraction----------------------------------------------(?????) -
-            [A] (FMUL)  FP. Multiplication-------------------------------------------(?????) -
-            [A] (FDIV)  FP. Division-------------------------------------------------(?????) -
-            [A] (FMAC)  FP. Multiply Accumulate--------------------------------------(?????) -
-            [A] (FROT)  FP. Nth Root-------------------------------------------------(?????) -
-
-            [B] (IFADD) Immediate FP. Addition---------------------------------------(?????) -
-            [B] (IFSUB) Immediate FP. Subtraction------------------------------------(?????) -
-            [B] (IFMUL) Immediate FP. Multiplication---------------------------------(?????) -
-            [B] (IFDIV) Immediate FP. Division---------------------------------------(?????) -
-            [B] (IFMAC) Immediate FP. Multiply Accumulate----------------------------(?????) -
-
-            [I] (RFADD) Reduced FP. Addition-----------------------------------------(?????) -
-            [I] (RFSUB) Reduced FP. Subtraction--------------------------------------(?????) -
-            [I] (RFMUL) Reduced FP. Multiplication-----------------------------------(?????) -
-            [I] (RFMAC) Reduced FP. Multiply Accumulate------------------------------(?????) -
-            [I] (RFDIV) Reduced FP. Division-----------------------------------------(?????) -
-
-            [Q] (CFADD) Compressed FP. Addition--------------------------------------(?????) -
-            [Q] (CFSUB) Compressed FP. Subtraction-----------------------------------(?????) -
-            [Q] (CFMUL) Compressed FP. Multiplication--------------------------------(?????) -
-            [Q] (CFDIV) Compressed FP. Division--------------------------------------(?????) -
-        }
-    }
-
-    logic {
-
-        [A] (LLS)    Logical Left Shift----------------------------------------------(?????) /
-        [A] (LRS)    Logical Right Shift---------------------------------------------(?????) /
-        [A] (LRT)    Left Rotate-----------------------------------------------------(?????) -
-        [A] (RRT)    Right Rotate----------------------------------------------------(?????) -
-        [A] (SWP)    Bit Swap--------------------------------------------------------(?????) -
-        [A] (AND)    Bitwise AND-----------------------------------------------------(?????) -
-        [A] (NAND)   Bitwise NAND----------------------------------------------------(?????) -
-        [A] (OR)     Bitwise OR------------------------------------------------------(?????) -
-        [A] (NOR)    Bitwise NOR-----------------------------------------------------(?????) -
-        [A] (XOR)    Bitwise XOR-----------------------------------------------------(?????) -
-        [A] (XNOR)   Bitwise XNOR----------------------------------------------------(?????) -
-        [A] (IMP)    Bitwise IMP-----------------------------------------------------(?????) -
-        [A] (NIMP)   Bitwise NIMP----------------------------------------------------(?????) -
-        [A] (CLMUL)  Carry-less Multiplication---------------------------------------(?????) -
-
-        [C] (ILLS)   Immediate Logical Left Shift------------------------------------(?????) /
-        [C] (ILRS)   Immediate Logical Right Shift-----------------------------------(?????) /
-        [C] (ILRT)   Immediate Left Rotate-------------------------------------------(?????) -
-        [C] (IRRT)   Immediate Right Rotate------------------------------------------(?????) -
-        [C] (ISWP)   Immediate Bit Swap----------------------------------------------(?????) -
-        [B] (IAND)   Immediate Bitwise AND-------------------------------------------(?????) -
-        [B] (INAND)  Immediate Bitwise NAND------------------------------------------(?????) -
-        [B] (IOR)    Immediate Bitwise OR--------------------------------------------(?????) -
-        [B] (INOR)   Immediate Bitwise NOR-------------------------------------------(?????) -
-        [B] (IXOR)   Immediate Bitwise XOR-------------------------------------------(?????) -
-        [B] (IXNOR)  Immediate Bitwise XNOR------------------------------------------(?????) -
-        [B] (IIMP)   Immediate Bitwise IMP-------------------------------------------(?????) -
-        [B] (INIMP)  Immediate Bitwise NIMP------------------------------------------(?????) -
-        [B] (ICLMUL) Immediate Carry-less Multiplication-----------------------------(?????) -
-
-        [A] (LLSC)   Logical Left Shift Carry----------------------------------------(?????) /
-        [A] (LRSC)   Logical Right Shift Carry---------------------------------------(?????) /
-        [A] (HLLS)   High Logical Left Shift-----------------------------------------(?????) /
-        [A] (HLRS)   High Logical Right Shift----------------------------------------(?????) /
-        [C] (IHLLS)  Immediate High Logical Left Shift-------------------------------(?????) /
-        [C] (IHLRS)  Immediate High Logical Right Shift------------------------------(?????) /
-        [C] (ILLSC)  Immediate Logical Left Shift Carry------------------------------(?????) /
-        [C] (ILRSC)  Immediate Logical Right Shift Carry-----------------------------(?????) /
-
-        [I] (RAND)   Reduced Bitwise AND---------------------------------------------(?????)
-        [I] (RNAND)  Reduced Bitwise NAND--------------------------------------------(?????)
-        [I] (ROR)    Reduced Bitwise OR----------------------------------------------(?????)
-        [I] (RNOR)   Reduced Bitwise NOR---------------------------------------------(?????)
-        [I] (RXOR)   Reduced Bitwise XOR---------------------------------------------(?????)
-        [I] (RXNOR)  Reduced Bitwise XNOR--------------------------------------------(?????)
-        [I] (RIMP)   Reduced Bitwise IMP---------------------------------------------(?????)
-        [I] (RNIMP)  Reduced Bitwise NIMP--------------------------------------------(?????)
-
-        [Q] (CLLS)   Compressed Logical Left Shift-----------------------------------(?????) -
-        [Q] (CLRS)   Compressed Logical Right Shift----------------------------------(?????) -
-    }
-
-    casts {
-
-        [I] (...) Scalar Integer-Integer Cast-------(?????)
-        [I] (...) Scalar FP-FP Cast-----------------(?????)
-        [I] (...) Vector Integer-Integer Cast-------(?????)
-        [I] (...) Vector FP-FP Cast-----------------(?????)
-        [I] (...) Scalar Integer-FP Cast------------(?????)
-        [I] (...) Scalar FP-Integer Cast------------(?????)
-        [I] (...) Vector Integer-FP Cast------------(?????)
-        [I] (...) Vector FP-Integer Cast------------(?????)
-    }
-
-    miscellaneous {
-
-        [I] (IBF)  Insert Bit Field--------------------------------------------------(?????) -
-        [B] (IIBF) Immediate Insert Bit Field----------------------------------------(?????) -
-
-        [I] (CTO)  Count Ones--------------------------------------------------------(?????) -
-    	[I] (CTLO) Count Leading Ones------------------------------------------------(?????) -
-    	[I] (CTTO) Count Trailing Ones-----------------------------------------------(?????) -
-    	[I] (CTZ)  Count Zeros-------------------------------------------------------(?????) -
-    	[I] (CTLZ) Count Leading Zeros-----------------------------------------------(?????) -
-    	[I] (CTTZ) Count Trailing Zeros----------------------------------------------(?????) -
-    }
-
-    TODO: finish compressed
-}
+[A]: 72
+[B]: 72
+[C]: 50
+[D]:  4
+[E]:  4
+[F]:  4
+[G]:  2
+[H]: 12
+[I]:  4
+[J]:  1
+[K]:  1
+[M]: 10
+[N]: ??
+[O]: ??
+[P]:  1
 ______________________________________________________________________________________________________________________________________________________________________
 
-DATA TRANSFER { (10)
-
-    loads & stores {
-
-        [E] (MLD)   Memory Load------------------------------------------------------(?????) -
-        [E] (MST)   Memory Store-----------------------------------------------------(?????) -
-        [G] (RIMLD) Register Indexed Memory Load-------------------------------------(?????) -
-        [G] (RIMST) Register Indexed Memory Store------------------------------------(?????) -
-        [F] (IMLD)  Indexed Memory Load----------------------------------------------(?????) -
-        [F] (IMST)  Indexed Memory Store---------------------------------------------(?????) -
-
-        [F] (LL)    Load Linked------------------------------------------------------(?????)
-        [F] (SC)    Store Conditional------------------------------------------------(?????)
-
-        [H] (BLD)   Block Load-------------------------------------------------------(?????)
-        [H] (BST)   Block Store------------------------------------------------------(?????)
-    }
-
-    moves {
-
-        [I] (...) Move Register
-
-        TODO: finish this
-    }
-
-    TODO: finish compressed
-}
-______________________________________________________________________________________________________________________________________________________________________
-
-CONTROL TRANSFER { (21)
-
-    branches {
-
-        integer {
-
-            [K] (BEQ)  Branch If Equal-----------------------------------------------(?????)
-            [K] (BNE)  Branch If Not Equal-------------------------------------------(?????)
-            [K] (BLT)  Branch If Less Than-------------------------------------------(?????)
-            [K] (BLE)  Branch If Less Equal------------------------------------------(?????)
-
-            [L] (IBEQ) Immediate Branch If Equal-------------------------------------(?????)
-            [L] (IBNE) Immediate Branch If Not Equal---------------------------------(?????)
-            [L] (IBLT) Immediate Branch If Less Than---------------------------------(?????)
-            [L] (IBLE) Immediate Branch If Less Equal--------------------------------(?????)
-        }
-
-        floating point {
-
-            [K] (FBEQ)  FP. Branch If Equal------------------------------------------(?????)
-            [K] (FBNE)  FP. Branch If Not Equal--------------------------------------(?????)
-            [K] (FBLT)  FP. Branch If Less Than--------------------------------------(?????)
-            [K] (FBLE)  FP. Branch If Less Equal-------------------------------------(?????)
-
-            [L] (IFBEQ) Immediate FP. Branch If Equal--------------------------------(?????)
-            [L] (IFBNE) Immediate FP. Branch If Not Equal----------------------------(?????)
-            [L] (IFBLT) Immediate FP. Branch If Less Than----------------------------(?????)
-            [L] (IFBLE) Immediate FP. Branch If Less Equal---------------------------(?????)
-        }
-
-        [M] (BAF) Branch If Arithmetic Flag------------------------------------------(?????)
-        [M] (BSF) Branch If System Flag----------------------------------------------(?????)
-    }
-
-    calls {
-
-        [O] (CAL)  Function Call-----------------------------------------------------(?????)
-        [P] (RCAL) Register Function Call--------------------------------------------(?????)
-        [?] (RET)  Function Return---------------------------------------------------(?????)
-    }
-
-    mask settings {
-
-        TODO: finish this
-    }
-
-    TODO: finish compressed
-}
-______________________________________________________________________________________________________________________________________________________________________
-
-SYSTEM { (20)
-
-    [?] (...) No Operation---------------------(?????)
-    [?] (...) User Event Return----------------(?????)
-  * [?] (...) Supervisor Event Return----------(?????)
-    [?] (...) Fence Loads----------------------(?????)
-    [?] (...) Fence Stores---------------------(?????)
-    [?] (...) Fence Loads and Stores-----------(?????)
-    [?] (...) Fence Instructions---------------(?????)
-    [?] (...) Transaction Begin----------------(?????)
-    [?] (...) Transaction End------------------(?????)
-    [?] (...) Transaction Abort----------------(?????)
-    [?] (...) Transaction Check----------------(?????)
-
-  * [?] (...) Move Special Register------------(?????)
-  * [?] (...) Cache Operation------------------(?????)
-  * [?] (...) TLB Operation--------------------(?????)
-  * [?] (...) Manipulate Special Register------(?????)
-    [?] (...) System Call----------------------(?????)
-    [?] (...) Wait For Interrupt---------------(?????)
-    [?] (...) Breakpoint Trigger---------------(?????)
-
-  * [?] (...) State Dump-----------------------(?????)
-  * [?] (...) State Restore--------------------(?????)
-
-  TODO: finish this
-}
-______________________________________________________________________________________________________________________________________________________________________
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Computational { (182)
+Computational { [190]
 
     scalar {
 
         integer {
 
-            [A] (ADD)    Addition----------------------------------------------------(?????)
-            [A] (SUB)    Subtraction-------------------------------------------------(?????)
-            [A] (MUL)    Multiplication----------------------------------------------(?????)
-            [A] (MAC)    Multiply Accumulate-----------------------------------------(?????)
-            [A] (DIV)    Division----------------------------------------------------(?????)
-            [A] (REM)    Remainder---------------------------------------------------(?????)
-            [A] (LSH)    Left Shift--------------------------------------------------(?????)
-            [A] (RSH)    Right Shift-------------------------------------------------(?????)
-            [A] (ADDC)   Addition Carry----------------------------------------------(?????)
-        	[A] (SUBC)   Subtraction Carry-------------------------------------------(?????)
-            [A] (LSHC)   Left Shift Carry--------------------------------------------(?????)
-        	[A] (RSHC)   Right Shift Carry-------------------------------------------(?????)
-            [A] (HMUL)   High Multiplication-----------------------------------------(?????)
-            [A] (HMAC)   High Multiply Accumulate------------------------------------(?????)
-            [A] (HLSH)   High Left Shift---------------------------------------------(?????)
-            [A] (HRSH)   High Right Shift--------------------------------------------(?????)
-            [?] (CADD)   Compressed Addition-----------------------------------------(?????)
-            [?] (CSUB)   Compressed Subtraction--------------------------------------(?????)
-            [?] (CSUB)   Compressed Multiplication-----------------------------------(?????)
-            [?] (CSUB)   Compressed Division-----------------------------------------(?????)
-            [?] (CLSH)   Compressed Left Shift---------------------------------------(?????)
-            [?] (CRSH)   Compressed Right Shift--------------------------------------(?????)
+            core { (25)
 
-            [B] (IADD)   Immediate Addition------------------------------------------(?????)
-            [B] (ISUB)   Immediate Subtraction---------------------------------------(?????)
-            [B] (IMUL)   Immediate Multiplication------------------------------------(?????)
-            [B] (IMAC)   Immediate Multiply Accumulate-------------------------------(?????)
-            [B] (IDIV)   Immediate Division------------------------------------------(?????)
-            [B] (IREM)   Immediate Remainder-----------------------------------------(?????)
-            [B] (ILSH)   Immediate Left Shift----------------------------------------(?????)
-            [B] (IRSH)   Immediate Right Shift---------------------------------------(?????)
-            [B] (HIMUL)  Immediate High Multiplication-------------------------------(?????)
-            [B] (IHMAC)  Immediate High Multiply Accumulate--------------------------(?????)
-            [B] (IHLSH)  Immediate High Left Shift-----------------------------------(?????)
-            [B] (IHRSH)  Immediate High Right Shift----------------------------------(?????)
-            [B] (IADDC)  Immediate Addition Carry------------------------------------(?????)
-        	[B] (ISUBC)  Immediate Subtraction Carry---------------------------------(?????)
-        	[B] (ILSHC)  Immediate Left Shift Carry----------------------------------(?????)
-        	[B] (IRSHC)  Immediate Right Shift Carry---------------------------------(?????)
-            [?] (CIADD)  Compressed Immediate Addition_08----------------------------(?????)
-            [?] (CIADD)  Compressed Immediate Addition_16----------------------------(?????)
-            [?] (CIADD)  Compressed Immediate Addition_32----------------------------(?????)
-            [?] (CIADD)  Compressed Immediate Addition_64----------------------------(?????)
+                [A] (ADD)----Addition----------------------------------------(?????)
+                [A] (SUB)----Subtraction-------------------------------------(?????)
+                [A] (LSH)----Left Shift--------------------------------------(?????)
+                [A] (RSH)----Right Shift-------------------------------------(?????)
 
-            [A] (LRT)    Left Rotate-------------------------------------------------(?????)
-            [A] (RRT)    Right Rotate------------------------------------------------(?????)
-            [A] (SWP)    Bit Swap----------------------------------------------------(?????)
-            [A] (AND)    Bitwise AND-------------------------------------------------(?????)
-            [A] (NAND)   Bitwise NAND------------------------------------------------(?????)
-            [A] (OR)     Bitwise OR--------------------------------------------------(?????)
-            [A] (NOR)    Bitwise NOR-------------------------------------------------(?????)
-            [A] (XOR)    Bitwise XOR-------------------------------------------------(?????)
-            [A] (XNOR)   Bitwise XNOR------------------------------------------------(?????)
-            [A] (IMP)    Bitwise IMP-------------------------------------------------(?????)
-            [A] (NIMP)   Bitwise NIMP------------------------------------------------(?????)
-            [A] (CLMUL)  Carry-less Multiplication-----------------------------------(?????)
+                [B] (IADD)---Immediate Addition------------------------------(?????)
+                [B] (ISUB)---Immediate Subtraction---------------------------(?????)
+                [B] (ILSH)---Immediate Left Shift----------------------------(?????)
+                [B] (IRSH)---Immediate Right Shift---------------------------(?????)
 
-            [B] (ILRT)   Immediate Left Rotate---------------------------------------(?????)
-            [B] (IRRT)   Immediate Right Rotate--------------------------------------(?????)
-            [B] (ISWP)   Immediate Bit Swap------------------------------------------(?????)
-            [B] (IAND)   Immediate Bitwise AND---------------------------------------(?????)
-            [B] (INAND)  Immediate Bitwise NAND--------------------------------------(?????)
-            [B] (IOR)    Immediate Bitwise OR----------------------------------------(?????)
-            [B] (INOR)   Immediate Bitwise NOR---------------------------------------(?????)
-            [B] (IXOR)   Immediate Bitwise XOR---------------------------------------(?????)
-            [B] (IXNOR)  Immediate Bitwise XNOR--------------------------------------(?????)
-            [B] (IIMP)   Immediate Bitwise IMP---------------------------------------(?????)
-            [B] (INIMP)  Immediate Bitwise NIMP--------------------------------------(?????)
-            [B] (ICLMUL) Immediate Carry-less Multiplication-------------------------(?????)
+                [A] (LRT)----Left Rotate-------------------------------------(?????)
+                [A] (RRT)----Right Rotate------------------------------------(?????)
+                [A] (AND)----Bitwise AND-------------------------------------(?????)
+                [A] (NAND)---Bitwise NAND------------------------------------(?????)
+                [A] (OR)-----Bitwise OR--------------------------------------(?????)
+                [A] (NOR)----Bitwise NOR-------------------------------------(?????)
+                [A] (XOR)----Bitwise XOR-------------------------------------(?????)
+                [A] (XNOR)---Bitwise XNOR------------------------------------(?????)
 
-            [C] (CTO)    Count Ones--------------------------------------------------(?????)
-        	[C] (CTLO)   Count Leading Ones------------------------------------------(?????)
-        	[C] (CTTO)   Count Trailing Ones-----------------------------------------(?????)
-        	[C] (CTZ)    Count Zeros-------------------------------------------------(?????)
-        	[C] (CTLZ)   Count Leading Zeros-----------------------------------------(?????)
-        	[C] (CTTZ)   Count Trailing Zeros----------------------------------------(?????)
+                [B] (ILRT)---Immediate Left Rotate---------------------------(?????)
+                [B] (IRRT)---Immediate Right Rotate--------------------------(?????)
+                [B] (IAND)---Immediate Bitwise AND---------------------------(?????)
+                [B] (INAND)--Immediate Bitwise NAND--------------------------(?????)
+                [B] (IOR)----Immediate Bitwise OR----------------------------(?????)
+                [B] (INOR)---Immediate Bitwise NOR---------------------------(?????)
+                [B] (IXOR)---Immediate Bitwise XOR---------------------------(?????)
+                [B] (IXNOR)--Immediate Bitwise XNOR--------------------------(?????)
+                [B] (IIBF)---Immediate Insert Bit Field----------------------(?????)
+            }
 
-            [C] (IBF)    Insert Bit Field--------------------------------------------(?????)
-            [B] (IIBF)   Immediate Insert Bit Field----------------------------------(?????)
+            advanced { (38)
+
+                [A] (MUL)----Multiplication----------------------------------(?????)
+                [A] (MAC)----Multiply Accumulate-----------------------------(?????)
+                [A] (DIV)----Division----------------------------------------(?????)
+                [A] (REM)----Remainder---------------------------------------(?????)
+                [A] (ADDC)---Addition Carry----------------------------------(?????)
+                [A] (SUBC)---Subtraction Carry-------------------------------(?????)
+                [A] (LSHC)---Left Shift Carry--------------------------------(?????)
+                [A] (RSHC)---Right Shift Carry-------------------------------(?????)
+                [A] (HMUL)---High Multiplication-----------------------------(?????)
+                [A] (HMAC)---High Multiply Accumulate------------------------(?????)
+                [A] (HLSH)---High Left Shift---------------------------------(?????)
+                [A] (HRSH)---High Right Shift--------------------------------(?????)
+
+                [B] (IMUL)---Immediate Multiplication------------------------(?????)
+                [B] (IMAC)---Immediate Multiply Accumulate-------------------(?????)
+                [B] (IDIV)---Immediate Division------------------------------(?????)
+                [B] (IREM)---Immediate Remainder-----------------------------(?????)
+                [B] (HIMUL)--Immediate High Multiplication-------------------(?????)
+                [B] (IHMAC)--Immediate High Multiply Accumulate--------------(?????)
+                [B] (IHLSH)--Immediate High Left Shift-----------------------(?????)
+                [B] (IHRSH)--Immediate High Right Shift----------------------(?????)
+                [B] (IADDC)--Immediate Addition Carry------------------------(?????)
+            	[B] (ISUBC)--Immediate Subtraction Carry---------------------(?????)
+            	[B] (ILSHC)--Immediate Left Shift Carry----------------------(?????)
+            	[B] (IRSHC)--Immediate Right Shift Carry---------------------(?????)
+
+                [A] (SWP)----Bit Swap----------------------------------------(?????)
+                [A] (IMP)----Bitwise IMP-------------------------------------(?????)
+                [A] (NIMP)---Bitwise NIMP------------------------------------(?????)
+                [A] (CLMUL)--Carry-less Multiplication-----------------------(?????)
+
+                [B] (ISWP)---Immediate Bit Swap------------------------------(?????)
+                [B] (IIMP)---Immediate Bitwise IMP---------------------------(?????)
+                [B] (INIMP)--Immediate Bitwise NIMP--------------------------(?????)
+                [B] (ICLMUL)-Immediate Carry-less Multiplication-------------(?????)
+
+                [C] (CTO)----Count Ones--------------------------------------(?????)
+            	[C] (CTLO)---Count Leading Ones------------------------------(?????)
+            	[C] (CTTO)---Count Trailing Ones-----------------------------(?????)
+            	[C] (CTZ)----Count Zeros-------------------------------------(?????)
+            	[C] (CTLZ)---Count Leading Zeros-----------------------------(?????)
+            	[C] (CTTZ)---Count Trailing Zeros----------------------------(?????)
+            }
         }
 
         floating point {
 
-            [A] (FADD)  FP. Addition-------------------------------------------------(?????)
-            [A] (FSUB)  FP. Subtraction----------------------------------------------(?????)
-            [A] (FMUL)  FP. Multiplication-------------------------------------------(?????)
-            [A] (FDIV)  FP. Division-------------------------------------------------(?????)
-            [A] (FMAC)  FP. Multiply Accumulate--------------------------------------(?????)
-            [A] (FROT)  FP. Nth Root-------------------------------------------------(?????)
+            core { (8)
 
-            [B] (IFADD) Immediate FP. Addition---------------------------------------(?????)
-            [B] (IFSUB) Immediate FP. Subtraction------------------------------------(?????)
-            [B] (IFMUL) Immediate FP. Multiplication---------------------------------(?????)
-            [B] (IFDIV) Immediate FP. Division---------------------------------------(?????)
-            [B] (IFMAC) Immediate FP. Multiply Accumulate----------------------------(?????)
-            [?] (CFADD) Compressed FP. Addition--------------------------------------(?????)
-            [?] (CFSUB) Compressed FP. Subtraction-----------------------------------(?????)
-            [?] (CFMUL) Compressed FP. Multiplication--------------------------------(?????)
-            [?] (CFDIV) Compressed FP. Division--------------------------------------(?????)
+                [A] (FADD)---FP. Addition------------------------------------(?????)
+                [A] (FSUB)---FP. Subtraction---------------------------------(?????)
+                [A] (FMUL)---FP. Multiplication------------------------------(?????)
+                [A] (FDIV)---FP. Division------------------------------------(?????)
+
+                [B] (IFADD)--Immediate FP. Addition--------------------------(?????)
+                [B] (IFSUB)--Immediate FP. Subtraction-----------------------(?????)
+                [B] (IFMUL)--Immediate FP. Multiplication--------------------(?????)
+                [B] (IFDIV)--Immediate FP. Division--------------------------(?????)
+            }
+
+            advanced { (10)
+
+                [A] (FMAC)---FP. Multiply Accumulate-------------------------(?????)
+                [A] (FPOW)---FP. Power---------------------------------------(?????)
+                [A] (FPOW)---FP. Remainder-----------------------------------(?????)
+
+                [B] (IFMAC)--Immediate FP. Multiply Accumulate---------------(?????)
+                [B] (IFPOW)--Immediate FP. Power-----------------------------(?????)
+                [B] (IFPOW)--Immediate FP. Remainder-------------------------(?????)
+
+                [C] (SIN)----Sin---------------------------------------------(?????)
+                [C] (COS)----Cos---------------------------------------------(?????)
+                [C] (ASIN)---Arcsin------------------------------------------(?????)
+                [C] (ACOS)---Arccos------------------------------------------(?????)
+            }
         }
     }
 
@@ -420,228 +140,291 @@ Computational { (182)
 
         integer {
 
-            [A] (VADD)  Vector Addition----------------------------------------------(?????)
-            [A] (VSUB)  Vector Subtraction-------------------------------------------(?????)
-            [A] (VMUL)  Vector Multiplication----------------------------------------(?????)
-            [A] (VMAC)  Vector Multiply Accumulate-----------------------------------(?????)
-            [A] (VDIV)  Vector Division----------------------------------------------(?????)
-            [A] (VREM)  Vector Remainder---------------------------------------------(?????)
-            [A] (VLSH)  Vector Left Shift--------------------------------------------(?????)
-            [A] (VRSH)  Vector Right Shift-------------------------------------------(?????)
-            [A] (VADDC) Vector Addition Carry----------------------------------------(?????)
-            [A] (VSUBC) Vector Subtraction Carry-------------------------------------(?????)
-            [A] (VLSHC) Vector Left Shift Carry--------------------------------------(?????)
-            [A] (VRSHC) Vector Right Shift Carry-------------------------------------(?????)
-            [A] (VHMUL) Vector High Multiplication-----------------------------------(?????)
-            [A] (VHMAC) Vector High Multiply Accumulate------------------------------(?????)
-            [A] (VHLSH) Vector High Left Shift---------------------------------------(?????)
-            [A] (VHRSH) Vector High Right Shift--------------------------------------(?????)
+            core { (25)
 
-            [B] (VIADD)  Vector Immediate Addition-----------------------------------(?????)
-            [B] (VISUB)  Vector Immediate Subtraction--------------------------------(?????)
-            [B] (VIMUL)  Vector Immediate Multiplication-----------------------------(?????)
-            [B] (VIMAC)  Vector Immediate Multiply Accumulate------------------------(?????)
-            [B] (VIDIV)  Vector Immediate Division-----------------------------------(?????)
-            [B] (VIREM)  Vector Immediate Remainder----------------------------------(?????)
-            [B] (VILSH)  Vector Immediate Left Shift---------------------------------(?????)
-            [B] (VIRSH)  Vector Immediate Right Shift--------------------------------(?????)
-            [B] (VHIMUL) Vector Immediate High Multiplication------------------------(?????)
-            [B] (VIHMAC) Vector Immediate High Multiply Accumulate-------------------(?????)
-            [B] (VIHLSH) Vector Immediate High Left Shift----------------------------(?????)
-            [B] (VIHRSH) Vector Immediate High Right Shift---------------------------(?????)
-            [B] (VIADDC) Vector Immediate Addition Carry-----------------------------(?????)
-        	[B] (VISUBC) Vector Immediate Subtraction Carry--------------------------(?????)
-        	[B] (VILSHC) Vector Immediate Left Shift Carry---------------------------(?????)
-        	[B] (VIRSHC) Vector Immediate Right Shift Carry--------------------------(?????)
+                [A] (VADD)--Vector Addition----------------------------------(?????)
+                [A] (VSUB)--Vector Subtraction-------------------------------(?????)
+                [A] (VLSH)--Vector Left Shift--------------------------------(?????)
+                [A] (VRSH)--Vector Right Shift-------------------------------(?????)
 
-            [A] (VLRT)    Vector Left Rotate-----------------------------------------(?????)
-            [A] (VRRT)    Vector Right Rotate----------------------------------------(?????)
-            [A] (VSWP)    Vector Bit Swap--------------------------------------------(?????)
-            [A] (VAND)    Vector Bitwise AND-----------------------------------------(?????)
-            [A] (VNAND)   Vector Bitwise NAND----------------------------------------(?????)
-            [A] (VOR)     Vector Bitwise OR------------------------------------------(?????)
-            [A] (VNOR)    Vector Bitwise NOR-----------------------------------------(?????)
-            [A] (VXOR)    Vector Bitwise XOR-----------------------------------------(?????)
-            [A] (VXNOR)   Vector Bitwise XNOR----------------------------------------(?????)
-            [A] (VIMP)    Vector Bitwise IMP-----------------------------------------(?????)
-            [A] (VNIMP)   Vector Bitwise NIMP----------------------------------------(?????)
-            [A] (VCLMUL)  Vector Carry-less Multiplication---------------------------(?????)
+                [B] (VIADD)--Vector Immediate Addition-----------------------(?????)
+                [B] (VISUB)--Vector Immediate Subtraction--------------------(?????)
+                [B] (VILSH)--Vector Immediate Left Shift---------------------(?????)
+                [B] (VIRSH)--Vector Immediate Right Shift--------------------(?????)
 
-            [B] (VILRT)   Vector Immediate Left Rotate-------------------------------(?????)
-            [B] (VIRRT)   Vector Immediate Right Rotate------------------------------(?????)
-            [B] (VISWP)   Vector Immediate Bit Swap----------------------------------(?????)
-            [B] (VIAND)   Vector Immediate Bitwise AND-------------------------------(?????)
-            [B] (VINAND)  Vector Immediate Bitwise NAND------------------------------(?????)
-            [B] (VIOR)    Vector Immediate Bitwise OR--------------------------------(?????)
-            [B] (VINOR)   Vector Immediate Bitwise NOR-------------------------------(?????)
-            [B] (VIXOR)   Vector Immediate Bitwise XOR-------------------------------(?????)
-            [B] (VIXNOR)  Vector Immediate Bitwise XNOR------------------------------(?????)
-            [B] (VIIMP)   Vector Immediate Bitwise IMP-------------------------------(?????)
-            [B] (VINIMP)  Vector Immediate Bitwise NIMP------------------------------(?????)
-            [B] (VICLMUL) Vector Immediate Carry-less Multiplication-----------------(?????)
+                [A] (VLRT)----Vector Left Rotate-----------------------------(?????)
+                [A] (VRRT)----Vector Right Rotate----------------------------(?????)
+                [A] (VAND)----Vector Bitwise AND-----------------------------(?????)
+                [A] (VNAND)---Vector Bitwise NAND----------------------------(?????)
+                [A] (VOR)-----Vector Bitwise OR------------------------------(?????)
+                [A] (VNOR)----Vector Bitwise NOR-----------------------------(?????)
+                [A] (VXOR)----Vector Bitwise XOR-----------------------------(?????)
+                [A] (VXNOR)---Vector Bitwise XNOR----------------------------(?????)
 
-            [I] (RADD)    Reduced Addition-------------------------------------------(?????)
-            [I] (RSUB)    Reduced Subtraction----------------------------------------(?????)
-            [I] (RMUL)    Reduced Multiplication-------------------------------------(?????)
-            [I] (RMAC)    Reduced Multiply Accumulate--------------------------------(?????)
-            [I] (RDIV)    Reduced Division-------------------------------------------(?????)
-            [I] (RAND)    Reduced Bitwise AND----------------------------------------(?????)
-            [I] (RNAND)   Reduced Bitwise NAND---------------------------------------(?????)
-            [I] (ROR)     Reduced Bitwise OR-----------------------------------------(?????)
-            [I] (RNOR)    Reduced Bitwise NOR----------------------------------------(?????)
-            [I] (RXOR)    Reduced Bitwise XOR----------------------------------------(?????)
-            [I] (RXNOR)   Reduced Bitwise XNOR---------------------------------------(?????)
-            [I] (RIMP)    Reduced Bitwise IMP----------------------------------------(?????)
-            [I] (RNIMP)   Reduced Bitwise NIMP---------------------------------------(?????)
+                [B] (VILRT)---Vector Immediate Left Rotate-------------------(?????)
+                [B] (VIRRT)---Vector Immediate Right Rotate------------------(?????)
+                [B] (VIAND)---Vector Immediate Bitwise AND-------------------(?????)
+                [B] (VINAND)--Vector Immediate Bitwise NAND------------------(?????)
+                [B] (VIOR)----Vector Immediate Bitwise OR--------------------(?????)
+                [B] (VINOR)---Vector Immediate Bitwise NOR-------------------(?????)
+                [B] (VIXOR)---Vector Immediate Bitwise XOR-------------------(?????)
+                [B] (VIXNOR)--Vector Immediate Bitwise XNOR------------------(?????)
+                [B] (VIIBF)---Vector Immediate Insert Bit Field--------------(?????)
+            }
 
-            [C] (VCTO)    Vector Count Ones------------------------------------------(?????)
-        	[C] (VCTLO)   Vector Count Leading Ones----------------------------------(?????)
-        	[C] (VCTTO)   Vector Count Trailing Ones---------------------------------(?????)
-        	[C] (VCTZ)    Vector Count Zeros-----------------------------------------(?????)
-        	[C] (VCTLZ)   Vector Count Leading Zeros---------------------------------(?????)
-        	[C] (VCTTZ)   Vector Count Trailing Zeros--------------------------------(?????)
+            advanced { (51)
 
-            [C] (VIBF)    Vector Insert Bit Field------------------------------------(?????)
-            [B] (VIIBF)   Vector Immediate Insert Bit Field--------------------------(?????)
+                [A] (VMUL)---Vector Multiplication---------------------------(?????)
+                [A] (VMAC)---Vector Multiply Accumulate----------------------(?????)
+                [A] (VDIV)---Vector Division---------------------------------(?????)
+                [A] (VREM)---Vector Remainder--------------------------------(?????)
+                [A] (VADDC)--Vector Addition Carry---------------------------(?????)
+                [A] (VSUBC)--Vector Subtraction Carry------------------------(?????)
+                [A] (VLSHC)--Vector Left Shift Carry-------------------------(?????)
+                [A] (VRSHC)--Vector Right Shift Carry------------------------(?????)
+                [A] (VHMUL)--Vector High Multiplication----------------------(?????)
+                [A] (VHMAC)--Vector High Multiply Accumulate-----------------(?????)
+                [A] (VHLSH)--Vector High Left Shift--------------------------(?????)
+                [A] (VHRSH)--Vector High Right Shift-------------------------(?????)
+
+                [B] (VIMUL)--Vector Immediate Multiplication-----------------(?????)
+                [B] (VIMAC)--Vector Immediate Multiply Accumulate------------(?????)
+                [B] (VIDIV)--Vector Immediate Division-----------------------(?????)
+                [B] (VIREM)--Vector Immediate Remainder----------------------(?????)
+                [B] (VHIMUL)-Vector Immediate High Multiplication------------(?????)
+                [B] (VIHMAC)-Vector Immediate High Multiply Accumulate-------(?????)
+                [B] (VIHLSH)-Vector Immediate High Left Shift----------------(?????)
+                [B] (VIHRSH)-Vector Immediate High Right Shift---------------(?????)
+                [B] (VIADDC)-Vector Immediate Addition Carry-----------------(?????)
+                [B] (VISUBC)-Vector Immediate Subtraction Carry--------------(?????)
+                [B] (VILSHC)-Vector Immediate Left Shift Carry---------------(?????)
+                [B] (VIRSHC)-Vector Immediate Right Shift Carry--------------(?????)
+
+                [A] (VSWP)----Vector Bit Swap--------------------------------(?????)
+                [A] (VIMP)----Vector Bitwise IMP-----------------------------(?????)
+                [A] (VNIMP)---Vector Bitwise NIMP----------------------------(?????)
+                [A] (VCLMUL)--Vector Carry-less Multiplication---------------(?????)
+
+                [B] (VISWP)---Vector Immediate Bit Swap----------------------(?????)
+                [B] (VIIMP)---Vector Immediate Bitwise IMP-------------------(?????)
+                [B] (VINIMP)--Vector Immediate Bitwise NIMP------------------(?????)
+                [B] (VICLMUL)-Vector Immediate Carry-less Multiplication-----(?????)
+
+                [C] (RADD)----Reduced Addition-------------------------------(?????)
+                [C] (RSUB)----Reduced Subtraction----------------------------(?????)
+                [C] (RMUL)----Reduced Multiplication-------------------------(?????)
+                [C] (RMAC)----Reduced Multiply Accumulate--------------------(?????)
+                [C] (RDIV)----Reduced Division-------------------------------(?????)
+                [C] (RAND)----Reduced Bitwise AND----------------------------(?????)
+                [C] (RNAND)---Reduced Bitwise NAND---------------------------(?????)
+                [C] (ROR)-----Reduced Bitwise OR-----------------------------(?????)
+                [C] (RNOR)----Reduced Bitwise NOR----------------------------(?????)
+                [C] (RXOR)----Reduced Bitwise XOR----------------------------(?????)
+                [C] (RXNOR)---Reduced Bitwise XNOR---------------------------(?????)
+                [C] (RIMP)----Reduced Bitwise IMP----------------------------(?????)
+                [C] (RNIMP)---Reduced Bitwise NIMP---------------------------(?????)
+
+                [C] (VCTO)----Vector Count Ones------------------------------(?????)
+                [C] (VCTLO)---Vector Count Leading Ones----------------------(?????)
+                [C] (VCTTO)---Vector Count Trailing Ones---------------------(?????)
+                [C] (VCTZ)----Vector Count Zeros-----------------------------(?????)
+                [C] (VCTLZ)---Vector Count Leading Zeros---------------------(?????)
+                [C] (VCTTZ)---Vector Count Trailing Zeros--------------------(?????)
+            }
         }
 
         floating point {
 
-            [A] (VFADD)  Vector FP. Addition-----------------------------------------(?????)
-            [A] (VFSUB)  Vector FP. Subtraction--------------------------------------(?????)
-            [A] (VFMUL)  Vector FP. Multiplication-----------------------------------(?????)
-            [A] (VFDIV)  Vector FP. Division-----------------------------------------(?????)
-            [A] (VFMAC)  Vector FP. Multiply Accumulate------------------------------(?????)
-            [A] (VFROT)  Vector FP. Nth Root-----------------------------------------(?????)
-            [I] (VRFADD) Vector Reduced FP. Addition---------------------------------(?????)
-            [I] (VRFSUB) Vector Reduced FP. Subtraction------------------------------(?????)
-            [I] (VRFMUL) Vector Reduced FP. Multiplication---------------------------(?????)
-            [I] (VRFMAC) Vector Reduced FP. Multiply Accumulate----------------------(?????)
-            [I] (VRFDIV) Vector Reduced FP. Division---------------------------------(?????)
+            core { (8)
 
-            [B] (VIFADD) Vector Immediate FP. Addition-------------------------------(?????)
-            [B] (VIFSUB) Vector Immediate FP. Subtraction----------------------------(?????)
-            [B] (VIFMUL) Vector Immediate FP. Multiplication-------------------------(?????)
-            [B] (VIFDIV) Vector Immediate FP. Division-------------------------------(?????)
-            [B] (VIFMAC) Vector Immediate FP. Multiply Accumulate--------------------(?????)
+                [A] (VFADD)--Vector FP. Addition-----------------------------(?????)
+                [A] (VFSUB)--Vector FP. Subtraction--------------------------(?????)
+                [A] (VFMUL)--Vector FP. Multiplication-----------------------(?????)
+                [A] (VFDIV)--Vector FP. Division-----------------------------(?????)
+
+                [B] (VIFADD)-Vector Immediate FP. Addition-------------------(?????)
+                [B] (VIFSUB)-Vector Immediate FP. Subtraction----------------(?????)
+                [B] (VIFMUL)-Vector Immediate FP. Multiplication-------------(?????)
+                [B] (VIFDIV)-Vector Immediate FP. Division-------------------(?????)
+            }
+
+            advanced { (17)
+
+                [A] (VFMAC)---Vector FP. Multiply Accumulate-----------------(?????)
+                [A] (VFPOW)---Vector FP. Power-------------------------------(?????)
+                [A] (VFREM)---Vector FP. Remainder---------------------------(?????)
+
+                [B] (VIFMAC)--Vector Immediate FP. Multiply Accumulate-------(?????)
+                [B] (VIFPOW)--Vector Immediate FP. Power---------------------(?????)
+                [B] (VIFREM)--Vector Immediate FP. Remainder-----------------(?????)
+
+                [C] (VSIN)----Vector Sin-------------------------------------(?????)
+                [C] (VCOS)----Vector Cos-------------------------------------(?????)
+                [C] (VASIN)---Vector Arcsin----------------------------------(?????)
+                [C] (VACOS)---Vector Arccos----------------------------------(?????)
+
+                [C] (VRFADD)--Vector Reduced FP. Addition--------------------(?????)
+                [C] (VRFSUB)--Vector Reduced FP. Subtraction-----------------(?????)
+                [C] (VRFBSUB)-Vector Reduced FP. Back Subtraction------------(?????)
+                [C] (VRFMUL)--Vector Reduced FP. Multiplication--------------(?????)
+                [C] (VRFMAC)--Vector Reduced FP. Multiply Accumulate---------(?????)
+                [C] (VRFDIV)--Vector Reduced FP. Division--------------------(?????)
+                [C] (VRFBDIV)-Vector Reduced FP. Back Division---------------(?????)
+            }
         }
     }
 
-    TODO: casts...
-    TODO: finish compressed...
+    casts { (8)
 
-    (82 B)
+        [C] (SIIC)-Scalar Integer-Integer Cast-------------------------------(?????)
+        [C] (SFFC)-Scalar FP-FP Cast-----------------------------------------(?????)
+        [C] (VIIC)-Vector Integer-Integer Cast-------------------------------(?????)
+        [C] (VFFC)-Vector FP-FP Cast-----------------------------------------(?????)
+
+        [C] (SIFC)-Scalar Integer-FP Cast------------------------------------(?????)
+        [C] (SFIC)-Scalar FP-Integer Cast------------------------------------(?????)
+        [C] (VIFC)-Vector Integer-FP Cast------------------------------------(?????)
+        [C] (VFIC)-Vector FP-Integer Cast------------------------------------(?????)
+    }
 }
+______________________________________________________________________________________________________________________________________________________________________
 
-Data Transfer { (14)
+Data Transfer { (17)
 
     loads & stores {
 
         scalar {
 
-            [D] (MLD)   Memory Load--------------------------------------------------(?????)
-            [D] (MST)   Memory Store-------------------------------------------------(?????)
-            [E] (IMLD)  Indexed Memory Load------------------------------------------(?????)
-            [E] (IMST)  Indexed Memory Store-----------------------------------------(?????)
-            [F] (RIMLD) Register Indexed Memory Load---------------------------------(?????)
-            [F] (RIMST) Register Indexed Memory Store--------------------------------(?????)
+            [D] (MLD)---Memory Load------------------------------------------(?????)
+            [D] (MST)---Memory Store-----------------------------------------(?????)
+            [E] (IMLD)--Indexed Memory Load----------------------------------(?????)
+            [E] (IMST)--Indexed Memory Store---------------------------------(?????)
+            [F] (RIMLD)-Register Indexed Memory Load-------------------------(?????)
+            [F] (RIMST)-Register Indexed Memory Store------------------------(?????)
         }
 
         vector {
 
-            [D] (VMLD)   Vector Memory Load------------------------------------------(?????)
-            [D] (VMST)   Vector Memory Store-----------------------------------------(?????)
-            [E] (VIMLD)  Vector Indexed Memory Load----------------------------------(?????)
-            [E] (VIMST)  Vector Indexed Memory Store---------------------------------(?????)
-            [F] (VRIMLD) Vector Register Indexed Memory Load-------------------------(?????)
-            [F] (VRIMST) Vector Register Indexed Memory Store------------------------(?????)
+            [D] (VMLD)---Vector Memory Load----------------------------------(?????)
+            [D] (VMST)---Vector Memory Store---------------------------------(?????)
+            [E] (VIMLD)--Vector Indexed Memory Load--------------------------(?????)
+            [E] (VIMST)--Vector Indexed Memory Store-------------------------(?????)
+            [F] (VRIMLD)-Vector Register Indexed Memory Load-----------------(?????)
+            [F] (VRIMST)-Vector Register Indexed Memory Store----------------(?????)
         }
 
         atomic {
 
-            [A] (LL) Load Linked-----------------------------------------------------(?????)
-            [A] (SC) Store Conditional-----------------------------------------------(?????)
+            [A] (LL)-Load Linked---------------------------------------------(?????)
+            [A] (SC)-Store Conditional---------------------------------------(?????)
+        }
+
+        block {
+
+            [G] (BLD)-Block Load---------------------------------------------(?????)
+            [G] (BST)-Block Store--------------------------------------------(?????)
         }
     }
 
     moves {
 
-        TODO: finish this...
+        [C] (SRCPY) Special Register Copy------------------------------------(?????)
     }
-
-    TODO: finish compressed...
 }
+______________________________________________________________________________________________________________________________________________________________________
 
-Control transfer { (37)
+Control transfer { (25)
 
     branches {
 
         integer {
 
-            [H] (BEQ)  Branch If Equal-----------------------------------------------(?????)
-            [H] (BNE)  Branch If Not Equal-------------------------------------------(?????)
-            [H] (BLT)  Branch If Less Than-------------------------------------------(?????)
-            [H] (BLE)  Branch If Less Equal------------------------------------------(?????)
+            [H] (BEQ)   Branch If Equal--------------------------------------(?????)
+            [H] (BNE)   Branch If Not Equal----------------------------------(?????)
+            [H] (BLT)   Branch If Less Than----------------------------------(?????)
+            [H] (BLE)   Branch If Less Equal---------------------------------(?????)
+            [H] (UBLT)  Unsigned Branch If Less Than-------------------------(?????)
+            [H] (UBLE)  Unsigned Branch If Less Equal------------------------(?????)
 
-            [I] (IBEQ) Immediate Branch If Equal-------------------------------------(?????)
-            [I] (IBNE) Immediate Branch If Not Equal---------------------------------(?????)
-            [I] (IBLT) Immediate Branch If Less Than---------------------------------(?????)
-            [I] (IBLE) Immediate Branch If Less Equal--------------------------------(?????)
+            [I] (BTST)  Branch If Test---------------------------------------(?????)
+            [I] (UBTST) Unsigned Branch If Test------------------------------(?????)
         }
 
         floating point {
 
-            [H] (FBEQ)  FP. Branch If Equal------------------------------------------(?????)
-            [H] (FBNE)  FP. Branch If Not Equal--------------------------------------(?????)
-            [H] (FBLT)  FP. Branch If Less Than--------------------------------------(?????)
-            [H] (FBLE)  FP. Branch If Less Equal-------------------------------------(?????)
+            [H] (FBEQ)   FP. Branch If Equal---------------------------------(?????)
+            [H] (FBNE)   FP. Branch If Not Equal-----------------------------(?????)
+            [H] (FBLT)   FP. Branch If Less Than-----------------------------(?????)
+            [H] (FBLE)   FP. Branch If Less Equal----------------------------(?????)
+            [H] (UFBLT)  Unsigned FP. Branch If Less Than--------------------(?????)
+            [H] (UFBLE)  Unsigned FP. Branch If Less Equal-------------------(?????)
 
-            [I] (IFBEQ) Immediate FP. Branch If Equal--------------------------------(?????)
-            [I] (IFBNE) Immediate FP. Branch If Not Equal----------------------------(?????)
-            [I] (IFBLT) Immediate FP. Branch If Less Than----------------------------(?????)
-            [I] (IFBLE) Immediate FP. Branch If Less Equal---------------------------(?????)
+            [I] (FBTST)  FP. Branch If Test----------------------------------(?????)
+            [I] (UFBTST) Unsigned FP. Branch If Test-------------------------(?????)
         }
 
-       [G] (BAF) Branch If Arithmetic Flag------------------------------------------(?????)
-       [G] (BSF) Branch If System Flag----------------------------------------------(?????)
+       [G] (BAF) Branch If Arithmetic Flag-----------------------------------(?????)
+       [G] (BSF) Branch If System Flag---------------------------------------(?????)
     }
 
     calls {
 
-        [J] (CAL)  Function Call-----------------------------------------------------(?????)
-        [K] (RCAL) Register Function Call--------------------------------------------(?????)
-        [?] (RET)  Function Return---------------------------------------------------(?????)
+        [J] (CAL)  Function Call---------------------------------------------(?????)
+        [K] (RCAL) Register Function Call------------------------------------(?????)
+        [?] (RET)  Function Return-------------------------------------------(?????)
     }
 
     mask settings {
 
-        [L] (SMEQ)  Set Mask If Equal------------------------------------------------(?????)
-        [L] (SMNE)  Set Mask If Not Equal--------------------------------------------(?????)
-        [L] (SMLT)  Set Mask If Less Than--------------------------------------------(?????)
-        [L] (SMLE)  Set Mask If Less Equal-------------------------------------------(?????)
-
-        [L] (VSMEQ) Vector Set Mask If Equal-----------------------------------------(?????)
-        [L] (VSMNE) Vector Set Mask If Not Equal-------------------------------------(?????)
-        [L] (VSMLT) Vector Set Mask If Less Than-------------------------------------(?????)
-        [L] (VSMLE) Vector Set Mask If Less Equal------------------------------------(?????)
-
-        [L] (FSMEQ)  FP. Set Mask If Equal-------------------------------------------(?????)
-        [L] (FSMNE)  FP. Set Mask If Not Equal---------------------------------------(?????)
-        [L] (FSMLT)  FP. Set Mask If Less Than---------------------------------------(?????)
-        [L] (FSMLE)  FP. Set Mask If Less Equal--------------------------------------(?????)
-
-        [L] (VFSMEQ) Vector FP. Set Mask If Equal------------------------------------(?????)
-        [L] (VFSMNE) Vector FP. Set Mask If Not Equal--------------------------------(?????)
-        [L] (VFSMLT) Vector FP. Set Mask If Less Than--------------------------------(?????)
-        [L] (VFSMLE) Vector FP. Set Mask If Less Equal-------------------------------(?????)
+        [C] (SIMSK) Scalar Integer Mask Set----------------------------------(?????)
+        [C] (SFMSK) Scalar FP. Mask Set--------------------------------------(?????)
+        [C] (VIMSK) Vector Integer Mask Set----------------------------------(?????)
+        [C] (VFMSK) Vector FP. Mask Set--------------------------------------(?????)
 
         TODO: add masks settings on flags...
     }
-
-    TODO: finish compressed...
 }
+______________________________________________________________________________________________________________________________________________________________________
 
 System {
 
-    TODO: finish this...
+    [P] (NOP)---No Operation-------------------------------------------------(?????)
+    [P] (UERET)-User Event Return--------------------------------------------(?????)
+  * [P] (SERET)-Supervisor Event Return--------------------------------------(?????)
+    [P] (FNCI)--Fence Instructions-------------------------------------------(?????)
+    [P] (TBEG)--Transaction Begin--------------------------------------------(?????)
+    [P] (TEND)--Transaction End----------------------------------------------(?????)
+    [P] (TABT)--Transaction Abort--------------------------------------------(?????)
+    [P] (TCHK)--Transaction Check--------------------------------------------(?????)
+
+  * [?] (CACOP)-Cache Operation----------------------------------------------(?????)
+  * [?] (MMUOP)-MMU Operation------------------------------------------------(?????)
+    [?] (SYSCL)-System Call--------------------------------------------------(?????)
+    [?] (WINT)--Wait For Interrupt-------------------------------------------(?????)
+    [?] (BPTRG)-Breakpoint Trigger-------------------------------------------(?????)
+
+  * [?] (SDMP)--State Dump---------------------------------------------------(?????)
+  * [?] (SRST)--State Restore------------------------------------------------(?????)
 }
+______________________________________________________________________________________________________________________________________________________________________
+
+Compressed {
+
+    [M] (CADD)   Compressed Addition-----------------------------------------(?????)
+    [M] (CSUB)   Compressed Subtraction--------------------------------------(?????)
+    [M] (CSUB)   Compressed Multiplication-----------------------------------(?????)
+    [M] (CSUB)   Compressed Division-----------------------------------------(?????)
+    [M] (CLSH)   Compressed Left Shift---------------------------------------(?????)
+    [M] (CRSH)   Compressed Right Shift--------------------------------------(?????)
+
+    [?] (CIADD)  Compressed Immediate Addition_08----------------------------(?????)
+    [?] (CIADD)  Compressed Immediate Addition_16----------------------------(?????)
+    [?] (CIADD)  Compressed Immediate Addition_32----------------------------(?????)
+    [?] (CIADD)  Compressed Immediate Addition_64----------------------------(?????)
+
+    [M] (CFADD) Compressed FP. Addition--------------------------------------(?????)
+    [M] (CFSUB) Compressed FP. Subtraction-----------------------------------(?????)
+    [M] (CFMUL) Compressed FP. Multiplication--------------------------------(?????)
+    [M] (CFDIV) Compressed FP. Division--------------------------------------(?????)
+}
+______________________________________________________________________________________________________________________________________________________________________
