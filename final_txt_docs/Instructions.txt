@@ -416,15 +416,22 @@ Compressed {
     [M] (CSUB)   Compressed Division-----------------------------------------(?????)
     [M] (CLSH)   Compressed Left Shift---------------------------------------(?????)
     [M] (CRSH)   Compressed Right Shift--------------------------------------(?????)
+    [M] (CFADD)  Compressed FP. Addition-------------------------------------(?????)
+    [M] (CFSUB)  Compressed FP. Subtraction----------------------------------(?????)
+    [M] (CFMUL)  Compressed FP. Multiplication-------------------------------(?????)
+    [M] (CFDIV)  Compressed FP. Division-------------------------------------(?????)
 
-    [?] (CIADD)  Compressed Immediate Addition_08----------------------------(?????)
-    [?] (CIADD)  Compressed Immediate Addition_16----------------------------(?????)
-    [?] (CIADD)  Compressed Immediate Addition_32----------------------------(?????)
-    [?] (CIADD)  Compressed Immediate Addition_64----------------------------(?????)
+    [N] (CIADD)  Compressed Immediate Addition 08----------------------------(?????)
+    [N] (CIADD)  Compressed Immediate Addition 16----------------------------(?????)
+    [N] (CIADD)  Compressed Immediate Addition 32----------------------------(?????)
+    [N] (CIADD)  Compressed Immediate Addition 64----------------------------(?????)
+    [N] (CBEQZ)  Compressed Branch If NEZ 08---------------------------------(?????)
+    [N] (CBEQZ)  Compressed Branch If NEZ 16---------------------------------(?????)
+    [N] (CBEQZ)  Compressed Branch If NEZ 32---------------------------------(?????)
+    [N] (CBEQZ)  Compressed Branch If NEZ 64---------------------------------(?????)
+    ...16
 
-    [M] (CFADD) Compressed FP. Addition--------------------------------------(?????)
-    [M] (CFSUB) Compressed FP. Subtraction-----------------------------------(?????)
-    [M] (CFMUL) Compressed FP. Multiplication--------------------------------(?????)
-    [M] (CFDIV) Compressed FP. Division--------------------------------------(?????)
+    [O] (CCAL) Branch If Zero Flag
+    [O] (CCAL) Compressed Function Call
 }
 ______________________________________________________________________________________________________________________________________________________________________

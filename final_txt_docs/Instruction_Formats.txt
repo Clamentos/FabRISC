@@ -24,9 +24,6 @@ ________________________________________________________________________________
 
 TODO: normalize the bits (permute bits to make it easier to decode)
 
-FORMATS:
-
-
 [A] |OPCODE(12)|MOD(05)|RA(05)|RB(05)|RC(05)| { OK
 
     - length: 4B
@@ -307,15 +304,9 @@ ________________________________________________________________________________
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-[N] |OPCODE(04)|MOD(02)|RA(05)|IMM(07)| {
+[N] |OPCODE(06)|RA(03)|IMM(07)| {
 
     - length: 2B
-
-    MOD(02):
-
-        tt
-
-    ('tt' is data type length: 8, 16, 32, 64)
     NOTE: compressed computational r-i & test branches
 }
 ______________________________________________________________________________________________________________________________________________________________________
@@ -336,23 +327,19 @@ ________________________________________________________________________________
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-0000xxxxxxxxxxxx ... 0011xxxxxxxxxxxx    max:   4; current:  4; free:  0; cost_per_unit: 4096; budget: 16384
-010000xxxxxxxxxx ... 010111xxxxxxxxxx    max:   8; current:  8; free:  0; cost_per_unit: 1024; budget:  8192
-0110000xxxxxxxxx ... 1011111xxxxxxxxx    max:  48; current: 31; free: 17; cost_per_unit:  512; budget: 24576
-110000000xxxxxxx ... 111011111xxxxxxx    max:  96; current: 76; free: 20; cost_per_unit:  128; budget: 12288
-111100000000xxxx ... 111101111111xxxx    max: 128; current: 72; free: 56; cost_per_unit:   16; budget:  2048
-1111100000000000 ... 1111100000111111    max:  64; current: 50; free: 14; cost_per_unit:    1; budget:    64
+0000xxxxxxxxxxxx ... 0011xxxxxxxxxxxx  max:  4; current:  4; free:  0; cost_per_unit: 4096;
+010000xxxxxxxxxx ... 011011xxxxxxxxxx  max: 12; current:  8; free:  4; cost_per_unit: 1024;
+0111000xxxxxxxxx ... 1100111xxxxxxxxx  max: 48; current: 31; free: 17; cost_per_unit:  512;
+110100000xxxxxxx ... 111110011xxxxxxx  max: 84; current: 76; free:  8; cost_per_unit:  128;
+111110100000xxxx ... 111111110111xxxx  max: 88; current: 72; free: 16; cost_per_unit:   16;
+1111111110000000 ... 1111111110111111  max: 64; current: 50; free: 14; cost_per_unit:    1;
 
-max combinations: 63552
+max opcode pool: 300
+currently used: 241
 ______________________________________________________________________________________________________________________________________________________________________
 
-
-
-
-
-0000xxxxxxxxxxxx ... 0011xxxxxxxxxxxx  4
-010000xxxxxxxxxx ... 011011xxxxxxxxxx  12
-0111000xxxxxxxxx ... 1100111xxxxxxxxx  48
-110100000xxxxxxx ... 111110011xxxxxxx  84
-111110100000xxxx ... 111111110111xxxx  88
-1111111110000000 ... 1111111110111111  64
+000000xxxxxxxxxx ... 011111xxxxxxxxxx   32
+1000000xxxxxxxxx ... 1100111xxxxxxxxx   40
+110100000xxxxxxx ... 111110011xxxxxxx   84
+111110100000xxxx ... 111111110111xxxx   88
+1111111110000000 ... 1111111110111111   64
