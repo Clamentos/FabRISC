@@ -4,49 +4,38 @@ ________________________________________________________________________________
 legend {
 
     OPCODE -> operation code
-    MOD -> mode
-    RD -> register destination
-    RSn -> register source n
-    IMn -> immediate value n
-    MSK -> mask register
-    'x' -> don't care
+    MOD    -> mode
+    Rn     -> register n
+    IMM    -> immediate value
+    'x'    -> don't care
 }
-
-MSK(02) indicates the execution mask for both scalar & vector instructions. FabRISC provides 3 masks that can be selected:
-
-    00 -> always true
-    01 -> mask 0
-    10 -> mask 1
-    11 -> mask 2
-
-masks can be set conditionally with dedicated instructions.
 ______________________________________________________________________________________________________________________________________________________________________
-
-TODO: normalize the bits (permute bits to make it easier to decode)
 
 [A] |OPCODE(12)|MOD(05)|RA(05)|RB(05)|RC(05)| { OK
 
     - length: 4B
 
-    MOD(05):
+    computational r,r,r:
 
-        x mstt
+        MOD(05):
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('s' is sign: 0 signed, 1 unsigned)
-    ('m' is maks: 0 unmasked, 1 masked)
-    NOTE: computational r,r,r
+            x mstt
 
-    MOD(05):
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('s' is sign: 0 signed, 1 unsigned)
+        ('m' is maks: 0 unmasked, 1 masked)
 
-        m00tt -> unfenced
-        m01tt -> acquire
-        m10tt -> release
-        m11tt -> acquire & release
+    atomic memory:
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('m' is mask: 0 unmasked, 1 masked)
-    NOTE: atomic memory
+        MOD(05):
+
+            m00tt -> unfenced
+            m01tt -> acquire
+            m10tt -> release
+            m11tt -> acquire & release
+
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('m' is mask: 0 unmasked, 1 masked)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -54,15 +43,16 @@ ________________________________________________________________________________
 
     - lengths: 4B, 6B
 
-    MOD(05):
+    computational r,r,i:
 
-        mlstt
+        MOD(05):
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('s' is sign: 0 signed, 1 unsigned)
-    ('l' is immediate length: 08, 24)
-    ('m' is mask: 0 unmasked, 1 masked)
-    NOTE: computational r,r,i
+            mlstt
+
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('s' is sign: 0 signed, 1 unsigned)
+        ('l' is immediate length: 08, 24)
+        ('m' is mask: 0 unmasked, 1 masked)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -70,58 +60,62 @@ ________________________________________________________________________________
 
     - length: 4B
 
-    MOD(06):
+    NOTE: computational r,r:
+    
+        MOD(06):
 
-        xx mstt
+            xx mstt
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('s' is sign: 0 signed, 1 unsigned)
-    ('m' is maks: 0 unmasked, 1 masked)
-    NOTE: computational r,r
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('s' is sign: 0 signed, 1 unsigned)
+        ('m' is maks: 0 unmasked, 1 masked)
 
-    MOD(06):
+    special moves:
+    
+        MOD(06):
 
-        x m00tt -> file_0 - file_2
-        x m01tt -> file_2 - file_0
-        x m1000 -> VFLG - file_0
-        x m1001 -> file_0 - VFLG
-        x m1010 -> VFLG - file_1
-        x m1011 -> file_1 - VFLG
+            x m00tt -> file_0 - file_2
+            x m01tt -> file_2 - file_0
+            x m1000 -> VFLG - file_0
+            x m1001 -> file_0 - VFLG
+            x m1010 -> VFLG - file_1
+            x m1011 -> file_1 - VFLG
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('m' is maks: 0 unmasked, 1 masked)
-    NOTE: special moves
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('m' is maks: 0 unmasked, 1 masked)
 
-    MOD(06):
+    casts & conversions:
+    
+        MOD(06):
 
-        ms0000 -> 8-16
-        ms0001 -> 8-32
-        ms0010 -> 8-64
-        ms0011 -> 16-8
-        ms0100 -> 16-32
-        ms0101 -> 16-64
-        ms0110 -> 32-8
-        ms0111 -> 32-16
-        ms1000 -> 32-64
-        ms1001 -> 64-8
-        ms1010 -> 64-16
-        ms1011 -> 64-32
+            ms0000 -> 8-16
+            ms0001 -> 8-32
+            ms0010 -> 8-64
+            ms0011 -> 16-8
+            ms0100 -> 16-32
+            ms0101 -> 16-64
+            ms0110 -> 32-8
+            ms0111 -> 32-16
+            ms1000 -> 32-64
+            ms1001 -> 64-8
+            ms1010 -> 64-16
+            ms1011 -> 64-32
 
-    ('s' is sign: 0 signed, 1 unsigned)
-    ('m' is maks: 0 unmasked, 1 masked)
-    NOTE: casts
+        ('s' is sign: 0 signed, 1 unsigned)
+        ('m' is maks: 0 unmasked, 1 masked)
 
-    MOD(06):
+    conditional compare mask setting:
+    
+        MOD(06):
 
-        00mstt -> EQ
-        01mstt -> NE
-        10mstt -> LT
-        11mstt -> LE
+            00mstt -> EQ
+            01mstt -> NE
+            10mstt -> LT
+            11mstt -> LE
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('s' is sign: 0 signed, 1 unsigned)
-    ('m' is maks: 0 unmasked, 1 masked)
-    NOTE: conditional compare mask setting
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('s' is sign: 0 signed, 1 unsigned)
+        ('m' is maks: 0 unmasked, 1 masked)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -129,24 +123,26 @@ ________________________________________________________________________________
 
     - lengths: 4B, 6B
 
-    MOD(04):
+    scalar memory transfers:
+    
+        MOD(04):
 
-        mltt
+            mltt
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('l' is immediate length: 12, 28)
-    ('m' is mask: 0 unmasked, 1 masked)
-    NOTE: scalar memory transfers. address = (RB + IMM)
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('l' is immediate length: 12, 28)
+        ('m' is mask: 0 unmasked, 1 masked)
+        address = (RB + IMM)
 
-    MOD(04):
+    vector memory transfers:
+    
+        MOD(04):
 
-        x aml
+            x aml
 
-    ('l' is immediate length: 12, 28)
-    ('m' is mask: 0 unmasked, 1 masked)
-    ('a' is addressing mode: standard, striding)
-    NOTE: vector memory transfers:
-
+        ('l' is immediate length: 12, 28)
+        ('m' is mask: 0 unmasked, 1 masked)
+        ('a' is addressing mode: standard, striding)
         - standard -> address = (RB + IMM)
         - striding -> IMM is used to indicate the stride
 }
@@ -156,23 +152,25 @@ ________________________________________________________________________________
 
     - lengths: 4B, 6B
 
-    MOD(03):
+    scalar memory transfers:
+    
+        MOD(03):
 
-        ltt
+            ltt
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('l' is immediate length: 08, 16)
-    NOTE: scalar memory transfers. address = (RB + (RC * IMM))
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('l' is immediate length: 08, 16)
+        address = (RB + (RC * IMM))
 
-    MOD(03):
+    vector memory transfers:
+    
+        MOD(03):
 
-        aml
+            aml
 
-    ('l' is immediate length: 08, 16)
-    ('m' is mask: 0 unmasked, 1 masked)
-    ('a' is addressing mode: standard, striding)
-    NOTE: vector memory transfers:
-
+        ('l' is immediate length: 08, 16)
+        ('m' is mask: 0 unmasked, 1 masked)
+        ('a' is addressing mode: standard, striding)
         - standard -> address = (RB + (RC * IMM))
         - striding -> address = (RB + RC), IMM is used to indicate the stride
 }
@@ -182,22 +180,24 @@ ________________________________________________________________________________
 
     - length: 4B
 
-    MOD(03):
+    scalar memory transfers:
+    
+        MOD(03):
 
-        mtt
+            mtt
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('m' is mask: 0 unmasked, 1 masked)
-    NOTE: scalar memory transfers. address = (RB + (RC * RD))
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('m' is mask: 0 unmasked, 1 masked)
+        address = (RB + (RC * RD))
 
-    MOD(03):
+    vector memory transfers:
+    
+        MOD(03):
 
-        x am
+            x am
 
-    ('m' is mask: 0 unmasked, 1 masked)
-    ('a' is addressing mode: standard, striding)
-    NOTE: vector memory transfers:
-
+        ('m' is mask: 0 unmasked, 1 masked)
+        ('a' is addressing mode: standard, striding)
         - standard -> address = (RB + (RC * RD))
         - striding -> address = (RB + RC), RD is used to indicate the stride
 }
@@ -207,29 +207,30 @@ ________________________________________________________________________________
 
     - lengths: 4B, 6B
 
-    MOD(04):
+    block memory:
+    
+        MOD(04):
 
-        0000 -> file_0 lower l16
-        0001 -> file_0 upper l16
-        0010 -> file_0 l32
+            0000 -> file_0 lower l16
+            0001 -> file_0 upper l16
+            0010 -> file_0 l32
 
-        0011 -> file_1 lower l16
-        0100 -> file_1 upper l16
-        0101 -> file_1 l32
+            0011 -> file_1 lower l16
+            0100 -> file_1 upper l16
+            0101 -> file_1 l32
 
-        0110 -> file_2 lower l16
-        0111 -> file_2 upper l16
-        1000 -> file_2 l32
+            0110 -> file_2 lower l16
+            0111 -> file_2 upper l16
+            1000 -> file_2 l32
 
-    NOTE: block memory
+    flag branches:
+    
+        MOD(04):
 
-    MOD(04):
+            lfff -> flag branch
 
-        lfff -> flag branch
-
-    ('fff' is the flag specifier)
-    ('l' is immediate length: 16, 32)
-    NOTE: flag branches
+        ('fff' is the flag specifier)
+        ('l' is immediate length: 16, 32)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -237,13 +238,14 @@ ________________________________________________________________________________
 
     - lengths: 4B, 6B
 
-    MOD(03):
+    register compare branches:
+    
+        MOD(03):
 
-        ltt
+            ltt
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('l' is immediate length: 12, 28)
-    NOTE: register compare branches
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('l' is immediate length: 12, 28)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -251,63 +253,71 @@ ________________________________________________________________________________
 
     - lengths: 4B, 6B
 
-    MOD(05):
+    compare with zero branches:
+    
+        MOD(05):
 
-        l00tt -> EQZ
-        l01tt -> NEZ
-        l10tt -> LTZ
-        l11tt -> LEZ
+            l00tt -> EQZ
+            l01tt -> NEZ
+            l10tt -> LTZ
+            l11tt -> LEZ
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('l' is immediate length: 12, 28)
-    NOTE: compare with zero branches
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('l' is immediate length: 12, 28)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-[J] |OPCODE(07)|MOD(01)|RA(05)|IMM(19/35)| { OK
+[J] |OPCODE(06)|MOD(01)|RA(05)|IMM(20/36)| { OK
 
     - lengths: 4B, 6B
 
-    MOD(01):
+    immediate function calls:
+    
+        MOD(01):
 
-        l
+            l
 
-    ('l' is immediate length: 19, 35)
-    NOTE: immediate function calls (RAS hint: push)
+        ('l' is immediate length: 20, 36)
+        (RAS hint: push)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-[K] |OPCODE(07)|MOD(01)|RA(05)|RB(05)|IMM(14/30)| { OK
+[K] |OPCODE(06)|MOD(01)|RA(05)|RB(05)|IMM(15/31)| { OK
 
     - lengths: 4B, 6B
 
-    MOD(01):
+    register function calls:
+    
+        MOD(01):
 
-        l
+            l
 
-    ('l' is immediate length: 14, 30)
-    NOTE: register function calls (RAS hint: push)
+        ('l' is immediate length: 20, 36)
+        (RAS hint: push)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-[M] |OPCODE(07)|MOD(03)|RD/RS1(03)|RS2(03)| {
+[M] |OPCODE(07)|MOD(03)|RD/RS1(03)|RS2(03)| { OK
 
     - length: 2B
 
-    MOD(03):
+    compressed computational r-r:
+    
+        MOD(03):
 
-        stt
+            stt
 
-    ('tt' is data type length: 8, 16, 32, 64)
-    ('s' is sign: 0 signed, 1 unsigned)
-    NOTE: compressed computational r-r
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('s' is sign: 0 signed, 1 unsigned)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-[N] |OPCODE(06)|RA(03)|IMM(07)| {
+[N] |OPCODE(06)|RA(03)|IMM(07)| { OK
 
     - length: 2B
-    NOTE: compressed computational r-i & test branches
+
+    compressed computational r-i
+    compressed test branches
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -319,11 +329,16 @@ ________________________________________________________________________________
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-[P] |OPCODE(07)|MOD(04)|RA(05)| {
+[P] |OPCODE(07)|MOD(04)|RA(05)| { OK
 
     - length: 2B
 
-    ...
+    miscellaneous instructions:
+
+        MOD(04):
+
+            - MOD(04) is treated as a nested opcode
+            - see instruction list
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -338,8 +353,24 @@ max opcode pool: 300
 currently used: 241
 ______________________________________________________________________________________________________________________________________________________________________
 
-000000xxxxxxxxxx ... 011111xxxxxxxxxx   32
-1000000xxxxxxxxx ... 1100111xxxxxxxxx   40
-110100000xxxxxxx ... 111110011xxxxxxx   84
-111110100000xxxx ... 111111110111xxxx   88
-1111111110000000 ... 1111111110111111   64
+000000xxx xxxxxxx ... 011111xxx xxxxxxx   32
+1000000xx xxxxxxx ... 1100111xx xxxxxxx   40
+110100000 xxxxxxx ... 111110011 xxxxxxx   84
+111110100 000xxxx ... 111111110 111xxxx   88
+111111111 0000000 ... 111111111 0111111   64
+
+[A]: 72
+[B]: 72
+[C]: 50
+[D]:  4
+[E]:  4
+[F]:  4
+[G]:  2
+[H]: 12
+[I]:  4
+[J]:  1
+[K]:  1
+[M]: 10
+[N]: ??
+[O]: ??
+[P]:  1

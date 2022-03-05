@@ -1,22 +1,9 @@
 This file is concerned with the list of instructions
 ______________________________________________________________________________________________________________________________________________________________________
 
-[A]: 72
-[B]: 72
-[C]: 50
-[D]:  4
-[E]:  4
-[F]:  4
-[G]:  2
-[H]: 12
-[I]:  4
-[J]:  1
-[K]:  1
-[M]: 10
-[N]: ??
-[O]: ??
-[P]:  1
 ______________________________________________________________________________________________________________________________________________________________________
+
+INSTRUCTION LIST:
 
 Computational { [190]
 
@@ -26,73 +13,73 @@ Computational { [190]
 
             core { (25)
 
-                [A] (ADD)----Addition----------------------------------------(?????)
-                [A] (SUB)----Subtraction-------------------------------------(?????)
-                [A] (LSH)----Left Shift--------------------------------------(?????)
-                [A] (RSH)----Right Shift-------------------------------------(?????)
+                [A] (ADD)----Addition----------------------------------------(?????)----OPCODE:000000000000
+                [A] (SUB)----Subtraction-------------------------------------(?????)----OPCODE:000000000000
+                [A] (LSH)----Left Shift--------------------------------------(?????)----OPCODE:000000000000
+                [A] (RSH)----Right Shift-------------------------------------(?????)----OPCODE:000000000000
 
-                [B] (IADD)---Immediate Addition------------------------------(?????)
-                [B] (ISUB)---Immediate Subtraction---------------------------(?????)
-                [B] (ILSH)---Immediate Left Shift----------------------------(?????)
-                [B] (IRSH)---Immediate Right Shift---------------------------(?????)
+                [B] (IADD)---Immediate Addition------------------------------(?????)----OPCODE:000000000
+                [B] (ISUB)---Immediate Subtraction---------------------------(?????)----OPCODE:000000000
+                [B] (ILSH)---Immediate Left Shift----------------------------(?????)----OPCODE:000000000
+                [B] (IRSH)---Immediate Right Shift---------------------------(?????)----OPCODE:000000000
 
-                [A] (LRT)----Left Rotate-------------------------------------(?????)
-                [A] (RRT)----Right Rotate------------------------------------(?????)
-                [A] (AND)----Bitwise AND-------------------------------------(?????)
-                [A] (NAND)---Bitwise NAND------------------------------------(?????)
-                [A] (OR)-----Bitwise OR--------------------------------------(?????)
-                [A] (NOR)----Bitwise NOR-------------------------------------(?????)
-                [A] (XOR)----Bitwise XOR-------------------------------------(?????)
-                [A] (XNOR)---Bitwise XNOR------------------------------------(?????)
+                [A] (LRT)----Left Rotate-------------------------------------(?????)----OPCODE:000000000000
+                [A] (RRT)----Right Rotate------------------------------------(?????)----OPCODE:000000000000
+                [A] (AND)----Bitwise AND-------------------------------------(?????)----OPCODE:000000000000
+                [A] (NAND)---Bitwise NAND------------------------------------(?????)----OPCODE:000000000000
+                [A] (OR)-----Bitwise OR--------------------------------------(?????)----OPCODE:000000000000
+                [A] (NOR)----Bitwise NOR-------------------------------------(?????)----OPCODE:000000000000
+                [A] (XOR)----Bitwise XOR-------------------------------------(?????)----OPCODE:000000000000
+                [A] (XNOR)---Bitwise XNOR------------------------------------(?????)----OPCODE:000000000000
 
-                [B] (ILRT)---Immediate Left Rotate---------------------------(?????)
-                [B] (IRRT)---Immediate Right Rotate--------------------------(?????)
-                [B] (IAND)---Immediate Bitwise AND---------------------------(?????)
-                [B] (INAND)--Immediate Bitwise NAND--------------------------(?????)
-                [B] (IOR)----Immediate Bitwise OR----------------------------(?????)
-                [B] (INOR)---Immediate Bitwise NOR---------------------------(?????)
-                [B] (IXOR)---Immediate Bitwise XOR---------------------------(?????)
-                [B] (IXNOR)--Immediate Bitwise XNOR--------------------------(?????)
-                [B] (IIBF)---Immediate Insert Bit Field----------------------(?????)
+                [B] (ILRT)---Immediate Left Rotate---------------------------(?????)----OPCODE:000000000
+                [B] (IRRT)---Immediate Right Rotate--------------------------(?????)----OPCODE:000000000
+                [B] (IAND)---Immediate Bitwise AND---------------------------(?????)----OPCODE:000000000
+                [B] (INAND)--Immediate Bitwise NAND--------------------------(?????)----OPCODE:000000000
+                [B] (IOR)----Immediate Bitwise OR----------------------------(?????)----OPCODE:000000000
+                [B] (INOR)---Immediate Bitwise NOR---------------------------(?????)----OPCODE:000000000
+                [B] (IXOR)---Immediate Bitwise XOR---------------------------(?????)----OPCODE:000000000
+                [B] (IXNOR)--Immediate Bitwise XNOR--------------------------(?????)----OPCODE:000000000
+                [B] (IIBF)---Immediate Insert Bit Field----------------------(?????)----OPCODE:000000000
             }
 
             advanced { (38)
 
-                [A] (MUL)----Multiplication----------------------------------(?????)
-                [A] (MAC)----Multiply Accumulate-----------------------------(?????)
-                [A] (DIV)----Division----------------------------------------(?????)
-                [A] (REM)----Remainder---------------------------------------(?????)
-                [A] (ADDC)---Addition Carry----------------------------------(?????)
-                [A] (SUBC)---Subtraction Carry-------------------------------(?????)
-                [A] (LSHC)---Left Shift Carry--------------------------------(?????)
-                [A] (RSHC)---Right Shift Carry-------------------------------(?????)
-                [A] (HMUL)---High Multiplication-----------------------------(?????)
-                [A] (HMAC)---High Multiply Accumulate------------------------(?????)
-                [A] (HLSH)---High Left Shift---------------------------------(?????)
-                [A] (HRSH)---High Right Shift--------------------------------(?????)
+                [A] (MUL)----Multiplication----------------------------------(?????)----OPCODE:000000000000
+                [A] (MAC)----Multiply Accumulate-----------------------------(?????)----OPCODE:000000000000
+                [A] (DIV)----Division----------------------------------------(?????)----OPCODE:000000000000
+                [A] (REM)----Remainder---------------------------------------(?????)----OPCODE:000000000000
+                [A] (ADDC)---Addition Carry----------------------------------(?????)----OPCODE:000000000000
+                [A] (SUBC)---Subtraction Carry-------------------------------(?????)----OPCODE:000000000000
+                [A] (LSHC)---Left Shift Carry--------------------------------(?????)----OPCODE:000000000000
+                [A] (RSHC)---Right Shift Carry-------------------------------(?????)----OPCODE:000000000000
+                [A] (HMUL)---High Multiplication-----------------------------(?????)----OPCODE:000000000000
+                [A] (HMAC)---High Multiply Accumulate------------------------(?????)----OPCODE:000000000000
+                [A] (HLSH)---High Left Shift---------------------------------(?????)----OPCODE:000000000000
+                [A] (HRSH)---High Right Shift--------------------------------(?????)----OPCODE:000000000000
 
-                [B] (IMUL)---Immediate Multiplication------------------------(?????)
-                [B] (IMAC)---Immediate Multiply Accumulate-------------------(?????)
-                [B] (IDIV)---Immediate Division------------------------------(?????)
-                [B] (IREM)---Immediate Remainder-----------------------------(?????)
-                [B] (HIMUL)--Immediate High Multiplication-------------------(?????)
-                [B] (IHMAC)--Immediate High Multiply Accumulate--------------(?????)
-                [B] (IHLSH)--Immediate High Left Shift-----------------------(?????)
-                [B] (IHRSH)--Immediate High Right Shift----------------------(?????)
-                [B] (IADDC)--Immediate Addition Carry------------------------(?????)
-            	[B] (ISUBC)--Immediate Subtraction Carry---------------------(?????)
-            	[B] (ILSHC)--Immediate Left Shift Carry----------------------(?????)
-            	[B] (IRSHC)--Immediate Right Shift Carry---------------------(?????)
+                [B] (IMUL)---Immediate Multiplication------------------------(?????)----OPCODE:000000000
+                [B] (IMAC)---Immediate Multiply Accumulate-------------------(?????)----OPCODE:000000000
+                [B] (IDIV)---Immediate Division------------------------------(?????)----OPCODE:000000000
+                [B] (IREM)---Immediate Remainder-----------------------------(?????)----OPCODE:000000000
+                [B] (HIMUL)--Immediate High Multiplication-------------------(?????)----OPCODE:000000000
+                [B] (IHMAC)--Immediate High Multiply Accumulate--------------(?????)----OPCODE:000000000
+                [B] (IHLSH)--Immediate High Left Shift-----------------------(?????)----OPCODE:000000000
+                [B] (IHRSH)--Immediate High Right Shift----------------------(?????)----OPCODE:000000000
+                [B] (IADDC)--Immediate Addition Carry------------------------(?????)----OPCODE:000000000
+            	[B] (ISUBC)--Immediate Subtraction Carry---------------------(?????)----OPCODE:000000000
+            	[B] (ILSHC)--Immediate Left Shift Carry----------------------(?????)----OPCODE:000000000
+            	[B] (IRSHC)--Immediate Right Shift Carry---------------------(?????)----OPCODE:000000000
 
-                [A] (SWP)----Bit Swap----------------------------------------(?????)
-                [A] (IMP)----Bitwise IMP-------------------------------------(?????)
-                [A] (NIMP)---Bitwise NIMP------------------------------------(?????)
-                [A] (CLMUL)--Carry-less Multiplication-----------------------(?????)
+                [A] (SWP)----Bit Swap----------------------------------------(?????)----OPCODE:000000000000
+                [A] (IMP)----Bitwise IMP-------------------------------------(?????)----OPCODE:000000000000
+                [A] (NIMP)---Bitwise NIMP------------------------------------(?????)----OPCODE:000000000000
+                [A] (CLMUL)--Carry-less Multiplication-----------------------(?????)----OPCODE:000000000000
 
-                [B] (ISWP)---Immediate Bit Swap------------------------------(?????)
-                [B] (IIMP)---Immediate Bitwise IMP---------------------------(?????)
-                [B] (INIMP)--Immediate Bitwise NIMP--------------------------(?????)
-                [B] (ICLMUL)-Immediate Carry-less Multiplication-------------(?????)
+                [B] (ISWP)---Immediate Bit Swap------------------------------(?????)----OPCODE:000000000
+                [B] (IIMP)---Immediate Bitwise IMP---------------------------(?????)----OPCODE:000000000
+                [B] (INIMP)--Immediate Bitwise NIMP--------------------------(?????)----OPCODE:000000000
+                [B] (ICLMUL)-Immediate Carry-less Multiplication-------------(?????)----OPCODE:000000000
 
                 [C] (CTO)----Count Ones--------------------------------------(?????)
             	[C] (CTLO)---Count Leading Ones------------------------------(?????)
@@ -107,26 +94,26 @@ Computational { [190]
 
             core { (8)
 
-                [A] (FADD)---FP. Addition------------------------------------(?????)
-                [A] (FSUB)---FP. Subtraction---------------------------------(?????)
-                [A] (FMUL)---FP. Multiplication------------------------------(?????)
-                [A] (FDIV)---FP. Division------------------------------------(?????)
+                [A] (FADD)---FP. Addition------------------------------------(?????)----OPCODE:000000000000
+                [A] (FSUB)---FP. Subtraction---------------------------------(?????)----OPCODE:000000000000
+                [A] (FMUL)---FP. Multiplication------------------------------(?????)----OPCODE:000000000000
+                [A] (FDIV)---FP. Division------------------------------------(?????)----OPCODE:000000000000
 
-                [B] (IFADD)--Immediate FP. Addition--------------------------(?????)
-                [B] (IFSUB)--Immediate FP. Subtraction-----------------------(?????)
-                [B] (IFMUL)--Immediate FP. Multiplication--------------------(?????)
-                [B] (IFDIV)--Immediate FP. Division--------------------------(?????)
+                [B] (IFADD)--Immediate FP. Addition--------------------------(?????)----OPCODE:000000000
+                [B] (IFSUB)--Immediate FP. Subtraction-----------------------(?????)----OPCODE:000000000
+                [B] (IFMUL)--Immediate FP. Multiplication--------------------(?????)----OPCODE:000000000
+                [B] (IFDIV)--Immediate FP. Division--------------------------(?????)----OPCODE:000000000
             }
 
             advanced { (10)
 
-                [A] (FMAC)---FP. Multiply Accumulate-------------------------(?????)
-                [A] (FPOW)---FP. Power---------------------------------------(?????)
-                [A] (FPOW)---FP. Remainder-----------------------------------(?????)
+                [A] (FMAC)---FP. Multiply Accumulate-------------------------(?????)----OPCODE:000000000000
+                [A] (FPOW)---FP. Power---------------------------------------(?????)----OPCODE:000000000000
+                [A] (FPOW)---FP. Remainder-----------------------------------(?????)----OPCODE:000000000000
 
-                [B] (IFMAC)--Immediate FP. Multiply Accumulate---------------(?????)
-                [B] (IFPOW)--Immediate FP. Power-----------------------------(?????)
-                [B] (IFPOW)--Immediate FP. Remainder-------------------------(?????)
+                [B] (IFMAC)--Immediate FP. Multiply Accumulate---------------(?????)----OPCODE:000000000
+                [B] (IFPOW)--Immediate FP. Power-----------------------------(?????)----OPCODE:000000000
+                [B] (IFPOW)--Immediate FP. Remainder-------------------------(?????)----OPCODE:000000000
 
                 [C] (SIN)----Sin---------------------------------------------(?????)
                 [C] (COS)----Cos---------------------------------------------(?????)
@@ -142,73 +129,73 @@ Computational { [190]
 
             core { (25)
 
-                [A] (VADD)--Vector Addition----------------------------------(?????)
-                [A] (VSUB)--Vector Subtraction-------------------------------(?????)
-                [A] (VLSH)--Vector Left Shift--------------------------------(?????)
-                [A] (VRSH)--Vector Right Shift-------------------------------(?????)
+                [A] (VADD)--Vector Addition----------------------------------(?????)----OPCODE:000000000000
+                [A] (VSUB)--Vector Subtraction-------------------------------(?????)----OPCODE:000000000000
+                [A] (VLSH)--Vector Left Shift--------------------------------(?????)----OPCODE:000000000000
+                [A] (VRSH)--Vector Right Shift-------------------------------(?????)----OPCODE:000000000000
 
-                [B] (VIADD)--Vector Immediate Addition-----------------------(?????)
-                [B] (VISUB)--Vector Immediate Subtraction--------------------(?????)
-                [B] (VILSH)--Vector Immediate Left Shift---------------------(?????)
-                [B] (VIRSH)--Vector Immediate Right Shift--------------------(?????)
+                [B] (VIADD)--Vector Immediate Addition-----------------------(?????)----OPCODE:000000000
+                [B] (VISUB)--Vector Immediate Subtraction--------------------(?????)----OPCODE:000000000
+                [B] (VILSH)--Vector Immediate Left Shift---------------------(?????)----OPCODE:000000000
+                [B] (VIRSH)--Vector Immediate Right Shift--------------------(?????)----OPCODE:000000000
 
-                [A] (VLRT)----Vector Left Rotate-----------------------------(?????)
-                [A] (VRRT)----Vector Right Rotate----------------------------(?????)
-                [A] (VAND)----Vector Bitwise AND-----------------------------(?????)
-                [A] (VNAND)---Vector Bitwise NAND----------------------------(?????)
-                [A] (VOR)-----Vector Bitwise OR------------------------------(?????)
-                [A] (VNOR)----Vector Bitwise NOR-----------------------------(?????)
-                [A] (VXOR)----Vector Bitwise XOR-----------------------------(?????)
-                [A] (VXNOR)---Vector Bitwise XNOR----------------------------(?????)
+                [A] (VLRT)----Vector Left Rotate-----------------------------(?????)----OPCODE:000000000000
+                [A] (VRRT)----Vector Right Rotate----------------------------(?????)----OPCODE:000000000000
+                [A] (VAND)----Vector Bitwise AND-----------------------------(?????)----OPCODE:000000000000
+                [A] (VNAND)---Vector Bitwise NAND----------------------------(?????)----OPCODE:000000000000
+                [A] (VOR)-----Vector Bitwise OR------------------------------(?????)----OPCODE:000000000000
+                [A] (VNOR)----Vector Bitwise NOR-----------------------------(?????)----OPCODE:000000000000
+                [A] (VXOR)----Vector Bitwise XOR-----------------------------(?????)----OPCODE:000000000000
+                [A] (VXNOR)---Vector Bitwise XNOR----------------------------(?????)----OPCODE:000000000000
 
-                [B] (VILRT)---Vector Immediate Left Rotate-------------------(?????)
-                [B] (VIRRT)---Vector Immediate Right Rotate------------------(?????)
-                [B] (VIAND)---Vector Immediate Bitwise AND-------------------(?????)
-                [B] (VINAND)--Vector Immediate Bitwise NAND------------------(?????)
-                [B] (VIOR)----Vector Immediate Bitwise OR--------------------(?????)
-                [B] (VINOR)---Vector Immediate Bitwise NOR-------------------(?????)
-                [B] (VIXOR)---Vector Immediate Bitwise XOR-------------------(?????)
-                [B] (VIXNOR)--Vector Immediate Bitwise XNOR------------------(?????)
-                [B] (VIIBF)---Vector Immediate Insert Bit Field--------------(?????)
+                [B] (VILRT)---Vector Immediate Left Rotate-------------------(?????)----OPCODE:000000000
+                [B] (VIRRT)---Vector Immediate Right Rotate------------------(?????)----OPCODE:000000000
+                [B] (VIAND)---Vector Immediate Bitwise AND-------------------(?????)----OPCODE:000000000
+                [B] (VINAND)--Vector Immediate Bitwise NAND------------------(?????)----OPCODE:000000000
+                [B] (VIOR)----Vector Immediate Bitwise OR--------------------(?????)----OPCODE:000000000
+                [B] (VINOR)---Vector Immediate Bitwise NOR-------------------(?????)----OPCODE:000000000
+                [B] (VIXOR)---Vector Immediate Bitwise XOR-------------------(?????)----OPCODE:000000000
+                [B] (VIXNOR)--Vector Immediate Bitwise XNOR------------------(?????)----OPCODE:000000000
+                [B] (VIIBF)---Vector Immediate Insert Bit Field--------------(?????)----OPCODE:000000000
             }
 
             advanced { (51)
 
-                [A] (VMUL)---Vector Multiplication---------------------------(?????)
-                [A] (VMAC)---Vector Multiply Accumulate----------------------(?????)
-                [A] (VDIV)---Vector Division---------------------------------(?????)
-                [A] (VREM)---Vector Remainder--------------------------------(?????)
-                [A] (VADDC)--Vector Addition Carry---------------------------(?????)
-                [A] (VSUBC)--Vector Subtraction Carry------------------------(?????)
-                [A] (VLSHC)--Vector Left Shift Carry-------------------------(?????)
-                [A] (VRSHC)--Vector Right Shift Carry------------------------(?????)
-                [A] (VHMUL)--Vector High Multiplication----------------------(?????)
-                [A] (VHMAC)--Vector High Multiply Accumulate-----------------(?????)
-                [A] (VHLSH)--Vector High Left Shift--------------------------(?????)
-                [A] (VHRSH)--Vector High Right Shift-------------------------(?????)
+                [A] (VMUL)---Vector Multiplication---------------------------(?????)----OPCODE:000000000000
+                [A] (VMAC)---Vector Multiply Accumulate----------------------(?????)----OPCODE:000000000000
+                [A] (VDIV)---Vector Division---------------------------------(?????)----OPCODE:000000000000
+                [A] (VREM)---Vector Remainder--------------------------------(?????)----OPCODE:000000000000
+                [A] (VADDC)--Vector Addition Carry---------------------------(?????)----OPCODE:000000000000
+                [A] (VSUBC)--Vector Subtraction Carry------------------------(?????)----OPCODE:000000000000
+                [A] (VLSHC)--Vector Left Shift Carry-------------------------(?????)----OPCODE:000000000000
+                [A] (VRSHC)--Vector Right Shift Carry------------------------(?????)----OPCODE:000000000000
+                [A] (VHMUL)--Vector High Multiplication----------------------(?????)----OPCODE:000000000000
+                [A] (VHMAC)--Vector High Multiply Accumulate-----------------(?????)----OPCODE:000000000000
+                [A] (VHLSH)--Vector High Left Shift--------------------------(?????)----OPCODE:000000000000
+                [A] (VHRSH)--Vector High Right Shift-------------------------(?????)----OPCODE:000000000000
 
-                [B] (VIMUL)--Vector Immediate Multiplication-----------------(?????)
-                [B] (VIMAC)--Vector Immediate Multiply Accumulate------------(?????)
-                [B] (VIDIV)--Vector Immediate Division-----------------------(?????)
-                [B] (VIREM)--Vector Immediate Remainder----------------------(?????)
-                [B] (VHIMUL)-Vector Immediate High Multiplication------------(?????)
-                [B] (VIHMAC)-Vector Immediate High Multiply Accumulate-------(?????)
-                [B] (VIHLSH)-Vector Immediate High Left Shift----------------(?????)
-                [B] (VIHRSH)-Vector Immediate High Right Shift---------------(?????)
-                [B] (VIADDC)-Vector Immediate Addition Carry-----------------(?????)
-                [B] (VISUBC)-Vector Immediate Subtraction Carry--------------(?????)
-                [B] (VILSHC)-Vector Immediate Left Shift Carry---------------(?????)
-                [B] (VIRSHC)-Vector Immediate Right Shift Carry--------------(?????)
+                [B] (VIMUL)--Vector Immediate Multiplication-----------------(?????)----OPCODE:000000000
+                [B] (VIMAC)--Vector Immediate Multiply Accumulate------------(?????)----OPCODE:000000000
+                [B] (VIDIV)--Vector Immediate Division-----------------------(?????)----OPCODE:000000000
+                [B] (VIREM)--Vector Immediate Remainder----------------------(?????)----OPCODE:000000000
+                [B] (VHIMUL)-Vector Immediate High Multiplication------------(?????)----OPCODE:000000000
+                [B] (VIHMAC)-Vector Immediate High Multiply Accumulate-------(?????)----OPCODE:000000000
+                [B] (VIHLSH)-Vector Immediate High Left Shift----------------(?????)----OPCODE:000000000
+                [B] (VIHRSH)-Vector Immediate High Right Shift---------------(?????)----OPCODE:000000000
+                [B] (VIADDC)-Vector Immediate Addition Carry-----------------(?????)----OPCODE:000000000
+                [B] (VISUBC)-Vector Immediate Subtraction Carry--------------(?????)----OPCODE:000000000
+                [B] (VILSHC)-Vector Immediate Left Shift Carry---------------(?????)----OPCODE:000000000
+                [B] (VIRSHC)-Vector Immediate Right Shift Carry--------------(?????)----OPCODE:000000000
 
-                [A] (VSWP)----Vector Bit Swap--------------------------------(?????)
-                [A] (VIMP)----Vector Bitwise IMP-----------------------------(?????)
-                [A] (VNIMP)---Vector Bitwise NIMP----------------------------(?????)
-                [A] (VCLMUL)--Vector Carry-less Multiplication---------------(?????)
+                [A] (VSWP)----Vector Bit Swap--------------------------------(?????)----OPCODE:000000000000
+                [A] (VIMP)----Vector Bitwise IMP-----------------------------(?????)----OPCODE:000000000000
+                [A] (VNIMP)---Vector Bitwise NIMP----------------------------(?????)----OPCODE:000000000000
+                [A] (VCLMUL)--Vector Carry-less Multiplication---------------(?????)----OPCODE:000000000000
 
-                [B] (VISWP)---Vector Immediate Bit Swap----------------------(?????)
-                [B] (VIIMP)---Vector Immediate Bitwise IMP-------------------(?????)
-                [B] (VINIMP)--Vector Immediate Bitwise NIMP------------------(?????)
-                [B] (VICLMUL)-Vector Immediate Carry-less Multiplication-----(?????)
+                [B] (VISWP)---Vector Immediate Bit Swap----------------------(?????)----OPCODE:000000000
+                [B] (VIIMP)---Vector Immediate Bitwise IMP-------------------(?????)----OPCODE:000000000
+                [B] (VINIMP)--Vector Immediate Bitwise NIMP------------------(?????)----OPCODE:000000000
+                [B] (VICLMUL)-Vector Immediate Carry-less Multiplication-----(?????)----OPCODE:000000000
 
                 [C] (RADD)----Reduced Addition-------------------------------(?????)
                 [C] (RSUB)----Reduced Subtraction----------------------------(?????)
@@ -237,26 +224,26 @@ Computational { [190]
 
             core { (8)
 
-                [A] (VFADD)--Vector FP. Addition-----------------------------(?????)
-                [A] (VFSUB)--Vector FP. Subtraction--------------------------(?????)
-                [A] (VFMUL)--Vector FP. Multiplication-----------------------(?????)
-                [A] (VFDIV)--Vector FP. Division-----------------------------(?????)
+                [A] (VFADD)--Vector FP. Addition-----------------------------(?????)----OPCODE:000000000000
+                [A] (VFSUB)--Vector FP. Subtraction--------------------------(?????)----OPCODE:000000000000
+                [A] (VFMUL)--Vector FP. Multiplication-----------------------(?????)----OPCODE:000000000000
+                [A] (VFDIV)--Vector FP. Division-----------------------------(?????)----OPCODE:000000000000
 
-                [B] (VIFADD)-Vector Immediate FP. Addition-------------------(?????)
-                [B] (VIFSUB)-Vector Immediate FP. Subtraction----------------(?????)
-                [B] (VIFMUL)-Vector Immediate FP. Multiplication-------------(?????)
-                [B] (VIFDIV)-Vector Immediate FP. Division-------------------(?????)
+                [B] (VIFADD)-Vector Immediate FP. Addition-------------------(?????)----OPCODE:000000000
+                [B] (VIFSUB)-Vector Immediate FP. Subtraction----------------(?????)----OPCODE:000000000
+                [B] (VIFMUL)-Vector Immediate FP. Multiplication-------------(?????)----OPCODE:000000000
+                [B] (VIFDIV)-Vector Immediate FP. Division-------------------(?????)----OPCODE:000000000
             }
 
             advanced { (17)
 
-                [A] (VFMAC)---Vector FP. Multiply Accumulate-----------------(?????)
-                [A] (VFPOW)---Vector FP. Power-------------------------------(?????)
-                [A] (VFREM)---Vector FP. Remainder---------------------------(?????)
+                [A] (VFMAC)---Vector FP. Multiply Accumulate-----------------(?????)----OPCODE:000000000000
+                [A] (VFPOW)---Vector FP. Power-------------------------------(?????)----OPCODE:000000000000
+                [A] (VFREM)---Vector FP. Remainder---------------------------(?????)----OPCODE:000000000000
 
-                [B] (VIFMAC)--Vector Immediate FP. Multiply Accumulate-------(?????)
-                [B] (VIFPOW)--Vector Immediate FP. Power---------------------(?????)
-                [B] (VIFREM)--Vector Immediate FP. Remainder-----------------(?????)
+                [B] (VIFMAC)--Vector Immediate FP. Multiply Accumulate-------(?????)----OPCODE:000000000
+                [B] (VIFPOW)--Vector Immediate FP. Power---------------------(?????)----OPCODE:000000000
+                [B] (VIFREM)--Vector Immediate FP. Remainder-----------------(?????)----OPCODE:000000000
 
                 [C] (VSIN)----Vector Sin-------------------------------------(?????)
                 [C] (VCOS)----Vector Cos-------------------------------------(?????)
@@ -276,6 +263,8 @@ Computational { [190]
 
     casts { (8)
 
+        TODO: assign to proper module
+
         [C] (SIIC)-Scalar Integer-Integer Cast-------------------------------(?????)
         [C] (SFFC)-Scalar FP-FP Cast-----------------------------------------(?????)
         [C] (VIIC)-Vector Integer-Integer Cast-------------------------------(?????)
@@ -289,126 +278,157 @@ Computational { [190]
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-Data Transfer { (17)
+Data Transfer { [17]
 
-    loads & stores {
+    scalar {
 
-        scalar {
+        core { (3)
 
             [D] (MLD)---Memory Load------------------------------------------(?????)
             [D] (MST)---Memory Store-----------------------------------------(?????)
-            [E] (IMLD)--Indexed Memory Load----------------------------------(?????)
-            [E] (IMST)--Indexed Memory Store---------------------------------(?????)
-            [F] (RIMLD)-Register Indexed Memory Load-------------------------(?????)
-            [F] (RIMST)-Register Indexed Memory Store------------------------(?????)
+            [C] (SRCPY)-Special Register Copy--------------------------------(?????)
         }
 
-        vector {
+        advanced { (4)
+
+            [E] (IMLD)--Indexed Memory Load----------------------------------(?????)
+            [E] (IMST)--Indexed Memory Store---------------------------------(?????)
+            [F] (RIMLD)-Register Indexed Memory Load-------------------------(?????)----OPCODE:000000000
+            [F] (RIMST)-Register Indexed Memory Store------------------------(?????)----OPCODE:000000000
+        }
+    }
+
+    vector {
+
+        core { (2)
 
             [D] (VMLD)---Vector Memory Load----------------------------------(?????)
             [D] (VMST)---Vector Memory Store---------------------------------(?????)
+        }
+
+        advanced { (4)
+
             [E] (VIMLD)--Vector Indexed Memory Load--------------------------(?????)
             [E] (VIMST)--Vector Indexed Memory Store-------------------------(?????)
-            [F] (VRIMLD)-Vector Register Indexed Memory Load-----------------(?????)
-            [F] (VRIMST)-Vector Register Indexed Memory Store----------------(?????)
-        }
-
-        atomic {
-
-            [A] (LL)-Load Linked---------------------------------------------(?????)
-            [A] (SC)-Store Conditional---------------------------------------(?????)
-        }
-
-        block {
-
-            [G] (BLD)-Block Load---------------------------------------------(?????)
-            [G] (BST)-Block Store--------------------------------------------(?????)
+            [F] (VRIMLD)-Vector Register Indexed Memory Load-----------------(?????)----OPCODE:000000000
+            [F] (VRIMST)-Vector Register Indexed Memory Store----------------(?????)----OPCODE:000000000
         }
     }
 
-    moves {
+    atomic { (2)
 
-        [C] (SRCPY) Special Register Copy------------------------------------(?????)
+        [A] (LL)-Load Linked-------------------------------------------------(?????)
+        [A] (SC)-Store Conditional-------------------------------------------(?????)
+    }
+
+    block { (2)
+
+        [G] (BLD)-Block Load-------------------------------------------------(?????)
+        [G] (BST)-Block Store------------------------------------------------(?????)
     }
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-Control transfer { (25)
+Control transfer { [25]
 
-    branches {
+    integer {
 
-        integer {
+        core { (8)
 
-            [H] (BEQ)   Branch If Equal--------------------------------------(?????)
-            [H] (BNE)   Branch If Not Equal----------------------------------(?????)
-            [H] (BLT)   Branch If Less Than----------------------------------(?????)
-            [H] (BLE)   Branch If Less Equal---------------------------------(?????)
-            [H] (UBLT)  Unsigned Branch If Less Than-------------------------(?????)
-            [H] (UBLE)  Unsigned Branch If Less Equal------------------------(?????)
+            [H] (BEQ)---Branch If Equal--------------------------------------(?????)
+            [H] (BNE)---Branch If Not Equal----------------------------------(?????)
+            [H] (BLT)---Branch If Less Than----------------------------------(?????)
+            [H] (BLE)---Branch If Less Equal---------------------------------(?????)
+            [H] (UBLT)--Unsigned Branch If Less Than-------------------------(?????)
+            [H] (UBLE)--Unsigned Branch If Less Equal------------------------(?????)
 
-            [I] (BTST)  Branch If Test---------------------------------------(?????)
-            [I] (UBTST) Unsigned Branch If Test------------------------------(?????)
+            [J] (CAL)---Function Call----------------------------------------(?????)
+            [P] (RET)---Function Return--------------------------------------(?????)
         }
 
-        floating point {
+        advanced { (6)
 
-            [H] (FBEQ)   FP. Branch If Equal---------------------------------(?????)
-            [H] (FBNE)   FP. Branch If Not Equal-----------------------------(?????)
-            [H] (FBLT)   FP. Branch If Less Than-----------------------------(?????)
-            [H] (FBLE)   FP. Branch If Less Equal----------------------------(?????)
-            [H] (UFBLT)  Unsigned FP. Branch If Less Than--------------------(?????)
-            [H] (UFBLE)  Unsigned FP. Branch If Less Equal-------------------(?????)
+            [C] (SIMSK)-Scalar Integer Mask Set------------------------------(?????)
+            
+            [I] (BTST)--Branch If Test---------------------------------------(?????)
+            [I] (UBTST)-Unsigned Branch If Test------------------------------(?????)
+            
+            [G] (BAF)--Branch If Arithmetic Flag-----------------------------(?????)
+            [G] (BSF)--Branch If System Flag---------------------------------(?????)
+            [K] (RCAL)-Register Function Call--------------------------------(?????)
+        }
+    }
 
-            [I] (FBTST)  FP. Branch If Test----------------------------------(?????)
-            [I] (UFBTST) Unsigned FP. Branch If Test-------------------------(?????)
+    floating point {
+
+        core { (6)
+
+            [H] (FBEQ)--FP. Branch If Equal----------------------------------(?????)
+            [H] (FBNE)--FP. Branch If Not Equal------------------------------(?????)
+            [H] (FBLT)--FP. Branch If Less Than------------------------------(?????)
+            [H] (FBLE)--FP. Branch If Less Equal-----------------------------(?????)
+            [H] (UFBLT)-Unsigned FP. Branch If Less Than---------------------(?????)
+            [H] (UFBLE)-Unsigned FP. Branch If Less Equal--------------------(?????)
         }
 
-       [G] (BAF) Branch If Arithmetic Flag-----------------------------------(?????)
-       [G] (BSF) Branch If System Flag---------------------------------------(?????)
+        advanced { (3)
+
+            [C] (SFMSK)-Scalar FP. Mask Set----------------------------------(?????)
+            
+            [I] (FBTST)--FP. Branch If Test----------------------------------(?????)
+            [I] (UFBTST)-Unsigned FP. Branch If Test-------------------------(?????)
+        }
     }
 
-    calls {
 
-        [J] (CAL)  Function Call---------------------------------------------(?????)
-        [K] (RCAL) Register Function Call------------------------------------(?????)
-        [?] (RET)  Function Return-------------------------------------------(?????)
-    }
+    vector {
 
-    mask settings {
+        core { (2)
 
-        [C] (SIMSK) Scalar Integer Mask Set----------------------------------(?????)
-        [C] (SFMSK) Scalar FP. Mask Set--------------------------------------(?????)
-        [C] (VIMSK) Vector Integer Mask Set----------------------------------(?????)
-        [C] (VFMSK) Vector FP. Mask Set--------------------------------------(?????)
+            [C] (VIMSK)-Vector Integer Mask Set------------------------------(?????)
+            [C] (VFMSK)-Vector FP. Mask Set----------------------------------(?????)
+        }
 
-        TODO: add masks settings on flags...
+        advanced { (?)
+
+            TODO: add masks settings on flags and tests
+        }
     }
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-System {
+System { [14]
 
-    [P] (NOP)---No Operation-------------------------------------------------(?????)
-    [P] (UERET)-User Event Return--------------------------------------------(?????)
-  * [P] (SERET)-Supervisor Event Return--------------------------------------(?????)
-    [P] (FNCI)--Fence Instructions-------------------------------------------(?????)
-    [P] (TBEG)--Transaction Begin--------------------------------------------(?????)
-    [P] (TEND)--Transaction End----------------------------------------------(?????)
-    [P] (TABT)--Transaction Abort--------------------------------------------(?????)
-    [P] (TCHK)--Transaction Check--------------------------------------------(?????)
+    core { (2)
 
-  * [?] (CACOP)-Cache Operation----------------------------------------------(?????)
-  * [?] (MMUOP)-MMU Operation------------------------------------------------(?????)
-    [?] (SYSCL)-System Call--------------------------------------------------(?????)
-    [?] (WINT)--Wait For Interrupt-------------------------------------------(?????)
-    [?] (BPTRG)-Breakpoint Trigger-------------------------------------------(?????)
+        [P] (NOP)---No Operation---------------------------------------------(?????)
+      * [P] (CACOP)-Cache Operation------------------------------------------(?????)
+    }
 
-  * [?] (SDMP)--State Dump---------------------------------------------------(?????)
-  * [?] (SRST)--State Restore------------------------------------------------(?????)
+    advanced { (12)
+
+        [P] (UERET)-User Event Return----------------------------------------(?????)
+      * [P] (SERET)-Supervisor Event Return----------------------------------(?????)
+      * [P] (MMUOP)-MMU Operation--------------------------------------------(?????)
+        [O] (SYSCL)-System Call----------------------------------------------(?????)
+        [?] (WINT)--Wait For Interrupt---------------------------------------(?????)
+        [?] (BPTRG)-Breakpoint Trigger---------------------------------------(?????)
+
+      * [P] (SDMP)--State Dump-----------------------------------------------(?????)
+      * [P] (SRST)--State Restore--------------------------------------------(?????)
+    }
+
+    transactional memory {
+
+        [P] (TBEG)--Transaction Begin----------------------------------------(?????)
+        [P] (TEND)--Transaction End------------------------------------------(?????)
+        [P] (TABT)--Transaction Abort----------------------------------------(?????)
+        [P] (TCHK)--Transaction Check----------------------------------------(?????)
+    }
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-Compressed {
+Compressed { [20]
 
     [M] (CADD)   Compressed Addition-----------------------------------------(?????)
     [M] (CSUB)   Compressed Subtraction--------------------------------------(?????)
@@ -433,5 +453,7 @@ Compressed {
 
     [O] (CCAL) Branch If Zero Flag
     [O] (CCAL) Compressed Function Call
+
+    TODO: finish this
 }
 ______________________________________________________________________________________________________________________________________________________________________
