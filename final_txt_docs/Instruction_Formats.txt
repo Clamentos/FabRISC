@@ -60,7 +60,7 @@ ________________________________________________________________________________
 
     - length: 4B
 
-    NOTE: computational r,r:
+    computational r,r:
     
         MOD(06):
 
@@ -83,6 +83,8 @@ ________________________________________________________________________________
 
         ('tt' is data type length: 8, 16, 32, 64)
         ('m' is maks: 0 unmasked, 1 masked)
+
+        WARNING: fencing here is not needed anymore since there are dedicated ones
 
     casts & conversions:
     

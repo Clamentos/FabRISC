@@ -8,37 +8,37 @@ FILE 0 {
     - 32 scalar general purpose registers
     - integer & floating point are shared
 
-    $00--------(FP_00 "function parameter 00")
-    $01--------(FP_01 "function parameter 01")
-    $02--------(FP_02 "function parameter 02")
-    $03--------(FP_03 "function parameter 03")
+    $00--------(P0 "function parameter 00")
+    $01--------(P1 "function parameter 01")
+    $02--------(P2 "function parameter 02")
+    $03--------(P3 "function parameter 03")
 
-    $04--------(FR_00 "function return value 00")
-    $05--------(FR_01 "function return value 01")
+    $04--------(R0 "function return value 00")
+    $05--------(R1 "function return value 01")
 
-    $06--------(PR_00 "persistent register 00")
-    $07--------(PR_01 "persistent register 01")
-    $08--------(PR_02 "persistent register 02")
-    $09--------(PR_03 "persistent register 03")
-    $10--------(PR_04 "persistent register 04")
-    $11--------(PR_05 "persistent register 05")
-    $12--------(PR_06 "persistent register 06")
-    $13--------(PR_07 "persistent register 07")
-    $14--------(PR_08 "persistent register 08")
-    $15--------(PR_09 "persistent register 09")
-    $16--------(PR_10 "persistent register 10")
-    $17--------(PR_11 "persistent register 11")
-    $18--------(PR_12 "persistent register 12")
-    $19--------(PR_13 "persistent register 13")
-    $20--------(PR_14 "persistent register 14")
-    $21--------(PR_15 "persistent register 15")
-    $22--------(PR_16 "persistent register 16")
-    $23--------(PR_17 "persistent register 17")
+    $06--------(S0 "persistent register 00")
+    $07--------(S1 "persistent register 01")
+    $08--------(S2 "persistent register 02")
+    $09--------(S3 "persistent register 03")
+    $10--------(S4 "persistent register 04")
+    $11--------(S5 "persistent register 05")
+    $12--------(S6 "persistent register 06")
+    $13--------(S7 "persistent register 07")
+    $14--------(S8 "persistent register 08")
+    $15--------(S9 "persistent register 09")
+    $16--------(S10 "persistent register 10")
+    $17--------(S11 "persistent register 11")
+    $18--------(S12 "persistent register 12")
+    $19--------(S13 "persistent register 13")
+    $20--------(S14 "persistent register 14")
+    $21--------(S15 "persistent register 15")
+    $22--------(S16 "persistent register 16")
+    $23--------(S17 "persistent register 17")
 
-    $24--------(VR_00 "volatile register 00")
-    $25--------(VR_01 "volatile register 01")
-    $26--------(VR_02 "volatile register 02")
-    $27--------(VR_03 "volatile register 03")
+    $24--------(N0 "volatile register 00")
+    $25--------(N1 "volatile register 01")
+    $26--------(N2 "volatile register 02")
+    $27--------(N3 "volatile register 03")
 
     $28--------(GP "global pointer")
     $29--------(SP "stack pointer")
@@ -71,47 +71,47 @@ FILE 1 {
     - 32 vector general purpose registers
     - integer & floating point are shared
 
-    &00--------(VGPR_00 "vector general purpose register 00")
-    &01--------(VGPR_01 "vector general purpose register 01")
-    &02--------(VGPR_02 "vector general purpose register 02")
-    &03--------(VGPR_03 "vector general purpose register 03")
-    &04--------(VGPR_04 "vector general purpose register 04")
-    &05--------(VGPR_05 "vector general purpose register 05")
-    &06--------(VGPR_06 "vector general purpose register 06")
-    &07--------(VGPR_07 "vector general purpose register 07")
-    &08--------(VGPR_08 "vector general purpose register 08")
-    &09--------(VGPR_09 "vector general purpose register 09")
-    &10--------(VGPR_10 "vector general purpose register 10")
-    &11--------(VGPR_11 "vector general purpose register 11")
-    &12--------(VGPR_12 "vector general purpose register 12")
-    &13--------(VGPR_13 "vector general purpose register 13")
-    &14--------(VGPR_14 "vector general purpose register 14")
-    &15--------(VGPR_15 "vector general purpose register 15")
-    &16--------(VGPR_16 "vector general purpose register 16")
-    &17--------(VGPR_17 "vector general purpose register 17")
-    &18--------(VGPR_18 "vector general purpose register 18")
-    &19--------(VGPR_19 "vector general purpose register 19")
-    &20--------(VGPR_20 "vector general purpose register 20")
-    &21--------(VGPR_21 "vector general purpose register 21")
-    &22--------(VGPR_22 "vector general purpose register 22")
-    &23--------(VGPR_23 "vector general purpose register 23")
-    &24--------(VGPR_24 "vector general purpose register 24")
-    &25--------(VGPR_25 "vector general purpose register 25")
-    &26--------(VGPR_26 "vector general purpose register 26")
-    &27--------(VGPR_27 "vector general purpose register 27")
-    &28--------(VGPR_28 "vector general purpose register 28")
-    &29--------(VGPR_29 "vector general purpose register 29")
-    &30--------(VGPR_30 "vector general purpose register 30")
-    &31--------(VGPR_31 "vector general purpose register 31")
+    &00--------(V0 "vector general purpose register 00")
+    &01--------(V1 "vector general purpose register 01")
+    &02--------(V2 "vector general purpose register 02")
+    &03--------(V3 "vector general purpose register 03")
+    &04--------(V4 "vector general purpose register 04")
+    &05--------(V5 "vector general purpose register 05")
+    &06--------(V6 "vector general purpose register 06")
+    &07--------(V7 "vector general purpose register 07")
+    &08--------(V8 "vector general purpose register 08")
+    &09--------(V9 "vector general purpose register 09")
+    &10--------(V10 "vector general purpose register 10")
+    &11--------(V11 "vector general purpose register 11")
+    &12--------(V12 "vector general purpose register 12")
+    &13--------(V13 "vector general purpose register 13")
+    &14--------(V14 "vector general purpose register 14")
+    &15--------(V15 "vector general purpose register 15")
+    &16--------(V16 "vector general purpose register 16")
+    &17--------(V17 "vector general purpose register 17")
+    &18--------(V18 "vector general purpose register 18")
+    &19--------(V19 "vector general purpose register 19")
+    &20--------(V20 "vector general purpose register 20")
+    &21--------(V21 "vector general purpose register 21")
+    &22--------(V22 "vector general purpose register 22")
+    &23--------(V23 "vector general purpose register 23")
+    &24--------(V24 "vector general purpose register 24")
+    &25--------(V25 "vector general purpose register 25")
+    &26--------(V26 "vector general purpose register 26")
+    &27--------(V27 "vector general purpose register 27")
+    &28--------(V28 "vector general purpose register 28")
+    &29--------(V29 "vector general purpose register 29")
+    &30--------(V30 "vector general purpose register 30")
+    &31--------(V31 "vector general purpose register 31")
 
 
 
-    all registers must have the same length. It is recommended to pick a value between the following extremes:
+    all registers have the same length. Possible lengths can be:
 
-        - 64  bits minimum (for 32 bit machines)
-        - 128 bits minimum (for 64 bit machines)
-
-        - 512 bits maximum (for both 32 & 64 bit machines)
+        -  64 bits (for 32 bit machines)
+        - 128 bits (for 32 & 64 bit machines)
+        - 256 bits (for 32 & 64 bit machines)
+        - 512 bits (for 32 & 64 bit machines)
 }
 
 FILE 2 {
@@ -119,10 +119,10 @@ FILE 2 {
     - 32 special purpose registers of different possible lengths
     - * are privileged resources
 
-    %00--------(VR_04 "volatile register 04")-------------[width: word]
-    %01--------(VR_05 "volatile register 05")-------------[width: word]
-    %02--------(VR_06 "volatile register 06")-------------[width: word]
-    %03--------(VR_07 "volatile register 07")-------------[width: word]
+    %00--------(VR_04 "volatile register 04")-------------[width: word]     <<<<
+    %01--------(VR_05 "volatile register 05")-------------[width: word]     <<<<
+    %02--------(VR_06 "volatile register 06")-------------[width: word]     <<<<
+    %03--------(VR_07 "volatile register 07")-------------[width: word]     <<<<
 
     %04--------(BR_00 "breakpoint register 00")-----------[width: word]
     %05--------(BR_01 "breakpoint register 01")-----------[width: word]
@@ -130,18 +130,18 @@ FILE 2 {
     %07--------(BR_03 "breakpoint register 03")-----------[width: word]
     %08--------(BR_04 "breakpoint register 04")-----------[width: word]
     %09--------(BR_05 "breakpoint register 05")-----------[width: word]
+    %10--------(BR_06 "breakpoint register 06")-----------[width: word]
+    %11--------(BR_07 "breakpoint register 07")-----------[width: word]
 
-    %10--------(BM "breakpoint modes")--------------------[width: 32 bits]
+    %12--------(BM "breakpoint modes")--------------------[width: 32 bits]
+    %13--------(PC "program counter")---------------------[width: word]
+    %14--------(UEB_0 "user event buffer 0")--------------[width: word]
+    %15--------(UEB_1 "user event buffer 1")--------------[width: word]
 
-    %11--------(PC "program counter")---------------------[width: word]
-    %12--------(UEB_0 "user event buffer 0")--------------[width: word]
-    %13--------(UEB_1 "user event buffer 1")--------------[width: word]
-    %14--------(VFLG "vector flags")----------------------[width: vector length]
-    %15--------(VMSK "vector mask")-----------------------[width: word]
-    %16--------(SMSK "scalar mask")-----------------------[width: word]
-    %17--------( // )
+    %16--------(VFLG "vector flags")----------------------[width: vector length]
+    %17--------(VMSK "vector mask")-----------------------[width: word]
 
-    %18--------(UETP "user event table pointer")----------[width: word]
+    %18--------(UETP "user event table pointer")----------[width: word]     <<<<
 
   * %19--------(FU0 "file usage 0")-----------------------[width: 32 bits]
   * %20--------(FU1 "file usage 1")-----------------------[width: 32 bits]
@@ -154,57 +154,55 @@ FILE 2 {
   * %26--------(SETP "supervisor event table pointer")----[width: word]
   * %27--------(PTP "page table pointer")-----------------[width: word]
 
-  * %28--------(KR_0 "kernel reserved 0")-----------------[width: word]
-  * %29--------(KR_1 "kernel reserved 1")-----------------[width: word]
+  * %28--------(KR_0 "kernel reserved 0")-----------------[width: word]     <<<<
+  * %29--------(KR_1 "kernel reserved 1")-----------------[width: word]     <<<<
   * %30--------(KR_2 "kernel reserved 2")-----------------[width: word]
   * %31--------(KR_3 "kernel reserved 3")-----------------[width: word]
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-breakpoint modes {
+breakpoint registers {
 
     breakpoint registers are special registers that can be used for:
 
         - debugging
         - specific exception generation
+        - bound checking
+        - and more...
 
-    for each breakpoint register, there is a 5 bit code in the BM register. Depending on the mode and the value of a particular
+    for each breakpoint register, there is a 4 bit code in the BM register. Depending on the mode and the value of a particular
     breakpoint register, an event can be triggered.
 
     modes:
 
-        00000 -> disabled
-        00001 -> break on instruction address
-        00010 -> break on data read address 8
-        00011 -> break on data read address 16
-        00100 -> break on data read address 32
-        00101 -> break on data read address 64
-        00110 -> break on data write address 8
-        00111 -> break on data write address 16
-        01000 -> break on data write address 32
-        01001 -> break on data write address 64
-        01010 -> break on COVR flag
-        01011 -> break on CUND flag
-        01100 -> break on OVFL flag
-        01101 -> break on UNFL flag
-        01110 -> break on DIV0 flag
-        01111 -> break on instruction 16
-        10000 -> break on instruction 32
-        10001 -> break on instruction 48
-        10010 -> break on instruction 64
+        0000 -> disabled
+        0001 -> break on instruction address EQ
+        0010 -> break on instruction address LE
+        0011 -> break on instruction address GE
+        0100 -> break on data read address EQ
+        0101 -> break on data read address LE
+        0110 -> break on data read address GE
+        0111 -> break on data write address EQ
+        1000 -> break on data write address LE
+        1001 -> break on data write address GE
+        1010 -> break on instruction
+        1011 -> break on COVR flag
+        1100 -> break on CUND flag
+        1101 -> break on OVFL flag
+        1110 -> break on UNFL flag
+        1111 -> break on DIV0 flag
 
-    for example, setting a value of 0x0000000012345678 in the register BP_0 and a value of 0x0000000000000001 in the BM register will only
+
+    for example (assuming 64 bit architecture), setting a value of 0x0000000012345678 in the register BP_0 and a value of 0x0000000000000001 in the BM register will only
     enable BP_0 with "break on instruction address" mode. This mode will trigger a breakpoint exception if the PC ever reaches a value of
     0x0000000012345678.
-
-    With 6 BP registers, the total number of bits required for BM are 30 (6*5), this means that BM can be 32 bits only with the remaining upper bits unused.
 
     NOTE: inactive breakpoint registers can still be used as temporary buffers for any purpose, however, this ABI doesn't specify what to do in that case
     meaning that it's up to the programmers to agree.
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-special vector registers {
+vector flags {
 
     the VFLG register holds the flags generated by vector instructions. The flags are exactly the same as the scalar flags and each lane has it's own
     independent set of flags, which means that this register has the same length as any other vector register. In total each flag will be replicated as many
@@ -213,6 +211,10 @@ special vector registers {
 
     NOTE: vector flags can trap, however, only 1 trap can be generated per instruction. For example, if a vector-vector division by zero generates 6 DIV0
     flags, there will be only 1 DIV0 exception and the appropriate DIV0 flags will still be set normally.
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+vector mask {
 
     the VMSK register holds the mask bits for conditional vector execution. Each lane will be masked by a single bit that "allows" the particular lane to write
     the result. For convention a 0 will not mask (allow) and a 1 will mask (not allow). A value of all 0s in VMSK simply results in unconditional vector
@@ -279,6 +281,7 @@ control & status register {
             - VLEN (6) (vector length)
             - IMOD (3) (instruction mode)
             - RMD  (2) (floating point rounding modes)
+            - SMSK (1) (scalar mask)
         }
 
         transactional memory {
@@ -300,14 +303,13 @@ control & status register {
         }
 
         - //
-        - //
 
     NOTE: in case of multi-core systems, BOOT should only concern the bootstrapping core, for example core 0. All the other cores
     must start in a halted state. Unlocking cores can be done with special waking interrupts.
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-process id {
+process id register {
 
     the PID register holds the current executing process ID. In case of a promoting event, the processor should automatically change
     the value of this register to the ID of the kernel, for example all 0s. The MMU can to avoid flushing the TLB during context
@@ -319,6 +321,6 @@ file usage registers {
 
     FU0, FU1, FU2 are three special transparent registers used by the processor to indicate which register in which file was modified since the scheduling
     of the current process. Each bit represents a single register in the appropriate file and values are automatically set. The supervisor can use this
-    information along with "State dump" and "State restore" instructions to easily and quickly save or restore the state of the processor to and from memory.
+    information along with "State Dump" and "State Restore" instructions to easily and quickly save or restore the state of the processor to and from memory.
 }
 ______________________________________________________________________________________________________________________________________________________________________

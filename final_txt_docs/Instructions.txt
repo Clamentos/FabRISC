@@ -81,12 +81,12 @@ Computational { [190]
                 [B] (INIMP)--Immediate Bitwise NIMP--------------------------(?????)----OPCODE:000000000
                 [B] (ICLMUL)-Immediate Carry-less Multiplication-------------(?????)----OPCODE:000000000
 
-                [C] (CTO)----Count Ones--------------------------------------(?????)
-            	[C] (CTLO)---Count Leading Ones------------------------------(?????)
-            	[C] (CTTO)---Count Trailing Ones-----------------------------(?????)
-            	[C] (CTZ)----Count Zeros-------------------------------------(?????)
-            	[C] (CTLZ)---Count Leading Zeros-----------------------------(?????)
-            	[C] (CTTZ)---Count Trailing Zeros----------------------------(?????)
+                [C] (CTO)----Count Ones--------------------------------------(?????)----OPCODE:0000000000000000
+            	[C] (CTLO)---Count Leading Ones------------------------------(?????)----OPCODE:0000000000000000
+            	[C] (CTTO)---Count Trailing Ones-----------------------------(?????)----OPCODE:0000000000000000
+            	[C] (CTZ)----Count Zeros-------------------------------------(?????)----OPCODE:0000000000000000
+            	[C] (CTLZ)---Count Leading Zeros-----------------------------(?????)----OPCODE:0000000000000000
+            	[C] (CTTZ)---Count Trailing Zeros----------------------------(?????)----OPCODE:0000000000000000
             }
         }
 
@@ -115,10 +115,10 @@ Computational { [190]
                 [B] (IFPOW)--Immediate FP. Power-----------------------------(?????)----OPCODE:000000000
                 [B] (IFPOW)--Immediate FP. Remainder-------------------------(?????)----OPCODE:000000000
 
-                [C] (SIN)----Sin---------------------------------------------(?????)
-                [C] (COS)----Cos---------------------------------------------(?????)
-                [C] (ASIN)---Arcsin------------------------------------------(?????)
-                [C] (ACOS)---Arccos------------------------------------------(?????)
+                [C] (SIN)----Sin---------------------------------------------(?????)----OPCODE:0000000000000000
+                [C] (COS)----Cos---------------------------------------------(?????)----OPCODE:0000000000000000
+                [C] (ASIN)---Arcsin------------------------------------------(?????)----OPCODE:0000000000000000
+                [C] (ACOS)---Arccos------------------------------------------(?????)----OPCODE:0000000000000000
             }
         }
     }
@@ -197,26 +197,26 @@ Computational { [190]
                 [B] (VINIMP)--Vector Immediate Bitwise NIMP------------------(?????)----OPCODE:000000000
                 [B] (VICLMUL)-Vector Immediate Carry-less Multiplication-----(?????)----OPCODE:000000000
 
-                [C] (RADD)----Reduced Addition-------------------------------(?????)
-                [C] (RSUB)----Reduced Subtraction----------------------------(?????)
-                [C] (RMUL)----Reduced Multiplication-------------------------(?????)
-                [C] (RMAC)----Reduced Multiply Accumulate--------------------(?????)
-                [C] (RDIV)----Reduced Division-------------------------------(?????)
-                [C] (RAND)----Reduced Bitwise AND----------------------------(?????)
-                [C] (RNAND)---Reduced Bitwise NAND---------------------------(?????)
-                [C] (ROR)-----Reduced Bitwise OR-----------------------------(?????)
-                [C] (RNOR)----Reduced Bitwise NOR----------------------------(?????)
-                [C] (RXOR)----Reduced Bitwise XOR----------------------------(?????)
-                [C] (RXNOR)---Reduced Bitwise XNOR---------------------------(?????)
-                [C] (RIMP)----Reduced Bitwise IMP----------------------------(?????)
-                [C] (RNIMP)---Reduced Bitwise NIMP---------------------------(?????)
+                [C] (RADD)----Reduced Addition-------------------------------(?????)----OPCODE:0000000000000000
+                [C] (RSUB)----Reduced Subtraction----------------------------(?????)----OPCODE:0000000000000000
+                [C] (RMUL)----Reduced Multiplication-------------------------(?????)----OPCODE:0000000000000000
+                [C] (RMAC)----Reduced Multiply Accumulate--------------------(?????)----OPCODE:0000000000000000
+                [C] (RDIV)----Reduced Division-------------------------------(?????)----OPCODE:0000000000000000
+                [C] (RAND)----Reduced Bitwise AND----------------------------(?????)----OPCODE:0000000000000000
+                [C] (RNAND)---Reduced Bitwise NAND---------------------------(?????)----OPCODE:0000000000000000
+                [C] (ROR)-----Reduced Bitwise OR-----------------------------(?????)----OPCODE:0000000000000000
+                [C] (RNOR)----Reduced Bitwise NOR----------------------------(?????)----OPCODE:0000000000000000
+                [C] (RXOR)----Reduced Bitwise XOR----------------------------(?????)----OPCODE:0000000000000000
+                [C] (RXNOR)---Reduced Bitwise XNOR---------------------------(?????)----OPCODE:0000000000000000
+                [C] (RIMP)----Reduced Bitwise IMP----------------------------(?????)----OPCODE:0000000000000000
+                [C] (RNIMP)---Reduced Bitwise NIMP---------------------------(?????)----OPCODE:0000000000000000
 
-                [C] (VCTO)----Vector Count Ones------------------------------(?????)
-                [C] (VCTLO)---Vector Count Leading Ones----------------------(?????)
-                [C] (VCTTO)---Vector Count Trailing Ones---------------------(?????)
-                [C] (VCTZ)----Vector Count Zeros-----------------------------(?????)
-                [C] (VCTLZ)---Vector Count Leading Zeros---------------------(?????)
-                [C] (VCTTZ)---Vector Count Trailing Zeros--------------------(?????)
+                [C] (VCTO)----Vector Count Ones------------------------------(?????)----OPCODE:0000000000000000
+                [C] (VCTLO)---Vector Count Leading Ones----------------------(?????)----OPCODE:0000000000000000
+                [C] (VCTTO)---Vector Count Trailing Ones---------------------(?????)----OPCODE:0000000000000000
+                [C] (VCTZ)----Vector Count Zeros-----------------------------(?????)----OPCODE:0000000000000000
+                [C] (VCTLZ)---Vector Count Leading Zeros---------------------(?????)----OPCODE:0000000000000000
+                [C] (VCTTZ)---Vector Count Trailing Zeros--------------------(?????)----OPCODE:0000000000000000
             }
         }
 
@@ -245,18 +245,18 @@ Computational { [190]
                 [B] (VIFPOW)--Vector Immediate FP. Power---------------------(?????)----OPCODE:000000000
                 [B] (VIFREM)--Vector Immediate FP. Remainder-----------------(?????)----OPCODE:000000000
 
-                [C] (VSIN)----Vector Sin-------------------------------------(?????)
-                [C] (VCOS)----Vector Cos-------------------------------------(?????)
-                [C] (VASIN)---Vector Arcsin----------------------------------(?????)
-                [C] (VACOS)---Vector Arccos----------------------------------(?????)
+                [C] (VSIN)----Vector Sin-------------------------------------(?????)----OPCODE:0000000000000000
+                [C] (VCOS)----Vector Cos-------------------------------------(?????)----OPCODE:0000000000000000
+                [C] (VASIN)---Vector Arcsin----------------------------------(?????)----OPCODE:0000000000000000
+                [C] (VACOS)---Vector Arccos----------------------------------(?????)----OPCODE:0000000000000000
 
-                [C] (VRFADD)--Vector Reduced FP. Addition--------------------(?????)
-                [C] (VRFSUB)--Vector Reduced FP. Subtraction-----------------(?????)
-                [C] (VRFBSUB)-Vector Reduced FP. Back Subtraction------------(?????)
-                [C] (VRFMUL)--Vector Reduced FP. Multiplication--------------(?????)
-                [C] (VRFMAC)--Vector Reduced FP. Multiply Accumulate---------(?????)
-                [C] (VRFDIV)--Vector Reduced FP. Division--------------------(?????)
-                [C] (VRFBDIV)-Vector Reduced FP. Back Division---------------(?????)
+                [C] (VRFADD)--Vector Reduced FP. Addition--------------------(?????)----OPCODE:0000000000000000
+                [C] (VRFSUB)--Vector Reduced FP. Subtraction-----------------(?????)----OPCODE:0000000000000000
+                [C] (VRFBSUB)-Vector Reduced FP. Back Subtraction------------(?????)----OPCODE:0000000000000000
+                [C] (VRFMUL)--Vector Reduced FP. Multiplication--------------(?????)----OPCODE:0000000000000000
+                [C] (VRFMAC)--Vector Reduced FP. Multiply Accumulate---------(?????)----OPCODE:0000000000000000
+                [C] (VRFDIV)--Vector Reduced FP. Division--------------------(?????)----OPCODE:0000000000000000
+                [C] (VRFBDIV)-Vector Reduced FP. Back Division---------------(?????)----OPCODE:0000000000000000
             }
         }
     }
@@ -265,15 +265,15 @@ Computational { [190]
 
         TODO: assign to proper module
 
-        [C] (SIIC)-Scalar Integer-Integer Cast-------------------------------(?????)
-        [C] (SFFC)-Scalar FP-FP Cast-----------------------------------------(?????)
-        [C] (VIIC)-Vector Integer-Integer Cast-------------------------------(?????)
-        [C] (VFFC)-Vector FP-FP Cast-----------------------------------------(?????)
+        [C] (SIIC)-Scalar Integer-Integer Cast-------------------------------(?????)----OPCODE:0000000000000000
+        [C] (SFFC)-Scalar FP-FP Cast-----------------------------------------(?????)----OPCODE:0000000000000000
+        [C] (VIIC)-Vector Integer-Integer Cast-------------------------------(?????)----OPCODE:0000000000000000
+        [C] (VFFC)-Vector FP-FP Cast-----------------------------------------(?????)----OPCODE:0000000000000000
 
-        [C] (SIFC)-Scalar Integer-FP Cast------------------------------------(?????)
-        [C] (SFIC)-Scalar FP-Integer Cast------------------------------------(?????)
-        [C] (VIFC)-Vector Integer-FP Cast------------------------------------(?????)
-        [C] (VFIC)-Vector FP-Integer Cast------------------------------------(?????)
+        [C] (SIFC)-Scalar Integer-FP Cast------------------------------------(?????)----OPCODE:0000000000000000
+        [C] (SFIC)-Scalar FP-Integer Cast------------------------------------(?????)----OPCODE:0000000000000000
+        [C] (VIFC)-Vector Integer-FP Cast------------------------------------(?????)----OPCODE:0000000000000000
+        [C] (VFIC)-Vector FP-Integer Cast------------------------------------(?????)----OPCODE:0000000000000000
     }
 }
 ______________________________________________________________________________________________________________________________________________________________________
@@ -284,15 +284,15 @@ Data Transfer { [17]
 
         core { (3)
 
-            [D] (MLD)---Memory Load------------------------------------------(?????)
-            [D] (MST)---Memory Store-----------------------------------------(?????)
-            [C] (SRCPY)-Special Register Copy--------------------------------(?????)
+            [D] (MLD)---Memory Load------------------------------------------(?????)----OPCODE:000000
+            [D] (MST)---Memory Store-----------------------------------------(?????)----OPCODE:000000
+            [C] (SRCPY)-Special Register Copy--------------------------------(?????)----OPCODE:0000000000000000
         }
 
         advanced { (4)
 
-            [E] (IMLD)--Indexed Memory Load----------------------------------(?????)
-            [E] (IMST)--Indexed Memory Store---------------------------------(?????)
+            [E] (IMLD)--Indexed Memory Load----------------------------------(?????)----OPCODE:000000
+            [E] (IMST)--Indexed Memory Store---------------------------------(?????)----OPCODE:000000
             [F] (RIMLD)-Register Indexed Memory Load-------------------------(?????)----OPCODE:000000000
             [F] (RIMST)-Register Indexed Memory Store------------------------(?????)----OPCODE:000000000
         }
@@ -302,14 +302,14 @@ Data Transfer { [17]
 
         core { (2)
 
-            [D] (VMLD)---Vector Memory Load----------------------------------(?????)
-            [D] (VMST)---Vector Memory Store---------------------------------(?????)
+            [D] (VMLD)---Vector Memory Load----------------------------------(?????)----OPCODE:000000
+            [D] (VMST)---Vector Memory Store---------------------------------(?????)----OPCODE:000000
         }
 
         advanced { (4)
 
-            [E] (VIMLD)--Vector Indexed Memory Load--------------------------(?????)
-            [E] (VIMST)--Vector Indexed Memory Store-------------------------(?????)
+            [E] (VIMLD)--Vector Indexed Memory Load--------------------------(?????)----OPCODE:000000
+            [E] (VIMST)--Vector Indexed Memory Store-------------------------(?????)----OPCODE:000000
             [F] (VRIMLD)-Vector Register Indexed Memory Load-----------------(?????)----OPCODE:000000000
             [F] (VRIMST)-Vector Register Indexed Memory Store----------------(?????)----OPCODE:000000000
         }
@@ -317,14 +317,14 @@ Data Transfer { [17]
 
     atomic { (2)
 
-        [A] (LL)-Load Linked-------------------------------------------------(?????)
-        [A] (SC)-Store Conditional-------------------------------------------(?????)
+        [A] (LL)-Load Linked-------------------------------------------------(?????)----OPCODE:000000000000
+        [A] (SC)-Store Conditional-------------------------------------------(?????)----OPCODE:000000000000
     }
 
     block { (2)
 
-        [G] (BLD)-Block Load-------------------------------------------------(?????)
-        [G] (BST)-Block Store------------------------------------------------(?????)
+        [G] (BLD)-Block Load-------------------------------------------------(?????)----OPCODE:0000000
+        [G] (BST)-Block Store------------------------------------------------(?????)----OPCODE:0000000
     }
 }
 ______________________________________________________________________________________________________________________________________________________________________
@@ -335,12 +335,12 @@ Control transfer { [25]
 
         core { (8)
 
-            [H] (BEQ)---Branch If Equal--------------------------------------(?????)
-            [H] (BNE)---Branch If Not Equal----------------------------------(?????)
-            [H] (BLT)---Branch If Less Than----------------------------------(?????)
-            [H] (BLE)---Branch If Less Equal---------------------------------(?????)
-            [H] (UBLT)--Unsigned Branch If Less Than-------------------------(?????)
-            [H] (UBLE)--Unsigned Branch If Less Equal------------------------(?????)
+            [H] (BEQ)---Branch If Equal--------------------------------------(?????)----OPCODE:0000000
+            [H] (BNE)---Branch If Not Equal----------------------------------(?????)----OPCODE:0000000
+            [H] (BLT)---Branch If Less Than----------------------------------(?????)----OPCODE:0000000
+            [H] (BLE)---Branch If Less Equal---------------------------------(?????)----OPCODE:0000000
+            [H] (UBLT)--Unsigned Branch If Less Than-------------------------(?????)----OPCODE:0000000
+            [H] (UBLE)--Unsigned Branch If Less Equal------------------------(?????)----OPCODE:0000000
 
             [J] (CAL)---Function Call----------------------------------------(?????)
             [P] (RET)---Function Return--------------------------------------(?????)
@@ -353,8 +353,8 @@ Control transfer { [25]
             [I] (BTST)--Branch If Test---------------------------------------(?????)
             [I] (UBTST)-Unsigned Branch If Test------------------------------(?????)
             
-            [G] (BAF)--Branch If Arithmetic Flag-----------------------------(?????)
-            [G] (BSF)--Branch If System Flag---------------------------------(?????)
+            [G] (BAF)--Branch If Arithmetic Flag-----------------------------(?????)----OPCODE:0000000
+            [G] (BSF)--Branch If System Flag---------------------------------(?????)----OPCODE:0000000
             [K] (RCAL)-Register Function Call--------------------------------(?????)
         }
     }
@@ -363,12 +363,12 @@ Control transfer { [25]
 
         core { (6)
 
-            [H] (FBEQ)--FP. Branch If Equal----------------------------------(?????)
-            [H] (FBNE)--FP. Branch If Not Equal------------------------------(?????)
-            [H] (FBLT)--FP. Branch If Less Than------------------------------(?????)
-            [H] (FBLE)--FP. Branch If Less Equal-----------------------------(?????)
-            [H] (UFBLT)-Unsigned FP. Branch If Less Than---------------------(?????)
-            [H] (UFBLE)-Unsigned FP. Branch If Less Equal--------------------(?????)
+            [H] (FBEQ)--FP. Branch If Equal----------------------------------(?????)----OPCODE:0000000
+            [H] (FBNE)--FP. Branch If Not Equal------------------------------(?????)----OPCODE:0000000
+            [H] (FBLT)--FP. Branch If Less Than------------------------------(?????)----OPCODE:0000000
+            [H] (FBLE)--FP. Branch If Less Equal-----------------------------(?????)----OPCODE:0000000
+            [H] (UFBLT)-Unsigned FP. Branch If Less Than---------------------(?????)----OPCODE:0000000
+            [H] (UFBLE)-Unsigned FP. Branch If Less Equal--------------------(?????)----OPCODE:0000000
         }
 
         advanced { (3)

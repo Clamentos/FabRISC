@@ -1,0 +1,235 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{multicol}
+
+\addtolength{\oddsidemargin}{-.875in}
+\addtolength{\evensidemargin}{-.875in}
+\addtolength{\textwidth}{1.75in}
+\addtolength{\topmargin}{-.875in}
+\addtolength{\textheight}{1.75in}
+
+\title{\includegraphics[width=4cm]{LOGO.pdf} \par\noindent\huge{Instruction Set Architecture}}
+\date{10/03/2022}
+\author{Enrico Gatto Monticone}
+
+\begin{document}
+
+    \pagenumbering{arabic}
+	\maketitle
+	\newpage
+%__________________________________________________________________________________________________________________________________
+
+	\tableofcontents
+	\listoffigures
+	\newpage
+%__________________________________________________________________________________________________________________________________
+
+    \section[Introduction]{\LARGE\underline{Introduction}}
+
+        FabRISC is a simple RISC-like, register-register load-store architecture composed of xxx instructions with variable length encodings of two, four and six bytes. This specification is designed to be modular allowing a simple and straightforward implementation from basic designs up to high performance systems. The ISA includes vector, floating-point, compressed aswell as privileged instructions supporting 32 and 64-bit multithreaded microarchitectures. This specification is completely free, opensource and available to anyone intrested in the project (Creative Commons license). This document is divided into multiple sections each explaining the architecture in detail with the help of tables, figures and implementation specific suggestions in order to aid the hardware and software designers in creating an efficient realization of the FabRISC ISA.
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{Commentary in this document is formatted in this way and comunication will be more colloquial. If the reader is only intrested in the specification, these sections can be skipped without hindering the understanding of the document. This project tries to be more of a hobby learning experience rather than a new super serious industry standard, plus the architecture borrows many existing concepts from the most popular and iconic ISAs like x86, RISC-V, MIPS, ARM and openRISC. I chose to target FPGAs as the primary platform for two main reasons: one is that ASICs are out of the question for me and most people because of cost. Two is that using discrete components makes little sense from a sanity and practicality point of view given the complexity of the project, however, software simulators can be a good platform for simpler implementations. The main idea here is the use of variable length encoding of four and six byte instruction size along with an optional compressed module to increase code density. Flags are also another important and optional aspect that i emphasize because they can be a handy tool when it comes to efficiently control some unavoidable side effects aswell as easing multiword arithmetic. One final aspect of the ISA is the fact that all instructions can specify the length of the data type in order to more precisely control edge cases such as overflow and underflows (and orthogonality reasons). This is not achieved via register sub addressing but rather by simply masking the unnecessary portion of the word while leaving the masked bits in place.}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection[Terminology]{Terminology}
+
+        The FabRISC architecture uses the following terminology throughout the document:
+
+        \begin{itemize}
+
+            \item \textit{"Architecture"} is used to refer to the set of abstractions that the hardware must provide to the software.
+            \item \textit{"Atomic"} is used to refer to any operation that must, either be completely executed, or not at all.
+            \item \textit{"Architectural state"} is used to refer to the state of the processor that can directly be observed by the programmer.
+            \item \textit{"Coherence"} is used to refer to the ability of a system to be coherent, that is, ensuring the uniformity of shared resources across the entire system. In particular, it defines the ordering of accesses to a single memory location for systems that implement caching.
+            \item \textit{"Consistency"} is used to refer to the ability of a system to be consistent, that is, defining a particular order of operations across all memory locations that is obeyed by everyone within the system.
+            \item \textit{"Consistency model"} is used to refer to a particular model or protocol of consistency within a particular system.
+            \item \textit{"Event"} is used to generically refer to any extra-ordinary situation that needs to be taken care of as soon as possible.
+            \item \textit{"Exception"} is used to refer to any non severe internal, syncronous event.
+            \item \textit{"Fault"} is used to refer to any severe internal, syncronous event.
+            \item \textit{"Hardware thread"} and \textit{"thread"} are used to refer to a partucular phisycal instance of a software thread running, specifically, on the central processing unit (CPU).
+            \item \textit{"Interrupt"} is used to refer to any external, asyncronous event.
+            \item \textit{"Memory fence"} and \textit{"fence"} are used to refer to particular instructions that have the ability to enforce a specific ordering of other memory instructions.
+            \item \textit{"Memory transaction"} and \textit{"transaction"} are used to refer to a particular series of operations that behave atomically within the system.
+            \item \textit{"Micro architectural state"} is used to refer to the actual state of the processor that might not be directly visible by the programmer.
+            \item \textit{"Micro architecture"} is used to refer to the particular phisycal implementation of a given architecture.
+            \item \textit{"Page"} is used to refer to a logical partition of the main memory.
+            \item \textit{"Promotion"} is used to refer to the automatic switch from user mode to supervisor mode by the processor.
+            \item \textit{"Transparent"} is used to refer to something that is (mostly) invisible to the programmer.
+            \item \textit{"Unaligned"} and \textit{"misaligned"} are used to refer to any memory item that is not naturally aligned, that is, the address of the item modulo the referenced element size, is not equal to zero.
+
+        \end{itemize}
+
+    \subsection[Implementation specific parameters]{Implementation specific parameters}
+
+        This document makes use of some implementation specific microarchitecture parameters to clear potential misunderstandings:
+
+        \begin{itemize}
+
+            \item \textit{WLEN (Word Length)}: this parameter indicates the processor's natural scalar word length in bits, for example a 64 bit CPU will have WLEN of 64.
+            \item \textit{MXVL (Maximum Vector Length)}: this parameter indicates the processor's maximum vector length in bits. Possible values can be chosen from:
+
+                \begin{itemize}
+
+                    \item 64 bit: for processors with WLEN of 32
+                    \item 128 bit: for processors with WLEN of 32 and 64
+                    \item 256 bit: for processors with WLEN of 32 and 64
+                    \item 512 bit: for processors with WLEN of 32 and 64
+
+                \end{itemize}
+
+                In short, the possible values can be any power of two that is at least twice the size of WLEN and less than 512 bits.
+
+        \end{itemize}
+
+    \clearpage
+
+%__________________________________________________________________________________________________________________________________
+
+    \section[Memory]{\LARGE\underline{Memory}}
+
+        This section is dedicated to the memory model used by FabRISC including data alignment, synchronization, consistency, aswell as possible cache coherence directives are explained here.
+
+        \subsection[Data alignment]{Data alignment}
+
+            FabRISC, overall, treats the main memory and the MMIO regions as collections of byte addressable locations in \textit{little endian} order with a range of $2^{WLEN}$ addresses in total. The specification leaves to the hardware designer the choice of supporting aligned or unaligned memory accesses or both for data, however, if aligned is decided to be the only supported scheme, the processor must generate the appropriate fault every time the constraint is violated (consult section xxx for more information). When it comes to instructions, it's mandatory to have fetch engines that support accesses at the 16-bit boundary alignment. This is because the greatest common denominator of the instruction sizes, with or without the compressed module, is 16 and the programmer must ensure that the code is aligned at said boundary, if not, a fault must be generated. Branch offsets, as a result of this, are logically shifted by one place to the left before being added to the PC. This means that said offsets will specify 16-bits as the smallest addressable object, effectively doubling the range in terms of bytes.
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{Data alignment issues can arise when the processor wants to read or write an item whose size is greater than the smallest addressable thing. This problem is tricky to design hardware for, especially caches, because misaligned items can cross cache line boundaries aswell as page boundaries. Alignment networks and more complex caches are needed which can increase complexity and slow down the critical path too much for simple designs. For already complex multicore out-of-order superscalar machines, however, i belive that supporting unaligned accesses can be handy so that the software writer can make decisions freely without having to worry about this problem and potentially decrease the memory footprint.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        \subsection{Synchronization}
+
+            FabRISC provides dedicated atomic instructions to achieve proper synchronization in order to protect critical sections and to avoid data races in threads that share memory with each other. The proposed instructions behave atomically to each other and can be used to implement atomic \textit{"read-modify-write"} operations for locks, semaphores and barriers. It is important to note that if the processor is a simple single core and single threaded machine, then this section can be skipped since the problem can be solved by the OS.
+
+            \begin{itemize}
+
+                \item \textit{Load Linked} (LL) is an atomic memory operation that loads an item from memory into a register and performs a \textit{"reservation"} of the fetched location. The reservation can simply be storing the physical address and size of the object into an internal transparent register.
+                \item \textit{Store Conditional} (SC) is an atomic instruction that stores an item from a register to a memory location if and only if the reservation matches and is marked as valid, that is, the physical address and size are the same plus a valid bit set. In the case of a mismatch, or an invalidity, SC must not perform the store and must return a zero in its register destination as an indication of the failure. If STC succeeds, the item is written to memory, a one is returned into its register destination and all reservations must be invalidated.
+
+            \end{itemize}
+
+            FabRISC also provides optional instructions to support basic transactional memory that can be employed instead of locks to exploit parallelism in a more \textit{"optimistic"} manner. Multiple transactions can happen in parallel as long as no conflict is detected by the hardware, however when such situations occur, the offended transaction must aborted, that is, it must discard all the changes and restore the architectural state immediately before the start of the transaction itself. If a transaction detects no conflict it is allowed to commit the changes and the performed operations can be considered atomic. Transactions can be nested inside each other up to a depth of 256, beyond this, an exception must be generated to notify the programmer.
+
+            \begin{itemize}
+
+                \item \textit{Transaction Begin} (TBEG): causes the thread that executed this instruction to start monitoring accesses by other threads via the coherence protocol aswell as incrementing the nesting counter by one. This instruction effectively starts a transaction.
+                \item \textit{Transaction End} (TEND): causes the thread that executed this instruction to stop monitoring accesses by other threads and commit the changes aswell as decrementing the nesting counter by one. This instruction effectively terminates a transaction.
+                \item \textit{Transaction Abort} (TABT): causes the thread that executed this instruction to stop monitoring accesses by other threads aswell as generate an \textit{"Explicit abort"} exception within the thread and cause it to restore the architectural state immediately before the latest TBEG and it will also cause the transaction nesting level counter to be decremented by one. This instruction effectively aborts a transaction.
+                \item \textit{Transaction Check} (TCHK): causes the thread that executed this instruction to return, in a specified register, the status of the current running transactional execution. This instruction effectively checks if the thread is in a transaction aswell as its depth.
+
+            \end{itemize}
+
+            Transactions can generate exceptions called \textit{"Abort codes"} that can be used by the programmer to take action in case the transaction was aborted. Each abort code encodes the reason why the current transaction was aborted:
+
+            \begin{itemize}
+
+                \item \textit{Associativity abort}: the current transaction was aborted because a cache line was evicted for not enough associativity.
+                \item \textit{Conflict abort}: the current transaction was aborted because a write on shared variables was detected by the coherence protocol.
+                \item \textit{Capacity abort}: the current transaction was aborted because a cache line was evicted for not enough space.
+                \item \textit{Depth limit abort}: the current transaction was aborted because it exceeded the transaction depth limit.
+                \item \textit{Event abort}: the current transaction was aborted because an event, beside the ones in this list, got triggered.
+
+            \end{itemize}
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{Memory synchronization is extremely important in order to make shared memory comunication even work at all. The problem arises when a pool of data is shared among different processes or threads that compete for resources and concurrent access to this pool might result in erroneous behaviour and must, therefore, be arbitred. This zone is called "Critical section" and special atomic primitives can be used to achieve this protection. Many different instruction families can be chosen such as "Compare and swap", "Test and set", "Read-modify-write" and others. I decided to provide in the ISA the LL and SC pairs, as described above, because of its advantages and popularity among other RISC-like instruction sets. Two important advantages of this pair is that it is pipeline friendly (LL acts as a load and SC acts as a store) compared to others that try to do both. Another advantage is the fact that the pair doesn't suffer from the "ABA" problem. It is important to note, however, that this atomic pair doesn't guarantee forward progress and weaker implementations can reduce this chance even more. I decided to also provide basic transactional memory support because, in some situations, it can yield great performance compared to mutual exclusion without losing atomicity. This is completely optional and up to the hardware designer to implement or not simply because it can significantly complicate the design. Transactional memory seems to be promising in improving performance and ease of implementation when it comes to shared memory programs, but debates are still ongoing to decide which exact way of implementing is best.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        \subsection{Coherence}
+
+            FabRISC leaves to the hardware designer the choice of which coherence system to implement. On multicore systems cache coherence must be ensured by choosing a coherence protocol and making sure that all the cores agree on the current sequence of accesses to the same memory location. That can be guaranteed by serializing the operations via the use of a shared bus or via a distributed directory and \textit{Write-update} or \textit{Write-invalidate} protocols can be employed without any issues. Software coherence can also be a valid option but it will rely on the programmer to explicitly flush or invalidate the cache of each core separately. Nevertheless, FabRISC provides implementation-dependent instructions that can be sent to the cache controller directly to manipulate its operation (see section xxx for details). If the processor makes use of a separate instruction cache, potential complications can arise for self modifying code which can be solved by employing one of the above options, furthermore the ISA includes implementation specific instructions such as CACOP and MMUOP to directly manage caches and the MMU in these particular cases.
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{Cache coherence is a big topic and is hard to get right because it can hinder performance in both single core and multicore significantly. I decided to give as much freedom as possible to the designer of the system to pick the best solution that they see fit. Another aspect that could be important, if the software route is chosen, is the exposure to the underlying microarchitecture implementation to the programmer which can be yield unnecessary complications. Generally speaking though write-invalidate seems to be the standard approach in many modern designs because of the way it behaves in certain situations, especially when a process is moved to another core. Simple shared bus can be a good choice if the number of cores is small (lots of cores means lots of traffic), otherwise a directory based approach can be used to ensure that all the cores agree on the order of accesses. From this, the protocol can be picked: MSI, MESI, MOSI or MOESI, the latter being the most complex but most powerful.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        \subsection{Consistency}
+
+            FabRISC utilizes a fully relaxed memory consistency model formally known as \textit{Release consistency} that allows all possible orderings inorder to give processors the freedom to reorder memory instructions to different addresses in any way it wants. For debugging and for specific situations the stricter \textit{Sequential consistency} model can be utilized and the processor must be able to switch between the two at any time via a dedicated bit in the control and status register. Special instructions, called \textit{"Fences"}, are provided to let the programmer impose an order on memory operations when the relaxed model is in use. If the processor doesn't reorder memory operations this section can be skipped.
+
+            \begin{itemize}
+
+                \item \textit{Fence Loads} (FNCL): this instruction forbids the processor to reorder any load instruction across the fence.
+                \item \textit{Fence Stores} (FNCS): this instruction forbids the processor to reorder any store instruction across the fence.
+                \item \textit{Fence Loads and Stores} (FNCLS): this instruction forbids the processor to reorder any load or store instruction across the fence.
+
+            \end{itemize}
+
+            The fences can be used on any memory type of instruction, including the LL & SC pair to forbid reordering when aquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache controller via the special implementation specific CACOP instruction as discussed above.
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{The memory consistency model i wanted to utilize was a very relaxed model to allow all kinds of performance optimization to take place inside the system. However one has to provide some sort of restrictions, effectively special memory operations, to avoid absurd situations. Even with those restrictions debugging could be quite difficoult because the program might behave very weirdely, so i decided to include the sequential model that forbids reordering of any kind of memory instruction. If a program is considered well syncrhonyzed (data race-free and all critical sections are protected) consistency becomes less of an issue because there will be no contention for resources and, therefore, the model can be completely relaxed without any side effects. Achieving this level of code quality is quite the challenge and so these consistency instructions can be employed in making sure that everything works out.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        \subsection{Interrupts} %----------------------------------------------------------------------------------------------
+
+            Interrupts are a subset of a more general group called \textit{"Events"} and they allow external devices to explicitly ask the host for comunication at any time asyncronously aswell as thread signaling. The architecture further divides these interrupts in two subcategories:
+
+            \begin{itemize}
+
+                \item \textit{IPC interrupts}: asyncronous events dedicated for inter-process comunication. These events are promoting and should be managed by the supervisor alone. Local priority among this category of events can be dynamically changed by the supervisor directly. IPC interrupts can be disabled or enabled at any time by the supervisor by setting a dedicated bit in the control and status register (CSR) of the particular receiving core. The global priority level of this sub category is 2.
+                \item \textit{IO interrupts}: external asynchronous events dedicated for IO device comunication. These interrupts are promoting and should be managed by the supervisor alone. Local priority among this category of events can be dynamically changed by the supervisor directly. IO interrupts can be disabled or enabled at any time by the supervisor by setting a dedicated bit in the control and status register (CSR) of the particular receiving core. The global priority level of this sub category is 3.
+
+            \end{itemize}
+
+            The global priority level signifies that a certain group of events has a higher base priority over another, this means that regardless of the local priority of a particular group, if another group has a higher global priority, it should be handled first. Interrupts are always promoting which means that the receiving core will switch to supervisor mode and start the handling sequence. Once the handling sequence is complete, the core will find itself executing OS code in supervisor mode which, in turn, will decide the actions to take.
+
+            % [handling sequence diagram goes here...]
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{I think that interrupts are a great tool that allow the IO devices themselves to start the comunication, as opposed to the time consuming polling. This option is especially useful when low latency is required and can be used in conjunction with the regular low speed memory mapped IO transfers or the faster DMA. For devices that do not need any kind of bandwidth or responsiveness, polling can still be a valid choice without utilizing any extra resources. A shadow register file can potentially be utilized to reduce the latency to a minimum, however, it must behave transparently to the architecture.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+    \clearpage
+
+%__________________________________________________________________________________________________________________________________
+
+    \section[Input Output]{\LARGE\underline{Input Output}}
+
+        This section is dedicated to the specification that FabRISC uses for communicating with external devices aswell as other cores and hardware threads if present. The architecture defines io mappings and potential DMA behaviour and, in the next section, OS support and inter-process comunication schemes are discussed.
+
+        \subsection{Memory mapped IO}
+
+            FabRISC reserves a portion of the high memory address space to \textit{Memory mapped IO}. This region, of the size of $2^{16}$ bytes, is not cached nor paged and byte addressable in little endian order. If a thread wants to transfer data to an IO device it can simply execute a memory operation to this section without further complications. The IO device must map all of its internal registers and state to this region, multiple channels or buses can potentially be employed to reduce the latency in case another transfers are already taking place aswell as increaseing the bandwith. It is important to note that this region, although not paged in the traditional sense, (the virtual to physical mapping will always be the same) it must still have page table entries for protection. The ISA roughly splits this address space in two segments:
+
+            \begin{itemize}
+
+                \item \textit{CPU segment}: this portion, starting from address zero, is composed of xxx bytes and should be used to hold CPU information, such as implemented ISA extentions, cache sizes and other CPU capabilities and characteristics.
+                \item \textit{IO segment}: this portion, starting from address xxx, is composed of xxx bytes and should be used to comunicate with external devices.
+
+            \end{itemize}
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{I decided to go with memory mapped IO because of its flexibility and simplicity compared to port based solutions. The IO region can be considered plain memory by the processor internally, which allows for advanced and fancy operations that use locks, barriers, fences and transactions to be done by multiple threads to the same device. I don't recommend caching or paging this region because it can yield potential inconsistencies and unnecessary complexities.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        % [the MMIO partitioning table goes here...]
+
+        \subsection{Direct memory access}
+
+            FabRISC provides the ability for IO devices to access the main system memory directly via DMA without passing through the processor. A dedicated centralized controller can be utilized to achieve this, but the hardware designer is free to choose another alternative if considered appropriate and, if this method of comunication is chosen to be used, cache coherence must be ensured to the IO devices too. Some possible options can be (as discussed earlier):
+
+            \begin{itemize}
+
+                \item \textit{Non cacheable memory region}: with this configuration coherence isn't a problem because no caching is performed by the CPU and the IO device in question. The system, however, needs to be able to dynamically declare which portion of memory is cacheable and which isn't which can lead to unnecessary complexities.
+                \item \textit{Software IO coherence}: with this configuration the CPU and the device are required to flush or invalidate the cache explicitly with no extra hardware complexity, however, this option requires the exposure of the underlying organization to the programmer.
+                \item \textit{Hardware IO coherence}: with this configuration, both the CPU and the IO device, will monitor each other's accesses via a common bus or a directory and proper actions are automatically taken according to a coherence protocol which can be the already existent one in the processor.
+
+            \end{itemize}
+
+            The DMA protocol / scheme implement by the hardware designer must also take consistency into account since memory operations to different addresses are allowed be done out-of-order. This means that fencing instructions must retain their effect.
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{For more bandwidth demanding devices, DMA can be used to trasfer data at very high speeds in the order of several Gb/s without interfering with the CPU. This scheme however, is more complex than plain MMIO because of the special arbiter that handles and grants the requests. IO coherence, aswell as its consistency, is actually the main reason of this subsection as a remainder that it needs to be considered during the development of the underlying microarchitecture.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+    \clearpage
+
+%__________________________________________________________________________________________________________________________________
+
+    \section[OS support]{\LARGE\underline{OS support}}
+
+        This section is dedicated to the supported OS primitives by the FabRISC architecture. They are divided into different categories explained below and should be, ideally, handled by the hardware in order to give the operative system a solid foundation. The features allow the realization of any kind of OS, from monolithic designs, microkernel, exokernel and hybrids.
+
+\end{document}

@@ -1,0 +1,49 @@
+EVENTS {
+
+    SYNCHRONOUS {
+
+        EXCEPTIONS [EXC] {
+
+            - non promoting
+            - user defined
+            - user handled
+            - global priority level: 0
+        }
+
+        FAULTS [FLT] {
+
+            - promoting
+            - system defined
+            - system handled
+            - global priority level: 1
+        }
+    }
+
+    ASYNCHRONOUS {
+
+        IO INTERRUPTS [INT] {
+
+            - promoting
+            - system defined
+            - system handled
+            - global priority level: 3
+
+            - system can change local priority
+        }
+
+        IPC INTERRUPTS [IPC] {
+
+            - promoting
+            - system defined
+            - system handled
+            - global priority level: 2
+
+            - system can change local priority
+        }
+    }
+}
+
+event table
+
+|______NAME______|__MNEMONIC__|____ID____|__TYPE__|
+...
