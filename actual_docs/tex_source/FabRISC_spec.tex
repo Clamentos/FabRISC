@@ -162,25 +162,6 @@
         \textit{The memory consistency model i wanted to utilize was a very relaxed model to allow all kinds of performance optimization to take place inside the system. However one has to provide some sort of restrictions, effectively special memory operations, to avoid absurd situations. Even with those restrictions debugging could be quite difficoult because the program might behave very weirdely, so i decided to include the sequential model that forbids reordering of any kind of memory instruction. If a program is considered well syncrhonyzed (data race-free and all critical sections are protected) consistency becomes less of an issue because there will be no contention for resources and, therefore, the model can be completely relaxed without any side effects. Achieving this level of code quality is quite the challenge and so these consistency instructions can be employed in making sure that everything works out.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
-        \subsection{Interrupts} %----------------------------------------------------------------------------------------------
-
-            Interrupts are a subset of a more general group called \textit{"Events"} and they allow external devices to explicitly ask the host for comunication at any time asyncronously aswell as thread signaling. The architecture further divides these interrupts in two subcategories:
-
-            \begin{itemize}
-
-                \item \textit{IPC interrupts}: asyncronous events dedicated for inter-process comunication. These events are promoting and should be managed by the supervisor alone. Local priority among this category of events can be dynamically changed by the supervisor directly. IPC interrupts can be disabled or enabled at any time by the supervisor by setting a dedicated bit in the control and status register (CSR) of the particular receiving core. The global priority level of this sub category is 2.
-                \item \textit{IO interrupts}: external asynchronous events dedicated for IO device comunication. These interrupts are promoting and should be managed by the supervisor alone. Local priority among this category of events can be dynamically changed by the supervisor directly. IO interrupts can be disabled or enabled at any time by the supervisor by setting a dedicated bit in the control and status register (CSR) of the particular receiving core. The global priority level of this sub category is 3.
-
-            \end{itemize}
-
-            The global priority level signifies that a certain group of events has a higher base priority over another, this means that regardless of the local priority of a particular group, if another group has a higher global priority, it should be handled first. Interrupts are always promoting which means that the receiving core will switch to supervisor mode and start the handling sequence. Once the handling sequence is complete, the core will find itself executing OS code in supervisor mode which, in turn, will decide the actions to take.
-
-            % [handling sequence diagram goes here...]
-
-        \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{I think that interrupts are a great tool that allow the IO devices themselves to start the comunication, as opposed to the time consuming polling. This option is especially useful when low latency is required and can be used in conjunction with the regular low speed memory mapped IO transfers or the faster DMA. For devices that do not need any kind of bandwidth or responsiveness, polling can still be a valid choice without utilizing any extra resources. A shadow register file can potentially be utilized to reduce the latency to a minimum, however, it must behave transparently to the architecture.}
-        \par\noindent\rule{\textwidth}{0.4pt}
-
     \clearpage
 
 %__________________________________________________________________________________________________________________________________
@@ -225,25 +206,30 @@
         \par\noindent\rule{\textwidth}{0.4pt}
 
     \clearpage
-
 %__________________________________________________________________________________________________________________________________
 
     \section[Events]{\LARGE\underline{Events}}
 
-        This section is dedicated to the specification of exceptions, faults and interrupts. FabRISC uses the term \textit{event} to indicate the generic categorization of these kinds of situations. Events are further sub divided into two main categories:
+        This section is dedicated to the specification of exceptions, faults and interrupts. FabRISC uses the term \textit{event} to indicate the generic categorization of these kinds of situations. Events can be used to comunicate with other threads, processes, IO devices, signal system faults or simply trigger software caused exceptions. Events are sub divided into two main categories: Syncronous and Asynchronous.
 
-        \begin{itemize}
+        \subsection{Syncronous}
 
-            \item \textit{Synchronous}: these kinds of events are internally generated and are considered deterministic, that is, if they happen, they will always happen in the same location in the executing program and, because of this, the handling is done in program order. This category is further sub divided in two, consiting of:
+            Synchronous events are internally generated and are considered deterministic, that is, if they happen, they will always happen in the same location in the executing program and, because of this, the handling is done in program order. This category is further sub divided in two, consiting of:
 
-                \begin{itemize}
+            \begin{itemize}
 
-                    \item \textit{Exceptions}: These events are user handled, non promoting and with a global priority level of 0. They are generated by executing instructions and each process can have it's own private handler with the help of a dedicated pointer register. From a higher level, the handling of exceprions looks like an automatic function call to the specified handler address.
-                    \item \textit{Faults}: These events are supervisor handled, promoting and with a global priority level of 2. They are generated by executing instructions and each process will have the same handler specified by the supervisor. From a high level, the handling of faults looks like an automatic function call performed by the supervisor to a location that is always the same, usually under the for of a branch table, to the proper handler.
+                \item \textit{Exceptions}: These events are user handled, non promoting and with a global priority level of 0. They are generated by executing instructions and each process can have it's own private handler with the help of a dedicated pointer register. From a higher level, the handling of exceprions looks like an automatic function call to the specified handler address.
+                \item \textit{Faults}: These events are supervisor handled, promoting and with a global priority level of 2. They are generated by executing instructions and each process will have the same handler specified by the supervisor. From a high level, the handling of faults looks like an automatic function call performed by the supervisor to a location that is always the same, usually under the for of a branch table, to the proper handler.
 
-                \end{itemize}
+            \end{itemize}
 
-            \item \textit{Asynchronous}: these kinds of events are externally generated and are not considered deterministic, that is, they can happen at any time regardless of what the CPU is doing. Asynchronous events can be masked but only by the supervisor and should be handled as soon as possible in order to keep latency low. This category is further sub divided in two, consiting of:
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{Exceptions and faults are used to identify software related problems and edge cases such as overflows, divisions by zero, memory accesses to protected sections and more. I belive that exceptions can be valuable and useful for handling special cases quickly and preemptively without having to perform time consuming checks. Examples of this can be seemless array boundary checks via the use of breakpoint registers (see section xxx for more information) that trigger the appropriate exception. Arithmetic edge cases can be similarly treated via the use of said special registers or by operating the processor in a "safe state", which will trigger the appropriate exception every time something went wrong with the executing software. Faults are similar to exceptions but for more delicate problems such as page faults, illegal or malformed instructions and accesses to protected memory areas. All in all, i belive that one cannot really design a hardware system where these kinds of problems never occur, which is why i put emphasis on being able to gracefully recover when such cases happen.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        \subsection{Asynchronous}
+
+            Asynchronous events are externally generated and are not considered deterministic, that is, they can happen at any time regardless of what the CPU is doing. Asynchronous events can be masked but only by the supervisor and should be handled as soon as possible in order to keep latency low. This category is further sub divided in two, consiting of:
 
             \begin{itemize}
 
@@ -252,34 +238,107 @@
 
             \end{itemize}
 
-        \end{itemize}
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{I think that interrupts are a great tool that allow the IO devices themselves to start the comunication, as opposed to the time consuming polling. This option is especially useful when low latency is required and can be used in conjunction with the regular low speed memory mapped IO transfers or the faster DMA. For devices that do not need any kind of bandwidth or responsiveness, polling can still be a valid choice without utilizing any extra resources. A shadow register file can potentially be utilized to reduce the latency to a minimum, however, it must behave transparently to the architecture.}
+        \par\noindent\rule{\textwidth}{0.4pt}
 
-        Handling events involves a \textit{"launching"} phase and a \textit{"returning"} phase. During the launching phase, the CPU will immediately:
+        \subsection{Handling}
 
-        \begin{enumerate}
+            Handling events involves a \textit{"launching"} phase and a \textit{"returning"} phase. The steps of each phase must be performed by the CPU in a single cycle in order to avoid corruption of the internal state. Launching phase is composed of the following steps:
 
-            \item save the value of the program counter (PC) and status register (CSR) into appropriate buffer register depending on the privilege level of the event.
-            \item mask any other interrupt if the triggered event is promoting, otherwise skip this step. The masking can be accomplished by simply setting a bit in the CSR to the appropriate value.
-            \item switch to supervisor mode if the triggered event is promoting, otherwise skip this step.
-            \item jump to the handler location. Depending of the privilege level of the event this step will involve:
+            \begin{enumerate}
 
-                \begin{itemize}
+                \item save the value of the program counter (PC) and status register (CSR) into appropriate buffer register depending on the privilege level of the event.
+                \item mask any other interrupt if the triggered event is promoting, otherwise skip this step. The masking can be accomplished by simply setting a bit in the CSR to the appropriate value.
+                \item switch to supervisor mode if the triggered event is promoting, otherwise skip this step.
+                \item jump to the handler location. Depending of the privilege level of the event this step will involve:
 
-                    \item for non-promoting events, simply copy the value of the user event table pointer (UETP) into the program counter (PC).
-                    \item for promoting events, simply copy the value of the supervisor event tablepointer (SETP) into the program counter (PC).
+                    \begin{itemize}
 
-                \end{itemize}
+                        \item for non-promoting events, simply copy the value of the user event table pointer (UETP) into the program counter (PC).
+                        \item for promoting events, simply copy the value of the supervisor event tablepointer (SETP) into the program counter (PC).
 
-        \end{enumerate}
+                    \end{itemize}
 
-        After the execution of the desired handler code, the last instruction will trigger the returning phase. During that phase, the CPU will:
+            \end{enumerate}
 
-        \begin{enumerate}
+            After the execution of the desired handler code, the last instruction will trigger the returning phase. During that phase, the CPU will essentially do the opposite of what the launching phase did:
 
-            \item restore the value of the program counter (PC) and status register (CSR) by storing into them the values of the appropriate buffer registers previously written.
-            \item ...
+            \begin{enumerate}
 
-        \end{enumerate}
+                \item restore the value of the program counter (PC) and status register (CSR) by storing into them the values of the appropriate buffer registers previously written.
+                \item ...
+
+            \end{enumerate}
+
+            Global priority, introduced in the previous subsections, is used to give a further discriminant in case different types of events are triggered in the same clock cycle. Events with globabl priority level of 3 will be considered first, all the way to priority level 0. Local priority simply specifies the order in which events of the same type must be handled. Local priority concerns asyncronous events only, since syncronous events must be handled in program order as discussed in the previous sections.
+
+        % [handling sequence diagram goes here...]
+        % [event table goes here...]
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{Comment goes here...}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+    \clearpage
+%__________________________________________________________________________________________________________________________________
+
+    \section[OS support]{\LARGE\underline{OS support}}
+
+        This section is dedicated to the supported OS primitives by the FabRISC architecture. They are divided into different categories explained below and should be, ideally, handled by the hardware in order to give the operative system a solid foundation. The features allow the realization of any kind of OS, from monolithic designs, microkernel, exokernel and hybrids.
+
+        \subsection{Supervisor mode}
+
+            FabRISC is a priviledged architecture and makes use of the supervisor to create a border between the OS and the user. With supervisor privileges the executing code has complete and total control over the hardware and any access to protected resources in user mode, such as particular instructions, registers, or addresses must generate a fault. The processor should only enter the supervisor mode if an appropriate event is triggered and a dedicated instruction is provided to trasfer the control back to the user (consult section xxx for more information). If the system makes use of a multicore processor then each core must have the ability to be in supervisor mode or not indipendently. When booting up, the system should start in supervisor mode with only one core active to allow the loading of the OS itself and the creation of all the required datastructures. This is indicated by a special bit in the status register (CSR).
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{Having a supervisor mode is essential for implementing a working operative system. This special mode allows the executing code to have complete and total control over the CPU and is used, by the OS, to protect itself from other processes that could, intentionally or not, compromise the system. When the processor isn't running in supervisor mode it will run in user mode with restrictions, mainly in manipulating certain hardware state including some special registers, addresses and instructions. This, along with virtual memory, will effectively confine any user level process to its own sandbox protecting itself and others.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        \subsection{Virtual memory}
+
+            FabRISC provides privileged customizeable (implementation specific) instructions to interface directly with the MMU, if the processor has one, allowing the OS to modify and manage that particular unit (see section xxx for more details), alternatively, the managing can be automatic if the hardware supports it. A special purpose register called PTP is also provided to hold the phisycal address of the page table to perform the page table walk in case of a TLB miss. PTP must be set by the supervisor only with the appropriate address every time a context switch happens and a write operation on PTP in user mode must cause a fault. The TLB can also make use the process ID in the PID register to avoid flushing during context switches and page swapping can be supported via the generation of the \textit{Page fault} event that can be handled by the OS.
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{Virtual memory is a central concept in any operative system and i wanted to provide, at least, basic support without going too crazy (this is prettymuch as simple as it gets). The SR1 also has a special bit to enable or disable paging by bypassing the TLB and avoid doing the virtual to phisical translation alltogether. The process ID can help reducing the burst of TLB misses caused by context switches especially with frequent system calls in microkernel based solutions.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        \subsection{Hardware thread comunication}
+
+            Thanks to the already discussed IPC interrupts, it is possible to implement efficient low level hardware thread comunication. Initialization and termination of threads, however, is mandatory since it effectively allows the creation and destruction of threads if the processor has multiple cores.
+
+            \begin{itemize}
+
+                \item \textit{Thread signaling}: this form of comunication is achieved by the use of dedicated interrupts as suggested earlier. The signal can be sent to an IO controller just like a request from an external IO device which can then forward the request to the destination thread that is interrupted.
+                \item \textit{Message passing}: this form of comunication is achieved by the use of dedicated MMIO addresses to send and receive small messages through the IO controller. The message formats should use a common convention agreed by the hardware designer and the programmer for everybody.
+                \item \textit{Thread initialization} and \textit{Thread termination}: this form of comunication is vital to be able to start and stop threads at will in multicore systems. Starting a thread can be achieved by sending a dedicated IPC interrupt that has the ability to \textit{wakeup} the destination core or hardware thread from a halted state. A similar and symetric picture can employed to stop running cores or threads via a dedicated halting IPC interrupt.
+
+            \end{itemize}
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{Efficient comunication is key to achieve good performance in any system. I decided to support simple message passing and signaling directly in hardware to lower the latencies as much as possible since an FPGA CPU will only have clock speeds in the hundreds of MHz. The only form of comunication that isn't explicitly listed here is "Shared memory" simply because it is a natural consequence of virtual memory and paging. In this subsection i assumed the presence of a centralized IO controller that manages interrupts, IO requests and transfers. Any other solution that behaves similarly to that is completely possible and allowed, for example a more distributed kind of controller where each core has its own indipendent logic (or something along those lines) could be a possible alternative.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+    \clearpage
+%__________________________________________________________________________________________________________________________________
+
+    \section[CPU state organization]{\LARGE\underline{CPU state organization}}
+
+        In this section the register file organization, vector model, processor modes and ISA modules are presented. FabRISC register file is divided into three banks of 32 registers each: the first bank holds the general purpose registers, the second holds general purpose vector registers and the third bank holds the special purpose registers. Dedicated instructions are provided to move data to and from the different banks (see section xxx for more information).
+
+        \subsection{General purpose registers}
+
+            General purpose registers or \textit{GPRs} are all WLEN bits wide and can be used by the programmer in any way they wish and can be accessed in both user and supervisor mode. FabRISC also defines the register ABI to improve software compatability and ease of use.
+
+            \begin{itemize}
+
+                ...
+
+            \end{itemize}
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{The first bank offers a 32 entry flat register file in order to efficiently support modern graph-coloring driven compiler register allocation. This minimizes the pressure on the registers and reduces to a minimum the number of memory accesses improving performance and code size. Because there is no hardware stack pointer nor return address register, standard calling conventions can be used to give a proper form for all the GPRs in the file. Compressed instructions, because of the size limitations, are only able to access eight registers of the file.}
+        \par\noindent\rule{\textwidth}{0.4pt}
 
     \clearpage
 
