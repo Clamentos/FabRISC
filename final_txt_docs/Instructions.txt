@@ -1,6 +1,7 @@
 This file is concerned with the list of instructions
 ______________________________________________________________________________________________________________________________________________________________________
 
+...
 ______________________________________________________________________________________________________________________________________________________________________
 
 INSTRUCTION LIST:
@@ -12,6 +13,8 @@ Computational { [190]
         integer {
 
             core { (25)
+
+                1st module: BSC (basic scalar computational)
 
                 [A] (ADD)----Addition----------------------------------------(?????)----OPCODE:000000000000
                 [A] (SUB)----Subtraction-------------------------------------(?????)----OPCODE:000000000000
@@ -41,9 +44,13 @@ Computational { [190]
                 [B] (IXOR)---Immediate Bitwise XOR---------------------------(?????)----OPCODE:000000000
                 [B] (IXNOR)--Immediate Bitwise XNOR--------------------------(?????)----OPCODE:000000000
                 [B] (IIBF)---Immediate Insert Bit Field----------------------(?????)----OPCODE:000000000
+
+                [C] (SIIC)-Scalar Integer-Integer Cast-----------------------(?????)----OPCODE:0000000000000000
             }
 
             advanced { (38)
+
+                2nd module: ASC (advanced scalar computational)
 
                 [A] (MUL)----Multiplication----------------------------------(?????)----OPCODE:000000000000
                 [A] (MAC)----Multiply Accumulate-----------------------------(?????)----OPCODE:000000000000
@@ -94,6 +101,8 @@ Computational { [190]
 
             core { (8)
 
+                3rd module: BSF (basic scalar floating-point)
+
                 [A] (FADD)---FP. Addition------------------------------------(?????)----OPCODE:000000000000
                 [A] (FSUB)---FP. Subtraction---------------------------------(?????)----OPCODE:000000000000
                 [A] (FMUL)---FP. Multiplication------------------------------(?????)----OPCODE:000000000000
@@ -103,9 +112,13 @@ Computational { [190]
                 [B] (IFSUB)--Immediate FP. Subtraction-----------------------(?????)----OPCODE:000000000
                 [B] (IFMUL)--Immediate FP. Multiplication--------------------(?????)----OPCODE:000000000
                 [B] (IFDIV)--Immediate FP. Division--------------------------(?????)----OPCODE:000000000
+
+                [C] (SFFC)-Scalar FP-FP Cast---------------------------------(?????)----OPCODE:0000000000000000
             }
 
             advanced { (10)
+
+                4th module: ASF (advanced scalar floating-point)
 
                 [A] (FMAC)---FP. Multiply Accumulate-------------------------(?????)----OPCODE:000000000000
                 [A] (FPOW)---FP. Power---------------------------------------(?????)----OPCODE:000000000000
@@ -128,6 +141,8 @@ Computational { [190]
         integer {
 
             core { (25)
+
+                5th module: BVC (basic vector computational)
 
                 [A] (VADD)--Vector Addition----------------------------------(?????)----OPCODE:000000000000
                 [A] (VSUB)--Vector Subtraction-------------------------------(?????)----OPCODE:000000000000
@@ -157,9 +172,13 @@ Computational { [190]
                 [B] (VIXOR)---Vector Immediate Bitwise XOR-------------------(?????)----OPCODE:000000000
                 [B] (VIXNOR)--Vector Immediate Bitwise XNOR------------------(?????)----OPCODE:000000000
                 [B] (VIIBF)---Vector Immediate Insert Bit Field--------------(?????)----OPCODE:000000000
+
+                [C] (VIIC)-Vector Integer-Integer Cast-----------------------(?????)----OPCODE:0000000000000000
             }
 
             advanced { (51)
+
+                6th module: AVC (advanced vector computational)
 
                 [A] (VMUL)---Vector Multiplication---------------------------(?????)----OPCODE:000000000000
                 [A] (VMAC)---Vector Multiply Accumulate----------------------(?????)----OPCODE:000000000000
@@ -224,6 +243,8 @@ Computational { [190]
 
             core { (8)
 
+                7th module: BVF (basic vector floating-point)
+
                 [A] (VFADD)--Vector FP. Addition-----------------------------(?????)----OPCODE:000000000000
                 [A] (VFSUB)--Vector FP. Subtraction--------------------------(?????)----OPCODE:000000000000
                 [A] (VFMUL)--Vector FP. Multiplication-----------------------(?????)----OPCODE:000000000000
@@ -233,9 +254,13 @@ Computational { [190]
                 [B] (VIFSUB)-Vector Immediate FP. Subtraction----------------(?????)----OPCODE:000000000
                 [B] (VIFMUL)-Vector Immediate FP. Multiplication-------------(?????)----OPCODE:000000000
                 [B] (VIFDIV)-Vector Immediate FP. Division-------------------(?????)----OPCODE:000000000
+
+                [C] (VFFC)-Vector FP-FP Cast---------------------------------(?????)----OPCODE:0000000000000000
             }
 
             advanced { (17)
+
+                8th module: AVF (advanced vector floating-point)
 
                 [A] (VFMAC)---Vector FP. Multiply Accumulate-----------------(?????)----OPCODE:000000000000
                 [A] (VFPOW)---Vector FP. Power-------------------------------(?????)----OPCODE:000000000000
@@ -261,14 +286,9 @@ Computational { [190]
         }
     }
 
-    casts { (8)
+    mixed casts { (8)
 
         TODO: assign to proper module
-
-        [C] (SIIC)-Scalar Integer-Integer Cast-------------------------------(?????)----OPCODE:0000000000000000
-        [C] (SFFC)-Scalar FP-FP Cast-----------------------------------------(?????)----OPCODE:0000000000000000
-        [C] (VIIC)-Vector Integer-Integer Cast-------------------------------(?????)----OPCODE:0000000000000000
-        [C] (VFFC)-Vector FP-FP Cast-----------------------------------------(?????)----OPCODE:0000000000000000
 
         [C] (SIFC)-Scalar Integer-FP Cast------------------------------------(?????)----OPCODE:0000000000000000
         [C] (SFIC)-Scalar FP-Integer Cast------------------------------------(?????)----OPCODE:0000000000000000
@@ -278,11 +298,14 @@ Computational { [190]
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
+
 Data Transfer { [17]
 
     scalar {
 
         core { (3)
+
+            module: 0 (basic memory)
 
             [D] (MLD)---Memory Load------------------------------------------(?????)----OPCODE:000000
             [D] (MST)---Memory Store-----------------------------------------(?????)----OPCODE:000000
@@ -290,6 +313,8 @@ Data Transfer { [17]
         }
 
         advanced { (4)
+
+            modile: 1 (advanced memory)
 
             [E] (IMLD)--Indexed Memory Load----------------------------------(?????)----OPCODE:000000
             [E] (IMST)--Indexed Memory Store---------------------------------(?????)----OPCODE:000000
@@ -319,6 +344,7 @@ Data Transfer { [17]
 
         [A] (LL)-Load Linked-------------------------------------------------(?????)----OPCODE:000000000000
         [A] (SC)-Store Conditional-------------------------------------------(?????)----OPCODE:000000000000
+        // CAS maybe
     }
 
     block { (2)
@@ -449,7 +475,7 @@ Compressed { [20]
     [N] (CBEQZ)  Compressed Branch If NEZ 16---------------------------------(?????)
     [N] (CBEQZ)  Compressed Branch If NEZ 32---------------------------------(?????)
     [N] (CBEQZ)  Compressed Branch If NEZ 64---------------------------------(?????)
-    ...16
+    ...12
 
     [O] (CCAL) Branch If Zero Flag
     [O] (CCAL) Compressed Function Call

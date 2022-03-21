@@ -15,7 +15,7 @@ ________________________________________________________________________________
 
     - length: 4B
 
-    computational r,r,r:
+    scalar computational r,r,r:
 
         MOD(05):
 
@@ -24,6 +24,17 @@ ________________________________________________________________________________
         ('tt' is data type length: 8, 16, 32, 64)
         ('s' is sign: 0 signed, 1 unsigned)
         ('m' is maks: 0 unmasked, 1 masked)
+
+    vector computational r,r,r:
+
+        MOD(05):
+
+            vmstt
+
+        ('tt' is data type length: 8, 16, 32, 64)
+        ('s' is sign: 0 signed, 1 unsigned)
+        ('m' is maks: 0 unmasked, 1 masked)
+        ('v' is vector mode: 0 vec-vec, 1 vec-sca)
 
     atomic memory:
 
@@ -36,6 +47,8 @@ ________________________________________________________________________________
 
         ('tt' is data type length: 8, 16, 32, 64)
         ('m' is mask: 0 unmasked, 1 masked)
+
+        WARNING: fencing here is not needed anymore since there are dedicated ones
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -84,7 +97,9 @@ ________________________________________________________________________________
         ('tt' is data type length: 8, 16, 32, 64)
         ('m' is maks: 0 unmasked, 1 masked)
 
-        WARNING: fencing here is not needed anymore since there are dedicated ones
+        ---------------------------------------------
+
+            tt
 
     casts & conversions:
     
@@ -355,24 +370,24 @@ max opcode pool: 300
 currently used: 241
 ______________________________________________________________________________________________________________________________________________________________________
 
-000000xxx xxxxxxx ... 011111xxx xxxxxxx   32
-1000000xx xxxxxxx ... 1100111xx xxxxxxx   40
-110100000 xxxxxxx ... 111110011 xxxxxxx   84
-111110100 000xxxx ... 111111110 111xxxx   88
-111111111 0000000 ... 111111111 0111111   64
+opcode length:  6 -> [000000xxx xxxxxxx] ... [011111xxx xxxxxxx]   max: 32; used: 10; remaining: 22
+opcode length:  7 -> [1000000xx xxxxxxx] ... [1100111xx xxxxxxx]   max: 40; used: 25; remaining: 15
+opcode length:  9 -> [110100000 xxxxxxx] ... [111110011 xxxxxxx]   max: 84; used: 76; remaining:  8
+opcode length: 12 -> [111110100 000xxxx] ... [111111110 111xxxx]   max: 88; used: 72; remaining: 16
+opcode length: 16 -> [111111111 0000000] ... [111111111 0111111]   max: 64; used: 50; remaining: 14
 
-[A]: 72
-[B]: 72
-[C]: 50
-[D]:  4
-[E]:  4
-[F]:  4
-[G]:  2
-[H]: 12
-[I]:  4
-[J]:  1
-[K]:  1
-[M]: 10
-[N]: ??
-[O]: ??
-[P]:  1
+[A]: 72 (12)
+[B]: 72 (09)
+[C]: 50 (16)
+[D]:  4 (06)
+[E]:  4 (06)
+[F]:  4 (09)
+[G]:  2 (07)
+[H]: 12 (07)
+[I]:  4 (07)
+[J]:  1 (06)
+[K]:  1 (06)
+[M]: 10 (07)
+[N]: ?? (06)
+[O]: ?? (07)
+[P]:  1 (07)

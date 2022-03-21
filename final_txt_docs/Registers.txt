@@ -193,6 +193,24 @@ breakpoint registers {
         1111 -> break on DIV0 flag
 
 
+        0000 -> clk counter
+        0001 -> 
+        0010 -> 
+        0011 -> 
+        0100 -> 
+        0101 -> 
+        0110 -> 
+        0111 -> 
+        1000 -> 
+        1001 -> 
+        1010 -> 
+        1011 -> 
+        1100 -> 
+        1101 -> 
+        1110 -> 
+        1111 -> 
+
+
     for example (assuming 64 bit architecture), setting a value of 0x0000000012345678 in the register BP_0 and a value of 0x0000000000000001 in the BM register will only
     enable BP_0 with "break on instruction address" mode. This mode will trigger a breakpoint exception if the PC ever reaches a value of
     0x0000000012345678.
@@ -324,3 +342,47 @@ file usage registers {
     information along with "State Dump" and "State Restore" instructions to easily and quickly save or restore the state of the processor to and from memory.
 }
 ______________________________________________________________________________________________________________________________________________________________________
+
+
+new special reg file test:
+
+  * %19--------(FU0 "file usage 0")-----------------------[width: 32 bits]
+  * %20--------(FU1 "file usage 1")-----------------------[width: 32 bits]
+  * %21--------(FU2 "file usage 2")-----------------------[width: 32 bits]
+
+  * %22--------(PID "process identifier")-----------------[width: 32 bits]
+  * %23--------(CSR "control & status register")----------[width: 32 bits]
+  * %24--------(SEB_0 "supervisor event buffer 0")--------[width: word]
+  * %25--------(SEB_1 "supervisor event buffer 1")--------[width: word]
+  * %26--------(SETP "supervisor event table pointer")----[width: word]
+  * %27--------(PTP "page table pointer")-----------------[width: word]
+
+  * %28--------(KR_0 "kernel reserved 0")-----------------[width: word]
+  * %29--------(KR_1 "kernel reserved 1")-----------------[width: word]
+  * %30--------(KR_2 "kernel reserved 2")-----------------[width: word]
+  * %31--------(KR_3 "kernel reserved 3")-----------------[width: word]
+
+
+
+    %00--------(BR_00 "breakpoint register 00")-----------[width: word]
+    %01--------(BR_01 "breakpoint register 01")-----------[width: word]
+    %02--------(BR_02 "breakpoint register 02")-----------[width: word]
+    %03--------(BR_03 "breakpoint register 03")-----------[width: word]
+    %04--------(BR_04 "breakpoint register 04")-----------[width: word]
+    %05--------(BR_05 "breakpoint register 05")-----------[width: word]
+    %06--------(BR_06 "breakpoint register 06")-----------[width: word]
+    %07--------(BR_07 "breakpoint register 07")-----------[width: word]
+    %08--------(BR_08 "breakpoint register 08")-----------[width: word]
+    %09--------(BR_09 "breakpoint register 09")-----------[width: word]
+    %10--------(BR_10 "breakpoint register 10")-----------[width: word]
+
+    %11--------(BM_0 "breakpoint modes 0")----------------[width: 32 bits]
+    %12--------(BM_1 "breakpoint modes 1")----------------[width: 32 bits]
+    %13--------(PC "program counter")---------------------[width: word]
+    %14--------(UEB_0 "user event buffer 0")--------------[width: word]
+    %15--------(UEB_1 "user event buffer 1")--------------[width: word]
+    %16--------(UETP "user event table pointer")----------[width: word]
+
+    %17--------(VMSK "vector mask")-----------------------[width: word]
+    %18--------(VFLG "vector flags")----------------------[width: vector length]
+    ...

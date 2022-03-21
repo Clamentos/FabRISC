@@ -26,10 +26,10 @@
 
     \section[Introduction]{\LARGE\underline{Introduction}}
 
-        FabRISC is a simple RISC-like, register-register load-store architecture composed of xxx instructions with variable length encodings of two, four and six bytes. This specification is designed to be modular allowing a simple and straightforward implementation from basic designs up to high performance systems. The ISA includes vector, floating-point, compressed aswell as privileged instructions supporting 32 and 64-bit multithreaded microarchitectures. This specification is completely free, opensource and available to anyone intrested in the project (Creative Commons license). This document is divided into multiple sections each explaining the architecture in detail with the help of tables, figures and implementation specific suggestions in order to aid the hardware and software designers in creating an efficient realization of the FabRISC ISA.
+        FabRISC is a simple RISC-like, register-register load-store architecture composed of xxx instructions with variable length encodings of two, four and six bytes. This specification is designed to be modular allowing a simple and straightforward implementation from basic designs up to high performance systems. The ISA includes vector, floating-point, compressed as well as privileged instructions supporting 32 and 64-bit multi threaded micro-architectures. This specification is completely free, open-source and available to anyone interested in the project (Creative Commons license). This document is divided into multiple sections each explaining the architecture in detail with the help of tables, figures and implementation specific suggestions in order to aid the hardware and software designers in creating an efficient realization of the FabRISC ISA.
 
     \par\noindent\rule{\textwidth}{0.4pt}
-    \textit{Commentary in this document is formatted in this way and comunication will be more colloquial. If the reader is only intrested in the specification, these sections can be skipped without hindering the understanding of the document. This project tries to be more of a hobby learning experience rather than a new super serious industry standard, plus the architecture borrows many existing concepts from the most popular and iconic ISAs like x86, RISC-V, MIPS, ARM and openRISC. I chose to target FPGAs as the primary platform for two main reasons: one is that ASICs are out of the question for me and most people because of cost. Two is that using discrete components makes little sense from a sanity and practicality point of view given the complexity of the project, however, software simulators can be a good platform for simpler implementations. The main idea here is the use of variable length encoding of four and six byte instruction size along with an optional compressed module to increase code density. Flags are also another important and optional aspect that i emphasize because they can be a handy tool when it comes to efficiently control some unavoidable side effects aswell as easing multiword arithmetic. One final aspect of the ISA is the fact that all instructions can specify the length of the data type in order to more precisely control edge cases such as overflow and underflows (and orthogonality reasons). This is not achieved via register sub addressing but rather by simply masking the unnecessary portion of the word while leaving the masked bits in place.}
+    \textit{Commentary in this document is formatted in this way and communication will be more colloquial. If the reader is only interested in the specification, these sections can be skipped without hindering the understanding of the document. This project tries to be more of a hobby learning experience rather than a new super serious industry standard, plus the architecture borrows many existing concepts from the most popular and iconic ISAs like x86, RISC-V, MIPS, ARM and openRISC. I chose to target FPGAs as the primary platform for two main reasons: one is that ASICs are out of the question for me and most people because of cost. Two is that using discrete components makes little sense from a sanity and practicality point of view given the complexity of the project, however, software simulators can be a good platform for simpler implementations. The main idea here is the use of variable length encoding of four and six byte instruction size along with an optional compressed module to increase code density. Flags are also another important and optional aspect that i emphasize because they can be a handy tool when it comes to efficiently control some unavoidable side effects as well as easing multi-word arithmetic. One final aspect of the ISA is the fact that all instructions can specify the length of the data type in order to more precisely control edge cases such as overflows and underflows (and orthogonality reasons). This is not achieved via register sub addressing but rather by simply masking the unnecessary portion of the word while leaving the masked bits in place.}
     \par\noindent\rule{\textwidth}{0.4pt}
 
     \subsection[Terminology]{Terminology}
@@ -45,14 +45,14 @@
             \item \textit{"Consistency"} is used to refer to the ability of a system to be consistent, that is, defining a particular order of operations across all memory locations that is obeyed by everyone within the system.
             \item \textit{"Consistency model"} is used to refer to a particular model or protocol of consistency within a particular system.
             \item \textit{"Event"} is used to generically refer to any extra-ordinary situation that needs to be taken care of as soon as possible.
-            \item \textit{"Exception"} is used to refer to any non severe internal, syncronous event.
-            \item \textit{"Fault"} is used to refer to any severe internal, syncronous event.
-            \item \textit{"Hardware thread"} and \textit{"thread"} are used to refer to a partucular phisycal instance of a software thread running, specifically, on the central processing unit (CPU).
-            \item \textit{"Interrupt"} is used to refer to any external, asyncronous event.
+            \item \textit{"Exception"} is used to refer to any non severe internal, synchronous event.
+            \item \textit{"Fault"} is used to refer to any severe internal, synchronous event.
+            \item \textit{"Hardware thread"} and \textit{"thread"} are used to refer to a particular physical instance of a software thread running, specifically, on the central processing unit (CPU).
+            \item \textit{"Interrupt"} is used to refer to any external, asynchronous event.
             \item \textit{"Memory fence"} and \textit{"fence"} are used to refer to particular instructions that have the ability to enforce a specific ordering of other memory instructions.
             \item \textit{"Memory transaction"} and \textit{"transaction"} are used to refer to a particular series of operations that behave atomically within the system.
             \item \textit{"Micro architectural state"} is used to refer to the actual state of the processor that might not be directly visible by the programmer.
-            \item \textit{"Micro architecture"} is used to refer to the particular phisycal implementation of a given architecture.
+            \item \textit{"Micro architecture"} is used to refer to the particular physical implementation of a given architecture.
             \item \textit{"Page"} is used to refer to a logical partition of the main memory.
             \item \textit{"Promotion"} is used to refer to the automatic switch from user mode to supervisor mode by the processor.
             \item \textit{"Transparent"} is used to refer to something that is (mostly) invisible to the programmer.
@@ -62,7 +62,7 @@
 
     \subsection[Implementation specific parameters]{Implementation specific parameters}
 
-        This document makes use of some implementation specific microarchitecture parameters to clear potential misunderstandings:
+        This document makes use of some implementation specific micro-architecture parameters to clear potential misunderstandings:
 
         \begin{itemize}
 
@@ -88,14 +88,14 @@
 
     \section[Memory]{\LARGE\underline{Memory}}
 
-        This section is dedicated to the memory model used by FabRISC including data alignment, synchronization, consistency, aswell as possible cache coherence directives are explained here.
+        This section is dedicated to the memory model used by FabRISC including data alignment, synchronization, consistency, as well as possible cache coherence directives are explained here.
 
         \subsection[Data alignment]{Data alignment}
 
             FabRISC, overall, treats the main memory and the MMIO regions as collections of byte addressable locations in \textit{little endian} order with a range of $2^{WLEN}$ addresses in total. The specification leaves to the hardware designer the choice of supporting aligned or unaligned memory accesses or both for data, however, if aligned is decided to be the only supported scheme, the processor must generate the appropriate fault every time the constraint is violated (consult section xxx for more information). When it comes to instructions, it's mandatory to have fetch engines that support accesses at the 16-bit boundary alignment. This is because the greatest common denominator of the instruction sizes, with or without the compressed module, is 16 and the programmer must ensure that the code is aligned at said boundary, if not, a fault must be generated. Branch offsets, as a result of this, are logically shifted by one place to the left before being added to the PC. This means that said offsets will specify 16-bits as the smallest addressable object, effectively doubling the range in terms of bytes.
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{Data alignment issues can arise when the processor wants to read or write an item whose size is greater than the smallest addressable thing. This problem is tricky to design hardware for, especially caches, because misaligned items can cross cache line boundaries aswell as page boundaries. Alignment networks and more complex caches are needed which can increase complexity and slow down the critical path too much for simple designs. For already complex multicore out-of-order superscalar machines, however, i belive that supporting unaligned accesses can be handy so that the software writer can make decisions freely without having to worry about this problem and potentially decrease the memory footprint.}
+        \textit{Data alignment issues can arise when the processor wants to read or write an item whose size is greater than the smallest addressable thing. This problem is tricky to design hardware for, especially caches, because misaligned items can cross cache line boundaries as well as page boundaries. Alignment networks and more complex caches are needed which can increase complexity and slow down the critical path too much for simple designs. For already complex multicore out-of-order superscalar machines, however, i believe that supporting unaligned accesses can be handy so that the software writer can make decisions freely without having to worry about this problem and potentially decrease the memory footprint.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Synchronization}
@@ -113,10 +113,10 @@
 
             \begin{itemize}
 
-                \item \textit{Transaction Begin} (TBEG): causes the thread that executed this instruction to start monitoring accesses by other threads via the coherence protocol aswell as incrementing the nesting counter by one. This instruction effectively starts a transaction.
-                \item \textit{Transaction End} (TEND): causes the thread that executed this instruction to stop monitoring accesses by other threads and commit the changes aswell as decrementing the nesting counter by one. This instruction effectively terminates a transaction.
-                \item \textit{Transaction Abort} (TABT): causes the thread that executed this instruction to stop monitoring accesses by other threads aswell as generate an \textit{"Explicit abort"} exception within the thread and cause it to restore the architectural state immediately before the latest TBEG and it will also cause the transaction nesting level counter to be decremented by one. This instruction effectively aborts a transaction.
-                \item \textit{Transaction Check} (TCHK): causes the thread that executed this instruction to return, in a specified register, the status of the current running transactional execution. This instruction effectively checks if the thread is in a transaction aswell as its depth.
+                \item \textit{Transaction Begin} (TBEG): causes the thread that executed this instruction to start monitoring accesses by other threads via the coherence protocol as well as incrementing the nesting counter by one. This instruction effectively starts a transaction.
+                \item \textit{Transaction End} (TEND): causes the thread that executed this instruction to stop monitoring accesses by other threads and commit the changes as well as decrementing the nesting counter by one. This instruction effectively terminates a transaction.
+                \item \textit{Transaction Abort} (TABT): causes the thread that executed this instruction to stop monitoring accesses by other threads as well as generate an \textit{"Explicit abort"} exception within the thread and cause it to restore the architectural state immediately before the latest TBEG and it will also cause the transaction nesting level counter to be decremented by one. This instruction effectively aborts a transaction.
+                \item \textit{Transaction Check} (TCHK): causes the thread that executed this instruction to return, in a specified register, the status of the current running transactional execution. This instruction effectively checks if the thread is in a transaction as well as its depth.
 
             \end{itemize}
 
@@ -133,20 +133,20 @@
             \end{itemize}
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{Memory synchronization is extremely important in order to make shared memory comunication even work at all. The problem arises when a pool of data is shared among different processes or threads that compete for resources and concurrent access to this pool might result in erroneous behaviour and must, therefore, be arbitred. This zone is called "Critical section" and special atomic primitives can be used to achieve this protection. Many different instruction families can be chosen such as "Compare and swap", "Test and set", "Read-modify-write" and others. I decided to provide in the ISA the LL and SC pairs, as described above, because of its advantages and popularity among other RISC-like instruction sets. Two important advantages of this pair is that it is pipeline friendly (LL acts as a load and SC acts as a store) compared to others that try to do both. Another advantage is the fact that the pair doesn't suffer from the "ABA" problem. It is important to note, however, that this atomic pair doesn't guarantee forward progress and weaker implementations can reduce this chance even more. I decided to also provide basic transactional memory support because, in some situations, it can yield great performance compared to mutual exclusion without losing atomicity. This is completely optional and up to the hardware designer to implement or not simply because it can significantly complicate the design. Transactional memory seems to be promising in improving performance and ease of implementation when it comes to shared memory programs, but debates are still ongoing to decide which exact way of implementing is best.}
+        \textit{Memory synchronization is extremely important in order to make shared memory communication even work at all. The problem arises when a pool of data is shared among different processes or threads that compete for resources and concurrent access to this pool might result in erroneous behavior and must, therefore, be arbitrated. This zone is called "Critical section" and special atomic primitives can be used to achieve this protection. Many different instruction families can be chosen such as "Compare and swap", "Test and set", "Read-modify-write" and others. I decided to provide in the ISA the LL and SC pairs, as described above, because of its advantages and popularity among other RISC-like instruction sets. Two important advantages of this pair is that it is pipeline friendly (LL acts as a load and SC acts as a store) compared to others that try to do both. Another advantage is the fact that the pair doesn't suffer from the "ABA" problem. It is important to note, however, that this atomic pair doesn't guarantee forward progress and weaker implementations can reduce this chance even more. I decided to also provide basic transactional memory support because, in some situations, it can yield great performance compared to mutual exclusion without losing atomicity. This is completely optional and up to the hardware designer to implement or not simply because it can significantly complicate the design. Transactional memory seems to be promising in improving performance and ease of implementation when it comes to shared memory programs, but debates are still ongoing to decide which exact way of implementing is best.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Coherence}
 
-            FabRISC leaves to the hardware designer the choice of which coherence system to implement. On multicore systems cache coherence must be ensured by choosing a coherence protocol and making sure that all the cores agree on the current sequence of accesses to the same memory location. That can be guaranteed by serializing the operations via the use of a shared bus or via a distributed directory and \textit{Write-update} or \textit{Write-invalidate} protocols can be employed without any issues. Software coherence can also be a valid option but it will rely on the programmer to explicitly flush or invalidate the cache of each core separately. Nevertheless, FabRISC provides implementation-dependent instructions that can be sent to the cache controller directly to manipulate its operation (see section xxx for details). If the processor makes use of a separate instruction cache, potential complications can arise for self modifying code which can be solved by employing one of the above options, furthermore the ISA includes implementation specific instructions such as CACOP and MMUOP to directly manage caches and the MMU in these particular cases.
+            FabRISC leaves to the hardware designer the choice of which coherence system to implement. On multi-core systems cache coherence must be ensured by choosing a coherence protocol and making sure that all the cores agree on the current sequence of accesses to the same memory location. That can be guaranteed by serializing the operations via the use of a shared bus or via a distributed directory and \textit{Write-update} or \textit{Write-invalidate} protocols can be employed without any issues. Software coherence can also be a valid option but it will rely on the programmer to explicitly flush or invalidate the cache of each core separately. Nevertheless, FabRISC provides implementation-dependent instructions that can be sent to the cache controller directly to manipulate its operation (see section xxx for details). If the processor makes use of a separate instruction cache, potential complications can arise for self modifying code which can be solved by employing one of the above options, furthermore the ISA includes implementation specific instructions such as CACOP and MMUOP to directly manage caches and the MMU in these particular cases.
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{Cache coherence is a big topic and is hard to get right because it can hinder performance in both single core and multicore significantly. I decided to give as much freedom as possible to the designer of the system to pick the best solution that they see fit. Another aspect that could be important, if the software route is chosen, is the exposure to the underlying microarchitecture implementation to the programmer which can be yield unnecessary complications. Generally speaking though write-invalidate seems to be the standard approach in many modern designs because of the way it behaves in certain situations, especially when a process is moved to another core. Simple shared bus can be a good choice if the number of cores is small (lots of cores means lots of traffic), otherwise a directory based approach can be used to ensure that all the cores agree on the order of accesses. From this, the protocol can be picked: MSI, MESI, MOSI or MOESI, the latter being the most complex but most powerful.}
+        \textit{Cache coherence is a big topic and is hard to get right because it can hinder performance in both single core and multi-core significantly. I decided to give as much freedom as possible to the designer of the system to pick the best solution that they see fit. Another aspect that could be important, if the software route is chosen, is the exposure to the underlying micro-architecture implementation to the programmer which can be yield unnecessary complications. Generally speaking though write-invalidate seems to be the standard approach in many modern designs because of the way it behaves in certain situations, especially when a process is moved to another core. Simple shared bus can be a good choice if the number of cores is small (lots of cores means lots of traffic), otherwise a directory based approach can be used to ensure that all the cores agree on the order of accesses. From this, the protocol can be picked: MSI, MESI, MOSI or MOESI, the latter being the most complex but most powerful.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Consistency}
 
-            FabRISC utilizes a fully relaxed memory consistency model formally known as \textit{Release consistency} that allows all possible orderings inorder to give processors the freedom to reorder memory instructions to different addresses in any way it wants. For debugging and for specific situations the stricter \textit{Sequential consistency} model can be utilized and the processor must be able to switch between the two at any time via a dedicated bit in the control and status register. Special instructions, called \textit{"Fences"}, are provided to let the programmer impose an order on memory operations when the relaxed model is in use. If the processor doesn't reorder memory operations this section can be skipped.
+            FabRISC utilizes a fully relaxed memory consistency model formally known as \textit{Release consistency} that allows all possible orderings in order to give processors the freedom to reorder memory instructions to different addresses in any way it wants. For debugging and for specific situations the stricter \textit{Sequential consistency} model can be utilized and the processor must be able to switch between the two at any time via a dedicated bit in the control and status register. Special instructions, called \textit{"Fences"}, are provided to let the programmer impose an order on memory operations when the relaxed model is in use. If the processor doesn't reorder memory operations this section can be skipped.
 
             \begin{itemize}
 
@@ -156,10 +156,10 @@
 
             \end{itemize}
 
-            The fences can be used on any memory type of instruction, including the LL & SC pair to forbid reordering when aquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache controller via the special implementation specific CACOP instruction as discussed above.
+            The fences can be used on any memory type of instruction, including the LL \& SC pair to forbid reordering when acquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache controller via the special implementation specific CACOP instruction as discussed above.
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{The memory consistency model i wanted to utilize was a very relaxed model to allow all kinds of performance optimization to take place inside the system. However one has to provide some sort of restrictions, effectively special memory operations, to avoid absurd situations. Even with those restrictions debugging could be quite difficoult because the program might behave very weirdely, so i decided to include the sequential model that forbids reordering of any kind of memory instruction. If a program is considered well syncrhonyzed (data race-free and all critical sections are protected) consistency becomes less of an issue because there will be no contention for resources and, therefore, the model can be completely relaxed without any side effects. Achieving this level of code quality is quite the challenge and so these consistency instructions can be employed in making sure that everything works out.}
+        \textit{The memory consistency model i wanted to utilize was a very relaxed model to allow all kinds of performance optimization to take place inside the system. However one has to provide some sort of restrictions, effectively special memory operations, to avoid absurd situations. Even with those restrictions debugging could be quite difficult because the program might behave very weirdly, so i decided to include the sequential model that forbids reordering of any kind of memory instruction. If a program is considered well synchronized (data race-free and all critical sections are protected) consistency becomes less of an issue because there will be no contention for resources and, therefore, the model can be completely relaxed without any side effects. Achieving this level of code quality is quite the challenge and so these consistency instructions can be employed in making sure that everything works out.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
     \clearpage
@@ -168,16 +168,16 @@
 
     \section[Input Output]{\LARGE\underline{Input Output}}
 
-        This section is dedicated to the specification that FabRISC uses for communicating with external devices aswell as other cores and hardware threads if present. The architecture defines io mappings and potential DMA behaviour and, in the next section, OS support and inter-process comunication schemes are discussed.
+        This section is dedicated to the specification that FabRISC uses for communicating with external devices as well as other cores and hardware threads if present. The architecture defines IO mappings and potential DMA behaviour and, in the next section, OS support and inter-process communication schemes are discussed.
 
         \subsection{Memory mapped IO}
 
-            FabRISC reserves a portion of the high memory address space to \textit{Memory mapped IO}. This region, of the size of $2^{16}$ bytes, is not cached nor paged and byte addressable in little endian order. If a thread wants to transfer data to an IO device it can simply execute a memory operation to this section without further complications. The IO device must map all of its internal registers and state to this region, multiple channels or buses can potentially be employed to reduce the latency in case another transfers are already taking place aswell as increaseing the bandwith. It is important to note that this region, although not paged in the traditional sense, (the virtual to physical mapping will always be the same) it must still have page table entries for protection. The ISA roughly splits this address space in two segments:
+            FabRISC reserves a portion of the high memory address space to \textit{Memory mapped IO}. This region, of the size of $2^{16}$ bytes, is not cached nor paged and byte addressable in little-endian order. If a thread wants to transfer data to an IO device it can simply execute a memory operation to this section without further complications. The IO device must map all of its internal registers and state to this region, multiple channels or buses can potentially be employed to reduce the latency in case another transfers are already taking place as well as increasing the bandwidth. It is important to note that this region, although not paged in the traditional sense, (the virtual to physical mapping will always be the same) it must still have page table entries for protection. The ISA roughly splits this address space in two segments:
 
             \begin{itemize}
 
-                \item \textit{CPU segment}: this portion, starting from address zero, is composed of xxx bytes and should be used to hold CPU information, such as implemented ISA extentions, cache sizes and other CPU capabilities and characteristics.
-                \item \textit{IO segment}: this portion, starting from address xxx, is composed of xxx bytes and should be used to comunicate with external devices.
+                \item \textit{CPU segment}: this portion, starting from address zero, is composed of xxx bytes and should be used to hold CPU information, such as implemented ISA extensions, cache sizes and other CPU capabilities and characteristics.
+                \item \textit{IO segment}: this portion, starting from address xxx, is composed of xxx bytes and should be used to communicate with external devices.
 
             \end{itemize}
 
@@ -189,7 +189,7 @@
 
         \subsection{Direct memory access}
 
-            FabRISC provides the ability for IO devices to access the main system memory directly via DMA without passing through the processor. A dedicated centralized controller can be utilized to achieve this, but the hardware designer is free to choose another alternative if considered appropriate and, if this method of comunication is chosen to be used, cache coherence must be ensured to the IO devices too. Some possible options can be (as discussed earlier):
+            FabRISC provides the ability for IO devices to access the main system memory directly via DMA without passing through the processor. A dedicated centralized controller can be utilized to achieve this, but the hardware designer is free to choose another alternative if considered appropriate and, if this method of communication is chosen to be used, cache coherence must be ensured to the IO devices too. Some possible options can be (as discussed earlier):
 
             \begin{itemize}
 
@@ -202,7 +202,7 @@
             The DMA protocol / scheme implement by the hardware designer must also take consistency into account since memory operations to different addresses are allowed be done out-of-order. This means that fencing instructions must retain their effect.
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{For more bandwidth demanding devices, DMA can be used to trasfer data at very high speeds in the order of several Gb/s without interfering with the CPU. This scheme however, is more complex than plain MMIO because of the special arbiter that handles and grants the requests. IO coherence, aswell as its consistency, is actually the main reason of this subsection as a remainder that it needs to be considered during the development of the underlying microarchitecture.}
+        \textit{For more bandwidth demanding devices, DMA can be used to transfer data at very high speeds in the order of several Gb/s without interfering with the CPU. This scheme however, is more complex than plain MMIO because of the special arbiter that handles and grants the requests. IO coherence, as well as its consistency, is actually the main reason of this subsection as a remainder that it needs to be considered during the development of the underlying micro-architecture.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
     \clearpage
@@ -210,36 +210,36 @@
 
     \section[Events]{\LARGE\underline{Events}}
 
-        This section is dedicated to the specification of exceptions, faults and interrupts. FabRISC uses the term \textit{event} to indicate the generic categorization of these kinds of situations. Events can be used to comunicate with other threads, processes, IO devices, signal system faults or simply trigger software caused exceptions. Events are sub divided into two main categories: Syncronous and Asynchronous.
+        This section is dedicated to the specification of exceptions, faults and interrupts. FabRISC uses the term \textit{event} to indicate the generic categorization of these kinds of situations. Events can be used to communicate with other threads, processes, IO devices, signal system faults or simply trigger software caused exceptions. Events are sub divided into two main categories: Synchronous and Asynchronous.
 
-        \subsection{Syncronous}
+        \subsection{Synchronous}
 
-            Synchronous events are internally generated and are considered deterministic, that is, if they happen, they will always happen in the same location in the executing program and, because of this, the handling is done in program order. This category is further sub divided in two, consiting of:
+            Synchronous events are internally generated and are considered deterministic, that is, if they happen, they will always happen in the same location in the executing program and, because of this, the handling is done in program order. This category is further sub divided in two, consisting of:
 
             \begin{itemize}
 
-                \item \textit{Exceptions}: These events are user handled, non promoting and with a global priority level of 0. They are generated by executing instructions and each process can have it's own private handler with the help of a dedicated pointer register. From a higher level, the handling of exceprions looks like an automatic function call to the specified handler address.
+                \item \textit{Exceptions}: These events are user handled, non promoting and with a global priority level of 0. They are generated by executing instructions and each process can have it's own private handler with the help of a dedicated pointer register. From a higher level, the handling of exceptions looks like an automatic function call to the specified handler address.
                 \item \textit{Faults}: These events are supervisor handled, promoting and with a global priority level of 2. They are generated by executing instructions and each process will have the same handler specified by the supervisor. From a high level, the handling of faults looks like an automatic function call performed by the supervisor to a location that is always the same, usually under the for of a branch table, to the proper handler.
 
             \end{itemize}
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{Exceptions and faults are used to identify software related problems and edge cases such as overflows, divisions by zero, memory accesses to protected sections and more. I belive that exceptions can be valuable and useful for handling special cases quickly and preemptively without having to perform time consuming checks. Examples of this can be seemless array boundary checks via the use of breakpoint registers (see section xxx for more information) that trigger the appropriate exception. Arithmetic edge cases can be similarly treated via the use of said special registers or by operating the processor in a "safe state", which will trigger the appropriate exception every time something went wrong with the executing software. Faults are similar to exceptions but for more delicate problems such as page faults, illegal or malformed instructions and accesses to protected memory areas. All in all, i belive that one cannot really design a hardware system where these kinds of problems never occur, which is why i put emphasis on being able to gracefully recover when such cases happen.}
+        \textit{Exceptions and faults are used to identify software related problems and edge cases such as overflows, divisions by zero, memory accesses to protected sections and more. I believe that exceptions can be valuable and useful for handling special cases quickly and preemptively without having to perform time consuming checks. Examples of this can be seamless array boundary checks via the use of breakpoint registers (see section xxx for more information) that trigger the appropriate exception. Arithmetic edge cases can be similarly treated via the use of said special registers or by operating the processor in a "safe state", which will trigger the appropriate exception every time something went wrong with the executing software. Faults are similar to exceptions but for more delicate problems such as page faults, illegal or malformed instructions and accesses to protected memory areas. All in all, i believe that one cannot really design a hardware system where these kinds of problems never occur, which is why i put emphasis on being able to gracefully recover when such cases happen.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Asynchronous}
 
-            Asynchronous events are externally generated and are not considered deterministic, that is, they can happen at any time regardless of what the CPU is doing. Asynchronous events can be masked but only by the supervisor and should be handled as soon as possible in order to keep latency low. This category is further sub divided in two, consiting of:
+            Asynchronous events are externally generated and are not considered deterministic, that is, they can happen at any time regardless of what the CPU is doing. Asynchronous events can be masked but only by the supervisor and should be handled as soon as possible in order to keep latency low. This category is further sub divided in two, consisting of:
 
             \begin{itemize}
 
                 \item \textit{IO interrupts}: These events are supervisor handled, promoting with a global priority level of 3. They are generated by external IO devices and can have an internal priority level (to decide which one to handle when multiple are triggered at the same time). From a high level, the handling of IO interrupts, can be considered as a context switch to the desired process that will handle the IO device request, which can be achieved with the use of a branch table (similar to faults).
-                \item \textit{IPC interrupts}: These events are supervisor handled, promoting with a global priority level of 1. They are generated by other cores in the system in order to comunicate with eachother (inter-process comunication) and can have an internal priority level (to decide which one to handle when multiple are triggered at the same time). From a high level, the handling of IPC interrupts, can be considered as a context switch to the desired process that will handle the IPC request, which can be achieved with the use of a branch table (similar to faults & IO interrupts).
+                \item \textit{IPC interrupts}: These events are supervisor handled, promoting with a global priority level of 1. They are generated by other cores in the system in order to communicate with each other (inter-process communication) and can have an internal priority level (to decide which one to handle when multiple are triggered at the same time). From a high level, the handling of IPC interrupts, can be considered as a context switch to the desired process that will handle the IPC request, which can be achieved with the use of a branch table (similar to faults \& IO interrupts).
 
             \end{itemize}
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{I think that interrupts are a great tool that allow the IO devices themselves to start the comunication, as opposed to the time consuming polling. This option is especially useful when low latency is required and can be used in conjunction with the regular low speed memory mapped IO transfers or the faster DMA. For devices that do not need any kind of bandwidth or responsiveness, polling can still be a valid choice without utilizing any extra resources. A shadow register file can potentially be utilized to reduce the latency to a minimum, however, it must behave transparently to the architecture.}
+        \textit{I think that interrupts are a great tool that allow the IO devices themselves to start the communication, as opposed to the time consuming polling. This option is especially useful when low latency is required and can be used in conjunction with the regular low speed memory mapped IO transfers or the faster DMA. For devices that do not need any kind of bandwidth or responsiveness, polling can still be a valid choice without utilizing any extra resources. A shadow register file can potentially be utilized to reduce the latency to a minimum, however, it must behave transparently to the architecture.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Handling}
@@ -271,7 +271,7 @@
 
             \end{enumerate}
 
-            Global priority, introduced in the previous subsections, is used to give a further discriminant in case different types of events are triggered in the same clock cycle. Events with globabl priority level of 3 will be considered first, all the way to priority level 0. Local priority simply specifies the order in which events of the same type must be handled. Local priority concerns asyncronous events only, since syncronous events must be handled in program order as discussed in the previous sections.
+            Global priority, introduced in the previous subsections, is used to give a further discriminant in case different types of events are triggered in the same clock cycle. Events with global priority level of 3 will be considered first, all the way to priority level 0. Local priority simply specifies the order in which events of the same type must be handled. Local priority concerns asynchronous events only, since synchronous events must be handled in program order as discussed in the previous sections.
 
         % [handling sequence diagram goes here...]
         % [event table goes here...]
@@ -289,7 +289,7 @@
 
         \subsection{Supervisor mode}
 
-            FabRISC is a priviledged architecture and makes use of the supervisor to create a border between the OS and the user. With supervisor privileges the executing code has complete and total control over the hardware and any access to protected resources in user mode, such as particular instructions, registers, or addresses must generate a fault. The processor should only enter the supervisor mode if an appropriate event is triggered and a dedicated instruction is provided to trasfer the control back to the user (consult section xxx for more information). If the system makes use of a multicore processor then each core must have the ability to be in supervisor mode or not indipendently. When booting up, the system should start in supervisor mode with only one core active to allow the loading of the OS itself and the creation of all the required datastructures. This is indicated by a special bit in the status register (CSR).
+            FabRISC is a privileged architecture and makes use of the supervisor to create a border between the OS and the user. With supervisor privileges the executing code has complete and total control over the hardware and any access to protected resources in user mode, such as particular instructions, registers, or addresses must generate a fault. The processor should only enter the supervisor mode if an appropriate event is triggered and a dedicated instruction is provided to transfer the control back to the user (consult section xxx for more information). If the system makes use of a multicore processor then each core must have the ability to be in supervisor mode or not independently. When booting up, the system should start in supervisor mode with only one core active to allow the loading of the OS itself and the creation of all the required data structures. This is indicated by a special bit in the status register (CSR).
 
         \par\noindent\rule{\textwidth}{0.4pt}
         \textit{Having a supervisor mode is essential for implementing a working operative system. This special mode allows the executing code to have complete and total control over the CPU and is used, by the OS, to protect itself from other processes that could, intentionally or not, compromise the system. When the processor isn't running in supervisor mode it will run in user mode with restrictions, mainly in manipulating certain hardware state including some special registers, addresses and instructions. This, along with virtual memory, will effectively confine any user level process to its own sandbox protecting itself and others.}
@@ -297,49 +297,188 @@
 
         \subsection{Virtual memory}
 
-            FabRISC provides privileged customizeable (implementation specific) instructions to interface directly with the MMU, if the processor has one, allowing the OS to modify and manage that particular unit (see section xxx for more details), alternatively, the managing can be automatic if the hardware supports it. A special purpose register called PTP is also provided to hold the phisycal address of the page table to perform the page table walk in case of a TLB miss. PTP must be set by the supervisor only with the appropriate address every time a context switch happens and a write operation on PTP in user mode must cause a fault. The TLB can also make use the process ID in the PID register to avoid flushing during context switches and page swapping can be supported via the generation of the \textit{Page fault} event that can be handled by the OS.
+            FabRISC provides privileged customizable (implementation specific) instructions to interface directly with the MMU, if the processor has one, allowing the OS to modify and manage that particular unit (see section xxx for more details), alternatively, the managing can be automatic if the hardware supports it. A special purpose register called PTP is also provided to hold the physical address of the page table to perform the page table walk in case of a TLB miss. PTP must be set by the supervisor only with the appropriate address every time a context switch happens and a write operation on PTP in user mode must cause a fault. The TLB can also make use the process ID in the PID register to avoid flushing during context switches and page swapping can be supported via the generation of the \textit{Page fault} event that can be handled by the OS.
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{Virtual memory is a central concept in any operative system and i wanted to provide, at least, basic support without going too crazy (this is prettymuch as simple as it gets). The SR1 also has a special bit to enable or disable paging by bypassing the TLB and avoid doing the virtual to phisical translation alltogether. The process ID can help reducing the burst of TLB misses caused by context switches especially with frequent system calls in microkernel based solutions.}
+        \textit{Virtual memory is a central concept in any operative system and i wanted to provide, at least, basic support without going too crazy (this is pretty much as simple as it gets). The SR1 also has a special bit to enable or disable paging by bypassing the TLB and avoid doing the virtual to physical translation all together. The process ID can help reducing the burst of TLB misses caused by context switches especially with frequent system calls in microkernel based solutions.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
-        \subsection{Hardware thread comunication}
+        \subsection{Hardware thread communication}
 
-            Thanks to the already discussed IPC interrupts, it is possible to implement efficient low level hardware thread comunication. Initialization and termination of threads, however, is mandatory since it effectively allows the creation and destruction of threads if the processor has multiple cores.
+            Thanks to the already discussed IPC interrupts, it is possible to implement efficient low level hardware thread communication. Initialization and termination of threads, however, is mandatory since it effectively allows the creation and destruction of threads if the processor has multiple cores.
 
             \begin{itemize}
 
-                \item \textit{Thread signaling}: this form of comunication is achieved by the use of dedicated interrupts as suggested earlier. The signal can be sent to an IO controller just like a request from an external IO device which can then forward the request to the destination thread that is interrupted.
-                \item \textit{Message passing}: this form of comunication is achieved by the use of dedicated MMIO addresses to send and receive small messages through the IO controller. The message formats should use a common convention agreed by the hardware designer and the programmer for everybody.
-                \item \textit{Thread initialization} and \textit{Thread termination}: this form of comunication is vital to be able to start and stop threads at will in multicore systems. Starting a thread can be achieved by sending a dedicated IPC interrupt that has the ability to \textit{wakeup} the destination core or hardware thread from a halted state. A similar and symetric picture can employed to stop running cores or threads via a dedicated halting IPC interrupt.
+                \item \textit{Thread signalling}: this form of communication is achieved by the use of dedicated interrupts as suggested earlier. The signal can be sent to an IO controller just like a request from an external IO device which can then forward the request to the destination thread that is interrupted.
+                \item \textit{Message passing}: this form of communication is achieved by the use of dedicated MMIO addresses to send and receive small messages through the IO controller. The message formats should use a common convention agreed by the hardware designer and the programmer for everybody.
+                \item \textit{Thread initialization} and \textit{Thread termination}: this form of communication is vital to be able to start and stop threads at will in multi-core systems. Starting a thread can be achieved by sending a dedicated IPC interrupt that has the ability to \textit{wake up} the destination core or hardware thread from a halted state. A similar and symmetric picture can employed to stop running cores or threads via a dedicated halting IPC interrupt.
 
             \end{itemize}
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{Efficient comunication is key to achieve good performance in any system. I decided to support simple message passing and signaling directly in hardware to lower the latencies as much as possible since an FPGA CPU will only have clock speeds in the hundreds of MHz. The only form of comunication that isn't explicitly listed here is "Shared memory" simply because it is a natural consequence of virtual memory and paging. In this subsection i assumed the presence of a centralized IO controller that manages interrupts, IO requests and transfers. Any other solution that behaves similarly to that is completely possible and allowed, for example a more distributed kind of controller where each core has its own indipendent logic (or something along those lines) could be a possible alternative.}
+        \textit{Efficient communication is key to achieve good performance in any system. I decided to support simple message passing and signalling directly in hardware to lower the latencies as much as possible since an FPGA CPU will only have clock speeds in the hundreds of MHz. The only form of communication that isn't explicitly listed here is "Shared memory" simply because it is a natural consequence of virtual memory and paging. In this subsection i assumed the presence of a centralized IO controller that manages interrupts, IO requests and transfers. Any other solution that behaves similarly to that is completely possible and allowed, for example a more distributed kind of controller where each core has its own independent logic (or something along those lines) could be a possible alternative.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
     \clearpage
 %__________________________________________________________________________________________________________________________________
 
-    \section[CPU state organization]{\LARGE\underline{CPU state organization}}
+    \section[ISA specification]{\LARGE\underline{ISA specification}}
 
-        In this section the register file organization, vector model, processor modes and ISA modules are presented. FabRISC register file is divided into three banks of 32 registers each: the first bank holds the general purpose registers, the second holds general purpose vector registers and the third bank holds the special purpose registers. Dedicated instructions are provided to move data to and from the different banks (see section xxx for more information).
+        In this section the register file organization, vector model, processor modes and the ISA modules are presented. FabRISC is a modular ISA composed of four macro modules each divided into several sub-modules that the hardware designer can choose. The macro modules concern computational, data transfer, control transfer and system instructions:
 
-        \subsection{General purpose registers}
+        \begin{itemize}
 
-            General purpose registers or \textit{GPRs} are all WLEN bits wide and can be used by the programmer in any way they wish and can be accessed in both user and supervisor mode. FabRISC also defines the register ABI to improve software compatability and ease of use.
+           \item ...
+
+        \end{itemize}
+
+        To indicate which ISA modules a particular implementation is composed of, a simple binary number can be used similarly to a checklist.
+
+        \subsection{Register file}
+
+            Depending on which modules, WLEN and VLEN values are chosen for implementation, the register file can be composed of different banks (up to four) of variable width:
+
+            \begin{enumerate}
+
+                \item Scalar general purpose registers (SGPRs): this bank is composed of 32 registers which can be used for holding values during execution. The registers are all WLEN bits wide and are used by integer and floating point scalar instructions.
+                \item Vector general purpose registers (VGPRs): this bank is composed of 32 registers which can be used for holding values during execution. The registers are all VLEN bits wide and are used by integer and floating point vector instructions. This bank is only necessary if the processor supports vector execution.
+                \item Special purpose registers (SPRs): this bank is composed of 32 registers which are internally used to keep track of state, modes, flags and other things. The registers can be WLEN or 32 bits wide with some being privileged resources.
+                \item Vector flag register (VFLG): this bank is composed of \(frac{VLEN}{WLEN}\) registers which are used to keep track of the vector flags. The registers are all WLEN bits wide and this bank is only necessary if the processor supports vector execution.
+
+            \end{enumerate}
+
+            % [register file diagram goes here...]
+
+            \subsubsection{Register ABI}
+
+                FabRISC specifies an ABI (application binary interface) for the SGPRs and VGPRs. It is important to note that this is just a suggestion on how the general purpose registers should be used in order to increase code compatibility. For scalar registers:
+
+                \begin{itemize}
+
+                    \item P: registers prefixed with the letter 'P' are used for parameter passing and returning to and from function calls. Parameters are stored in these registers starting from the top and going down, while returning values are stored starting from the bottom and going up.
+
+                    \item S: registers prefixed with the letter 'S' are "persistent" registers, that is, registers whose value should be retained across function calls. This implies a "callee save" calling convention for these registers.
+
+                    \item N: registers prefixed with the letter 'N' are "volatile" registers, that is, registers whose value may not be retained across function calls. This implies a "caller save" calling convention for these registers.
+
+                    \item GP (global pointer): this register is used to point to the global variable area.
+                    \item SP (stack pointer): this register is used as a pointer to the call-stack.
+                    \item FP (frame pointer): ...
+                    \item RA (return address): this register is used to hold the return address of the currently executing function call.
+
+                \end{itemize}
+
+                For vector registers:
+
+                \begin{itemize}
+
+                    \item ...
+                    \item ...
+
+                \end{itemize}
+
+            \subsubsection{Special purpose register bank}
+
+                The special purpose register bank, as mentioned earlier, is composed or 32 registers with a specific purpose in mind. It is important to note that multiple registers may be updated every cycle, which means that, this bank should be seen more as a grouping of registers rather than an actual file.
+
+                \begin{itemize}
+
+                    \item DBG (debugging): registers prefixed with "DBG" are used for debugging and other support features such as real-time and performance counters. If DBG registers are not used for any specific purpose, they can be used as extra scalar GPRs in which the ABI categorizes them as extra volatile registers. DBG registers are all WLEN bits wide and are not privileged.
+
+                    \item DBGM (debugging mode): registers prefixed with "DBGM" are used to specify the particular operating mode of the DBG registers (see table below for more information). Each DBG register has a five bit code reserved in its corresponding DBGM register to indicate the operating mode. Registers DBG0 to DBG5 will map to DBGM0 and while registers DBG6 to DBG10 will map to DBGM1. All DBGM registers are always 32 bits wide and are not privileged.
+
+                    \item EB (exception buffer): registers prefixed with "EB" are used as temporary buffers for exception handling. They are transparent registers that are automatically managed by the CPU during the launch and return phases of the handling. EB0 will store the program counter (PC), while EB1 will store the status register (CSR). All EB register are WLEN bits wide and are not privileged.
+
+                    \item ETP (exception table pointer): this register is used to hold the logical address of the exception branch table for the current executing process. During the launching phase, ETP will be used to perform an absolute branch (copy the value into the PC). ETP is WLEN bits wide and is not privileged.
+
+                    \item VMSK (vector mask): registers prefixed with "VMSK" used to hold the vector mask. A single bit is stored to mask a particular byte of the vector result. It is important to note that VMSK0 and VMSK1 are not two different masks, but rather one divided into two parts to ease transfer from and to this bank.
+
+                    \item PC (program counter): this register is the program counter / instruction pointer. It is used to point to the currently executing instruction. PC is WLEN bits wide and is not privileged.
+
+                    \item CSR (control and status register): this register is used to hold processor state such as arithmetic flags, execution modes, etc (see table below for more information). CSR is 32 bits wide and is privileged.
+
+                    \item SEB (supervisor event buffer): registers prefixed with "SEB" are used as temporary buffers for supervisor event handling. They are transparent registers and are automatically managed by the CPU during the launch and return phase of the handling. SEB0 will store the program counter (PC), while SEB1 will store the status register (CSR). All SEB register are WLEN bits wide and are privileged.
+
+                    \item SETP (supervisor event table pointer): this register is used to hold the logical address of the supervisor event branch table. During the launching phase, SETP will be used to perform an absolute branch (copy the value into the PC). SETP is WLEN bits wide and is privileged.
+
+                    \item PTP (page table pointer): this register holds the physical address of the page tables for the current executing process. During a TLB miss, the MMU can use PTP to perform the page table walk. If the CPU transitions from user to supervisor mode, PTP must be set to point to the page tables of the OS with the use of a hardwired value. PTP is WLEN bits wide and is privileged.
+
+                    \item PID (process identifier): this register holds the process identifier for the currently executing process. The MMU can use PID to avoid flushing the TLB during context switches because PID serves as a discriminant. If the CPU transitions from user to supervisor mode, PID must hold the identifier of the privileged process (kernel) via the use of hardwired values.
+
+                    \item FU (file usage): registers prefixed with "FU" are used to hold information about which register in which bank was modified since the scheduling of the process. FU registers are used by specific instructions to store or load only the necessary registers for context switches. This is achieved by the use of a single bit per register to indicate if the target register is modified or not. FU0 is reserved for bank 0, FU1 for bank 1, FU2 for bank 2 and FU3 for bank 3. All FU registers are 32 bits and are privileged.
+
+                    \item KR (kernel register): registers prefixed with "KR" are kernel reserved general purpose registers. KR registers are all WLEN bits wide and are privileged.
+
+                \end{itemize}
+
+                % CSR bit layout...
+                % DBG modes...
+
+            \subsubsection{Vector flags}
+
+                Arithmetic flags for vector instructions are stored in the fourth bank. This bank is composed of \(VLEN/32\) registers, each 32 bits wide. This arrangement can be viewed more as a single long register divided into 32 bit chunks, rather than 32 individual registers. The reason for this setup is to ease the transferring of data to and from this bank, mainly during context switches. If the processor doesn't support vector instructions, then this bank and the vector registers are not necessary.
+
+        \par\noindent\rule{\textwidth}{0.4pt}
+        \textit{The entirety of the register file is divided into four banks with several registers each. This can sound like a lot of state (and it kinda is), but other ISAs such as full RISC-V implementation would arguably contain more because of the way CSRs are implemented. In FabRISC, the first bank offers a 32 entry flat register file in order to efficiently support modern graph-coloring driven compiler register allocation. Integer and floating-point registers are shared to ease conversions and the extra GPRs found in the special purpose bank can alleviate some of the pressure caused by the sharing. Because there is no hardware stack pointer nor return address register, standard calling conventions can be used to give a "purpose" to all the GPRs in the bank. Compressed instructions, because of the size limitations, are only able to access eight registers of the bank. The third bank is where the "magic" happens. Special registers are present to help with debugging, memory safety as well as keeping track of state and resource usage to reduce the overhead on context switches. File usage registers help with that, for example, if no vector register was written during the time quantum of a particular process, then there is no need to save them again. The fourth bank is a dedicated bank that holds the vector flags in order to give a very granular control over the state of vector instructions in a similar way to their scalar counterparts.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+        \subsection{Instruction formats}
+
+            ...
+
+        \subsection{Decoding guidelines}
+
+            ...
+
+    \clearpage
+
+%__________________________________________________________________________________________________________________________________
+
+    \section[Instruction list]{\LARGE\underline{Instruction list}}
+
+        This section is dedicated to a full and extensive list of all the proposed instructions in the ISA which are divided into their corresponding module.
+
+        \subsection{Computational instructions}
+
+            ...
+
+            \subsubsection{(ADD) Addition}
+
+            Computes the binary addition between \$rb and \$rc and stores the result in \$ra, as well as updating the arithmetic flags.
 
             \begin{itemize}
 
-                ...
+                \item Format: A.
+                \item Opcode: 111110100000.
+                \item Updated flags: ...
+                \item Operation: \(x = y + z\).
+                \item Privilege: user.
 
             \end{itemize}
 
-        \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{The first bank offers a 32 entry flat register file in order to efficiently support modern graph-coloring driven compiler register allocation. This minimizes the pressure on the registers and reduces to a minimum the number of memory accesses improving performance and code size. Because there is no hardware stack pointer nor return address register, standard calling conventions can be used to give a proper form for all the GPRs in the file. Compressed instructions, because of the size limitations, are only able to access eight registers of the file.}
-        \par\noindent\rule{\textwidth}{0.4pt}
+            ...
+
+        \subsection{Data transfer instructions}
+
+            ...
+
+        \subsection{Control transfer instructions}
+
+            ...
+
+        \subsection{System instructions}
+
+            ...
+
+    \clearpage
+
+%__________________________________________________________________________________________________________________________________
+
+    \section[Macro-op fusion]{Macro-op fusion}
+
+        ...
 
     \clearpage
 
 \end{document}
+%__________________________________________________________________________________________________________________________________
