@@ -1,0 +1,67 @@
+\begin{table}[hbt!] % ok
+
+    \begin{center}
+
+    \begin{tabular}{|c|c|c|c|}
+
+        \hline
+        Address & Name & Size & Category\\
+        \hline
+        0 & CPU ID & 8 & CPU info\\
+        \hline
+        7 & Implemented ISA modules & 4 & CPU info\\
+        \hline
+        11 & Number of cores & 1 & CPU info\\
+        \hline
+        12 & SMT degree & 1 & CPU info\\
+        \hline
+        13 & WLEN and MXVL & 1 & CPU info\\
+        \hline
+        14 & CPU clock speed & 4 & CPU info\\
+        \hline
+        17 & CPU temperature & 2 & CPU info\\
+        \hline
+        19 & CPU voltage & 2 & CPU info\\
+        \hline
+        21 & TLB information & 32 & CPU info\\
+        \hline
+        53 & TLB hierarchy & 4 & CPU info\\
+        \hline
+        56 & Cache information & 32 & CPU info\\
+        \hline
+        88 & Cache hierarchy & 4 & CPU info\\
+        \hline
+        91 & IO channels & 1 & IO info\\
+        \hline
+        92 & IO clock speed & 4 & IO info\\
+        \hline
+        96 & IO voltage & 2 & IO info\\
+        \hline
+        98 & Available memory & 8 & MEM info\\
+        \hline
+        106 & Memory channels & 1 & MEM info\\
+        \hline
+        107 & CAS latency & 1 & MEM info\\
+        \hline
+        108 & RAS to CAS latency & 1 & MEM info\\
+        \hline
+        109 & RAS precharge latency & 1 & MEM info\\
+        \hline
+        110 & CMD latency & 1 & MEM info\\
+        \hline
+        111 & Memory clock speed & 4 & MEM info\\
+        \hline
+        115 & Memory temperature & 2 & MEM info\\
+        \hline
+        117 & Memory voltage & 2 & MEM info\\
+        \hline
+        119 & Reserved & 9 & Reserved\\
+        \hline
+
+    \end{tabular}
+
+    \caption[CPU segment table]{CPU segment table.}
+
+    \end{center}
+
+\end{table}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.6.10)  20 MAR 2022 17:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.6.10)  14 APR 2022 18:48
 entering extended mode
 **./FabRISC_spec.tex
 (FabRISC_spec.tex
@@ -114,44 +114,79 @@ Package: multicol 2019/12/09 v1.8y multicolumn formatting (FMi)
 \mult@nat@firstbox=\box94
 \colbreak@box=\box95
 \mc@col@check@num=\count199
+) (C:\Users\egatt\AppData\Local\Programs\MiKTeX\tex/latex/multirow\multirow.sty
+Package: multirow 2021/03/15 v2.8 Span multiple rows of a table
+\multirow@colwidth=\skip51
+\multirow@cntb=\count266
+\multirow@dima=\skip52
+\bigstrutjot=\dimen150
+) (C:\Users\egatt\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2021/04/20 v2.5e Tabular extension package (FMi)
+\col@sep=\dimen151
+\ar@mcellbox=\box96
+\extrarowheight=\dimen152
+\NC@list=\toks17
+\extratabsurround=\skip53
+\backup@length=\skip54
+\ar@cellbox=\box97
+)
+(C:\Users\egatt\AppData\Local\Programs\MiKTeX\tex/latex/booktabs\booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen153
+\lightrulewidth=\dimen154
+\cmidrulewidth=\dimen155
+\belowrulesep=\dimen156
+\belowbottomsep=\dimen157
+\aboverulesep=\dimen158
+\abovetopsep=\dimen159
+\cmidrulesep=\dimen160
+\cmidrulekern=\dimen161
+\defaultaddspace=\dimen162
+\@cmidla=\count267
+\@cmidlb=\count268
+\@aboverulesep=\dimen163
+\@belowrulesep=\dimen164
+\@thisruleclass=\count269
+\@lastruleclass=\count270
+\@thisrulewidth=\dimen165
 )
 (C:\Users\egatt\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2021-05-07 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count266
-\l__pdf_internal_box=\box96
+\l__color_backend_stack_int=\count271
+\l__pdf_internal_box=\box98
 ) (FabRISC_spec.aux)
 \openout1 = `FabRISC_spec.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
 
 (C:\Users\egatt\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count267
-\scratchdimen=\dimen150
-\scratchbox=\box97
-\nofMPsegments=\count268
-\nofMParguments=\count269
-\everyMPshowfont=\toks17
-\MPscratchCnt=\count270
-\MPscratchDim=\dimen151
-\MPnumerator=\count271
-\makeMPintoPDFobject=\count272
-\everyMPtoPDFconversion=\toks18
+\scratchcounter=\count272
+\scratchdimen=\dimen166
+\scratchbox=\box99
+\nofMPsegments=\count273
+\nofMParguments=\count274
+\everyMPshowfont=\toks18
+\MPscratchCnt=\count275
+\MPscratchDim=\dimen167
+\MPnumerator=\count276
+\makeMPintoPDFobject=\count277
+\everyMPtoPDFconversion=\toks19
 )
 (C:\Users\egatt\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
@@ -163,21 +198,21 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-<LOGO.pdf, id=1, 71.3064pt x 74.1972pt>
-File: LOGO.pdf Graphic file (type pdf)
-<use LOGO.pdf>
-Package pdftex.def Info: LOGO.pdf  used on input line 18.
+<./Images/LOGO.pdf, id=1, 71.3064pt x 74.1972pt>
+File: ./Images/LOGO.pdf Graphic file (type pdf)
+<use ./Images/LOGO.pdf>
+Package pdftex.def Info: ./Images/LOGO.pdf  used on input line 21.
 (pdftex.def)             Requested size: 113.81102pt x 118.42696pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 18.
+(Font)              <12> on input line 21.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 18.
+(Font)              <8> on input line 21.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 18.
+(Font)              <6> on input line 21.
  [1
 
-{C:/Users/egatt/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./LOGO.pdf>] (F
-abRISC_spec.toc
+{C:/Users/egatt/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./Images/LOGO.p
+df>] (FabRISC_spec.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -186,52 +221,66 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write3
 \openout3 = `FabRISC_spec.toc'.
 
- (FabRISC_spec.lof)
-\tf@lof=\write4
-\openout4 = `FabRISC_spec.lof'.
+ (FabRISC_spec.lot)
+\tf@lot=\write4
+\openout4 = `FabRISC_spec.lot'.
 
  [2]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <17.28> on input line 27.
+(Font)              <17.28> on input line 30.
  [3] [4] [5
 
-] [6] [7] [8
+] [6] [7]
+[8] (Tables/CPU_segment_table.tex) [9
 
-] [9]
-[10
+] [10] [11
 
-] [11] [12
+] [12]
+(Tables/Supervisor_event_table.tex) (Tables/User_event_table.tex) [13] [14
 
-] [13] [14
+]
+[15] [16
 
-] [15] [16] [17
+] (Tables/Register_file.tex) [17] [18] [19] [20] [21]
+(Tables/Formats_16.tex) (Tables/Formats_32.tex) (Tables/Formats_48.tex [22])
+[23] [24] [25
 
-] [18
+] [26
 
-] (FabRISC_spec.aux) ) 
+]
+<./Images/LICENSE.png, id=104, 97.0827pt x 33.9669pt>
+File: ./Images/LICENSE.png Graphic file (type png)
+<use ./Images/LICENSE.png>
+Package pdftex.def Info: ./Images/LICENSE.png  used on input line 841.
+(pdftex.def)             Requested size: 77.66624pt x 27.17354pt.
+ [27
+
+ <./Images/LICENSE.png>] (FabRISC_spec.aux) ) 
 Here is how much of TeX's memory you used:
- 1371 strings out of 478864
- 21814 string characters out of 2848660
- 328841 words of memory out of 3000000
- 19319 multiletter control sequences out of 15000+600000
- 409587 words of font info for 47 fonts, out of 8000000 for 9000
+ 1601 strings out of 478864
+ 26294 string characters out of 2848660
+ 349333 words of memory out of 3000000
+ 19512 multiletter control sequences out of 15000+600000
+ 409946 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,6n,66p,1693b,235s stack positions out of 5000i,500n,10000p,200000b,80000s
- <C:\Users\egatt\AppData\Local\MiKTeX\fonts/pk/ljfour/jkn
-appen/ec/dpi600\tcrm1000.pk><C:/Users/egatt/AppData/Local/Programs/MiKTeX/fonts
-/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/egatt/AppData/Local/Programs/MiK
-TeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/egatt/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/egatt/AppData/
-Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/egatt/
-AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/User
-s/egatt/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-<C:/Users/egatt/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cm
-r17.pfb><C:/Users/egatt/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
-ts/cm/cmr7.pfb><C:/Users/egatt/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmti10.pfb>
-Output written on FabRISC_spec.pdf (18 pages, 189400 bytes).
+ 57i,10n,66p,1877b,243s stack positions out of 5000i,500n,10000p,200000b,80000s
+ <C:\Users\egatt\AppData\Local\MiK
+TeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/egatt/AppData/Loca
+l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/egatt/App
+Data/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/
+egatt/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb
+><C:/Users/egatt/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
+mmi10.pfb><C:/Users/egatt/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmmi7.pfb><C:/Users/egatt/AppData/Local/Programs/MiKTeX/fonts/type1/pub
+lic/amsfonts/cm/cmr10.pfb><C:/Users/egatt/AppData/Local/Programs/MiKTeX/fonts/t
+ype1/public/amsfonts/cm/cmr12.pfb><C:/Users/egatt/AppData/Local/Programs/MiKTeX
+/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/egatt/AppData/Local/Program
+s/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/egatt/AppData/Local/
+Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/egatt/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on FabRISC_spec.pdf (27 pages, 276433 bytes).
 PDF statistics:
- 119 PDF objects out of 1000 (max. 8388607)
+ 160 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

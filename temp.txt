@@ -1,38 +1,11 @@
-[A]   |OPCODE(13)|MOD(04)|RA(05)|RB(05)|RC(05)|
+[A]   |OPCODE(14)|MOD(03)|RA(05)|RB(05)|RC(05)|
 [B]   |OPCODE(10)|MOD(04)|RA(05)|RB(05)|IMM(08/24)|
 [C]   |OPCODE(16)|MOD(06)|RA(05)|RB(05)|
-[D,H] |OPCODE(05)|MOD(05)|RA(05)|RB(05)|IMM(12/28)|
-[E]   |OPCODE(05)|MOD(04)|RA(05)|RB(05)|RC(05)|IMM(08/16)|
-[F]   |OPCODE(08)|MOD(04)|RA(05)|RB(05)|RC(05)|RD(05)|
-[G]   |OPCODE(08)|MOD(03)|RA(05)|IMM(16/32)|
-[I]   |OPCODE(08)|MOD(05)|RA(05)|IMM(14/30)|
-[J]   |OPCODE(05)|MOD(01)|RA(05)|IMM(21/37)|
-[K]   |OPCODE(05)|MOD(01)|RA(05)|RB(05)|IMM(16/32)|
 
-[M]   |OPCODE(08)|MOD(02)|RD/RS1(03)|RS2(03)|
-[N]   |OPCODE(06)|RA(03)|IMM(07)| 			<<<<
-[O]   |OPCODE(08)|IMM(08)|
-[P]   |OPCODE(08)|MOD(03)|RA(05)|
+[D]   |OPCODE(06)|MOD(04)|RA(05)|RB(05)|IMM(12)|
+[D.1] |OPCODE(06)|MOD(06)|RA(05)|RB(05)|IMM(26)|
 
-00000xxxxxxxxxxx ... 01101xxxxxxxxxxx 	14
-011100xxxxxxxxxx ... 101001xxxxxxxxxx 	14
-10101000xxxxxxxx ... 11001111xxxxxxxx 	40
-1101000000xxxxxx ... 1110111111xxxxxx 	128
-1111000000000xxx ... 1111001111111xxx 	128
-1111010000000000 ... 1111010000111111 	64
+[E]   |OPCODE(05)|MOD(04)|RA(05)|RB(05)|RC(05)|IMM(08)|
+[E.1] |OPCODE(05)|MOD(06)|RA(05)|RB(05)|RC(05)|IMM(22)|
 
-
-[A]: 108
-[B]: 110
-[C]:  50
-[D]:   8
-[E]:   4
-[F]:   4
-[G]:   4
-[I]:   4
-[J]:   1
-[K]:   1
-[M]:  10
-[N]:   ?
-[O]:   4
-[P]:   2
+[F]   |OPCODE(07)|MOD(05)|RA(05)|RB(05)|RC(05)|RD(05)|

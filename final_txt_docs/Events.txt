@@ -45,5 +45,80 @@ EVENTS {
 
 event table
 
-|______NAME______|__MNEMONIC__|____ID____|__TYPE__|
+|______NAME______|__MNEMONIC__|____ID____|___TYPE___|
+|                |    INT0    | 00000000 |  IO int  |
 ...
+|                |    INT63   | 00111111 |  IO int  |
+|                |    INT64   | 01000000 |  IPC int |
+...
+|                |    INT127  | 01111111 |  IPC int |
+|                |    SCAL0   | 10000000 |  fault   |
+...
+|                |    SCAL99  | 01100011 |  fault   |
+
+
+
+associativity abort                 AABT
+conflict abort                      CABT
+size abort                          SABT
+counter overflow abort              OABT
+counter underflow abort             UABT
+event abort                         EABT
+
+illegal instruction                 IINS
+ill formed instruction              ILLI
+instruction not aligned             IALN
+illegal execute location            IEXE
+illegal read location               IRDA
+illegal write location              IWRA
+misaligned address                  MADR
+page fault                          PFLT
+
+
+
+
+
+MMIO partitioning {
+    
+    system info {
+
+        CPU {
+
+            - cpu ID                        (8)
+            - implemented ISA modules       (4)
+            - #cores                        (1)
+            - #harts (per core)             (1)
+            - WLEN & MXVL                   (1)
+            - cpu clock speed               (4)
+            - cpu temperature               (2)
+            - cpu voltage                   (2)
+
+            - page size                     (1)
+            - TLB info                      (32)
+            - TLB hierarchy                 (4)
+
+            - cache info                    (32)
+            - cache hierarchy               (4)
+        }
+
+        IO {
+
+            - IO channels                   (1)
+            - IO clock speed                (4)
+            - IO voltage                    (2)
+        }
+
+        MEMORY {
+
+            - available main mem            (8)
+            - memory channels               (1)
+            - CAS latency                   (1)
+            - RAS to CAS latency            (1)
+            - RAS precharge latency         (1)
+            - CMD latency                   (1)
+            - memory clock                  (4)
+            - memory temperature            (2)
+            - memory voltage                (2)
+        }
+    }
+}

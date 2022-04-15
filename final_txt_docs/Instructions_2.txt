@@ -1,0 +1,555 @@
+Computational {
+	
+	scalar {
+
+		integer {
+
+			core { ok
+
+				[A] (ADD)----Addition--------------------------------------------OPCODE:
+                [A] (SUB)----Subtraction-----------------------------------------OPCODE:
+                [A] (LSH)----Left Shift------------------------------------------OPCODE:
+                [A] (RSH)----Right Shift-----------------------------------------OPCODE:
+                [A] (LRT)----Left Rotate-----------------------------------------OPCODE:
+                [A] (RRT)----Right Rotate----------------------------------------OPCODE:
+                [A] (AND)----Bitwise AND-----------------------------------------OPCODE:
+                [A] (NAND)---Bitwise NAND----------------------------------------OPCODE:
+                [A] (OR)-----Bitwise OR------------------------------------------OPCODE:
+                [A] (NOR)----Bitwise NOR-----------------------------------------OPCODE:
+                [A] (XOR)----Bitwise XOR-----------------------------------------OPCODE:
+                [A] (XNOR)---Bitwise XNOR----------------------------------------OPCODE:
+
+                [B] (IADD)---Immediate Addition----------------------------------OPCODE:
+				[B] (IUADD)--Immediate Unsigned Addition-------------------------OPCODE:
+                [B] (ISUB)---Immediate Subtraction-------------------------------OPCODE:
+                [B] (IUSUB)--Immediate Unsigned Subtraction----------------------OPCODE:
+                [B] (IALSH)--Immediate Arithmetic Left Shift---------------------OPCODE:
+                [B] (IARSH)--Immediate Arithmetic Right Shift--------------------OPCODE:
+                [B] (ILLSH)--Immediate Logical Left Shift------------------------OPCODE:
+                [B] (ILRSH)--Immediate Logical Right Shift-----------------------OPCODE:
+                [B] (ILRT)---Immediate Left Rotate-------------------------------OPCODE:
+                [B] (IRRT)---Immediate Right Rotate------------------------------OPCODE:
+                [B] (IAND)---Immediate Bitwise AND-------------------------------OPCODE:
+                [B] (INAND)--Immediate Bitwise NAND------------------------------OPCODE:
+                [B] (IOR)----Immediate Bitwise OR--------------------------------OPCODE:
+                [B] (INOR)---Immediate Bitwise NOR-------------------------------OPCODE:
+                [B] (IXOR)---Immediate Bitwise XOR-------------------------------OPCODE:
+                [B] (IXNOR)--Immediate Bitwise XNOR------------------------------OPCODE:
+                [B] (IIBF)---Immediate Insert Bit Field--------------------------OPCODE:
+                
+                [C] (SIIC)---Scalar Integer-Integer Cast-------------------------OPCODE:
+			}
+
+			advanced { ok
+
+				[A] (ADDC)---Addition Carry--------------------------------------OPCODE:
+                [A] (SUBC)---Subtraction Carry-----------------------------------OPCODE:
+                [A] (LSHC)---Left Shift Carry------------------------------------OPCODE:
+                [A] (RSHC)---Right Shift Carry-----------------------------------OPCODE:
+                [A] (MUL)----Multiplication--------------------------------------OPCODE:
+                [A] (MAC)----Multiply Accumulate---------------------------------OPCODE:
+                [A] (DIV)----Division--------------------------------------------OPCODE:
+                [A] (REM)----Remainder-------------------------------------------OPCODE:
+                [A] (HMUL)---High Multiplication---------------------------------OPCODE:
+                [A] (HMAC)---High Multiply Accumulate----------------------------OPCODE:
+                [A] (HLSH)---High Left Shift-------------------------------------OPCODE:
+                [A] (HRSH)---High Right Shift------------------------------------OPCODE:
+                [A] (SWP)----Bit Swap--------------------------------------------OPCODE:
+                [A] (IMP)----Bitwise IMP-----------------------------------------OPCODE:
+                [A] (NIMP)---Bitwise NIMP----------------------------------------OPCODE:
+                [A] (CLMUL)--Carry-less Multiplication---------------------------OPCODE:
+
+                [B] (IMUL)---Immediate Multiplication----------------------------OPCODE:
+				[B] (IUMUL)--Immediate Unsigned Multiplication-------------------OPCODE:
+                [B] (IMAC)---Immediate Multiply Accumulate-----------------------OPCODE:
+                [B] (IUMAC)--Immediate Unsigned Multiply Accumulate--------------OPCODE:
+                [B] (IDIV)---Immediate Division----------------------------------OPCODE:
+                [B] (IUDIV)--Immediate Unsigned Division-------------------------OPCODE:
+                [B] (IREM)---Immediate Remainder---------------------------------OPCODE:
+                [B] (IUREM)--Immediate Unsigned Remainder------------------------OPCODE:
+                [B] (IADDC)--Immediate Addition Carry----------------------------OPCODE:
+                [B] (IUADDC)-Immediate Unsigned Addition Carry-------------------OPCODE:
+                [B] (ISUBC)--Immediate Subtraction Carry-------------------------OPCODE:
+                [B] (IUSUBC)-Immediate Unsigned Subtraction Carry----------------OPCODE:
+                [B] (IALSHC)-Immediate Arithmetic Left Shift Carry---------------OPCODE:
+                [B] (IARSHC)-Immediate Arithmetic Right Shift Carry--------------OPCODE:
+                [B] (ILLSHC)-Immediate Logical Left Shift Carry------------------OPCODE:
+                [B] (ILRSHC)-Immediate Logical Right Shift Carry-----------------OPCODE:
+                [B] (IHMUL)--Immediate High Multiplication-----------------------OPCODE:
+                [B] (IUHMUL)-Immediate Unsigned High Multiplication--------------OPCODE:
+                [B] (IHMAC)--Immediate High Multiply Accumulate------------------OPCODE:
+                [B] (IUHMAC)-Immediate Unsigned High Multiply Accumulate---------OPCODE:
+                [B] (IAHLSH)-Immediate Arithmetic High Left Shift----------------OPCODE:
+                [B] (IAHRSH)-Immediate Arithmetic High Right Shift---------------OPCODE:
+                [B] (ILHLSH)-Immediate Logical High Left Shift-------------------OPCODE:
+                [B] (ILHRSH)-Immediate Logical High Right Shift------------------OPCODE:
+                [B] (ISWP)---Immediate Bit Swap----------------------------------OPCODE:
+                [B] (IIMP)---Immediate Bitwise IMP-------------------------------OPCODE:
+                [B] (INIMP)--Immediate Bitwise NIMP------------------------------OPCODE:
+                [B] (ICLMUL)-Immediate Carry-less Multiplication-----------------OPCODE:
+
+                [C] (CTO)----Count Ones------------------------------------------OPCODE:
+            	[C] (CTLO)---Count Leading Ones----------------------------------OPCODE:
+            	[C] (CTTO)---Count Trailing Ones---------------------------------OPCODE:
+            	[C] (CTZ)----Count Zeros-----------------------------------------OPCODE:
+            	[C] (CTLZ)---Count Leading Zeros---------------------------------OPCODE:
+            	[C] (CTTZ)---Count Trailing Zeros--------------------------------OPCODE:
+			}
+		}
+
+		floatingpoint {
+
+			core { ok
+
+				[A] (FADD)---FP. Addition----------------------------------------OPCODE:
+                [A] (FSUB)---FP. Subtraction-------------------------------------OPCODE:
+                [A] (FMUL)---FP. Multiplication----------------------------------OPCODE:
+                [A] (FDIV)---FP. Division----------------------------------------OPCODE:
+
+                [B] (IFADD)--Immediate FP. Addition------------------------------OPCODE:
+				[B] (IUFADD)-Immediate Unsigned FP. Addition---------------------OPCODE:
+                [B] (IFSUB)--Immediate FP. Subtraction---------------------------OPCODE:
+                [B] (IUFSUB)-Immediate Unsigned FP. Subtraction------------------OPCODE:
+                [B] (IFMUL)--Immediate FP. Multiplication------------------------OPCODE:
+                [B] (IUFMUL)-Immediate Unsigned FP. Multiplication---------------OPCODE:
+                [B] (IFDIV)--Immediate FP. Division------------------------------OPCODE:
+                [B] (IUFDIV)-Immediate Unsigned FP. Division---------------------OPCODE:
+
+                [C] (SFFC)---Scalar FP-FP Cast-----------------------------------OPCODE:
+			}
+
+			advanced { ok
+
+				[A] (FMAC)---FP. Multiply Accumulate-----------------------------OPCODE:
+                [A] (FPOW)---FP. Power-------------------------------------------OPCODE:
+                [A] (FPOW)---FP. Remainder---------------------------------------OPCODE:
+
+                [B] (IFMAC)--Immediate FP. Multiply Accumulate-------------------OPCODE:
+				[B] (IUFMAC)-Immediate Unsigned FP. Multiply Accumulate----------OPCODE:
+                [B] (IFPOW)--Immediate FP. Power---------------------------------OPCODE:
+                [B] (IUFPOW)-Immediate Unsigned FP. Power------------------------OPCODE:
+                [B] (IFPOW)--Immediate FP. Remainder-----------------------------OPCODE:
+                [B] (IUFPOW)-Immediate Unsigned FP. Remainder--------------------OPCODE:
+
+                [C] (SIN)----Sin-------------------------------------------------OPCODE:
+                [C] (COS)----Cos-------------------------------------------------OPCODE:
+                [C] (ASIN)---Arcsin----------------------------------------------OPCODE:
+                [C] (ACOS)---Arccos----------------------------------------------OPCODE:
+			}
+		}
+	}
+
+	vector {
+
+		integer {
+
+			core { ok
+
+				[A] (VADD)---Vector Addition------------------------------------OPCODE:
+                [A] (VSUB)---Vector Subtraction---------------------------------OPCODE:
+                [A] (VLSH)---Vector Left Shift----------------------------------OPCODE:
+                [A] (VRSH)---Vector Right Shift---------------------------------OPCODE:
+                [A] (VLRT)---Vector Left Rotate---------------------------------OPCODE:
+                [A] (VRRT)---Vector Right Rotate--------------------------------OPCODE:
+                [A] (VAND)---Vector Bitwise AND---------------------------------OPCODE:
+                [A] (VNAND)--Vector Bitwise NAND--------------------------------OPCODE:
+                [A] (VOR)----Vector Bitwise OR----------------------------------OPCODE:
+                [A] (VNOR)---Vector Bitwise NOR---------------------------------OPCODE:
+                [A] (VXOR)---Vector Bitwise XOR---------------------------------OPCODE:
+                [A] (VXNOR)--Vector Bitwise XNOR--------------------------------OPCODE:
+
+                [B] (VIADD)--Vector Immediate Addition--------------------------OPCODE:
+				[B] (VIUADD)-Vector Immediate Unsigned Addition-----------------OPCODE:
+                [B] (VISUB)--Vector Immediate Subtraction-----------------------OPCODE:
+                [B] (VIUSUB)-Vector Immediate Unsigned Subtraction--------------OPCODE:
+                [B] (VIALSH)-Vector Immediate Arithmetic Left Shift-------------OPCODE:
+                [B] (VIARSH)-Vector Immediate Arithmetic Right Shift------------OPCODE:
+                [B] (VILLSH)-Vector Immediate Logical Left Shift----------------OPCODE:
+                [B] (VILRSH)-Vector Immediate Logical Right Shift---------------OPCODE:
+                [B] (VILRT)--Vector Immediate Left Rotate-----------------------OPCODE:
+                [B] (VIRRT)--Vector Immediate Right Rotate----------------------OPCODE:
+                [B] (VIAND)--Vector Immediate Bitwise AND-----------------------OPCODE:
+                [B] (VINAND)-Vector Immediate Bitwise NAND----------------------OPCODE:
+                [B] (VIOR)---Vector Immediate Bitwise OR------------------------OPCODE:
+                [B] (VINOR)--Vector Immediate Bitwise NOR-----------------------OPCODE:
+                [B] (VIXOR)--Vector Immediate Bitwise XOR-----------------------OPCODE:
+                [B] (VIXNOR)-Vector Immediate Bitwise XNOR----------------------OPCODE:
+                [B] (VIIBF)--Vector Immediate Insert Bit Field------------------OPCODE:
+
+                [C] (VIIC)---Vector Integer-Integer Cast------------------------OPCODE:
+			}
+
+			advanced { ok
+
+				[A] (VMUL)----Vector Multiplication-------------------------------OPCODE:
+				[A] (VUMUL)---Vector Unsigned Multiplication----------------------OPCODE:-
+                [A] (VMAC)----Vector Multiply Accumulate--------------------------OPCODE:
+                [A] (VUMAC)---Vector Unsigned Multiply Accumulate-----------------OPCODE:-
+                [A] (VDIV)----Vector Division-------------------------------------OPCODE:
+                [A] (VUDIV)---Vector Unsigned Division----------------------------OPCODE:-
+                [A] (VREM)----Vector Remainder------------------------------------OPCODE:
+                [A] (VUREM)---Vector Unsigned Remainder---------------------------OPCODE:-
+                [A] (VADDC)---Vector Addition Carry-------------------------------OPCODE:
+                [A] (VUADDC)--Vector Unsigned Addition Carry----------------------OPCODE:-
+                [A] (VSUBC)---Vector Subtraction Carry----------------------------OPCODE:
+                [A] (VUSUBC)--Vector Unsigned Subtraction Carry-------------------OPCODE:-
+                [A] (VALSHC)--Vector Arithmetic Left Shift Carry------------------OPCODE:
+                [A] (VARSHC)--Vector Arithmetic Right Shift Carry-----------------OPCODE:
+                [A] (VLLSHC)--Vector Logical Left Shift Carry---------------------OPCODE:-
+                [A] (VLRSHC)--Vector Logical Right Shift Carry--------------------OPCODE:-
+                [A] (VHMUL)---Vector High Multiplication--------------------------OPCODE:
+                [A] (VUHMUL)--Vector Unsigned High Multiplication-----------------OPCODE:-
+                [A] (VHMAC)---Vector High Multiply Accumulate---------------------OPCODE:
+                [A] (VUHMAC)--Vector Unsigned High Multiply Accumulate------------OPCODE:-
+                [A] (VAHLSH)--Vector Arithmetic High Left Shift-------------------OPCODE:
+                [A] (VAHRSH)--Vector Arithmetic High Right Shift------------------OPCODE:
+                [A] (VLHLSH)--Vector Logical High Left Shift----------------------OPCODE:-
+                [A] (VLHRSH)--Vector Logical High Right Shift---------------------OPCODE:-
+                [A] (VSWP)----Vector Bit Swap-------------------------------------OPCODE:
+                [A] (VIMP)----Vector Bitwise IMP----------------------------------OPCODE:
+                [A] (VNIMP)---Vector Bitwise NIMP---------------------------------OPCODE:
+                [A] (VCLMUL)--Vector Carry-less Multiplication--------------------OPCODE:
+
+                [B] (VIMUL)---Vector Immediate Multiplication---------------------OPCODE:
+				[B] (VIUMUL)--Vector Immediate Unsigned Multiplication------------OPCODE:
+                [B] (VIMAC)---Vector Immediate Multiply Accumulate----------------OPCODE:
+                [B] (VIUMAC)--Vector Immediate Unsigned Multiply Accumulate-------OPCODE:
+                [B] (VIDIV)---Vector Immediate Division---------------------------OPCODE:
+                [B] (VIUDIV)--Vector Immediate Unsigned Division------------------OPCODE:
+                [B] (VIREM)---Vector Immediate Remainder--------------------------OPCODE:
+                [B] (VIUREM)--Vector Immediate Unsigned Remainder-----------------OPCODE:
+                [B] (VIADDC)--Vector Immediate Addition Carry---------------------OPCODE:
+                [B] (VIUADDC)-Vector Immediate Unsigned Addition Carry------------OPCODE:
+                [B] (VISUBC)--Vector Immediate Subtraction Carry------------------OPCODE:
+                [B] (VIUSUBC)-Vector Immediate Unsigned Subtraction Carry---------OPCODE:
+                [B] (VIALSHC)-Vector Immediate Arithmetic Left Shift Carry--------OPCODE:
+                [B] (VIARSHC)-Vector Immediate Arithmetic Right Shift Carry-------OPCODE:
+                [B] (VILLSHC)-Vector Immediate Logical Left Shift Carry-----------OPCODE:
+                [B] (VILRSHC)-Vector Immediate Logical Right Shift Carry----------OPCODE:
+                [B] (VIHMUL)--Vector Immediate High Multiplication----------------OPCODE:
+                [B] (VIUHMUL)-Vector Immediate Unsigned High Multiplication-------OPCODE:
+                [B] (VIHMAC)--Vector Immediate High Multiply Accumulate-----------OPCODE:
+                [B] (VIUHMAC)-Vector Immediate Unsigned High Multiply Accumulate--OPCODE:
+                [B] (VIAHLSH)-Vector Immediate Arithmetic High Left Shift---------OPCODE:
+                [B] (VIAHRSH)-Vector Immediate Arithmetic High Right Shift--------OPCODE:
+                [B] (VILHLSH)-Vector Immediate Logical High Left Shift------------OPCODE:
+                [B] (VILHRSH)-Vector Immediate Logical High Right Shift-----------OPCODE:
+                [B] (VISWP)---Vector Immediate Bit Swap---------------------------OPCODE:
+                [B] (VIIMP)---Vector Immediate Bitwise IMP------------------------OPCODE:
+                [B] (VINIMP)--Vector Immediate Bitwise NIMP-----------------------OPCODE:
+                [B] (VICLMUL)-Vector Immediate Carry-less Multiplication----------OPCODE:
+
+                [C] (RADD)----Reduced Addition------------------------------------OPCODE:
+                [C] (RSUB)----Reduced Subtraction---------------------------------OPCODE:
+                [C] (RMUL)----Reduced Multiplication------------------------------OPCODE:
+                [C] (RMAC)----Reduced Multiply Accumulate-------------------------OPCODE:
+                [C] (RDIV)----Reduced Division------------------------------------OPCODE:
+                [C] (RAND)----Reduced Bitwise AND---------------------------------OPCODE:
+                [C] (RNAND)---Reduced Bitwise NAND--------------------------------OPCODE:
+                [C] (ROR)-----Reduced Bitwise OR----------------------------------OPCODE:
+                [C] (RNOR)----Reduced Bitwise NOR---------------------------------OPCODE:
+                [C] (RXOR)----Reduced Bitwise XOR---------------------------------OPCODE:
+                [C] (RXNOR)---Reduced Bitwise XNOR--------------------------------OPCODE:
+                [C] (RIMP)----Reduced Bitwise IMP---------------------------------OPCODE:
+                [C] (RNIMP)---Reduced Bitwise NIMP--------------------------------OPCODE:
+                [C] (VCTO)----Vector Count Ones-----------------------------------OPCODE:
+            	[C] (VCTLO)---Vector Count Leading Ones---------------------------OPCODE:
+            	[C] (VCTTO)---Vector Count Trailing Ones--------------------------OPCODE:
+            	[C] (VCTZ)----Vector Count Zeros----------------------------------OPCODE:
+            	[C] (VCTLZ)---Vector Count Leading Zeros--------------------------OPCODE:
+            	[C] (VCTTZ)---Vector Count Trailing Zeros-------------------------OPCODE:
+			}
+		}
+
+		floatingpoint {
+
+			core { ok
+
+				[A] (VFADD)---Vector FP. Addition---------------------------------OPCODE:
+				[A] (VUFADD)--Vector Unsigned FP. Addition------------------------OPCODE:-
+                [A] (VFSUB)---Vector FP. Subtraction------------------------------OPCODE:
+                [A] (VUFSUB)--Vector Unsigned FP. Subtraction---------------------OPCODE:-
+                [A] (VFMUL)---Vector FP. Multiplication---------------------------OPCODE:
+                [A] (VUFMUL)--Vector Unsigned FP. Multiplication------------------OPCODE:-
+                [A] (VFDIV)---Vector FP. Division---------------------------------OPCODE:
+                [A] (VUFDIV)--Vector Unsigned FP. Division------------------------OPCODE:-
+
+                [B] (VIFADD)--Vector Immediate FP. Addition-----------------------OPCODE:
+				[B] (VIUFADD)-Vector Immediate Unsigned FP. Addition--------------OPCODE:
+                [B] (VIFSUB)--Vector Immediate FP. Subtraction--------------------OPCODE:
+                [B] (VIUFSUB)-Vector Immediate Unsigned FP. Subtraction-----------OPCODE:
+                [B] (VIFMUL)--Vector Immediate FP. Multiplication-----------------OPCODE:
+                [B] (VIUFMUL)-Vector Immediate Unsigned FP. Multiplication--------OPCODE:
+                [B] (VIFDIV)--Vector Immediate FP. Division-----------------------OPCODE:
+                [B] (VIUFDIV)-Vector Immediate Unsigned FP. Division--------------OPCODE:
+
+                [C] (VSFFC)---Vector FP-FP Cast-----------------------------------OPCODE:
+			}
+
+			advanced { ok
+
+				[A] (VFMAC)---Vector FP. Multiply Accumulate----------------------OPCODE:
+				[A] (VUFMAC)--Vector Unsigned FP. Multiply Accumulate-------------OPCODE:-
+                [A] (VFPOW)---Vector FP. Power------------------------------------OPCODE:
+                [A] (VUFPOW)--Vector Unsigned FP. Power---------------------------OPCODE:-
+                [A] (VFPOW)---Vector FP. Remainder--------------------------------OPCODE:
+                [A] (VUFPOW)--Vector Unsigned FP. Remainder-----------------------OPCODE:-
+
+                [B] (VIFMAC)--Vector Immediate FP. Multiply Accumulate------------OPCODE:
+				[B] (VIUFMAC)-Vector Immediate Unsigned FP. Multiply Accumulate---OPCODE:
+                [B] (VIFPOW)--Vector Immediate FP. Power--------------------------OPCODE:
+                [B] (VIUFPOW)-Vector Immediate Unsigned FP. Power-----------------OPCODE:
+                [B] (VIFPOW)--Vector Immediate FP. Remainder----------------------OPCODE:
+                [B] (VIUFPOW)-Vector Immediate Unsigned FP. Remainder-------------OPCODE:
+
+                [C] (VSIN)----Vector Sin------------------------------------------OPCODE:
+                [C] (VCOS)----Vector Cos------------------------------------------OPCODE:
+                [C] (VASIN)---Vector Arcsin---------------------------------------OPCODE:
+                [C] (VACOS)---Vector Arccos---------------------------------------OPCODE:
+                [C] (VRFADD)--Vector Reduced FP. Addition-------------------------OPCODE:
+                [C] (VRFSUB)--Vector Reduced FP. Subtraction----------------------OPCODE:
+                [C] (VRFBSUB)-Vector Reduced FP. Back Subtraction-----------------OPCODE:
+                [C] (VRFMUL)--Vector Reduced FP. Multiplication-------------------OPCODE:
+                [C] (VRFMAC)--Vector Reduced FP. Multiply Accumulate--------------OPCODE:
+                [C] (VRFDIV)--Vector Reduced FP. Division-------------------------OPCODE:
+                [C] (VRFBDIV)-Vector Reduced FP. Back Division--------------------OPCODE:
+			}
+		}
+	}
+
+	mixed casts { ok
+
+        [C] (SIFC)-Scalar Integer-FP Cast----------------------------------------OPCODE:
+        [C] (SFIC)-Scalar FP-Integer Cast----------------------------------------OPCODE:
+        [C] (VIFC)-Vector Integer-FP Cast----------------------------------------OPCODE:
+        [C] (VFIC)-Vector FP-Integer Cast----------------------------------------OPCODE:
+    }
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+Data transfer {
+	
+	scalar {
+
+		core { ok
+
+			[D] (MLD)---Memory Load----------------------------------------------OPCODE:
+            [D] (MST)---Memory Store---------------------------------------------OPCODE:
+
+            [C] (MOV)----Move
+    		[C] (MOVTS)--Move To Special
+    		[C] (MOVFS)--Move From Special
+		}
+
+		advanced { ok
+
+			[E] (IMLD)---Indexed Memory Load-------------------------------------OPCODE:
+            [E] (IMST)---Indexed Memory Store------------------------------------OPCODE:
+
+            [F] (RIMLD)--Register Indexed Memory Load----------------------------OPCODE:
+            [F] (RIMST)--Register Indexed Memory Store---------------------------OPCODE:
+
+            [C] (SWP)----Swap
+            [C] (SWPTS)--Swap To Special
+            [C] (SWPFS)--Swap From Special
+		}
+	}
+
+	vector {
+
+		core { ok
+
+			[D] (VMLD)---Vector Memory Load--------------------------------------OPCODE:
+            [D] (VMST)---Vector Memory Store-------------------------------------OPCODE:
+
+            [C] (MOVTF)--Move To Flags
+            [C] (MOVFF)--Move From Flags
+            [C] (SWPTF)--Swap To Flags
+            [C] (SWPFF)--Swap From Flags
+
+            [C] (VMOV)---Vector Move
+    		[C] (MOVTV)--Move To Vector
+    		[C] (MOVFV)--Move From Vector
+    		[C] (VMOVTF)-Vector Move To Flags
+    		[C] (VMOVFF)-Vector Move From Flags
+		}
+
+		advanced { ok
+
+			[E] (VIMLD)---Vector Indexed Memory Load-----------------------------OPCODE:
+            [E] (VIMST)---Vector Indexed Memory Store----------------------------OPCODE:
+
+            [F] (VRIMLD)--Vector Register Indexed Memory Load--------------------OPCODE:
+            [F] (VRIMST)--Vector Register Indexed Memory Store-------------------OPCODE:
+
+            [C] (VSWP)---Vector Swap
+            [C] (SWPTV)--Swap To Vector
+            [C] (SWPFV)--Swap From Vector
+            [C] (VSWPTF)-Vector Swap To Flags
+            [C] (VSWPFF)-Vector Swap From Flags
+
+            [A] (VGAT)---Vector Gather-------------------------------------------OPCODE:
+            [A] (VSCA)---Vector Scatter------------------------------------------OPCODE:
+		}
+	}
+
+	atomic { ok
+
+        [A] (LL)--Load Linked-------------------------------------------------------OPCODE:
+        [A] (SC)--Store Conditional-------------------------------------------------OPCODE:
+        
+        [A] (CAS)-Compare And Swap
+    }
+
+    block { ok
+
+        [G] (BLD)-Block Load-------------------------------------------------------OPCODE:
+        [G] (BST)-Block Store------------------------------------------------------OPCODE:
+    }
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+Control transfer {
+
+	scalar {
+
+		integer {
+
+			core { ok
+
+				[H] (BEQ)---Branch If Equal---------------------------------------OPCODE:
+            	[H] (BNE)---Branch If Not Equal-----------------------------------OPCODE:
+            	[H] (BLT)---Branch If Less Than-----------------------------------OPCODE:
+            	[H] (BLE)---Branch If Less Equal----------------------------------OPCODE:
+            	[H] (UBLT)--Unsigned Branch If Less Than--------------------------OPCODE:
+            	[H] (UBLE)--Unsigned Branch If Less Equal-------------------------OPCODE:
+
+            	[J]   (CAL)---Function Call---------------------------------------OPCODE:
+
+            	[P]   (RET)---Function Return-------------------------------------OPCODE:
+			}
+
+			advanced {
+            
+            	[G] (BTST)--Branch If Test----------------------------------------OPCODE:
+            	[G] (UBTST)-Unsigned Branch If Test-------------------------------OPCODE:
+
+            	[G] (BAFL)-Branch If Arithmetic Flag Low--------------------------OPCODE:
+                [G] (BAFH)-Branch If Arithmetic Flag High-------------------------OPCODE:
+            	[G] (BSF)--Branch If System Flag----------------------------------OPCODE:
+
+                [C] (SIMSK)-Scalar Integer Mask Set Compare-----------------------OPCODE:
+
+
+            	[K]   (RCAL)--Register Function Call------------------------------OPCODE:
+			}
+		}
+
+		floating point { ok
+
+			core {
+
+				[H] (FBEQ)---Floating point Branch If Equal-----------------------OPCODE:
+            	[H] (FBNE)---Floating point Branch If Not Equal-------------------OPCODE:
+            	[H] (FBLT)---Floating point Branch If Less Than-------------------OPCODE:
+            	[H] (FBLE)---Floating point Branch If Less Equal------------------OPCODE:
+            	[H] (FUBLT)--Floating point Unsigned Branch If Less Than----------OPCODE:
+            	[H] (FUBLE)--Floating point Unsigned Branch If Less Equal---------OPCODE:
+			}
+
+			advanced {
+
+				[C] (SFMSK)-Scalar FP. Mask Set-----------------------------------OPCODE:
+
+            	[G] (FBTST)--FP. Branch If Test-----------------------------------OPCODE:
+            	[G] (UFBTST)-Unsigned FP. Branch If Test--------------------------OPCODE:
+			}
+		}
+	}
+
+	vector {
+
+		integer {
+
+			core { ok
+
+				[C] (VIMSK)-Vector Integer Mask Set Compare-----------------------OPCODE:
+			}
+
+			advanced {
+
+				// mask on flag checks & tests
+			}
+		}
+
+		floatingpoint {
+
+			[C] (VFMSK)-Vector FP. Mask Set Compare-------------------------------OPCODE:
+            // mask on tests
+		}
+	}
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+System {
+	
+	core { ok
+
+        [P] (NOP)---No Operation---------------------------------------------OPCODE:
+      * [P] (CACOP)-Cache Operation------------------------------------------OPCODE:
+        [O] (BPTRG)-Breakpoint Trigger---------------------------------------OPCODE:
+    }
+
+    fences { ok
+
+        [P] (FNCL)--Fence Loads----------------------------------------------OPCODE:
+        [P] (FNCS)--Fence Stores---------------------------------------------OPCODE:
+        [P] (FNCLS)-Fence Loads and Stores-----------------------------------OPCODE:
+    }
+
+    advanced { ok
+
+      * [P] (ERET)--Event Return---------------------------------------------OPCODE:
+      * [P] (MMUOP)-MMU Operation--------------------------------------------OPCODE:
+
+        [O] (SYSCL)-System Call----------------------------------------------OPCODE:
+      * [O] (WINT)--Wait For Interrupt---------------------------------------OPCODE:
+
+      * [P] (SDMP)--State Dump-----------------------------------------------OPCODE:
+      * [P] (SRST)--State Restore--------------------------------------------OPCODE:
+    }
+}
+______________________________________________________________________________________________________________________________________________________________________
+
+Compressed {
+	
+	[N] (CIADD)  Compressed Immediate Addition 08----------------------------OPCODE: 
+    [N] (CIADD)  Compressed Immediate Addition 16----------------------------OPCODE: 
+    [N] (CIADD)  Compressed Immediate Addition 32----------------------------OPCODE: 
+    [N] (CIADD)  Compressed Immediate Addition 64----------------------------OPCODE:
+
+    [N] (CBEQZ)  Compressed Branch If NEZ 08---------------------------------OPCODE: 
+    [N] (CBEQZ)  Compressed Branch If NEZ 16---------------------------------OPCODE: 
+    [N] (CBEQZ)  Compressed Branch If NEZ 32---------------------------------OPCODE: 
+    [N] (CBEQZ)  Compressed Branch If NEZ 64---------------------------------OPCODE:
+
+    [N] (CFBEQZ)  Compressed FP. Branch If NEZ 08----------------------------OPCODE: 
+    [N] (CFBEQZ)  Compressed FP. Branch If NEZ 16----------------------------OPCODE: 
+    [N] (CFBEQZ)  Compressed FP. Branch If NEZ 32----------------------------OPCODE: 
+    [N] (CFBEQZ)  Compressed FP. Branch If NEZ 64----------------------------OPCODE: 
+    ...4
+
+    [O] (CCAL) Branch If Zero Flag
+    [O] (CCAL) Compressed Function Call
+
+    [M] (CADD)   Compressed Addition-----------------------------------------OPCODE:
+    [M] (CSUB)   Compressed Subtraction--------------------------------------OPCODE:
+    [M] (CSUB)   Compressed Multiplication-----------------------------------OPCODE:
+    [M] (CSUB)   Compressed Division-----------------------------------------OPCODE:
+    [M] (CLSH)   Compressed Left Shift---------------------------------------OPCODE:
+    [M] (CRSH)   Compressed Right Shift--------------------------------------OPCODE:
+    [M] (CFADD)  Compressed FP. Addition-------------------------------------OPCODE:
+    [M] (CFSUB)  Compressed FP. Subtraction----------------------------------OPCODE:
+    [M] (CFMUL)  Compressed FP. Multiplication-------------------------------OPCODE:
+    [M] (CFDIV)  Compressed FP. Division-------------------------------------OPCODE:
+}

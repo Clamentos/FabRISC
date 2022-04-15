@@ -14,18 +14,12 @@ Computational { [190]
 
             core { (25)
 
-                1st module: BSC (basic scalar computational)
+                1st module: BISC (basic integer scalar computational)
 
                 [A] (ADD)----Addition----------------------------------------(?????)----OPCODE:000000000000
                 [A] (SUB)----Subtraction-------------------------------------(?????)----OPCODE:000000000000
                 [A] (LSH)----Left Shift--------------------------------------(?????)----OPCODE:000000000000
                 [A] (RSH)----Right Shift-------------------------------------(?????)----OPCODE:000000000000
-
-                [B] (IADD)---Immediate Addition------------------------------(?????)----OPCODE:000000000
-                [B] (ISUB)---Immediate Subtraction---------------------------(?????)----OPCODE:000000000
-                [B] (ILSH)---Immediate Left Shift----------------------------(?????)----OPCODE:000000000
-                [B] (IRSH)---Immediate Right Shift---------------------------(?????)----OPCODE:000000000
-
                 [A] (LRT)----Left Rotate-------------------------------------(?????)----OPCODE:000000000000
                 [A] (RRT)----Right Rotate------------------------------------(?????)----OPCODE:000000000000
                 [A] (AND)----Bitwise AND-------------------------------------(?????)----OPCODE:000000000000
@@ -35,6 +29,10 @@ Computational { [190]
                 [A] (XOR)----Bitwise XOR-------------------------------------(?????)----OPCODE:000000000000
                 [A] (XNOR)---Bitwise XNOR------------------------------------(?????)----OPCODE:000000000000
 
+                [B] (IADD)---Immediate Addition------------------------------(?????)----OPCODE:000000000
+                [B] (ISUB)---Immediate Subtraction---------------------------(?????)----OPCODE:000000000
+                [B] (ILSH)---Immediate Left Shift----------------------------(?????)----OPCODE:000000000
+                [B] (IRSH)---Immediate Right Shift---------------------------(?????)----OPCODE:000000000
                 [B] (ILRT)---Immediate Left Rotate---------------------------(?????)----OPCODE:000000000
                 [B] (IRRT)---Immediate Right Rotate--------------------------(?????)----OPCODE:000000000
                 [B] (IAND)---Immediate Bitwise AND---------------------------(?????)----OPCODE:000000000
@@ -50,7 +48,7 @@ Computational { [190]
 
             advanced { (38)
 
-                2nd module: ASC (advanced scalar computational)
+                2nd module: AISC (advanced integer scalar computational)
 
                 [A] (MUL)----Multiplication----------------------------------(?????)----OPCODE:000000000000
                 [A] (MAC)----Multiply Accumulate-----------------------------(?????)----OPCODE:000000000000
@@ -64,6 +62,10 @@ Computational { [190]
                 [A] (HMAC)---High Multiply Accumulate------------------------(?????)----OPCODE:000000000000
                 [A] (HLSH)---High Left Shift---------------------------------(?????)----OPCODE:000000000000
                 [A] (HRSH)---High Right Shift--------------------------------(?????)----OPCODE:000000000000
+                [A] (SWP)----Bit Swap----------------------------------------(?????)----OPCODE:000000000000
+                [A] (IMP)----Bitwise IMP-------------------------------------(?????)----OPCODE:000000000000
+                [A] (NIMP)---Bitwise NIMP------------------------------------(?????)----OPCODE:000000000000
+                [A] (CLMUL)--Carry-less Multiplication-----------------------(?????)----OPCODE:000000000000
 
                 [B] (IMUL)---Immediate Multiplication------------------------(?????)----OPCODE:000000000
                 [B] (IMAC)---Immediate Multiply Accumulate-------------------(?????)----OPCODE:000000000
@@ -77,12 +79,6 @@ Computational { [190]
             	[B] (ISUBC)--Immediate Subtraction Carry---------------------(?????)----OPCODE:000000000
             	[B] (ILSHC)--Immediate Left Shift Carry----------------------(?????)----OPCODE:000000000
             	[B] (IRSHC)--Immediate Right Shift Carry---------------------(?????)----OPCODE:000000000
-
-                [A] (SWP)----Bit Swap----------------------------------------(?????)----OPCODE:000000000000
-                [A] (IMP)----Bitwise IMP-------------------------------------(?????)----OPCODE:000000000000
-                [A] (NIMP)---Bitwise NIMP------------------------------------(?????)----OPCODE:000000000000
-                [A] (CLMUL)--Carry-less Multiplication-----------------------(?????)----OPCODE:000000000000
-
                 [B] (ISWP)---Immediate Bit Swap------------------------------(?????)----OPCODE:000000000
                 [B] (IIMP)---Immediate Bitwise IMP---------------------------(?????)----OPCODE:000000000
                 [B] (INIMP)--Immediate Bitwise NIMP--------------------------(?????)----OPCODE:000000000
@@ -101,7 +97,7 @@ Computational { [190]
 
             core { (8)
 
-                3rd module: BSF (basic scalar floating-point)
+                3rd module: BFSC (basic floating-point scalar computational)
 
                 [A] (FADD)---FP. Addition------------------------------------(?????)----OPCODE:000000000000
                 [A] (FSUB)---FP. Subtraction---------------------------------(?????)----OPCODE:000000000000
@@ -118,7 +114,7 @@ Computational { [190]
 
             advanced { (10)
 
-                4th module: ASF (advanced scalar floating-point)
+                4th module: AFSC (advanced floating-point scalar computational)
 
                 [A] (FMAC)---FP. Multiply Accumulate-------------------------(?????)----OPCODE:000000000000
                 [A] (FPOW)---FP. Power---------------------------------------(?????)----OPCODE:000000000000
@@ -142,18 +138,12 @@ Computational { [190]
 
             core { (25)
 
-                5th module: BVC (basic vector computational)
+                5th module: BIVC (basic integer vector computational)
 
                 [A] (VADD)--Vector Addition----------------------------------(?????)----OPCODE:000000000000
                 [A] (VSUB)--Vector Subtraction-------------------------------(?????)----OPCODE:000000000000
                 [A] (VLSH)--Vector Left Shift--------------------------------(?????)----OPCODE:000000000000
                 [A] (VRSH)--Vector Right Shift-------------------------------(?????)----OPCODE:000000000000
-
-                [B] (VIADD)--Vector Immediate Addition-----------------------(?????)----OPCODE:000000000
-                [B] (VISUB)--Vector Immediate Subtraction--------------------(?????)----OPCODE:000000000
-                [B] (VILSH)--Vector Immediate Left Shift---------------------(?????)----OPCODE:000000000
-                [B] (VIRSH)--Vector Immediate Right Shift--------------------(?????)----OPCODE:000000000
-
                 [A] (VLRT)----Vector Left Rotate-----------------------------(?????)----OPCODE:000000000000
                 [A] (VRRT)----Vector Right Rotate----------------------------(?????)----OPCODE:000000000000
                 [A] (VAND)----Vector Bitwise AND-----------------------------(?????)----OPCODE:000000000000
@@ -163,6 +153,10 @@ Computational { [190]
                 [A] (VXOR)----Vector Bitwise XOR-----------------------------(?????)----OPCODE:000000000000
                 [A] (VXNOR)---Vector Bitwise XNOR----------------------------(?????)----OPCODE:000000000000
 
+                [B] (VIADD)--Vector Immediate Addition-----------------------(?????)----OPCODE:000000000
+                [B] (VISUB)--Vector Immediate Subtraction--------------------(?????)----OPCODE:000000000
+                [B] (VILSH)--Vector Immediate Left Shift---------------------(?????)----OPCODE:000000000
+                [B] (VIRSH)--Vector Immediate Right Shift--------------------(?????)----OPCODE:000000000
                 [B] (VILRT)---Vector Immediate Left Rotate-------------------(?????)----OPCODE:000000000
                 [B] (VIRRT)---Vector Immediate Right Rotate------------------(?????)----OPCODE:000000000
                 [B] (VIAND)---Vector Immediate Bitwise AND-------------------(?????)----OPCODE:000000000
@@ -178,7 +172,7 @@ Computational { [190]
 
             advanced { (51)
 
-                6th module: AVC (advanced vector computational)
+                6th module: AIVC (advanced integer vector computational)
 
                 [A] (VMUL)---Vector Multiplication---------------------------(?????)----OPCODE:000000000000
                 [A] (VMAC)---Vector Multiply Accumulate----------------------(?????)----OPCODE:000000000000
@@ -192,6 +186,10 @@ Computational { [190]
                 [A] (VHMAC)--Vector High Multiply Accumulate-----------------(?????)----OPCODE:000000000000
                 [A] (VHLSH)--Vector High Left Shift--------------------------(?????)----OPCODE:000000000000
                 [A] (VHRSH)--Vector High Right Shift-------------------------(?????)----OPCODE:000000000000
+                [A] (VSWP)----Vector Bit Swap--------------------------------(?????)----OPCODE:000000000000
+                [A] (VIMP)----Vector Bitwise IMP-----------------------------(?????)----OPCODE:000000000000
+                [A] (VNIMP)---Vector Bitwise NIMP----------------------------(?????)----OPCODE:000000000000
+                [A] (VCLMUL)--Vector Carry-less Multiplication---------------(?????)----OPCODE:000000000000
 
                 [B] (VIMUL)--Vector Immediate Multiplication-----------------(?????)----OPCODE:000000000
                 [B] (VIMAC)--Vector Immediate Multiply Accumulate------------(?????)----OPCODE:000000000
@@ -205,12 +203,6 @@ Computational { [190]
                 [B] (VISUBC)-Vector Immediate Subtraction Carry--------------(?????)----OPCODE:000000000
                 [B] (VILSHC)-Vector Immediate Left Shift Carry---------------(?????)----OPCODE:000000000
                 [B] (VIRSHC)-Vector Immediate Right Shift Carry--------------(?????)----OPCODE:000000000
-
-                [A] (VSWP)----Vector Bit Swap--------------------------------(?????)----OPCODE:000000000000
-                [A] (VIMP)----Vector Bitwise IMP-----------------------------(?????)----OPCODE:000000000000
-                [A] (VNIMP)---Vector Bitwise NIMP----------------------------(?????)----OPCODE:000000000000
-                [A] (VCLMUL)--Vector Carry-less Multiplication---------------(?????)----OPCODE:000000000000
-
                 [B] (VISWP)---Vector Immediate Bit Swap----------------------(?????)----OPCODE:000000000
                 [B] (VIIMP)---Vector Immediate Bitwise IMP-------------------(?????)----OPCODE:000000000
                 [B] (VINIMP)--Vector Immediate Bitwise NIMP------------------(?????)----OPCODE:000000000
@@ -229,7 +221,6 @@ Computational { [190]
                 [C] (RXNOR)---Reduced Bitwise XNOR---------------------------(?????)----OPCODE:0000000000000000
                 [C] (RIMP)----Reduced Bitwise IMP----------------------------(?????)----OPCODE:0000000000000000
                 [C] (RNIMP)---Reduced Bitwise NIMP---------------------------(?????)----OPCODE:0000000000000000
-
                 [C] (VCTO)----Vector Count Ones------------------------------(?????)----OPCODE:0000000000000000
                 [C] (VCTLO)---Vector Count Leading Ones----------------------(?????)----OPCODE:0000000000000000
                 [C] (VCTTO)---Vector Count Trailing Ones---------------------(?????)----OPCODE:0000000000000000
@@ -243,7 +234,7 @@ Computational { [190]
 
             core { (8)
 
-                7th module: BVF (basic vector floating-point)
+                7th module: BFVC (basic floating-point vector computational)
 
                 [A] (VFADD)--Vector FP. Addition-----------------------------(?????)----OPCODE:000000000000
                 [A] (VFSUB)--Vector FP. Subtraction--------------------------(?????)----OPCODE:000000000000
@@ -260,7 +251,7 @@ Computational { [190]
 
             advanced { (17)
 
-                8th module: AVF (advanced vector floating-point)
+                8th module: AFVC (advanced floating-point vector computational)
 
                 [A] (VFMAC)---Vector FP. Multiply Accumulate-----------------(?????)----OPCODE:000000000000
                 [A] (VFPOW)---Vector FP. Power-------------------------------(?????)----OPCODE:000000000000
@@ -274,7 +265,6 @@ Computational { [190]
                 [C] (VCOS)----Vector Cos-------------------------------------(?????)----OPCODE:0000000000000000
                 [C] (VASIN)---Vector Arcsin----------------------------------(?????)----OPCODE:0000000000000000
                 [C] (VACOS)---Vector Arccos----------------------------------(?????)----OPCODE:0000000000000000
-
                 [C] (VRFADD)--Vector Reduced FP. Addition--------------------(?????)----OPCODE:0000000000000000
                 [C] (VRFSUB)--Vector Reduced FP. Subtraction-----------------(?????)----OPCODE:0000000000000000
                 [C] (VRFBSUB)-Vector Reduced FP. Back Subtraction------------(?????)----OPCODE:0000000000000000
@@ -309,7 +299,6 @@ Data Transfer { [17]
 
             [D] (MLD)---Memory Load------------------------------------------(?????)----OPCODE:000000
             [D] (MST)---Memory Store-----------------------------------------(?????)----OPCODE:000000
-            [C] (SRCPY)-Special Register Copy--------------------------------(?????)----OPCODE:0000000000000000
         }
 
         advanced { (4)
@@ -337,6 +326,8 @@ Data Transfer { [17]
             [E] (VIMST)--Vector Indexed Memory Store-------------------------(?????)----OPCODE:000000
             [F] (VRIMLD)-Vector Register Indexed Memory Load-----------------(?????)----OPCODE:000000000
             [F] (VRIMST)-Vector Register Indexed Memory Store----------------(?????)----OPCODE:000000000
+            [A] (VGAT)---Vector Gather---------------------------------------(?????)----OPCODE:0000000000000
+            [A] (VSCA)---Vector Scatter--------------------------------------(?????)----OPCODE:0000000000000
         }
     }
 
@@ -352,6 +343,22 @@ Data Transfer { [17]
         [G] (BLD)-Block Load-------------------------------------------------(?????)----OPCODE:0000000
         [G] (BST)-Block Store------------------------------------------------(?????)----OPCODE:0000000
     }
+
+
+
+    [C] (MOV)----Move
+    [C] (MOVTS)--Move To Special
+    [C] (MOVFS)--Move From Special
+    [C] (MOVTF)--Move To Flags
+    [C] (MOVFF)--Move From Flags
+
+    [C] (VMOV)---Vector Move
+    [C] (MOVTV)--Move To Vector
+    [C] (MOVFV)--Move From Vector
+    [C] (VMOVTF)-Vector Move To Flags
+    [C] (VMOVFF)-Vector Move From Flags
+
+    //same for swaps...
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -361,27 +368,28 @@ Control transfer { [25]
 
         core { (8)
 
-            [H] (BEQ)---Branch If Equal--------------------------------------(?????)----OPCODE:0000000
-            [H] (BNE)---Branch If Not Equal----------------------------------(?????)----OPCODE:0000000
-            [H] (BLT)---Branch If Less Than----------------------------------(?????)----OPCODE:0000000
-            [H] (BLE)---Branch If Less Equal---------------------------------(?????)----OPCODE:0000000
-            [H] (UBLT)--Unsigned Branch If Less Than-------------------------(?????)----OPCODE:0000000
-            [H] (UBLE)--Unsigned Branch If Less Equal------------------------(?????)----OPCODE:0000000
+            [H] (BEQ)---Branch If Equal--------------------------------------OPCODE:0000000
+            [H] (BNE)---Branch If Not Equal----------------------------------OPCODE:0000000
+            [H] (BLT)---Branch If Less Than----------------------------------OPCODE:0000000
+            [H] (BLE)---Branch If Less Equal---------------------------------OPCODE:0000000
+            [H] (UBLT)--Unsigned Branch If Less Than-------------------------OPCODE:0000000
+            [H] (UBLE)--Unsigned Branch If Less Equal------------------------OPCODE:0000000
 
-            [J] (CAL)---Function Call----------------------------------------(?????)
-            [P] (RET)---Function Return--------------------------------------(?????)
+            [J] (CAL)---Function Call----------------------------------------OPCODE
+            [P] (RET)---Function Return--------------------------------------OPCODE
         }
 
         advanced { (6)
 
-            [C] (SIMSK)-Scalar Integer Mask Set------------------------------(?????)
+            [C] (SIMSK)-Scalar Integer Mask Set------------------------------OPCODE:
             
-            [I] (BTST)--Branch If Test---------------------------------------(?????)
-            [I] (UBTST)-Unsigned Branch If Test------------------------------(?????)
+            [I] (BTST)--Branch If Test---------------------------------------OPCODE:
+            [I] (UBTST)-Unsigned Branch If Test------------------------------OPCODE:
             
-            [G] (BAF)--Branch If Arithmetic Flag-----------------------------(?????)----OPCODE:0000000
-            [G] (BSF)--Branch If System Flag---------------------------------(?????)----OPCODE:0000000
-            [K] (RCAL)-Register Function Call--------------------------------(?????)
+            [G] (BAF)--Branch If Arithmetic Flag-----------------------------OPCODE:
+            [G] (BSF)--Branch If Arithmetic Flag2----------------------------OPCODE:
+
+            [K] (RCAL)-Register Function Call--------------------------------OPCODE:
         }
     }
 
@@ -423,7 +431,7 @@ Control transfer { [25]
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-System { [14]
+System { [21]
 
     core { (2)
 
@@ -431,7 +439,7 @@ System { [14]
       * [P] (CACOP)-Cache Operation------------------------------------------(?????)
     }
 
-    advanced { (12)
+    advanced { (15)
 
         [P] (UERET)-User Event Return----------------------------------------(?????)
       * [P] (SERET)-Supervisor Event Return----------------------------------(?????)
@@ -439,6 +447,9 @@ System { [14]
         [O] (SYSCL)-System Call----------------------------------------------(?????)
         [?] (WINT)--Wait For Interrupt---------------------------------------(?????)
         [?] (BPTRG)-Breakpoint Trigger---------------------------------------(?????)
+        [P] (FNCL)--Fence Loads----------------------------------------------(?????)
+        [P] (FNCS)--Fence Stores---------------------------------------------(?????)
+        [P] (FNCLS)-Fence Loads and Stores-----------------------------------(?????)
 
       * [P] (SDMP)--State Dump-----------------------------------------------(?????)
       * [P] (SRST)--State Restore--------------------------------------------(?????)
@@ -454,7 +465,7 @@ System { [14]
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-Compressed { [20]
+Compressed { [21]
 
     [M] (CADD)   Compressed Addition-----------------------------------------(?????)
     [M] (CSUB)   Compressed Subtraction--------------------------------------(?????)
@@ -466,6 +477,8 @@ Compressed { [20]
     [M] (CFSUB)  Compressed FP. Subtraction----------------------------------(?????)
     [M] (CFMUL)  Compressed FP. Multiplication-------------------------------(?????)
     [M] (CFDIV)  Compressed FP. Division-------------------------------------(?????)
+
+    [Q] (CMOV)   Compressed Move---------------------------------------------(?????)
 
     [N] (CIADD)  Compressed Immediate Addition 08----------------------------(?????)
     [N] (CIADD)  Compressed Immediate Addition 16----------------------------(?????)
@@ -483,3 +496,85 @@ Compressed { [20]
     TODO: finish this
 }
 ______________________________________________________________________________________________________________________________________________________________________
+
+module tree:
+
+
+MODULES
+      |
+      |__Computational (C)
+      |              |
+      |              |__Scalar
+      |              |       |
+      |              |       |__Integer
+      |              |       |        |
+      |              |       |        |__Basic                      (CSIB)
+      |              |       |        |__Advanced                   (CSIA)
+      |              |       |        |__Compressed                 (CSIR)
+      |              |       |
+      |              |       |__Floating-point
+      |              |                       |
+      |              |                       |__Basic               (CSFB)
+      |              |                       |__Advanced            (CSFA)
+      |              |                       |__Compressed          (CSFR)
+      |              |
+      |              |__Vector
+      |                      |
+      |                      |__Integer
+      |                      |        |
+      |                      |        |__Basic                      (CVIB)
+      |                      |        |__Advanced                   (CVIA)
+      |                      |
+      |                      |__Floating-point
+      |                                      |
+      |                                      |__Basic               (CVFB)
+      |                                      |__Advanced            (CVFA)
+      |
+      |__Data-transfer (D)
+      |              |
+      |              |__Scalar
+      |              |       |
+      |              |       |__Basic                               (DSB)
+      |              |       |__Advanced                            (DSA)
+      |              |       |__Atomic                              (DST)
+      |              |       |__Block                               (DSM)
+      |              |       |__Compressed                          (DSR)
+      |              |
+      |              |__Vector
+      |                      |
+      |                      |__Basic                               (DVB)
+      |                      |__Advanced                            (DVA)
+      |
+      |__Control-transfer (J)
+      |                 |
+      |                 |__Scalar
+      |                 |       |
+      |                 |       |__Integer
+      |                 |       |        |
+      |                 |       |        |__Basic                   (JSIB)
+      |                 |       |        |__Advanced                (JSIA)
+      |                 |       |        |__Compressed              (JSIR)
+      |                 |       |
+      |                 |       |__Floating-point
+      |                 |                       |
+      |                 |                       |__Basic            (JSFB)
+      |                 |                       |__Advanced         (JSFA)
+      |                 |                       |__Compressed       (JSFR)
+      |                 |
+      |                 |__Vector
+      |                         |
+      |                         |__Integer
+      |                         |        |
+      |                         |        |__Basic                   (JVIB)
+      |                         |        |__Advanced                (JVIA)
+      |                         |
+      |                         |__Floating-point
+      |                                         |
+      |                                         |__Basic            (JVFB)
+      |                                         |__Advanced         (JVFA)
+      |
+      |__System (Y)
+              |
+              |__Basic                                              (YB)
+              |__Advanced                                           (YA)
+              |__Transactional-memory                               (YX)
