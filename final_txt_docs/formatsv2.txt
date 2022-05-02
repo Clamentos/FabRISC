@@ -4,11 +4,11 @@
 
     for scalar computational [R-R-R] instructions:
 
-        MOD(04): "ttms"
+        MOD(04): "ttmx"
 
         ('tt' is data type length: 8, 16, 32, 64)
         ('m' is maks: 0 unmasked, 1 masked)
-        ('s' is sign: 0 signed, 1 unsigned)
+        ('x' signifies unused bit)
 
     for vector computational [R-R-R] instructions:
 
@@ -38,11 +38,12 @@ ________________________________________________________________________________
 
 [B] format {
 
-    [B]   |OPCODE(10)|MOD(03)|RA(05)|RB(05)|IMM(09)| length: 4B
+    [B]   |OPCODE(10)|MOD(02)|RA(05)|RB(05)|IMM(10)| length: 4B
     [B.l] |OPCODE(10)|MOD(03)|RA(05)|RB(05)|IMM(25)| length: 6B
 
     computational [R-R-I] instructions:
 
+        MOD(02): "tt"
         MOD(03): "ttm"
 
         ('tt' is data type length: 8, 16, 32, 64)
@@ -265,7 +266,7 @@ ________________________________________________________________________________
 
 [A]   |OPCODE(13)|MOD(04)|RA(05)|RB(05)|RC(05)|                 r-r-r       120
 
-[B]   |OPCODE(10)|MOD(03)|RA(05)|RB(05)|IMM(09)|                r-r-i       120
+[B]   |OPCODE(10)|MOD(02)|RA(05)|RB(05)|IMM(10)|                r-r-i       120
 [B.1] |OPCODE(10)|MOD(03)|RA(05)|RB(05)|IMM(25)|                r-r-i       120
 
 [C]   |OPCODE(16)|MOD(06)|RA(05)|RB(05)|                        r-r         64
@@ -284,8 +285,8 @@ ________________________________________________________________________________
 
 [F]   |OPCODE(07)|MOD(05)|RA(05)|RB(05)|RC(05)|RD(05)|          r-r-r-r     4
 
-[G]   |OPCODE(08)|MOD(02)|RA(05)|IMM(16)|                       r-i         8
-[G.1] |OPCODE(08)|MOD(02)|RA(05)|IMM(32)|                       r-i         8
+[G]   |OPCODE(08)|MOD(03)|RA(05)|IMM(16)|                       r-i         8
+[G.1] |OPCODE(08)|MOD(03)|RA(05)|IMM(32)|                       r-i         8
 
 [J]   |OPCODE(07)|RA(05)|IMM(20)|                               r-i         1
 [J.1] |OPCODE(07)|RA(05)|IMM(36)|                               r-i         1
@@ -294,7 +295,7 @@ ________________________________________________________________________________
 [M] |OPCODE(08)|MOD(02)|RD/RS1(03)|RS2(03)|
 [N] |OPCODE(07)|RA(03) |IMM(06)|                                            16
 [O] |OPCODE(07)|IMM(09)|                                                     5
-[P] |OPCODE(11)|RA(05)|                                                      9
+[P] |OPCODE(11)|RA(05) |                                                     9
 
 
 
@@ -305,7 +306,7 @@ ________________________________________________________________________________
 1111101 100000xxx -> 1111110 111111xxx        128; formats: (A)
 1111111 000000000 -> 1111111 001111111        128; formats: (C)
 
-128
+384
 
 
 
@@ -313,9 +314,8 @@ ________________________________________________________________________________
 
 
 
+ADD
 
+MBADD
 
-
-
-
-
+    tt

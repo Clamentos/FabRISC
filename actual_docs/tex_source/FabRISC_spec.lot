@@ -1,4 +1,5 @@
-\contentsline {table}{\numberline {1}{\ignorespaces CPU segment table}}{9}{}%
-\contentsline {table}{\numberline {2}{\ignorespaces Supervisor event table}}{13}{}%
-\contentsline {table}{\numberline {3}{\ignorespaces Supervisor event table}}{13}{}%
-\contentsline {table}{\numberline {4}{\ignorespaces Register file}}{18}{}%
+\contentsline {table}{\numberline {1}{\ignorespaces CPU segment table}}{11}{}%
+\contentsline {table}{\numberline {2}{\ignorespaces Supervisor event table}}{14}{}%
+\contentsline {table}{\numberline {3}{\ignorespaces User event table}}{15}{}%
+\contentsline {table}{\numberline {4}{\ignorespaces Register file}}{20}{}%
+\contentsline {table}{\numberline {5}{\ignorespaces Formats table}}{24}{}%

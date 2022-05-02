@@ -12,7 +12,7 @@
 \addtolength{\textheight}{1.75in}
 
 \title{\includegraphics[width=4cm]{./Images/LOGO.pdf} \par\noindent\huge{Instruction Set Architecture}}
-\date{10/03/2022}
+\date{17/04/2022}
 \author{Enrico Gatto Monticone}
 
 \begin{document}
@@ -27,15 +27,19 @@
 	\newpage
 %__________________________________________________________________________________________________________________________________
 
-    \section[Introduction]{\LARGE\underline{Introduction}} %1 OK
+    \section[Introduction]{\LARGE\underline{Introduction}} % 1
 
-        FabRISC is a feature rich, register-register, load-store architecture composed of xxx instructions with variable length encodings of two, four and six bytes. This specification is designed to be modular allowing a simple and straightforward implementation from basic designs up to high performance systems by picking only the desired modules. The ISA includes vector, floating-point, compressed, atomic as well as privileged instructions supporting 32 and 64-bit multithreaded microarchitectures. It is also possible to further enrich and enhance the ISA by allocating unused opcode combinations to custom application specific instructions. This specification is completely free, open-source and available to anyone interested in the project via the official GitHub: xxx (license details can be found at the very end of the document). The specification is divided into multiple sections each explaining the architecture in detail with the help of tables, figures and implementation specific suggestions in order to aid the hardware and software designers in creating an efficient realization of the FabRISC instruction set architecture.
+        \vspace{10pt}
+
+        FabRISC is a feature rich, register-register, load-store architecture with variable length encodings of two, four and six bytes. This specification is designed to be highly modular allowing a simple and straightforward implementation from basic designs up to high performance systems by picking only the desired modules. The ISA includes scalar, vector, floating-point, compressed, atomic as well as privileged instructions supporting 32 and 64-bit multithreaded microarchitectures. It is also possible to further enrich and enhance the ISA by allocating unused opcode combinations to custom application specific instructions. This specification is completely free, open-source and available to anyone interested in the project via the official GitHub: xxx (license details can be found at the very end of the document). The specification is divided into multiple sections each explaining the architecture in detail with the help of tables, figures and implementation specific suggestions in order to aid the hardware and software designers in creating an efficient realization of the FabRISC instruction set architecture.
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{Commentary in this document will formatted in this way and communication will be more colloquial. If the reader is only interested in the specification, these sections can be skipped without hindering the understanding of the document. This project tries to be more of a hobby learning experience rather than a new super serious industry standard, plus the architecture borrows many existing concepts from the most popular and iconic ISAs like x86, RISC-V, MIPS, ARM and openRISC. I chose to target FPGAs as the primary platform for two main reasons: one is that ASICs are out of the question for me and most people because of cost. Two is that using discrete components makes little sense from a sanity and practicality point of view given the complexity of the project, however, software simulators can be a good platform for simpler implementations. The core ideas here are the use of variable length encoding of four and six byte instruction size along with an optional compressed module to increase code density. Flags are also another important and optional aspect that i emphasize because they can be a handy tool when it comes to efficiently control some unavoidable side effects, such as exceptions, as well as easing multi-word arithmetic. One final aspect of the ISA is the fact that all instructions can specify the length of the data type in order to more precisely control edge cases such as overflows and underflows as well as orthogonality reasons. This is not achieved via register sub addressing but rather by simply masking the unnecessary portion of the word while leaving the ignored bits in place. This ISA, all though not a ``pure'' RISC design with basic instructions and few addressing modes, resembles that philosophy for the most part skewing away from it in specific (and optional) areas only.}
+        \textit{Commentary in this document will formatted in this way and communication will be more colloquial. If the reader is only interested in the specification, these sections can be skipped without hindering the understanding of the document. This project tries to be more of a hobby learning experience rather than a new super serious industry standard, plus the architecture borrows many existing concepts from the most popular and iconic ISAs like x86, RISC-V, MIPS, ARM and openRISC. I chose to target FPGAs as the primary platform for two main reasons: one is that ASICs are out of the question for me and most people because of cost. Two is that using discrete components makes little sense from a sanity and practicality point of view given the complexity of the project, however, software simulators can be a good platform for simpler implementations. The core ideas here are the use of variable length encoding of four and six byte instruction size along with an optional compressed module to increase code density. Another aspect of the ISA is the fact that all instructions can specify the length of the data type in order to more precisely control edge cases such as overflows and underflows as well as orthogonality reasons. This is not achieved via register sub addressing but rather by simply masking the unnecessary portion of the word while leaving the ignored bits in place. This ISA, all though not a ``pure'' RISC design with basic instructions and few addressing modes, resembles that philosophy for the most part skewing away from it in specific (and optional) areas only, such as, being able to load, store, move and swap multiple registers with a single instruction.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection[Terminology]{Terminology}
+
+            \vspace{10pt}
 
             The FabRISC architecture uses the following terminology throughout the document in order to more accurately define technical concepts and vocabulary:
 
@@ -52,6 +56,8 @@
                 \item \textit{\textbf{``Consistency''} is used to refer to the ability of a system to be consistent, that is, defining a particular order of operations across all memory locations that is obeyed by everyone within the system.}
 
                 \item \textit{\textbf{``Consistency model''} is used to refer to a particular model or protocol of consistency within a particular system.}
+
+                \item \textit{\textbf{``Core''} is used to refer to a fully functional and complete sub-CPU within a bigger entity. Advanced processors often aggregate multiple similar sub-CPUs in order to be able to schedule different programs each working on it's own stream of data. It is important to note that each core can implement a completely different microarchitecture, as well as, instruction set.}
 
                 \item \textit{\textbf{``Event''} is used to generically refer to any extra-ordinary situation that needs to be taken care of as soon as possible.}
 
@@ -87,6 +93,8 @@
 
         \subsection[Implementation specific parameters]{Implementation specific parameters}
 
+            \vspace{10pt}
+
             This document also makes use of some implementation specific microarchitecture parameters to clear potential misunderstandings:
 
             \begin{itemize}
@@ -100,44 +108,48 @@
                         \item \textit{64 bit: for processors with WLEN of 32.}
                         \item \textit{128 bit: for processors with WLEN of 32 and 64.}
                         \item \textit{256 bit: for processors with WLEN of 32 and 64.}
-                        \item \textit{512 bit: for processors with WLEN of 32 and 64.}
+                        \item \textit{512 bit: for processors with WLEN of 64.}
 
                     \end{itemize}
-
-                \textit{In short, the possible values can be any power of two that is at least twice the size of WLEN and less than or equal to 512 bits.}
 
             \end{itemize}
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{Vector length is capped at 512 bits because of the limited number of bits that specify the current vector length in the control and status register (CSR). I consider 512 bits to be a good limit since i doubt that even advanced architectures would benefit in a practical way from a wider vector pipeline except, perhaps, in some very specific situations. This length can already be a bit of a challenge because of the shear width, necessitating a very large number of bits for the reservation station entries in out-of-order machines.}
+        \textit{I consider 512 bits for 64 bit machines and 256 for 32 bit machines to be a good maximum limit since i doubt that even advanced architectures would benefit in a practical way from a wider vector pipeline except, perhaps, in some very specific situations. This length can already be a bit of a challenge because of the shear width, necessitating a very large number of bits for the reservation station entries in out-of-order machines. Other than a practical limit, there is also a physical limit to the vector length which is given by the length of the vector mask register (VMSK) in the special purpose register file. This is because VMSK must be VLEN bits wide which, in the case of 64 bit machines can allocate up to 64 mask bits (one per byte element). The same logic applies for 32 bit machines which are limited to 32 mask bits.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
     \clearpage
 
 %__________________________________________________________________________________________________________________________________
 
-    \section[Memory]{\LARGE\underline{Memory}} %2
+    \section[Memory]{\LARGE\underline{Memory}} % 2
 
-        This section is dedicated to the memory model used by FabRISC including data alignment, synchronization, consistency, as well as possible cache coherence directives. Primitive data types are:
+        \vspace{10pt}
+
+        This section is dedicated to the memory model used by FabRISC including data alignment, synchronization, consistency, as well as possible cache coherence directives. All primitive data types must have one of the following sizes:
 
         \begin{itemize}
 
             \item \textit{\textbf{Byte}: a grouping of continuous 8 bits.}
             \item \textit{\textbf{Short}: a grouping of continuous 16 bits.}
             \item \textit{\textbf{Word}: a grouping of continuous 32 bits.}
-            \item \textit{\textbf{Doubleword}: a grouping of continuous 64 bits.}
+            \item \textit{\textbf{Doubleword}: a grouping of continuous 64 bits (for 64 bit machines only).}
 
         \end{itemize}
 
         \subsection[Data alignment]{Data alignment}
 
-            FabRISC, overall, treats the main memory and the MMIO regions as collections of byte-addressable locations in \textit{little endian} order with a range of \(2^{WLEN}\) addresses in total. The specification leaves to the hardware designer the choice of supporting aligned or unaligned memory accesses or both for data. If aligned is decided to be the only supported scheme, the hart must generate the appropriate fault every time the constraint is violated (consult section 4 for more information). When it comes to instructions, it's mandatory to have fetch engines that support accesses at the 16-bit boundary alignment. This is because the greatest common denominator of the instruction sizes, with or without compressed instructions, is 16 and the programmer must ensure that the code is aligned at said boundary, if not, a fault must be generated. Branch offsets, as a result of this, are logically shifted by one place to the left before being added to the program counter (PC). This means that said offsets will specify 16-bits as the smallest addressable object, effectively doubling the range in terms of bytes.
+            \vspace{10pt}
+
+            FabRISC, overall, treats the main memory and the MMIO regions as collections of byte-addressable locations in \textit{little endian} order with a range of \(2^{WLEN}\) addresses in total. The specification leaves to the hardware designer the choice of supporting aligned or unaligned memory accesses or both for data. If aligned is decided to be the only supported scheme, the hart must generate the MISA fault every time the constraint is violated (consult section 4 for more information). When it comes to instructions, it's mandatory to have fetch engines that support accesses at the 16-bit boundary alignment. This is because the greatest common denominator of the instruction sizes, with or without compressed instructions, is 16 and the programmer must ensure that the code is aligned at said boundary, if not, the MISI fault must be generated. Branch offsets, as a result of this, are logically shifted by one place to the left before being added to the program counter (PC). This means that said offsets will specify 16-bits as the smallest addressable object, effectively doubling the range in terms of bytes.
 
         \par\noindent\rule{\textwidth}{0.4pt}
         \textit{Data alignment issues can arise when the processor wants to read or write an item whose size is greater than the smallest addressable thing. This problem is tricky to design hardware for, especially caches, because misaligned items can cross cache line boundaries as well as page boundaries. Alignment networks and more complex caches are needed which can increase complexity and slow down the critical path too much for simple designs. For already complex multicore out-of-order superscalar machines, however, i believe that supporting unaligned accesses can be handy so that the software writer can make decisions freely without having to worry about this problem, potentially decrease the memory footprint.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Synchronization}
+
+            \vspace{10pt}
 
             FabRISC provides dedicated atomic instructions to achieve proper synchronization in order to protect critical sections and to avoid data races in threads that share memory with each other. The proposed instructions behave atomically and can be used to implement atomic \textit{read-modify-write} and \textit{test-and-set} operations for locks, semaphores and barriers. It is important to note that if the processor can only run one hart at any given moment, then this section can be skipped since the problem can be solved by the operative system. Below is a description of the atomic instructions, which are divided in two categories:
 
@@ -157,13 +169,13 @@
 
                 \begin{itemize}
 
-                    \item \textit{\textbf{Compare and swap} (CAS) is an atomic instruction that conditionally and atomically swaps two values in memory if a particular and specified condition is met. The conditions are equality or inequality.}
+                    \item \textit{\textbf{Compare and swap} (CAS) is an atomic instruction that conditionally and atomically swaps two values in memory if a particular and specified condition is met. The conditions are equality or less than.}
 
                 \end{itemize}
 
             \end{itemize}
 
-            FabRISC also provides optional instructions to support basic transactional memory that can be employed instead of the above seen solutions to exploit parallelism in a more ``optimistic'' manner. Multiple transactions can happen in parallel as long as no conflict is detected by the hardware. when such situations occur, however, the offended transaction must be aborted, that is, it must discard all the changes and restore the architectural state immediately before the start of the transaction itself. If a transaction detects no conflict it is allowed to commit the changes and the performed operations can be considered atomic. Transactions can be nested inside each other up to a depth of xxx, beyond this, an exception must be generated to notify the programmer.
+            FabRISC also provides optional instructions to support basic transactional memory that can be employed instead of the above seen solutions to exploit parallelism in a more ``optimistic'' manner. Multiple transactions can happen in parallel as long as no conflict is detected by the hardware. when such situations occur, however, the offended transaction must be aborted, that is, it must discard all the changes and restore the architectural state immediately before the start of the transaction itself. If a transaction detects no conflict it is allowed to commit the changes and the performed operations can be considered atomic. Transactions can be nested inside each other up to a depth of 256, beyond this, the OABT exception must be generated to notify the programmer.
 
             \begin{itemize}
 
@@ -201,6 +213,8 @@
 
         \subsection{Coherence}
 
+            \vspace{10pt}
+
             FabRISC leaves to the hardware designer the choice of which coherence system to implement. On multicore systems cache coherence must be ensured by choosing a coherence protocol and making sure that all the cores agree on the current sequence of accesses to the same memory location. That can be guaranteed by serializing the operations via the use of a shared bus or via a distributed directory and \textit{write-update} or \textit{write-invalidate} protocols can be employed without any issues. Software coherence can also be a valid option but it will rely on the programmer to explicitly flush or invalidate the cache of each core separately. Nevertheless, FabRISC provides implementation-dependent instructions, such as CACOP, that can be sent to the cache controller directly to manipulate its operation (see section 7 for more details). If the processor makes use of a separate instruction cache, potential complications can arise for self modifying code which can be solved by employing one of the above options. All the harts that map to the same core don't need to worry about coherence since the caches are shared between those harts. This argument holds true for whole cores that share bigger pools of cache, such as L2 or L3.
 
         \par\noindent\rule{\textwidth}{0.4pt}
@@ -208,6 +222,8 @@
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Consistency}
+
+            \vspace{10pt}
 
             FabRISC utilizes a fully relaxed memory consistency model formally known as \textit{release consistency} that allows all possible orderings in order to give harts the freedom to reorder memory instructions to different addresses in any way they want. For debugging and specific situations the stricter \textit{sequential consistency} model can be utilized and the hart must be able to switch between the two at any time via a dedicated bit in the control and status register. Special instructions, called \textit{``fences''}, are provided to let the programmer impose an order on memory operations when the relaxed model is in use. If the hart doesn't reorder memory operations this section can be skipped. The proposed fencing instructions are:
 
@@ -231,13 +247,17 @@
 
 %__________________________________________________________________________________________________________________________________
 
-    \section[Input Output]{\LARGE\underline{Input Output}} %3
+    \section[Input Output]{\LARGE\underline{Input Output}} % 3
+
+        \vspace{10pt}
 
         This section is dedicated to the specification that FabRISC uses for communicating with external devices as well as other cores and hardware threads if present. The architecture defines IO mappings, potential DMA behavior and, in the next section, OS support and inter-process communication schemes are discussed.
 
         \subsection{Memory mapped IO}
 
-            FabRISC reserves a portion of the high memory address space to \textit{memory mapped IO}. This region, of the size of $2^{16}$ bytes, is not cached nor paged and byte addressable in little-endian order. If a hart wants to transfer data to an IO device it can simply execute a memory operation to this section without further complications. The IO device must map all of its internal registers and state to this region and multiple channels or buses can potentially be employed to reduce the latency in case another transfers are already taking place as well as increasing the bandwidth. It is important to note that this region, although not paged in the traditional sense, (the virtual to physical mapping will always be the same) it must still have page table entries for protection bits. The ISA splits this MMIO address space in two segments:
+            \vspace{10pt}
+
+            FabRISC reserves a portion of the high memory address space to \textit{memory mapped IO}. This region, of the size of $2^{16}$ bytes, is not cached nor paged and byte addressable in little-endian order. If a hart wants to transfer data to an IO device it can simply execute a memory operation to this section without further complications. The IO device must map all of its internal registers and state to this region and multiple channels or buses can potentially be employed to reduce the latency in case another transfers are already taking place as well as increasing the bandwidth. It is important to note that this region, is not paged in the traditional sense, that is, the virtual to physical mapping will always be the same, however it must still have page table entries for protection bits. The ISA splits this MMIO address space in two segments:
 
             \begin{itemize}
 
@@ -257,6 +277,8 @@
 
         \subsection{Direct memory access}
 
+            \vspace{10pt}
+
             FabRISC provides the ability for IO devices to access the main system memory directly via DMA without passing through the processor. A dedicated centralized controller can be utilized to achieve this, but the hardware designer is free to choose another alternative if considered appropriate and, if this method of communication is chosen to be used, cache coherence must be ensured between the processor and the IO devices too. Some possible options can be, as discussed earlier:
 
             \begin{itemize}
@@ -272,25 +294,29 @@
             The DMA protocol or scheme implemented by the hardware designer must also take consistency into account since memory operations to different addresses are allowed to be done out-of-order. This means that fencing instructions must retain their effect from the point of view of the hart and IO devices, which must provide similar fencing features as well.
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{For more bandwidth demanding devices, DMA can be used to transfer data at very high speeds in the order of several Gb/s without interfering with the CPU. This scheme however, is more complex than plain MMIO because of the special arbiter that handles and grants the requests. IO coherence, as well as its consistency, is actually the main reason of this subsection as a remainder that it needs to be considered during the development of the underlying micro-architecture, including the devices themselves.}
+        \textit{For more bandwidth demanding devices, DMA can be used to transfer data at very high speeds in the order of several Gb/s without interfering with the CPU. This scheme however, is more complex than plain MMIO because of the special arbiter that handles and grants the requests. IO coherence, as well as its consistency, is actually the main reason of this subsection as a remainder that it needs to be considered during the development of the underlying microarchitecture, including the devices themselves.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
     \clearpage
 %__________________________________________________________________________________________________________________________________
 
-    \section[Events]{\LARGE\underline{Events}} %4
+    \section[Events]{\LARGE\underline{Events}} % 4
+
+        \vspace{10pt}
 
         This section is dedicated to the specification of exceptions, faults and interrupts. FabRISC uses the term \textit{event} to indicate the generic categorization of these kinds of situations. Events can be used to communicate with other harts, processes, IO devices, signal system faults or simply trigger software exceptions. Events are sub divided into two main categories: Synchronous and Asynchronous.
 
         \subsection{Synchronous}
 
+            \vspace{10pt}
+
             Synchronous events are internally generated and are considered deterministic, that is, if they happen, they will always happen in the same location of the executing program and, because of this, the handling must done in program order. This category is further sub divided in two.
 
             \begin{itemize}
 
-                \item \textit{\textbf{Exceptions}: These events are user handled, non promoting and with a global priority level of 0. They are generated by executing instructions and each process can have it's own private handler with the help of a dedicated pointer register. From a higher level, the handling of exceptions looks like an automatic function call to the specified handler address.}
+                \item \textit{\textbf{Exceptions}: These events are user handled, non promoting and with a global priority level of 0. They are generated by the executing instructions and each process can have it's own private handler with the help of a dedicated pointer register. From a higher level, the handling of exceptions looks like an automatic function call to the specified handler address.}
 
-                \item \textit{\textbf{Faults}: These events are supervisor handled, promoting and with a global priority level of 2. They are generated by executing instructions and each process will have the same handler specified by the supervisor. From a high level, the handling of faults looks like an automatic function call performed by the supervisor to a location that is always the same, usually under the form of a branch table, to the proper handler.}
+                \item \textit{\textbf{Faults}: These events are supervisor handled, promoting and with a global priority level of 2. They are generated by the executing instructions and each process will have the same handler specified by the supervisor. From a high level, the handling of faults looks like an automatic function call performed by the supervisor to a location that is always the same and then branching, usually under the form of a case statement, to the proper code.}
 
             \end{itemize}
 
@@ -300,13 +326,15 @@
 
         \subsection{Asynchronous}
 
+            \vspace{10pt}
+
             Asynchronous events are externally generated and are not considered deterministic, that is, they can happen at any time regardless of what the CPU is doing. Asynchronous events can be masked but only by the supervisor and should be handled as soon as possible in order to keep latency low. This category is further sub divided in two.
 
             \begin{itemize}
 
-                \item \textit{\textbf{IO interrupts}: These events are supervisor handled, promoting with a global priority level of 3. They are generated by external IO devices and can have an internal priority level to decide which one to handle when multiple are triggered at the same time. From a high level, the handling of IO interrupts, can be considered as a context switch to the desired process that will handle the IO device request, which can be achieved with the use of a branch table in a similar fashion to faults.}
+                \item \textit{\textbf{IO interrupts}: These events are supervisor handled, promoting with a global priority level of 3. They are generated by external IO devices and can have an internal priority level to decide which one to handle when multiple are triggered at the same time. From a high level, the handling of IO interrupts, can be considered as a context switch to the desired process that will handle the device request, which can be achieved in a similar fashion to faults.}
 
-                \item \textit{\textbf{IPC interrupts}: These events are supervisor handled, promoting with a global priority level of 1. They are generated by other harts in the system in order to communicate with each other (inter-process communication) and can have an internal priority level to decide which one to handle when multiple are triggered at the same time. From a high level, the handling of IPC interrupts, can be considered as a context switch to the desired process that will handle the IPC request, which can be achieved with the use of a branch table in a similar fashion to faults and IO interrupts.}
+                \item \textit{\textbf{IPC interrupts}: These events are supervisor handled, promoting with a global priority level of 1. They are generated by other harts in the system in order to communicate with each other (inter-process communication) and can have an internal priority level to decide which one to handle when multiple are triggered at the same time. From a high level, the handling of IPC interrupts, can be considered as a context switch to the desired process that will handle the IPC request, which can be achieved in a similar fashion to faults and IO interrupts.}
 
             \end{itemize}
 
@@ -314,41 +342,45 @@
         \textit{I think that interrupts are a great tool that allow the IO devices themselves to start the communication, as opposed to the time consuming polling. This option is especially useful when low latency is required and can be used in conjunction with the regular low speed memory mapped IO transfers or the faster DMA. For devices that do not need any kind of bandwidth or responsiveness, polling can still be a valid choice without utilizing any extra resources. A shadow register file can potentially be utilized to reduce the latency to a minimum, however, it must behave transparently to the programmer.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
-        \subsection{Handling}
+        \subsection{Event handling}
+
+            \vspace{10pt}
 
             Handling events involves a \textit{``launching''} phase and a \textit{``returning''} phase. The steps of each phase must be performed by the trapped hart in a single cycle in order to avoid potential corruption of its internal state. The launching phase is composed of the following parallel steps:
 
             \begin{enumerate}
 
+                \item \textit{write the event identifier into the cause register (CAUSE).}
+
                 \item \textit{save the value of the program counter (PC) and status register (CSR) into the appropriate buffer registers depending on the privilege level of the event:}
 
                     \begin{itemize}
 
-                        \item \textit{for non-promoting events, simply copy the PC, into the exception buffer 0 (EB0) and the CSR into the user exception buffer 1 (UEB1).}
+                        \item \textit{for non-promoting events, simply copy the PC into the exception buffer 0 (EB0) and the CSR into the user exception buffer 1 (UEB1).}
 
-                        \item \textit{for promoting events, simply copy the PC, into the supervisor event buffer 0 (SEB0) and the CSR into the supervisor event buffer 1 (SEB1).}
+                        \item \textit{for promoting events, simply copy the PC, into the supervisor event buffer 0 (SEB0), the CSR into the supervisor event buffer 1 (SEB1) and the CAUSE register into the supervisor event buffer 2 (SEB2). The reason for the copy of the cause register is to avoid state corruption since the currently interrupted hart might already be handling an exception.}
 
                     \end{itemize}
 
                 \item \textit{mask any other interrupt if the triggered event is promoting, otherwise skip this step. The masking can be accomplished by simply setting the xxx and xxx bits in the CSR to one.}
 
-                \item \textit{set the xxx bit to one in order to signify that the hart is handling an event.}
+                \item \textit{set the xxx bit of the CSR to one in order to signify that the hart is handling an event.}
 
-                \item \textit{switch to supervisor mode if the triggered event is promoting, otherwise skip this step.}
+                \item \textit{switch to supervisor mode if the triggered event is promoting by setting the xxx bit in the CSR, otherwise skip this step.}
 
-                \item \textit{jump to the handler location. Depending of the privilege level of the event this step will involve:}
+                \item \textit{jump to the handler location with the use of the appropriate pointer register. Depending of the privilege level of the event this step will involve:}
 
                     \begin{itemize}
 
-                        \item \textit{for non-promoting events, simply add the value of the user event table pointer (UETP) with the exception ID and write the result into the program counter.}
+                        \item \textit{for non-promoting events, a simple copy of the value of the user event handler pointer (UEHP) into the program counter suffices. From there a case statement can be used in combination with the CAUSE register to determine which event was generated.}
 
-                        \item \textit{for promoting events, simply add the value of the supervisor event table pointer (SETP) with the event ID and write the result into the program counter.}
+                        \item \textit{for promoting events, a simple copy of the value of the supervisor event handler pointer (SEHP) into the program counter suffices. From there a case statement can be used in combination with the CAUSE register to determine which event was generated.}
 
                     \end{itemize}
 
             \end{enumerate}
 
-            After the execution of the desired handler code, the last instruction will trigger the returning phase. During that phase, it is sufficient to restore the value of the program counter and status register by storing into them the values of the appropriate buffer registers previously written. It is important to note that the processor must always trap preemptively, that is, before the trapping instruction writes the result or updates the arithmetic flags. After the return phase, the processor must replay the instruction that caused the event. As as result of this, during the handling of exceptions, the programmer won't be able to check in the CSR for the cause of the event. The launch of the correct handler is done via a branch table as discussed above.
+            After the execution of the desired handler code, the last instruction will trigger the returning phase. During that phase, it is sufficient to restore the value of the program counter, the status register and, if the event was promoting, the CAUSE register by storing into them the values of the appropriate buffer registers previously written. It is important to note that the processor must always trap preemptively, that is, before the trapping instruction writes the result and, after the return phase, the processor must replay the instruction that caused the event.
 
             \vspace{10pt} 
 
@@ -356,7 +388,7 @@
 
             \vspace{10pt}
 
-            Performance counters must be freezed if the triggered event is promoting. If the supervisor needs the performance monitoring counters, it must save them first before unfreezing them. The supervisor must, just like any other register, restore the proper value before actually scheduling a user process for execution. This ensures the retention of values across context switches and event handling.
+            Performance counters must be freezed if the triggered event is promoting. If the supervisor needs the performance monitoring counters, it must save them first before unfreezing them. The supervisor must restore the proper values of the counters before actually scheduling a user process for execution. This ensures the retention of values across context switches and event handling.
 
         \par\noindent\rule{\textwidth}{0.4pt}
         \textit{Handling events should be quite a straight forward process. The launching phase explains all the needed steps to successfully branch to the target location. Once the handler is executed the ERET instruction can be executed to bring back the old state. This mechanism can be used to schedule another process entirely, by setting all the registers to the desired values and executing an ERET instruction which causes the PC and CSR to be written with the values held in the supervisor event buffers. When an event of any kind is triggered, it's necessary to flush or invalidate any in-flight instruction including the very last stage (write-back / commit). This is because it's possible to perform (absolute) branches by simply writing to the program counter directly with a standard move instruction, which means that the control flow can erroneously be steered back causing the execution of wrong instructions if the last stage is left unaltered.}
@@ -371,11 +403,15 @@
     \clearpage
 %__________________________________________________________________________________________________________________________________
 
-    \section[OS support]{\LARGE\underline{OS support}} %5
+    \section[OS support]{\LARGE\underline{OS support}} % 5
+
+        \vspace{10pt}
 
         This section is dedicated to the supported OS primitives by the FabRISC architecture. They are divided into different categories explained below and should be, ideally, handled by the hardware in order to give the operative system a solid foundation. The features allow the realization of any kind of OS, from \textit{monolithic} designs, \textit{microkernel}, \textit{exokernel} and hybrids.
 
         \subsection{Supervisor mode}
+
+            \vspace{10pt}
 
             FabRISC is a privileged architecture and makes use of the supervisor to create a border between the OS and the user. With supervisor privileges the executing code has complete and total control over the hardware and any access to protected resources in user mode, such as particular instructions, registers, or addresses must generate the appropriate fault. The hart should only enter the supervisor mode if an appropriate event is triggered and a dedicated instruction (ERET) is provided to transfer the control back to the user (consult section 7 for more information). If the system makes use of a multicore / multithreaded processor, then each core must have the ability to be in supervisor mode or not independently.
 
@@ -389,6 +425,8 @@
 
         \subsection{Virtual memory}
 
+            \vspace{10pt}
+
             FabRISC provides privileged customizable and implementation specific instructions to interface directly with the MMU, if the processor has one, allowing the OS to modify and manage that particular unit (see section 7 for more details), alternatively, the managing can be automatic if the hardware supports it. A special purpose register called PTP is also provided to hold the physical address of the page table to perform the page table walk in case of a TLB miss. PTP must be set by the supervisor only with the appropriate address every time a context switch happens and a write operation on PTP in user mode must cause a fault. The TLB can also make use the process ID in the PID register to avoid flushing during context switches and page swapping can be supported via the generation of the \textit{page fault} event that can be handled by the OS.
 
         \par\noindent\rule{\textwidth}{0.4pt}
@@ -396,6 +434,8 @@
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Hardware thread communication}
+
+            \vspace{10pt}
 
             Thanks to the already discussed IPC interrupts, it is possible to implement efficient low level hardware thread communication. Initialization and termination of threads, however, is mandatory since it effectively allows the creation and destruction of threads if the processor has multiple cores or threads. With IPC interrupts it possible to perform:
 
@@ -416,7 +456,9 @@
     \clearpage
 %__________________________________________________________________________________________________________________________________
 
-    \section[ISA specification]{\LARGE\underline{ISA specification}} %6
+    \section[ISA specification]{\LARGE\underline{ISA specification}} % 6
+
+        \vspace{10pt}
 
         In this section the register file organization, vector model, processor modes and the ISA modules are presented. FabRISC is a modular ISA composed of four macro modules each divided into several micro modules that the hardware designer can choose. The macro modules concern computational, data transfer, control transfer and system instructions:
 
@@ -426,16 +468,7 @@
 
                 \begin{itemize}
 
-                    \item \textit{CSIB: computational-scalar-integer-basic}
-                    \item \textit{CSIA: computational-scalar-integer-advanced}
-                    \item \textit{CSIR: computational-scalar-integer-reduced}
-                    \item \textit{CSFB: computational-scalar-FP-basic}
-                    \item \textit{CSFA: computational-scalar-FP-advanced}
-                    \item \textit{CSFR: computational-scalar-FP-reduced}
-                    \item \textit{CVIB: computational-vector-integer-basic}
-                    \item \textit{CVIA: computational-vector-integer-advanced}
-                    \item \textit{CVFB: computational-vector-FP-basic}
-                    \item \textit{CVFA: computational-vector-FP-advanced}
+                    ...
 
                 \end{itemize}
 
@@ -443,13 +476,7 @@
 
                 \begin{itemize}
 
-                    \item \textit{DSB: data-scalar-basic}
-                    \item \textit{DSA: data-scalar-advanced}
-                    \item \textit{DST: data-scalar-atomic}
-                    \item \textit{DSM: data-scalar-multiple}
-                    \item \textit{DSR: data-scalar-reduced}
-                    \item \textit{DVB: data-vector-basic}
-                    \item \textit{DVA: data-vector-advanced}
+                    ...
 
                 \end{itemize}
 
@@ -457,16 +484,7 @@
 
                 \begin{itemize}
 
-                   \item \textit{JSIB: jump-scalar-integer-basic}
-                   \item \textit{JSIA: jump-scalar-integer-advanced}
-                   \item \textit{JSIR: jump-scalar-integer-reduced}
-                   \item \textit{JSFB: jump-scalar-FP-basic}
-                   \item \textit{JSFA: jump-scalar-FP-advanced}
-                   \item \textit{JSFR: jump-scalar-FP-reduced}
-                   \item \textit{JVIB: jump-vector-integer-basic}
-                   \item \textit{JVIA: jump-vector-integer-advanced}
-                   \item \textit{JVFB: jump-vector-FP-basic}
-                   \item \textit{JVFA: jump-vector-FP-advanced}
+                   ...
 
                 \end{itemize}
 
@@ -474,31 +492,31 @@
 
                 \begin{itemize}
 
-                    \item \textit{YB: system-basic}
-                    \item \textit{YA: system-advanced}
-                    \item \textit{YX: system-transactional}
+                    ...
 
                 \end{itemize}
 
         \end{itemize}
 
+        Processors that don't support certain modules must generate the xxx fault whenever an unimplemented instruction is fetched. Processors must also generate the xxx fault whenever a combination of all zeros or all ones is fetched in order to increase safety against buffer overflows exploits or uninitialized locations. 
+
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{To indicate which ISA modules a particular implementation is composed of, a simple binary number can be used similarly to a checklist. FabRISC allows the hardware designer to choose any combination of micro module, however, for each macro module at least one micro module must be chosen. With this is perfectly legal, for example, to have no scalar instructions rendering the underlying processor a potential vector-heavy machine.}
+        \textit{To indicate which ISA modules a particular implementation is composed of, a simple binary number can be used similarly to a checklist. FabRISC allows the hardware designer to choose any combination of micro module, however, for each macro module at least one micro module must be chosen. With this is perfectly legal, for example, to have almost no scalar instructions rendering the underlying processor a potential vector-heavy machine.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Register file}
 
-            Depending on which modules are chosen as well as WLEN and MXVL values, the register file can be composed of up to four different banks of variable width, with the last bank being variable number of registers as well:
+            \vspace{10pt}
+
+            Depending on which modules are chosen as well as WLEN and MXVL values, the register file can be composed of up to three different banks of variable width. Registers are declared in the following presented lists in order:
 
             \begin{enumerate}
 
-                \item \textit{\textbf{Scalar general purpose registers} (SGPRs): this bank is composed of 32 registers which can be used to hold values during execution. The registers are all WLEN bits wide and are used by scalar integer and floating point instructions. All of these registers are unprivileged.}
+                \item \textit{\textbf{Scalar general purpose registers} (SGPRs): this bank is composed of 32 registers which can be used to hold program variables during execution. The registers are all WLEN bits wide and are used by scalar integer and floating point instructions. All of these registers are non privileged.}
 
                 \item \textit{\textbf{Special purpose registers} (SPRs): this bank is composed of 32 registers which are internally used to keep track of state, modes, flags and other system related things. The registers can be WLEN or 32 bits wide with some being privileged resources.}
 
-                \item \textit{\textbf{Vector general purpose registers} (VGPRs): this bank is composed of 32 registers which can be used for holding values during execution. The registers are all MXVL bits wide and are used by vector integer and floating point instructions. This bank is only necessary if the machine in question supports vector execution. All of these registers are unprivileged.}
-
-                \item \textit{\textbf{Vector flag registers} (VFLGs): this bank is composed of \((\frac{MXVL}{WLEN})\) registers which are used to keep track of the vector flags. The registers are all WLEN bits wide and this bank is only necessary if the hart in question supports vector execution. All of these registers are unprivileged.}
+                \item \textit{\textbf{Vector general purpose registers} (VGPRs): this bank is composed of 32 registers which can be used for holding values during execution. The registers are all MXVL bits wide and are used by vector integer and floating point instructions. This bank is only necessary if the machine in question supports vector execution. All of these registers are non privileged.}
 
             \end{enumerate}
 
@@ -508,6 +526,8 @@
             \vspace{10pt}
 
             \subsubsection{Register ABI}
+
+                \vspace{10pt}
 
                 FabRISC specifies an ABI (application binary interface) for the SGPRs and VGPRs. It is important to note that this is just a suggestion on how the general purpose registers should be used in order to increase code compatibility. For scalar registers:
 
@@ -525,33 +545,35 @@
 
                 \end{itemize}
 
-                Vector registers are all considered persistent, which means that the callee save scheme must be utilized since it's assumed that their value will be retained across function calls. Special instructions are also provided to move vector registers (or part of them) to and from the scalar bank (see section 7 for more information).
+                Vector registers are all considered persistent, which means that the callee save scheme must be utilized since it's assumed that their value will be retained across function calls. Special instructions are also provided to move vector registers, or part of them, to and from the scalar bank (see section 7 for more information).
 
             \subsubsection{Special purpose register bank}
+
+                \vspace{10pt}
 
                 The special purpose register bank, as mentioned earlier, is composed or 32 registers of different width with a specific purpose in mind. It is important to note that multiple registers may be updated every cycle, which means that, this bank should be seen more as a grouping of independent registers rather than an actual file. The SPRs are organized as follows:
 
                 \begin{itemize}
 
-                    \item \textit{\textbf{Debugging}: registers prefixed with ``DBG'' are used for debugging and other support features such as real-time counters and performance metrics. If DBG registers are not used for any specific purpose, they can be used as extra scalar GPRs in which the ABI categorizes them as extra volatile registers. DBG registers are all WLEN bits wide and are not privileged. It's worth noting that when used as counters, DBG registers will only be real-time for the current running process.}
+                    \item \textit{\textbf{Debugging registers}: registers prefixed with ``DBG'' are used for debugging and other support features such as real-time counters and performance metrics. If DBG registers are not used for any specific purpose, they can be used as extra scalar GPRs in which the ABI categorizes them as extra volatile registers. DBG registers are all WLEN bits wide and are not privileged. It's worth noting that when used as counters, DBG registers will only be real-time for the current running process.}
 
-                    \item \textit{\textbf{Debugging mode}: registers prefixed with ``DBGM'' are used to specify the particular operating mode of the DBG registers (see table below for more information). Each DBG register has a five bit code reserved in its corresponding DBGM register to indicate the operating mode. Registers DBG0 to DBG4 will map to DBGM0 while registers DBG5 to DBG9 will map to DBGM1. All DBGM registers are always 32 bits wide and are not privileged.}
+                    \item \textit{\textbf{Debugging mode registers}: registers prefixed with ``DBGM'' are used to specify the particular operating mode of the DBG registers (see table below for more information). Each DBG register has a six bit code reserved in its corresponding DBGM register to indicate the operating mode. Registers DBG0 to DBG4 will map to DBGM0 while registers DBG5 to DBG9 will map to DBGM1. All DBGM registers are always 32 bits wide and are not privileged.}
 
-                    \item \textit{\textbf{Exception buffers}: registers prefixed with ``EB'' are used as temporary buffers for exception handling. They are transparent registers that are automatically managed by the hart during the launch and return phases of the handling. EB0 will store the program counter (PC), while EB1 will store the status register (CSR) and EB2 the flag register (FLR). All EB register are WLEN bits wide and are not privileged.}
+                    \item \textit{\textbf{Exception buffers}: registers prefixed with ``EB'' are used as temporary buffers for exception handling. They are transparent registers that are automatically managed by the hart during the launch and return phases of the handling. EB0 will store the program counter (PC), while EB1 will store the status register (CSR). All EB register are WLEN bits wide and are not privileged.}
 
-                    \item \textit{\textbf{Exception table pointer}: this register, called ``ETP'', is used to hold the logical address of the exception branch table for the current executing process. During the launching phase, ETP will be used to perform an absolute branch (copy of ETP value plus exception identifier into the PC). ETP is WLEN bits wide and is not privileged.}
+                    \item \textit{\textbf{User event handler pointer}: this register, called ``UEHP'', is used to hold the logical address of the exception handler for the current executing process. During the launching phase, UEHP will be used to perform an absolute branch (copy of UEHP value plus exception identifier into the PC). UEHP is WLEN bits wide and is not privileged.}
 
-                    \item \textit{\textbf{Vector mask}: registers prefixed with ``VMSK'' are used to hold the vector mask. A single bit signifies a mask for its corresponding byte of the vector result. Dedicated instructions are provided to directly set and manipulate the value of the VMSK registers. It is important to note that VMSK0 and VMSK1 are not two different masks, but rather a single one divided into two parts to ease transferring from and to this bank. VMSK registers are always 32 bits wide and are not privileged.}
+                    \item \textit{\textbf{Vector mask}: this register, called ``VMSK'' is used to hold the vector mask. A single bit signifies a mask for its corresponding byte of the vector result. Dedicated instructions are provided to directly set and manipulate the value of the VMSK register. The VMSK register is always WLEN bits wide and is not privileged.}
 
                     \item \textit{\textbf{Program counter}: this register, called ``PC'', is the program counter. It is used to point to the currently executing instruction. PC is WLEN bits wide and is not privileged.}
 
-                    \item \textit{\textbf{Flag register}: this register, called ``FLR'', is used to hold the hart arithmetic flags and other user-level accessible state (see table below for more information). FLR is 32 bits wide and is not privileged.}
-
                     \item \textit{\textbf{Control and status register}: this register, called ``CSR'', is used to hold the hart supervisor and system state (see table below for more information). CSR is 32 bits wide and is privileged.}
 
-                    \item \textit{\textbf{Supervisor event buffer}: registers prefixed with ``SEB'' are used as temporary buffers for supervisor event handling. They are transparent registers and are automatically managed by the CPU during the launch and return phase of the handling. SEB0 will store the program counter (PC), while SEB1 will store the status register (CSR) and SEB2 the flag register (FLR). All SEB register are WLEN bits wide and are privileged.}
+                    \item \textit{\textbf{Event cause register}: this register, called ``CAUSE'', is used to hold the identifier of the latest occurring event. This register can be used inside the handler code to perform a case statement in order to execute the correct action. CAUSE is 32 bits wide and is privileged.}
 
-                    \item \textit{\textbf{Supervisor event table pointer}: this register, called ``SETP'', is used to hold the logical address of the supervisor event branch table. During the launching phase, SETP will be used to perform an absolute branch (copy the value into the PC). SETP is WLEN bits wide and is privileged.}
+                    \item \textit{\textbf{Supervisor event buffers}: registers prefixed with ``SEB'' are used as temporary buffers for supervisor event handling. They are transparent registers and are automatically managed by the CPU during the launch and return phase of the handling. SEB0 will store the program counter (PC), while SEB1 will store the status register (CSR) and SEB2 the event cause register (CAUSE). All SEB register are WLEN bits wide and are privileged.}
+
+                    \item \textit{\textbf{Supervisor event handler pointer}: this register, called ``SEHP'', is used to hold the logical address of the supervisor event branch table. During the launching phase, SEHP will be used to perform an absolute branch (copy the value into the PC). SEHP is WLEN bits wide and is privileged.}
 
                     \item \textit{\textbf{Page table pointer}: this register, called ``PTP'', holds the physical address of the page tables for the current executing process. During a TLB miss, the MMU can use PTP to perform the page table walk. If the CPU transitions from user to supervisor mode, PTP must be set to point to the page tables of the OS with the use of a hardwired value. PTP is WLEN bits wide and is privileged.}
 
@@ -563,39 +585,15 @@
 
                 \end{itemize}
 
-                \vspace{10pt}
-
-                The FLR register is divided into several bits and flags fields in order to provide granular control over the user mode state. If the micro-architecture doesn't support certain features, then the corresponding bits for those features can be ignored. The bits are listed from 0 to 31 in the order that they appear:
+                The CSR register is divided into several bits and flags fields in order to provide granular control over the supervisor mode state. If the micro-architecture doesn't support certain features, then the corresponding bits for those features can be ignored. The first 18 bits can be accessed in user mode while the remaining bits are privileged only. The bits are listed from 0 to 31 in the order that they appear:
 
                 \begin{itemize}
-
-                    \item \textit{\textbf{Flags section}: this section is reserved for arithmetic flags:}
-
-                        \begin{itemize}
-
-                            \item \textit{\textbf{Carry over} (COVR): single bit flag that is set when the absolute value of the result is too big to be represented with WLEN bits. If auto exceptions are enabled this flag may trap.}
-
-                            \item \textit{\textbf{Carry under} (CUND): single bit flag that is set when the absolute value of the result is too accurate to be represented with WLEN bits. If auto exceptions are enabled this flag may trap.}
-
-                            \item \textit{\textbf{Overflow} (OVFL): single bit flag that is set when the result is positively too big to be represented. If auto exceptions are enabled this flag may trap.}
-
-                            \item \textit{\textbf{Underflow} (UNFL): single bit flag that is set when the result is negatively too big to be represented. If auto exceptions are enabled this flag may trap.}
-
-                            \item \textit{\textbf{Zero} (ZERO): single bit flag that is set when the result is equal to zero. This flag never traps.}
-
-                            \item \textit{\textbf{Sign} (SIGN): single bit flag that is set when the result is considered negative. This flag never traps.}
-
-                            \item \textit{\textbf{Division by zero} (DIV0): single bit flag that is set when a division by zero is attempted.  If auto exceptions are enabled this flag may trap.}
-
-                            \item Unused.
-
-                        \end{itemize}
 
                     \item \textit{\textbf{Instruction behavior section}: reserved for storing instruction behavior bits such as vector length, floating point rounding modes, etc\ldots:}
 
                         \begin{itemize}
 
-                            \item \textit{\textbf{Vector length} (VLEN): six bits that indicate how many elements a vector instruction will operate on. Valid values must be within one and the maximum number of byte elements allowed. Any other value outside of this range must be saturated to the closest end.}
+                            \item \textit{\textbf{Vector length} (VLEN): six bits that indicate how many elements a vector instruction will operate on. A value of zero will signify only one element, while a value of 127 will signify all of the elements.}
 
                             \item \textit{\textbf{Rounding modes} (RMD): two bits that specify the floating point rounding modes:}
 
@@ -614,126 +612,212 @@
 
                         \end{itemize}
 
-                    \item \textit{\textbf{Transactional memory section}: reserved for storing the eight bit transaction nesting depth counter (TND). Every time a transactional memory instruction is executed, this counter may be modified by either incrementing or decrementing. If the counter overflows or underflows, the xxx exception must be triggered.}
-
-                    \item \textit{\textbf{reserved}: the remaining bits are unused.}
-
-                \end{itemize}
-
-                \vspace{10pt}
-
-                The CSR register is divided into several bits and flags fields in order to provide granular control over the supervisor mode state. If the micro-architecture doesn't support certain features, then the corresponding bits for those features can be ignored. The bits are listed from 0 to 31 in the order that they appear:
-
-                \begin{itemize}
+                    \item \textit{\textbf{Transactional memory section}: reserved for storing the eight bit transaction nesting depth counter (TND). Every time a transactional memory instruction is executed, this counter may be modified by either incrementing or decrementing. If the counter overflows or underflows, the OABT or UABT exceptions must be triggered accordingly.}
 
                     \item \textit{\textbf{Supervisor bit} (SUPB): this bit indicates if the hart is in supervisor mode or not.}
 
                     \item \textit{\textbf{Boot bit} (BOOT): this bit indicates if the hart is in boot mode or not.}
+
                     \item \textit{\textbf{Consistency bit} (CONS): this bit indicates what memory consistency model to use.}
+
                     \item \textit{\textbf{Paging bit} (PAGB): this bit indicates if the hart should perform address translation via paging.}
 
                     \item \textit{\textbf{IPC interrupts mask} (IPCM): this bit indicates if the IPC interrupts are masked or not.}
+
                     \item \textit{\textbf{IO interrupts mask} (IOIM): this bit indicates if the IO interrupts are masked or not.}
 
-                    \item \textit{\textbf{Trapped bit} (TRAP): this bit indicates if the hart is currently handling a promoting event.}
+                    \item \textit{\textbf{Trapped bit} (TRAP): this bit indicates if the hart is currently handling a promoting event. This bit can be red by the IO controller to better understand where to route incoming interrupts.}
 
                     \item \textit{\textbf{Halt bit} (HLTB): this bit indicates if the hart is halted or not.}
+
+                    \item \textit{\textbf{Cache bit} (CACB): this bit indicates if the hart can access cache or not.}
+
+                    \item \textit{\textbf{Compatibility bit} (CPTB): this bit indicates if the hart must fault when encountering an unsupported instruction or simply execute a no-operation.}
+
                     \item \textit{\textbf{reserved}: the remaining bits are unused.}
 
                 \end{itemize}
 
             \subsubsection{Processor operating modes}
 
+                \vspace{10pt}
+
                 FabRISC defines multiple operating modes specified in CSR and FR which can be changed by simply manipulating the value of said register. This is a further explanation of the above lists:
 
                 \begin{itemize}
 
-                    \item \textit{\textbf{Supervisor mode}: this bit is automatically set by the hardware when an appropriate event is triggered and it dictates if the hart is in supervisor or user mode. For simpler implementations that don't want to support privilege levels, this can be omitted.}
+                    \item \textit{\textbf{Supervisor mode}: this CSR bit is automatically set by the hardware when an appropriate event is triggered and it dictates if the hart is in supervisor or user mode. For simpler implementations that don't want to support privilege levels, this can be omitted.}
 
-                    \item \textit{\textbf{Boot mode}: this bit dictates which memory device to fetch instructions from to make boot loaders possible with the help of an external ROM. For simpler implementations that don't want to support this mechanism, this bit can be omitted.}
+                    \item \textit{\textbf{Boot mode}: this CSR bit dictates which memory device to fetch instructions from to make boot loaders possible with the help of an external ROM. For simpler implementations that don't want to support this mechanism, this bit can be omitted.}
 
-                    \item \textit{\textbf{Consistency mode}: this bit dictates the memory consistency model currently being employed and, if set, it causes the hart to execute memory instructions in program order effectively forcing the sequential consistency model. For simpler implementations that don't reorder memory instructions, this bit can be omitted.}
+                    \item \textit{\textbf{Consistency mode}: this CSR bit dictates the memory consistency model currently being employed and, if set, it causes the hart to execute memory instructions in program order effectively forcing the sequential consistency model. For simpler implementations that don't reorder memory instructions, this bit can be omitted.}
 
-                    \item \textit{\textbf{Paged memory mode}: this bit dictates the memory management model currently being employed and, if set, it causes the hart to perform virtual to physical translation, effectively enabling paged memory. For simpler implementations that don't support paging, this bit can be omitted.}
+                    \item \textit{\textbf{Paged memory mode}: this CSR bit dictates the memory management model currently being employed and, if set, it causes the hart to perform virtual to physical translation, effectively enabling paged memory. For simpler implementations that don't support paging, this bit can be omitted.}
 
-                    \item \textit{\textbf{Auto exceptions mode}: this bit dictates the exception handling mechanism currently being employed and, if set, it causes the hart to branch to the handler whenever an exception is triggered. If the bit is not set, the hart discards any exception limiting itself to setting the flags only.}
+                    \item \textit{\textbf{Auto exceptions mode}: this CSR bit dictates the exception handling mechanism currently being employed and, if set, it causes the hart to branch to the handler whenever an exception is triggered. If the bit is not set, the hart discards any exception limiting itself to setting the flags only.}
+
+                    \item \textit{\textbf{Cached mode}: this CSR bit dictates if a particular hart is allowed to use caches as part of it's operation. A value of zero will cause the hart to bypass the whole cache hierarchy.}
+
+                    \item \textit{\textbf{Compatibility mode}: this CSR bit dictates the instruction compatibility mode of the current hart. A value of zero will cause the INCI fault to be triggered every time an unimplemented instruction is fetched. A value of one will bypass this and transform any unimplemented instruction into a no-operation.}
 
                 \end{itemize}
 
                 \vspace{10pt}
 
-                The special purpose bank, as explained above, contains transparent debug registers which can be written with a value that is constantly being tested at every cycle. DBGM registers holds the five bit configuration code for each individual debugging register and the operating modes are the following:
+                The special purpose bank, as explained above, contains transparent debug registers which can be written with a value that is constantly being tested at every cycle. DBGM registers hold the six bit configuration code for each individual debugging register for a total of 64 possible modes. There are 16 proposed modes to help with debugging, exception handling and boundary checks. The remaining combinations are left as microarchitectural specific performance monitoring modes.
 
                 \begin{enumerate}
 
-                    \item \textit{disabled}. The value of the corresponding DBG register won't be used for anything.
-                    \item \textit{instruction address EQ}. Trap if an instruction with an address equal to the stored value in the corresponding DBG register is fetched. Exception code is xxx.
+                    \item \textit{\textbf{Disabled}: The value of won't be used for anything. If a DBG register is in this state, it can be used as an extra volatile GPR.}
 
-                    \item \textit{instruction address LE}. Trap if an instruction with an address less or equal than the stored value in the corresponding DBG register is fetched. Exception code is xxx.
+                    \item \textit{\textbf{instruction address EQ}: Trap if an instruction with an address equal to the stored value in the corresponding DBG register is fetched. Exception code is 0B (BIAEQ).}
 
-                    \item \textit{instruction address GE}. Trap if an instruction with an address greater or equal than the stored value in the corresponding DBG register is fetched. Exception code is xxx.
+                    \item \textit{\textbf{instruction address LE}: Trap if an instruction with an address less or equal to the stored value in the corresponding DBG register is fetched. Exception code is 0C (BIALE).}
 
-                    \item \textit{read address EQ}. Trap if a memory read is performed at an address equal to the stored value in the corresponding DBG register. Exception code is xxx.
+                    \item \textit{\textbf{instruction address GE}: Trap if an instruction with an address greater or equal to the stored value in the corresponding DBG register is fetched. Exception code is 0D (BIAGE).}
 
-                    \item \textit{read address LE}. Trap if a memory read is performed at an address less or equal than the stored value in the corresponding DBG register. Exception code is xxx.
+                    \item \textit{\textbf{read address EQ}: Trap if a memory read is performed at an address equal to the stored value in the corresponding DBG register. Exception code is 0E (BRAEQ).}
 
-                    \item \textit{read address GE}. Trap if a memory read is performed at an address greater or equal than the stored value in the corresponding DBG register. Exception code is xxx.
+                    \item \textit{\textbf{read address LE}: Trap if a memory read is performed at an address less or equal to the stored value in the corresponding DBG register. Exception code is 0F (BRALE).}
 
-                    \item \textit{write address EQ}. Trap if a memory write is performed at an address equal to the stored value in the corresponding DBG register. Exception code is xxx.
+                    \item \textit{\textbf{read address GE}: Trap if a memory read is performed at an address greater or equal to the stored value in the corresponding DBG register. Exception code is 10 (BRAGE).}
 
-                    \item \textit{write address LE}. Trap if a memory write is performed at an address less or equal than the stored value in the corresponding DBG register. Exception code is xxx.
+                    \item \textit{\textbf{write address EQ}: Trap if a memory write is performed at an address equal to the stored value in the corresponding DBG register. Exception code is 11 (BWAEQ).}
 
-                    \item \textit{write address GE}. Trap if a memory write is performed at an address greater or equal than the stored value in the corresponding DBG register. Exception code is xxx.
+                    \item \textit{\textbf{write address LE}: Trap if a memory write is performed at an address less or equal to the stored value in the corresponding DBG register. Exception code is 12 (BWALE).}
 
-                    \item \textit{instruction trap}. Trap if an instruction whose bit pattern corresponds to the stored value in the corresponding DBG register is fetched. Exception code is xxx.
+                    \item \textit{\textbf{write address GE}: Trap if a memory write is performed at an address greater or equal to the stored value in the corresponding DBG register. Exception code is 13 (BWAGE).}
 
-                    \item \textit{COVR trap}. Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a COVR flag. Exception code is xxx.
+                    \item \textit{\textbf{instruction trap 16}: Trap if an instruction whose 16-bit pattern corresponds to the stored value in the corresponding DBG register is fetched. Exception code is 14 (BIN16).}
 
-                    \item \textit{CUND trap}. Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a CUND flag. Exception code is xxx.
+                    \item \textit{\textbf{instruction trap 32}: Trap if an instruction whose 16-bit pattern corresponds to the stored value in the corresponding DBG register is fetched. Exception code is 15 (BIN32).}
 
-                    \item \textit{OVFL trap}. Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a OVFL flag. Exception code is xxx.
+                    \item \textit{\textbf{instruction trap 48}: Trap if an instruction whose 16-bit pattern corresponds to the stored value in the corresponding DBG register is fetched. Exception code is 16 (BIN48).}
 
-                    \item \textit{UNFL trap}. Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a UNFL flag. Exception code is xxx.
+                    \item \textit{\textbf{COVR trap}: Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a COVR flag. Exception code is 17 (BCOVR).}
 
-                    \item \textit{DIV0 trap}. Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a DIV0 flag. Exception code is xxx.
+                    \item \textit{\textbf{CUND trap}: Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a CUND flag. Exception code is 18 (BCUND).}
 
-                    [to be continued...]
+                    \item \textit{\textbf{OVFL trap}: Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a OVFL flag. Exception code is 19 (BOVFL).}
+
+                    \item \textit{\textbf{UNFL trap}: Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a UNFL flag. Exception code is 1A (BUNFL).}
+
+                    \item \textit{\textbf{DIV0 trap}: Trap if an instruction whose address corresponds to the stored value in the corresponding DBG register generates a DIV0 flag. Exception code is 1B (BDIV0).}
 
                 \end{enumerate}
 
-            \subsubsection{Vector flags}
-
-                Arithmetic flags for vector instructions are stored in the fourth bank. This bank is composed of \(VLEN/32\) registers, each 32 bits wide. This arrangement can be viewed more as a single long register divided into 32 bit chunks, rather than 32 individual registers. The reason for this setup is to ease the transferring of data to and from this bank mainly during context switches. If the processor doesn't support vector instructions, then this bank and the vector registers are not necessary. If this bank is present but not actively being used by vector instructions, it can be used as extra GPRs in which the ABI categorizes them as extra volatile registers. VFLG registers are not privileged.
-
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{The entirety of the register file is divided into four banks with several registers each. This can sound like a lot of state (and it kinda is), but other ISAs such as full RISC-V implementation would arguably contain more because of the way CSRs are implemented. In FabRISC, the first bank offers a 32 entry flat register file in order to efficiently support modern graph-coloring driven compiler register allocation. Integer and floating-point registers are shared to ease conversions and the extra GPRs found in the special purpose bank can alleviate some of the pressure caused by the sharing. Because there is no hardware stack pointer nor return address register, standard calling conventions can be used to give a ``purpose'' to all the GPRs in the bank. Compressed instructions, because of the size limitations, are only able to access eight registers of the bank. The second bank is where the ``magic'' happens. Special registers are present to help with debugging, memory safety as well as keeping track of state and resource usage to reduce the overhead on context switches. File usage registers help with that, for example, if no vector register was written during the time quantum of a particular process, then there is no need to save them again. The fourth bank is a dedicated bank that holds the vector flags in order to give a very granular control over the state of vector instructions in a similar way to their scalar counterparts.}
+        \textit{The entirety of the register file is divided into three banks with several registers each. This can sound like a lot of state (and it kinda is), but other ISAs such as full RISC-V implementation would arguably contain more because of the way CSRs are implemented. In FabRISC, the first bank offers a 32 entry flat register file in order to efficiently support modern graph-coloring driven compiler register allocation. Integer and floating-point registers are shared to ease conversions and the extra GPRs found in the special purpose bank can alleviate some of the pressure caused by the sharing. Because there is no hardware stack pointer nor return address register, standard calling conventions can be used to give a ``purpose'' to all the GPRs in the bank. Compressed instructions, because of the size limitations, are only able to access eight registers of the bank. The second bank is where the ``magic'' happens: special registers are present to help with debugging, memory safety as well as keeping track of state and resource usage to reduce the overhead on context switches. File usage registers help with that, for example, if no vector register was written during the time quantum of a particular process, then there is no need to save them again.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Instruction formats}
 
-            FabRISC specifies 21 different instruction formats to allocate as much space as possible to the operands, while leaving enough opcode encoding space to implement extra application specific instructions. Formats can be variable length from two up to six bytes in order to accommodate larger immediate constants for addresses and data.
-
-            \vspace{10pt}
-            \input{./Tables/Formats_16.tex}
-            \vspace{10pt}
-            \input{./Tables/Formats_32.tex}
-            \vspace{10pt}
-            \input{./Tables/Formats_48.tex}
             \vspace{10pt}
 
-            Formats are divided into several bit fields that are scrambled around in order to reduce decoding logic. Many formats also carry with them a ``modifier'' field that can provide extra information such as sign, mask, type length, vector mode and more. Each format is explained below:
+            FabRISC specifies 15 different instruction formats to allocate as much space as possible to the operands, while leaving some opcode encoding space to implement extra application specific instructions. Formats can be variable length from two up to six bytes in order to accommodate larger immediate constants for addresses and data. Formats are divided into several bit fields that are scrambled around in order to reduce decoding logic. Many also carry with them a ``modifier'' field, called mod, that can provide extra information such as mask, data type length, vector mode and more. All instructions treat data as signed unless explicitly noted.
+
+            \vspace{10pt}
+            \input{./Tables/Formats.tex}
+            \vspace{10pt}
 
             \begin{itemize}
 
-                \item [explain things...]
+                \item \textit{\textbf{opc}: short for instruction opcode.}
+                \item \textit{\textbf{mod}: short for instruction modifier.}
+                \item \textit{\textbf{ra, rb, rc, rd}: short for register a, b, c, d which are register specifiers.}
+                \item \textit{\textbf{imm}: short for immediate.}
 
-            \end{itemize} 
+            \end{itemize}
+
+            The instruction modifier bit field depends on the particular class of instructions in question. Each format can have different modifier classes to best fit particular groups of instructions:
+
+            \begin{itemize}
+
+                \item \textit{\textbf{A}: this format has three instruction modifier classes:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{tt m vv}: this class is used by scalar computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'vv' indicates the instruction mode: scalar, vector-vector or vector-scalar.}
+
+                        \item \textit{\textbf{tt m --}: this class is used by vector gather and scatter instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
+
+                        \item \textit{\textbf{tt m ff}: this class is used by the CAS instruction. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'ff' states the condition to check: EQ, NE, LT or LE.}
+
+                    \end{enumerate}
+
+                \item \textit{\textbf{B and B.l}: this format has one instruction modifier class:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{tt m v}: this class is used by scalar and vector computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'v' indicates the instruction mode: scalar or vector-scalar.}
+
+                    \end{enumerate}
+
+                \item \textit{\textbf{C}: this format has four instruction modifier classes:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{tt m ---}: this class is used by scalar computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
+
+                        \item \textit{\textbf{tt m - tt}: this class is used by casts and conversion instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not.}
+
+                        \item \textit{\textbf{tt m nnn}: this class is used by move and swap multiple instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'nnn' specifies how many registers are acted on, from one to eight inclusive.}
+
+                        \item \textit{\textbf{tt m s ff}: this class is used by mask setting on compare instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not, 's' states if the instruction operates on signed or unsigned data and 'ff' states the condition to check: EQ, NE, LT or LE.}
+
+                    \end{enumerate}
+
+                \item \textit{\textbf{D and E}: these formats have two instruction modifier classes:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{tt m}: this class is used by scalar memory instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
+
+                        \item \textit{\textbf{- m a}: this class is used by vector memory instructions. 'a' encodes the addressing mode: standard or striding and 'm' states if the instruction is masked or not.}
+
+                    \end{enumerate}
+
+                \item \textit{\textbf{D.l, E.l and F}: these formats have two instruction modifier classes:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{tt m uu}: this class is used by scalar memory instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'uu' specifies what auto update mode to use: nothing, post-increment, post-decrement or pre-decrement.}
+
+                        \item \textit{\textbf{-- m a uu}: this class is used by vector memory instructions. 'a' encodes the addressing mode: standard or striding, 'm' states if the instruction is masked or not and 'uu' specifies what auto update mode to use: nothing, post-increment, post-decrement or pre-decrement.}
+
+                    \end{enumerate}
+
+                \item \textit{\textbf{G and G.l}: this format has four instruction modifier classes:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{rr m -}: this class is used by block memory instructions. 'rr' specifies which register file: SGPRs, SPRs or VGPRs and 'm' states if the instruction is masked or not}
+
+                        \item \textit{\textbf{ff p -}: this class is used by test branch instructions. 'ff' specifies the condition: EQ, NE, LT or LE and 'p' states if the instruction mode: integer or floating point.}
+
+                        \item \textit{\textbf{iiii}: this class is used by direct function calls and jump instructions. 'iiii' extends the offset by four bits.}
+
+                        \item \textit{\textbf{e h m s}: this class is used by special bit-field manipulation instructions. 'e' specifies how the immediate is filled: zero-filled or one-filled. 'h' specifies the immediate highlighting mode: zeros ignore and ones select or zero clear and ones select. 'm' states if the instruction is masked or not and 's' signifies if the immediate is shifted by 32 positions to the left or not.}
+
+                    \end{enumerate}
+
+                \item \textit{\textbf{H}: this format has one instruction modifier class:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{tt p}: this class is used by compressed computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'p' states if the instruction mode: integer or floating point.}
+
+                    \end{enumerate}
+
+            \end{itemize}
 
         \par\noindent\rule{\textwidth}{0.4pt}
         \textit{The moderate number of formats arise from the fact that i wanted to ``best-fit'' several groups of instructions in order to leave as much space as possible to the operands without hindering the opcode space. I believe, however, that the decoding complexity is still very manageable due to the high degree of similarity among the formats. Some times is just a few bits changing purpose and or position. The register specifiers are always in the same position and the MSB of immediates are also always in the same position to reduce decoding complexity. The first seven bits, although sometimes not enough for the full opcode, will always be enough to encode the format and, therefore, the length of the instruction.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
         \subsection{Decoding guidelines}    % FINISH <<<<<<<<<<<<<<<<<<
+
+            \vspace{10pt}
 
             This sub section is dedicated to give hints and suggestions to how to decode instructions for this particular ISA. It is important to remember that this is only a suggestion and it's not mandatory to strictly perform the decoding in the presented manner. Nevertheless, the proposed decoding strategy for a one instruction is divided into multiple steps:
 
@@ -742,38 +826,40 @@
                 \item \textit{retrieve the opcode.}
                 \item \textit{use the retrieved opcode to index the microcode read only memory.}
                 \item \textit{use some of the microcode output to route the operand fields.}
-                \item \textit{use some of the microcode output to insert the correct operation code.}
+                \item \textit{use some of the microcode output to insert the correct operation codes.}
                 \item \textit{emit the composed micro-instruction.}
 
             \end{enumerate}
 
-            The micro-instruction is supposed to be a more ``digested'' macro-instruction that is much more hardware friendly while still retaining some information density in order to reduce it's size. The micro-instruction can be further decoded down the pipeline to extract the raw control lines for the individual functional units. Micro-instructions will all have the same length and format to ease the micro-decoding step.
+            The micro-instruction is supposed to be a more ``digested'' macro-instruction that is much more hardware friendly while still retaining some information density in order to reduce it's size. The micro-instruction can be further decoded down the pipeline to extract the raw control lines for the individual functional units.
 
             \subsubsection{Opcode extraction}
 
-                Instruction opcodes can be of variable length of 7, 8, 10, 13 and 16 bits. The length of the opcode can be retrieved by looking at the first 7 seven bits. From there, with the help of a hard coded logic array, the full opcode can be obtained. Once fully composed, the opcode can then be used to index into the microcode ROM where information such as the format is held. Opcodes are distributed in the following manner:
+                \vspace{10pt}
+
+                Instruction opcodes can be of variable length of 7, 8, 12 and 16 bits. The length of the opcode can be retrieved by looking at the first 7 seven bits. From there, with the help of a hard coded logic array, the full opcode can be obtained. Once fully composed, the opcode can then be used to index into the microcode ROM where information such as the format is held. Opcodes are distributed in the following manner:
 
                 \begin{itemize}
 
-                    \item \textit{\textbf{7 bits} 0000000xxxxxxxxx $\rightarrow$ 0111011xxxxxxxxx with a total of 60 combinations.}
-                    \item \textit{\textbf{8 bits} 01111000xxxxxxxx $\rightarrow$ 10110111xxxxxxxx with a total of 64 combinations.}
-                    \item \textit{\textbf{10 bits} 1011100000xxxxxx $\rightarrow$ 1111011111xxxxxx with a total of 256 combinations.}
-                    \item \textit{\textbf{11 bits} 11111000000xxxxx $\rightarrow$ 11111010111xxxxx with a total of 24 combinations.}
-                    \item \textit{\textbf{13 bits} 1111101100000xxx $\rightarrow$ 1111110111111xxx with a total of 128 combinations.}
-                    \item \textit{\textbf{16 bits} 1111111000000000 $\rightarrow$ 1111111001111111 with a total of 128 combinations.}
+                    \item \textit{\textbf{7 bits} 0000000xxxxxxxxx $\rightarrow$ 1011011xxxxxxxxx with a total of 92 combinations.}
+                    \item \textit{\textbf{8 bits} 10111000xxxxxxxx $\rightarrow$ 11110111xxxxxxxx with a total of 64 combinations.}
+                    \item \textit{\textbf{12 bits} 111110000000xxxx $\rightarrow$ 111110111111xxxx with a total of 64 combinations.}
+                    \item \textit{\textbf{16 bits} 1111110000000000 $\rightarrow$ 1111110001111111 with a total of 128 combinations.}
 
                 \end{itemize}
 
-                The total size of the encoding space amounts to 660 instructions, however, only xxx opcodes are used in total. It's possible to reserve one entry in the microcode ROM for each possible instruction but opcodes are assigned in a specific way to reduce the size of the ROM. Instructions that fundamentally perform the same operation but on different data types such as integer and floating point will map to the same entry, compressing the encoding space to just 256 entries. This compression requires a hard coded logic array that composes the target 8 bit ROM address.
+                The total size of the encoding space amounts to 348 instructions, however, only xxx opcodes are used in total. It's possible to reserve one entry in the microcode ROM for each possible instruction but opcodes are assigned in a specific way to reduce the size of the ROM. Instructions that fundamentally perform the same operation but on different data types such as integer and floating point will map to the same entry, compressing the encoding space to just under 256 entries. This compression requires a hard coded logic array that composes the target 8 bit ROM address. Some instructions might require some form of sequencing which can be achieved by either emitting multiple micro-instructions or letting the target functional unit handle the sequencing. It's important to note that the sequencing required is very simple because the instructions that need it effectively perform the same operation but multiple times, for example: block moves simply copy multiple registers. If it's decided to sequence the actual microcode, then the remaining entries of the ROM can be used for that very purpose.
 
                 [opcode compression table here...]
 
             \subsubsection{Micro-operation format}
 
-                [Coming soon...]
+                Micro-operation formats should be few with regular and easy to decode fields. Having one format with fixed length will simplify the logic that handles the micro-op at the cost of more space required to store it. Variable length formats can be an good choice to increase density, especially in the micro-op cache at the cost of more complex logic. Finding a good balance is can get tricky, but the following fixed length format can be a good starting point:
+
+                ...
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{The most expensive part of the decoding process is the micro-code ROM, which is going to roughly be xxx bytes. This might seem a lot, but most FPGAs have dedicated memory blocks that can cover the needed size. Block rams are quite fast and are often multi-ported to allow simultaneous access from different locations. This means that one block-ram is enough even for super-scalar micro-architectures where multiple instructions are decoded in parallel. The micro-instruction is the result of the decoding process, which holds all the information needed for later steps such as register, operation specifiers and other control signals all in one single object. As a result of this, complex instructions will generate more than one micro-instruction before the processor advances to the next actual instruction.}
+        \textit{The most expensive part of the decoding process is the micro-code ROM, which is going to roughly be 1024 bytes assuming a 32 bit entries. This might seem a lot, but most FPGAs have dedicated memory blocks that can cover the needed size. Block rams are quite fast and are often multi-ported to allow simultaneous access from different locations. This means that one block-ram is enough even for super-scalar micro-architectures where multiple instructions are decoded in parallel. The micro-instruction is the result of the decoding process, which holds all the information needed for later steps such as register and operation specifiers as well as other control signals all in one single object. As mentioned above, complex instructions might need to be ``unrolled'' or expanded into more than one micro-instruction before the processor advances to the next macro-instruction.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
     \clearpage
@@ -782,9 +868,13 @@
 
     \section[Instruction list]{\LARGE\underline{Instruction list}} %7
 
+        \vspace{10pt}
+
         This section is dedicated to a full and extensive list of all the proposed instructions in the ISA which are divided into their corresponding macro module and micro module. Each micro module will list its instructions in alphabetical order.
 
         \subsection{Basic scalar integer computational}
+
+            \vspace{10pt}
 
             This subsection is dedicated to simple scalar integer computational instructions. This module has the code name ``BSIC`` (basic scalar integer computational) and includes simple arithmetic and logic integer operations.
 
@@ -800,7 +890,7 @@
 
             \par\noindent\rule{\textwidth}{0.4pt}
 
-            ...
+            [to be continued...]
 
         \subsection{Data transfer instructions}
 
@@ -820,6 +910,8 @@
 
     \section[Macro-op fusion]{Macro-op fusion}
 
+        \vspace{10pt}
+
         This section is dedicated to give a brief explanation of the macro-op fusion technique. Macro-op fusion can help to increase performance by combining common instruction idioms, usually just pairs of instructions, into one micro-op that can be executed in a single cycle by the back-end of the processor. A fixed and hard-coded set of fusible instruction sequences is needed to tell the hardware when the fusion is applicable and when it is not, however, the only constraint is that a fused sequence must behave in the same way as a non fused sequence of the same instructions. In short, breaking a fusible sequence with a NOP or other non fusible instruction should not yield different architectural states. Some sequences are listed below, but more are possible:
 
         \begin{enumerate}
@@ -828,7 +920,7 @@
 
         \end{enumerate}
 
-        ...
+        [to be continued...]
 
         \par\noindent\rule{\textwidth}{0.4pt}
         \textit{This is a very interesting technique that can help improve performance, especially in cases where the hardware is capable of doing certain operations in one cycle, but the ISA can't. The instruction decoder, though, needs to be designed with this capability in mind and the use of a micro-op cache greatly helps minimizing the pipeline bubbles created by the fusion. The micro-op cache also helps reducing power because it stores decoded instructions avoiding re decoding them every time the same code is executed. Fetching branches from this cache reduces their penalty in case of incorrect prediction.}
@@ -839,6 +931,12 @@
 %__________________________________________________________________________________________________________________________________
 
     \section[License]{License}
+
+        \vspace{10pt}
+
+        Official GitHub page of the FabRISC project: ...
+
+        \vspace{10pt}
 
         This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License. For more information, please visit \textit{creativecommons.org/licenses/by-sa/4.0/}
 

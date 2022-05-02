@@ -7,6 +7,8 @@
         \hline
         ID & Name & Mnemonic & Type \\
         \hline
+        \addlinespace[10pt]
+        \hline
         00 & Interrupt 0 & INT0 & IO interrupt \\
         \hline
         ... & ... & ... & ... \\
@@ -41,19 +43,9 @@
         \hline
         EB & Page fault & PGFT & Fault \\
         \hline
-        EC & Associativity abort & AABT & Fault \\
+        EC & Incompatible instruction & INCI & Fault \\
         \hline
-        ED & Conflict abort & CABT & Fault \\
-        \hline
-        EE & Event abort & EABT & Fault \\
-        \hline
-        EF & Depth overflow abort & OABT & Fault \\
-        \hline
-        F0 & Size abort & SABT & Fault \\
-        \hline
-        F1 & Depth underflow abort & UABT & Fault \\
-        \hline
-        F2 & Reserved & - & - \\
+        ED & Reserved & - & - \\
         \hline
         ... & ... & ... & ... \\
         \hline

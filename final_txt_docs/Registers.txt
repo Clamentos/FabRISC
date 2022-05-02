@@ -178,79 +178,21 @@ breakpoint registers {
         exceptions & debugging
 
         000000 -> disabled
-        000001 -> break on instruction address EQ
-        000010 -> break on instruction address LE
-        000011 -> break on instruction address GE
-        000100 -> break on data read address EQ
-        000101 -> break on data read address LE
-        000110 -> break on data read address GE
-        000111 -> break on data write address EQ
-        001000 -> break on data write address LE
-        001001 -> break on data write address GE
-        001010 -> break on instruction
-        001011 -> break on COVR flag
-        001100 -> break on CUND flag
-        001101 -> break on OVFL flag
-        001110 -> break on UNFL flag
-        001111 -> break on DIV0 flag
-
-        performance (memory section)
-
-        010000 -> L1 icache misses
-        010001 -> L1 dcache misses
-        010010 -> LL cache misses
-        010011 -> L1 iTLB misses
-        010100 -> L1 dTLB misses
-        010101 -> LL TLB misses
-        010110 -> uop cache misses
-        010111 -> instruction references
-        011000 -> data references
-        011001 -> memory references 
-        011010 -> coherence invalidations
-        011011 -> coherence c-c transfers
-        011100 -> bus contention
-        011101 -> stall cycles from cache hierarchy
-        011110 -> stall cycles from TLB hierarchy
-        011111 -> stall cycles from bus contention
-
-        performance (compute section)
-
-        100000 -> clock cycles
-        100001 -> clock cycles div 16
-        100010 -> clock cycles div 256
-        100011 -> instructions committed
-        100100 -> stall cycles from ROB full
-        100101 -> stall cycles from RS full
-        100110 -> stall cycles from LSQ full
-        100111 -> stall cycles from IQ empty
-        101000 -> 
-        101001 -> 
-        101010 -> 
-        101011 -> 
-        101100 -> 
-        101101 -> stall cycles front-end
-        101110 -> stall cycles back-end
-        101111 -> stall cycles
-
-        performance (branching)
-
-        100000 -> 
-        100001 -> 
-        100010 -> 
-        100011 -> 
-        100100 -> 
-        100101 -> 
-        100110 -> 
-        100111 -> 
-        101000 -> 
-        101001 -> 
-        101010 -> 
-        101011 -> 
-        101100 -> 
-        101101 -> 
-        101110 -> 
-        101111 -> 
-
+        000001 -> break on instruction address EQ       BIAEQ
+        000010 -> break on instruction address LE       BIALE
+        000011 -> break on instruction address GE       BIAGE
+        000100 -> break on data read address EQ         BRAEQ
+        000101 -> break on data read address LE         BRALE
+        000110 -> break on data read address GE         BRAGE
+        000111 -> break on data write address EQ        BWAEQ
+        001000 -> break on data write address LE        BWALE
+        001001 -> break on data write address GE        BWAGE
+        001010 -> break on instruction                  BINST
+        001011 -> break on COVR flag                    BCOVR
+        001100 -> break on CUND flag                    BCUND
+        001101 -> break on OVFL flag                    BOVLF
+        001110 -> break on UNFL flag                    BUNFL
+        001111 -> break on DIV0 flag                    BDIV0
 
     for example (assuming 64 bit architecture), setting a value of 0x0000000012345678 in the register BP_0 and a value of 0x0000000000000001 in the BM register will only
     enable BP_0 with "break on instruction address" mode. This mode will trigger a breakpoint exception if the PC ever reaches a value of
@@ -322,30 +264,17 @@ control & status register {
 
     the CSR register hold a series of bits and flags that affects how the processor operates.
 
-        flags section {
-
-            - COVR (1) (carry over flag)
-            - CUND (1) (carry under flag)
-            - OVFL (1) (overflow flag)
-            - UNFL (1) (underflow flag)
-            - DIV0 (1) (division by 0 flag)
-            - ZERO (1) (zero flag)
-            - SIGN (1) (sign flag)
-            - //   (1)
-        }
-
         instruction behavior {
 
             - VLEN (6) (vector length)
             - RMD  (2) (floating point rounding modes)
             - SMSK (1) (scalar mask)
             - EXC  (1) (enable auto exceptions)
-            - EXCM (1) (exception mode)                     replay or fix
         }
 
         transactional memory {
 
-            - TRD  (5) (transaction nesting depth counter)
+            - TRD  (8) (transaction nesting depth counter)
         }
 
         system {
@@ -359,6 +288,8 @@ control & status register {
           * - EVT  (1) (event triggered)
           * - HLT  (1) (halt execution)
         }
+
+        - (6)
 
     NOTE: in case of multi-core systems, BOOT should only concern the bootstrapping core, for example core 0. All the other cores
     must start in a halted state. Unlocking cores can be done with special waking interrupts.
@@ -413,7 +344,7 @@ new special reg file test:
     %07--------(BR_07 "breakpoint register 07")-----------[width: word]
     %08--------(BR_08 "breakpoint register 08")-----------[width: word]
     %09--------(BR_09 "breakpoint register 09")-----------[width: word]
-    %10--------(BR_10 "breakpoint register 10")-----------[width: word]
+    %...
 
     %11--------(BM_0 "breakpoint modes 0")----------------[width: 32 bits]
     %12--------(BM_1 "breakpoint modes 1")----------------[width: 32 bits]

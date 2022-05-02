@@ -1,38 +1,37 @@
 \contentsline {section}{\numberline {1}Introduction}{3}{}%
 \contentsline {subsection}{\numberline {1.1}Terminology}{3}{}%
 \contentsline {subsection}{\numberline {1.2}Implementation specific parameters}{4}{}%
-\contentsline {section}{\numberline {2}Memory}{5}{}%
-\contentsline {subsection}{\numberline {2.1}Data alignment}{5}{}%
-\contentsline {subsection}{\numberline {2.2}Synchronization}{5}{}%
-\contentsline {subsection}{\numberline {2.3}Coherence}{7}{}%
-\contentsline {subsection}{\numberline {2.4}Consistency}{7}{}%
-\contentsline {section}{\numberline {3}Input Output}{9}{}%
-\contentsline {subsection}{\numberline {3.1}Memory mapped IO}{9}{}%
+\contentsline {section}{\numberline {2}Memory}{6}{}%
+\contentsline {subsection}{\numberline {2.1}Data alignment}{6}{}%
+\contentsline {subsection}{\numberline {2.2}Synchronization}{6}{}%
+\contentsline {subsection}{\numberline {2.3}Coherence}{8}{}%
+\contentsline {subsection}{\numberline {2.4}Consistency}{8}{}%
+\contentsline {section}{\numberline {3}Input Output}{10}{}%
+\contentsline {subsection}{\numberline {3.1}Memory mapped IO}{10}{}%
 \contentsline {subsection}{\numberline {3.2}Direct memory access}{10}{}%
-\contentsline {section}{\numberline {4}Events}{11}{}%
-\contentsline {subsection}{\numberline {4.1}Synchronous}{11}{}%
-\contentsline {subsection}{\numberline {4.2}Asynchronous}{11}{}%
-\contentsline {subsection}{\numberline {4.3}Handling}{12}{}%
-\contentsline {section}{\numberline {5}OS support}{14}{}%
-\contentsline {subsection}{\numberline {5.1}Supervisor mode}{14}{}%
-\contentsline {subsection}{\numberline {5.2}Virtual memory}{14}{}%
-\contentsline {subsection}{\numberline {5.3}Hardware thread communication}{14}{}%
-\contentsline {section}{\numberline {6}ISA specification}{16}{}%
-\contentsline {subsection}{\numberline {6.1}Register file}{17}{}%
-\contentsline {subsubsection}{\numberline {6.1.1}Register ABI}{17}{}%
-\contentsline {subsubsection}{\numberline {6.1.2}Special purpose register bank}{18}{}%
-\contentsline {subsubsection}{\numberline {6.1.3}Processor operating modes}{21}{}%
-\contentsline {subsubsection}{\numberline {6.1.4}Vector flags}{22}{}%
-\contentsline {subsection}{\numberline {6.2}Instruction formats}{22}{}%
-\contentsline {subsection}{\numberline {6.3}Decoding guidelines}{23}{}%
-\contentsline {subsubsection}{\numberline {6.3.1}Opcode extraction}{24}{}%
-\contentsline {subsubsection}{\numberline {6.3.2}Micro-operation format}{24}{}%
-\contentsline {section}{\numberline {7}Instruction list}{25}{}%
-\contentsline {subsection}{\numberline {7.1}Basic scalar integer computational}{25}{}%
-\contentsline {subsubsection}{\numberline {7.1.1}(ADD) Addition}{25}{}%
-\contentsline {subsubsection}{\numberline {7.1.2}(SUB) Subtraction}{25}{}%
-\contentsline {subsection}{\numberline {7.2}Data transfer instructions}{25}{}%
-\contentsline {subsection}{\numberline {7.3}Control transfer instructions}{25}{}%
-\contentsline {subsection}{\numberline {7.4}System instructions}{25}{}%
-\contentsline {section}{\numberline {8}Macro-op fusion}{26}{}%
-\contentsline {section}{\numberline {9}License}{27}{}%
+\contentsline {section}{\numberline {4}Events}{12}{}%
+\contentsline {subsection}{\numberline {4.1}Synchronous}{12}{}%
+\contentsline {subsection}{\numberline {4.2}Asynchronous}{12}{}%
+\contentsline {subsection}{\numberline {4.3}Event handling}{13}{}%
+\contentsline {section}{\numberline {5}OS support}{16}{}%
+\contentsline {subsection}{\numberline {5.1}Supervisor mode}{16}{}%
+\contentsline {subsection}{\numberline {5.2}Virtual memory}{16}{}%
+\contentsline {subsection}{\numberline {5.3}Hardware thread communication}{16}{}%
+\contentsline {section}{\numberline {6}ISA specification}{18}{}%
+\contentsline {subsection}{\numberline {6.1}Register file}{19}{}%
+\contentsline {subsubsection}{\numberline {6.1.1}Register ABI}{19}{}%
+\contentsline {subsubsection}{\numberline {6.1.2}Special purpose register bank}{20}{}%
+\contentsline {subsubsection}{\numberline {6.1.3}Processor operating modes}{22}{}%
+\contentsline {subsection}{\numberline {6.2}Instruction formats}{24}{}%
+\contentsline {subsection}{\numberline {6.3}Decoding guidelines}{26}{}%
+\contentsline {subsubsection}{\numberline {6.3.1}Opcode extraction}{26}{}%
+\contentsline {subsubsection}{\numberline {6.3.2}Micro-operation format}{27}{}%
+\contentsline {section}{\numberline {7}Instruction list}{28}{}%
+\contentsline {subsection}{\numberline {7.1}Basic scalar integer computational}{28}{}%
+\contentsline {subsubsection}{\numberline {7.1.1}(ADD) Addition}{28}{}%
+\contentsline {subsubsection}{\numberline {7.1.2}(SUB) Subtraction}{28}{}%
+\contentsline {subsection}{\numberline {7.2}Data transfer instructions}{28}{}%
+\contentsline {subsection}{\numberline {7.3}Control transfer instructions}{28}{}%
+\contentsline {subsection}{\numberline {7.4}System instructions}{28}{}%
+\contentsline {section}{\numberline {8}Macro-op fusion}{29}{}%
+\contentsline {section}{\numberline {9}License}{30}{}%
