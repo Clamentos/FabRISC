@@ -1,0 +1,119 @@
+\section[ISA modules list]{\LARGE\underline{ISA modules list}}
+
+    \vspace{10pt}
+
+    This section is dedicated to provide a brief but full description of all the different modules that the FabRISC ISA offers. There are no mandatory modules in this specification in order to maximize the flexibility, however, once a particular extension is chosen, the hardware must provide all the features and abstractions of said extension. The requirements for each and every module will be extensively explained in the next sections. Modules are divided into two main categories:
+
+    \begin{enumerate}
+
+        \item \textit{\textbf{Instruction modules}: these modules add instructions only.}
+        \item \textit{\textbf{Miscellaneous modules}: these modules can add things other than instructions such as registers, counters, events, processor operating modes, etc\ldots}
+
+    \end{enumerate}
+
+    \subsection{Instruction modules}
+
+        Instruction modules only concern instructions and their implementation. These modules are further divided into four general sub-categories each of which contains the actual instruction modules:
+
+        \begin{enumerate}
+
+            \item \textit{\textbf{Computational}: these instructions perform arithmetic or logic operations.}
+
+                \begin{itemize}
+
+                    \item 1) \textit{\textbf{CNISB}: computational-normal-integer-scalar-basic.}
+                    \item 2) \textit{\textbf{CNISA}: computational-normal-integer-scalar-advanced.}
+
+                    \item 3) \textit{\textbf{CNIVB}: computational-normal-integer-vector-basic.}
+                    \item 4) \textit{\textbf{CNIVA}: computational-normal-integer-vector-advanced.}
+                    \item 5) \textit{\textbf{CNIVR}: computational-normal-integer-vector-reduction.}
+
+                    \item 6) \textit{\textbf{CNISB}: computational-normal-integer-scalar-basic.}
+                    \item 7) \textit{\textbf{CNISA}: computational-normal-integer-scalar-advanced.}
+
+                    \item 8) \textit{\textbf{CNFVB}: computational-normal-floating point-vector-basic.}
+                    \item 9) \textit{\textbf{CNFVA}: computational-normal-floating point-vector-advanced.}
+                    \item 10) \textit{\textbf{CNFVR}: computational-normal-floating point-vector-reduction.}
+
+                    \item 11) \textit{\textbf{CCIB}: computational-compressed-integer-basic.}
+                    \item 12) \textit{\textbf{CCIA}: computational-compressed-integer-advanced.}
+
+                    \item 13) \textit{\textbf{CCFB}: computational-compressed-floating point-basic.}
+                    \item 14) \textit{\textbf{CCFA}: computational-compressed-floating point-advanced.}
+
+                    \item 14) \textit{\textbf{...}: computational-...} % casts & conversions
+                    \item 15) \textit{\textbf{...}: computational-...}
+                    \item 16) \textit{\textbf{...}: computational-...}
+                    \item 17) \textit{\textbf{...}: computational-...}
+
+                \end{itemize}
+
+            \item \textit{\textbf{Data transfer}: these instructions perform memory load, store, register move and swap operations.}
+
+                \begin{itemize}
+
+                    \item 18) \textit{\textbf{DNSB}: data transfer-normal-scalar-basic.}
+                    \item 19) \textit{\textbf{DNSA}: data transfer-normal-scalar-advanced.}
+
+                    \item 18) \textit{\textbf{DNVB}: data transfer-normal-vector-basic.}
+                    \item 19) \textit{\textbf{DNVA}: data transfer-normal-vector-advanced.}
+                    \item 20) \textit{\textbf{DNVG}: data transfer-normal-vector-gather scatter.}
+
+                    \item 21) \textit{\textbf{DA}: data transfer-atomic.}
+                    \item 22) \textit{\textbf{DB}: data transfer-block.}
+                    \item 23) \textit{\textbf{DC}: data transfer-compressed.}
+
+                \end{itemize}
+
+            \item \textit{\textbf{Flow transfer}: these instructions perform conditional branch, jump, call and return operations.}
+
+                \begin{itemize}
+
+                    \item 24) \textit{\textbf{FNISB}: flow transfer-normal-integer-scalar-basic.}
+                    \item 25) \textit{\textbf{FNISA}: flow transfer-normal-integer-scalar-advanced.}
+                    \item 26) \textit{\textbf{FNISM}: flow transfer-normal-integer-scalar-mask.}
+
+                    \item 27) \textit{\textbf{FNIVB}: flow transfer-normal-integer-vector-basic.}
+                    \item 28) \textit{\textbf{FNIVA}: flow transfer-normal-integer-vector-advanced.}
+
+                    \item 29) \textit{\textbf{FNFSB}: flow transfer-normal-floating point-scalar-basic.}
+                    \item 30) \textit{\textbf{FNFSA}: flow transfer-normal-floating point-scalar-advanced.}
+                    \item 31) \textit{\textbf{FNFSM}: flow transfer-normal-floating point-scalar-mask.}
+
+                    \item 32) \textit{\textbf{FNFVB}: flow transfer-normal-floating point-vector-basic.}
+                    \item 33) \textit{\textbf{FNFVA}: flow transfer-normal-floating point-vector-advanced.}
+
+                    \item 34) \textit{\textbf{FC}: flow transfer-compressed.}
+
+                \end{itemize}
+
+            \item \textit{\textbf{System}: these instructions perform system various related operations.}
+
+                \begin{itemize}
+
+                    \item 35) \textit{\textbf{SB}: system-basic.}
+                    \item 36) \textit{\textbf{SA}: system-advanced.}
+                    \item 37) \textit{\textbf{SF}: system-fences.}
+                    \item 38) \textit{\textbf{ST}: system-transactional.}
+
+                \end{itemize}
+
+        \end{enumerate}
+
+    \subsection{Miscellaneous modules}
+
+        Miscellaneous modules are more flexible, they can provide useful features such as debugging, performance counters, user events, system events, etc\ldots. Supervisor modules allow FabRISC to become a privileged architecture to better help with OS implementation. The list of modules is the following:
+
+        \begin{itemize}
+
+            \item 39) \textit{\textbf{UEVNT}: user events.}
+            \item 40) \textit{\textbf{SEVNT}: system events.}
+            \item 41) \textit{\textbf{BPREG}: breakpoint registers.}
+            \item 42) \textit{\textbf{PERFC}: performance counters.}
+            \item 43) \textit{\textbf{SUPER}: supervisor.}
+
+        \end{itemize}
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{The high number of modules and extensions is very useful because it allows the hardware designers to only implement what they really want and very little extra. The fact that there is no explicit mandatory subset of the ISA helps can with specialized systems. With this, it becomes perfectly possible to create, for example, a floating-point only processor with no integer instructions to alleviate overheads.}
+    \par\noindent\rule{\textwidth}{0.4pt}

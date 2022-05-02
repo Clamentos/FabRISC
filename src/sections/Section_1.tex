@@ -1,0 +1,92 @@
+\section[Introduction]{\LARGE\underline{Introduction}}
+
+    \vspace{10pt}
+
+    FabRISC is a feature rich, register-register, load-store architecture with variable length encodings of two, four and six bytes. This specification is designed to be highly modular allowing a simple and straightforward implementation from basic designs up to high performance systems by picking only the desired modules. The ISA includes scalar, vector, floating-point, compressed, atomic as well as privileged instructions supporting 32 and 64-bit multithreaded microarchitectures. It is also possible to further enrich and enhance the ISA by allocating unused opcode combinations to custom application specific instructions. This specification is completely free, open-source and available to anyone interested in the project via the official GitHub: xxx (license details can be found at the very end of the document). The specification is divided into multiple sections each explaining the architecture in detail with the help of tables, figures and implementation specific suggestions in order to aid the hardware and software designers in creating an efficient realization of the FabRISC instruction set architecture.
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{Commentary in this document will formatted in this way and communication will be more colloquial. If the reader is only interested in the specification, these sections can be skipped without hindering the understanding of the document. This project tries to be more of a hobby learning experience rather than a new super serious industry standard, plus the architecture borrows many existing concepts from the most popular and iconic ISAs like x86, RISC-V, MIPS, ARM and openRISC. I chose to target FPGAs as the primary platform for two main reasons: one is that ASICs are out of the question for me and most people because of cost. Two is that using discrete components makes little sense from a sanity and practicality point of view given the complexity of the project, however, software simulators can be a good platform for simpler implementations. The core ideas here are the use of variable length encoding of four and six byte instruction size along with an optional compressed module to increase code density. Another aspect of the ISA is the fact that all instructions can specify the length of the data type in order to more precisely control edge cases such as overflows and underflows as well as orthogonality reasons. This is not achieved via register sub addressing but rather by simply masking the unnecessary portion of the word while leaving the ignored bits in place. This ISA, all though not a ``pure'' RISC design with basic instructions and few addressing modes, resembles that philosophy for the most part skewing away from it in specific (and optional) areas only, such as, being able to load, store, move and swap multiple registers with a single instruction.}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection[Terminology]{Terminology}
+
+        \vspace{10pt}
+
+        The FabRISC architecture uses the following terminology throughout the document in order to more accurately define technical concepts and vocabulary:
+
+        \begin{itemize}
+
+            \item \textit{\textbf{``Architecture''} is used to refer to the set of abstractions that the hardware must provide to the software.}
+
+            \item \textit{\textbf{``Atomic''} is used to refer to any operation that must, either be completely executed, or not at all.}
+
+            \item \textit{\textbf{``Architectural state''} is used to refer to the state of the processor, or a single core or hardware thread, that can directly be observed by the programmer.}
+
+            \item \textit{\textbf{``Coherence''} is used to refer to the ability of a system to be coherent, that is, ensuring the uniformity of shared resources across the entire system. In particular, it defines the ordering of accesses to a single memory location for systems that implement caching techniques.}
+
+            \item \textit{\textbf{``Consistency''} is used to refer to the ability of a system to be consistent, that is, defining a particular order of operations across all memory locations that is obeyed by everyone within the system.}
+
+            \item \textit{\textbf{``Consistency model''} is used to refer to a particular model or protocol of consistency within a particular system.}
+
+            \item \textit{\textbf{``Core''} is used to refer to a fully functional and complete sub-CPU within a bigger entity. Advanced processors often aggregate multiple similar sub-CPUs in order to be able to schedule different programs each working on it's own stream of data. It is important to note that each core can implement a completely different microarchitecture, as well as, instruction set.}
+
+            \item \textit{\textbf{``Event''} is used to generically refer to any extra-ordinary situation that needs to be taken care of as soon as possible.}
+
+            \item \textit{\textbf{``Exception''} is used to refer to any non severe internal, synchronous event.}
+
+            \item \textit{\textbf{``Fault''} is used to refer to any severe internal, synchronous event.}
+
+            \item \textit{\textbf{``Hardware thread''} or simply \textbf{``hart''} are used to refer to a particular physical instance of a software thread running, specifically, on the central processing unit (CPU).}
+
+            \item \textit{\textbf{``Instruction set architecture''} or simply \textbf{``ISA''} are used to refer to the architecture that the central processing unit provides to the software under the form of instructions.}
+
+            \item \textit{\textbf{``Interrupt''} is used to refer to any external, asynchronous event.}
+
+            \item \textit{\textbf{``Memory fence''} or simply \textbf{``fence''} are used to refer to particular instructions that have the ability to enforce a specific ordering of other memory instructions.}
+
+            \item \textit{\textbf{``Memory transaction''} or simply \textbf{``transaction''} are used to refer to a particular series of operations that behave atomically within the system.}
+
+            \item \textit{\textbf{``Microarchitectural state''} is used to refer to the actual state of the processor, or a single core or hardware thread, that might not be visible by the programmer in its entirety.}
+
+            \item \textit{\textbf{``Microarchitecture''} is used to refer to the particular physical implementation of a given architecture.}
+
+            \item \textit{\textbf{``Page''} is used to refer to a logical partition of the main system memory.}
+
+            \item \textit{\textbf{``Promotion''} is used to refer to the automatic switch from user mode to supervisor mode by the processor or a single core or hardware thread, caused by an event.}
+
+            \item \textit{\textbf{``Transparent''} is used to refer to something that is, mostly, invisible to the programmer.}
+
+            \item \textit{\textbf{``Trap''} is used to refer to the transition from a state of normal execution to the launch of an event handler.}
+
+            \item \textit{\textbf{``Unaligned''} or \textbf{``misaligned''} are used to refer to any memory item that is not naturally aligned, that is, the address of the item modulo its size, is not equal to zero.}
+
+        \end{itemize}
+
+    \subsection[Implementation specific parameters]{Implementation specific parameters}
+
+        \vspace{10pt}
+
+        This document also makes use of some implementation specific microarchitecture parameters to clear potential misunderstandings:
+
+        \begin{itemize}
+
+            \item \textit{\textbf{Word Length} (WLEN): this parameter indicates the processor's natural scalar word length in bits, for example, a 64-bit CPU will have WLEN of 64.}
+
+            \item \textit{\textbf{Maximum Vector Length} (MXVL): this parameter indicates the processor's maximum vector length in bits. Possible values can be chosen from:}
+
+                \begin{itemize}
+
+                    \item \textit{64 bit: for processors with WLEN of 32.}
+                    \item \textit{128 bit: for processors with WLEN of 32 and 64.}
+                    \item \textit{256 bit: for processors with WLEN of 32 and 64.}
+                    \item \textit{512 bit: for processors with WLEN of 64.}
+
+                \end{itemize}
+
+            \item \textit{\textbf{ISA Modules} (ISAMOD): this parameter indicates the implemented instruction set modules of the processor. This parameter is xxx bits long and works as a checklist where each bit indicates the desired module. The list of all possible modules is presented in the next section.}
+
+        \end{itemize}
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{I consider 512 bits for 64 bit machines and 256 for 32 bit machines to be a good maximum limit since i doubt that even advanced architectures would benefit in a practical way from a wider vector pipeline except, perhaps, in some very specific situations. This length can already be a bit of a challenge because of the shear width, necessitating a very large number of bits for the reservation station entries in out-of-order machines. Other than a practical limit, there is also a physical limit to the vector length which is given by the length of the vector mask register (VMSK) in the special purpose register file. This is because VMSK must be VLEN bits wide which, in the case of 64 bit machines can allocate up to 64 mask bits (one per byte element). The same logic applies for 32 bit machines which are limited to 32 mask bits.}
+    \par\noindent\rule{\textwidth}{0.4pt}
