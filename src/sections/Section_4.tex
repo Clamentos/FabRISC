@@ -1,0 +1,115 @@
+\section[Memory]{\LARGE\underline{Memory}}
+
+    \vspace{10pt}
+
+    This section is dedicated to the memory model used by FabRISC including data alignment, synchronization, consistency, as well as possible cache coherence directives.
+
+    \subsection[Data alignment]{Data alignment}
+
+        \vspace{10pt}
+
+        FabRISC, overall, treats the main memory and the MMIO regions as collections of byte-addressable locations in \textit{little endian} order with a range of \(2^{WLEN}\) addresses in total. The specification leaves to the hardware designer the choice of supporting aligned or unaligned memory accesses or both for data. If aligned is decided to be the only supported scheme, the hart must generate the MISA fault every time the constraint is violated (consult section xxx for more information). Alignment on instructions is the result of the greatest common denominator between the implemented instruction lengths and this constraint must be satisfied by the programmer or compiler, if not, the MISI fault must be generated. Because the possible lengths are only 2, 4 or 6 bytes, the greatest common denominator can only result in a value of 2 or 4. With this it's possible to shift branch offsets by one or two bits respectively to the left before being added to the program counter (PC) which means that said offsets will specify 16 or 32 bits as the smallest addressable object, effectively doubling or quadrupling the range in terms of bytes.
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{Data alignment issues can arise when the processor wants to read or write an item whose size is greater than the smallest addressable thing. This problem is tricky to design hardware for, especially caches, because misaligned items can cross cache line boundaries as well as page boundaries. Alignment networks and more complex caches are needed which can increase complexity and slow down the critical path too much for simple designs. For already complex multicore out-of-order superscalar machines, however, i believe that supporting unaligned accesses can be handy so that the software writer can make decisions freely without having to worry about this problem, potentially decrease the memory footprint.}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Synchronization}
+
+        \vspace{10pt}
+
+        FabRISC provides dedicated atomic instructions via the DA instruction module to achieve proper synchronization in order to protect critical sections and to avoid data races in threads that share memory with each other. The proposed instructions behave atomically and can be used to implement atomic \textit{read-modify-write} and \textit{test-and-set} operations for locks, semaphores and barriers. It is important to note that if the processor can only run one hart at any given moment, then this section can be skipped since the problem can be solved by the operative system. Below is a description of the atomic instructions, which are divided in two categories:
+
+        \begin{itemize}
+
+            \item \textit{\textbf{Read-modify-write} instructions:}
+
+            \begin{itemize}
+
+                \item \textit{\textbf{Load Linked} (LL) is an atomic memory operation that loads an item from memory into a register and performs a ``reservation'' of the fetched location. The reservation can simply be storing the physical address and size of the object into an internal transparent register and marking it as valid.}
+
+                \item \textit{\textbf{Store Conditional} (SC) is an atomic instruction that stores an item from a register to a memory location if and only if the reservation matches and is marked as valid, that is, the physical address and size are the same plus the valid bit set. In the case of a mismatch, or an invalidity, SC must not perform the store and must return a zero in its destination register as an indication of the failure. If SC succeeds, the item is written to memory, a one is returned into its register destination and all reservations must be then invalidated.}
+
+            \end{itemize}
+
+            \item \textit{\textbf{Test-and-set} instructions:}
+
+            \begin{itemize}
+
+                \item \textit{\textbf{Compare and swap} (CAS) is an atomic instruction that conditionally and atomically swaps two values in memory if a particular and specified condition is met. The conditions are equality or less than.}
+
+            \end{itemize}
+
+        \end{itemize}
+
+        The LL \& SC pair, as briefly mentioned above, necessitate of a transparent register that is used to hold the address of the fetched element. Once the reservation is completed and marked as valid, accesses performed by other cores must be monitored by snooping any other memory access made by other cores. If a memory write request to the matching address is snooped by another core, then that particular reservation must be immediately invalidated. The CAS instruction, in order to be atomic, it must perform it's job all in the same bus request. This ensures that no other core or device has access to the memory potentially changing the target variable in the middle of the CAS instruction.
+
+        \vspace{10pt}
+
+        FabRISC also provides optional instructions, via the ST instruction module, to support basic transactional memory that can be employed instead of the above seen solutions to exploit parallelism in a more ``optimistic'' manner. Multiple transactions can happen in parallel as long as no conflict is detected by the hardware. when such situations occur, however, the offended transaction must be aborted, that is, it must discard all the changes and restore the architectural state immediately before the start of the transaction itself. If a transaction detects no conflict it is allowed to commit the changes and the performed operations can be considered atomic. Transactions can be nested inside each other up to a depth of 256, beyond this, the OABT exception must be generated to notify the programmer.
+
+        \begin{itemize}
+
+            \item \textit{\textbf{Transaction Begin} (TBEG): causes the hart that executed this instruction to checkpoint its microarchitectural state and start monitoring accesses by other harts via the coherence protocol as well as incrementing the nesting counter by one. This instruction effectively starts a transaction.}
+
+            \item \textit{\textbf{Transaction End} (TEND): causes the hart that executed this instruction to stop monitoring accesses by other harts and commit the changes as well as decrementing the nesting counter by one. This instruction effectively terminates a transaction. The updates to memory can be considered atomic and permanent after the completion of this instruction.}
+
+            \item \textit{\textbf{Transaction Abort} (TABT): causes the hart that executed this instruction to stop monitoring accesses by other harts as well as generate an \textbf{Explicit abort} exception within the hart and cause it to restore the microarchitectural state immediately before the latest TBEG as well as decrementing the transaction nesting level counter by one. This instruction effectively aborts a transaction.}
+
+            \item \textit{\textbf{Transaction Check} (TCHK): causes the hart that executed this instruction to return, in a specified register, the status of the current running transactional execution. This instruction effectively checks if the thread is in a transaction as well as its depth.}
+
+        \end{itemize}
+
+        The ST instruction module necessitates the presence of exceptions (consult section xxx for more information), as briefly mentioned above, called \textit{abort codes} that can be used by the programmer to take the appropriate actions in case the transaction was aborted. Each abort code specifies the reason why the current (most nested) transaction was aborted. As a result of this, the ST module requires the UEVNT module to also be implemented. The ST module extends the UEVNT module adding the following exceptions:
+
+        \begin{itemize}
+
+            \item \textit{\textbf{Conflict abort} (CABT): the current transaction was aborted because a write on shared variables was detected by the coherence protocol. This exception has an id of xxx.}
+
+            \item \textit{\textbf{Event abort} (EABT): the current transaction was aborted because an event, beside the ones in this list, got triggered. This exception has an id of xxx.}
+
+            \item \textit{\textbf{Depth overflow abort} (OABT): the current transaction was aborted because it exceeded the upper transaction depth limit. This exception has an id of xxx.}
+
+            \item \textit{\textbf{Replacement abort} (RABT): the current transaction was aborted because a cache line was evicted back to memory for not enough associativity. This exception has an id of xxx.}
+
+            \item \textit{\textbf{Size abort} (SABT): the current transaction was aborted because a cache line was evicted for back to memory not enough space. This exception has an id of xxx.}
+
+            \item \textit{\textbf{Depth underflow abort} (UABT): this abort code is only generated if a TEND instruction is executed and the depth counter is zero. This exception has an id of xxx.}
+
+        \end{itemize}
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{Memory synchronization is extremely important in order to make shared memory communication even work at all. The problem arises when a pool of data is shared among different processes or threads that compete for resources and concurrent access to this pool might result in erroneous behavior and must, therefore, be arbitrated. This zone is called ``critical section'' and special atomic primitives can be used to achieve this protection. Many different instruction families can be chosen such as ``compare-and-swap'', ``test-and-set'', ``Read-modify-write'' and others. I decided to provide in the ISA the LL and SC pairs, as described above, because of its advantages and popularity among other RISC-like instruction sets. Two important advantages of this pair is that it is pipeline friendly (LL acts as a load and SC acts as a store) compared to others that try to do both. Another advantage is the fact that the pair doesn't suffer from the ``ABA'' problem. It is important to note, however, that this atomic pair doesn't guarantee forward progress and weaker implementations can reduce this chance even more. The CAS atomic instruction, even though it suffers from the ABA problem, it guarantees forward progress, rendering this instruction stricter. I decided to also provide basic transactional memory support because, in some situations, it can yield great performance compared to mutual exclusion without losing atomicity. This is completely optional and up to the hardware designer to implement or not simply because it can significantly complicate the design. Transactional memory seems to be promising in improving performance and ease of implementation when it comes to shared memory programs, but debates are still ongoing to decide which exact way of implementing is best.}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Coherence}
+
+        \vspace{10pt}
+
+        FabRISC leaves to the hardware designer the choice of which coherence system to implement. On multicore systems cache coherence must be ensured by choosing a coherence protocol and making sure that all the cores agree on the current sequence of accesses to the same memory location. That can be guaranteed by serializing the operations via the use of a shared bus or via a distributed directory and \textit{write-update} or \textit{write-invalidate} protocols can be employed without any issues. Software coherence can also be a valid option but it will rely on the programmer to explicitly flush or invalidate the cache of each core separately. Nevertheless, FabRISC provides, via the SA instruction module, implementation-dependent instructions, such as CACOP, that can be sent to the cache controller directly to manipulate its operation (see section xxx for more details). If the processor makes use of a separate instruction cache, potential complications can arise for self modifying code which can be solved by employing one of the above options. All the harts that map to the same core don't need to worry about coherence since the caches are shared between those harts. This argument holds true for whole cores that share bigger pools of cache, such as L2 or L3.
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{Cache coherence is a big topic and is hard to get right because it can hinder performance in both single core and multicore significantly. I decided to give as much freedom as possible to the designer of the system to pick the best solution that they see fit. Another aspect that could be important, if the software route is chosen, is the exposure to the underlying microarchitecture implementation to the programmer which can be yield unnecessary complications and confusions. Generally speaking though write-invalidate seems to be the standard approach in many modern designs because of the way it behaves in certain situations, especially when a process is moved to another core. Simple shared bus can be a good choice if the number of cores is small (lots of cores means lots of traffic), otherwise a directory based approach can be used to ensure that all the cores agree on the order of accesses. From this, the protocol can be picked: MSI, MESI, MOSI or MOESI, the latter being the most complex but most powerful.}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Consistency}
+
+        \vspace{10pt}
+
+        FabRISC utilizes a fully relaxed memory consistency model formally known as \textit{release consistency} that allows all possible orderings in order to give harts the freedom to reorder memory instructions to different addresses in any way they want. For debugging and specific situations the stricter \textit{sequential consistency} model can be utilized and the hart must be able to switch between the two at any time via a dedicated bit in the control and status register. Special instructions, called \textit{``fences''}, are provided by the SF instruction module to let the programmer impose an order on memory operations when the relaxed model is in use. If the hart doesn't reorder memory operations this module is not necessary and can be skipped. The proposed fencing instructions are:
+
+        \begin{itemize}
+
+            \item \textit{\textbf{Fence Loads} (FNCL): this instruction forbids the hart to reorder any load type instruction across the fence.}
+
+            \item \textit{\textbf{Fence Stores} (FNCS): this instruction forbids the hart to reorder any store type instruction across the fence.}
+
+            \item \textit{\textbf{Fence Loads and Stores} (FNCLS): this instruction forbids the hart to reorder any load or store type instructions across the fence.}
+
+        \end{itemize}
+
+        The fences can be used on any memory type of instruction, including the LL \& SC pair and CAS to forbid reordering when acquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache controller via the dedicated implementation specific CACOP instruction as briefly discussed above. The SF module also requires the ability for the hart to switch between the release consistency and the more stringent \textit{sequential consistency} models via the use of a dedicated bit in the control and status register (CSR).
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{The memory consistency model i wanted to utilize was a very relaxed model to allow all kinds of performance optimization to take place inside the system. However one has to provide some sort of restrictions, effectively special memory operations, to avoid absurd situations. Even with those restrictions debugging could be quite difficult because the program might behave very weirdly, so i decided to include the sequential model that forbids reordering of any kind of memory instruction. If a program is considered well synchronized (data race-free and all critical sections are protected) consistency becomes less of an issue because there will be no contention for resources and, therefore, the model can be completely relaxed without any side effects. Achieving this level of code quality is quite the challenge and so these consistency instructions can be employed in making sure that everything works out.}
+    \par\noindent\rule{\textwidth}{0.4pt}

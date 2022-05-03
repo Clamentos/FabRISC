@@ -1,0 +1,61 @@
+\begin{table}[hbt!] % ok
+
+    \begin{center}
+
+    \begin{tabular}{|c|l|l|l|l|}
+
+        \hline
+        ID & Name & Mnemonic & Type & Requirement \\
+        \hline
+        \addlinespace[10pt]
+        \hline
+        00 & Interrupt 0 & INT0 & IO interrupt & SEVNT module \\
+        \hline
+        ... & ... & ... & ... & ... \\
+        \hline
+        3F & Interrupt 63 & INT63 & IO interrupt & SEVNT module \\
+        \hline
+        40 & Interrupt 64 & INT64 & IPC interrupt & SEVNT module \\
+        \hline
+        ... & ... & ... & ... & ... \\
+        \hline
+        7F & Interrupt 127 & INT127 & IPC interrupt & SEVNT module \\
+        \hline
+        80 & System call 0 & SYSCL0 & Fault & SEVNT module \\
+        \hline
+        ... & ... & ... & ... & ... \\
+        \hline
+        E3 & System call 99 & SYSCL99 & Fault & SEVNT module \\
+        \hline
+        E4 & Illegal instruction & ILLI & Fault & mandatory \\
+        \hline
+        E5 & Malformed instruction & MALI & Fault & mandatory \\
+        \hline
+        E6 & Misaligned instruction & MISI & Fault & mandatory \\
+        \hline
+        E7 & Illegal execute address & IEXE & Fault & SEVNT module  \\
+        \hline
+        E8 & Illegal read address & IRDA & Fault & SEVNT module  \\
+        \hline
+        E9 & Illegal write address & IWRA & Fault & SEVNT module  \\
+        \hline
+        EA & Misaligned address & MISA & Fault & ??? \\
+        \hline
+        EB & Page fault & PGFT & Fault & SEVNT module \\
+        \hline
+        EC & Incompatible instruction & INCI & Fault & mandatory \\
+        \hline
+        ED & Reserved & - & - & - \\
+        \hline
+        ... & ... & ... & ... & ... \\
+        \hline
+        FF & Reserved & - & - & - \\
+        \hline
+
+    \end{tabular}
+
+    \caption[Supervisor event table]{Supervisor event table.}
+
+    \end{center}
+
+\end{table}

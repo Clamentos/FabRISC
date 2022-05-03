@@ -1,0 +1,40 @@
+\section[Low-level data types]{\LARGE\underline{Low-level data types}}
+
+    \vspace{10pt}
+
+    This section is dedicated to explain the various proposed low-level data types including integer and floating point. The smallest addressable object in FabRISC is the ``byte'', that is, eight consecutive bits. Longer types are constructed from multiple bytes side by side following powers of two: one, two, four or eight bytes.
+
+    \subsection{Integer types}
+
+        Integer types are arguably the most common data types. Integers are always signed using 2's complement notations and depending on their length, they can have various names:
+
+        \begin{itemize}
+
+            \item \textit{\textbf{Byte}: 8 consecutive bits.}
+            \item \textit{\textbf{Short}: 16 consecutive bits, or alternatively, 2 bytes.}
+            \item \textit{\textbf{Word}: 32 consecutive bits, or alternatively, 4 bytes.}
+            \item \textit{\textbf{Long}: 64 consecutive bits, or alternatively, 8 bytes.}
+
+        \end{itemize}
+
+        Integer types are manipulated by integer instructions which, by default, behave in a modular fashion. Edge cases, such as wraps-around or overflows can be happen in particular situations:
+
+        \begin{itemize}
+
+            \item \textit{\textbf{Carry over}: this situation arises when the absolute value of the result is too big to fit in the desired data type.}
+
+            \item \textit{\textbf{Carry under}: this situation arises when the absolute value of the result is too small to fit in the desired data type.}
+
+            \item \textit{\textbf{Overflow}: this situation arises when the signed value of the result is too big to fit in the desired data type.}
+
+            \item \textit{\textbf{Underflow}: this situation arises when the signed value of the result is too small to fit in the desired data type.}
+
+        \end{itemize}
+
+    \subsection{Floating point types}
+
+        ...
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{...}
+    \par\noindent\rule{\textwidth}{0.4pt}
