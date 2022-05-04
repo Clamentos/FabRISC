@@ -1,0 +1,49 @@
+\section[OS support]{\LARGE\underline{OS support}} % 5
+
+    \vspace{10pt}
+
+    This section is dedicated to the supported OS primitives by the FabRISC architecture. They are divided into different categories explained below and should be, ideally, handled by the hardware in order to give the operative system a solid foundation. The features allow the realization of any kind of OS, from \textit{monolithic} designs, \textit{microkernel}, \textit{exokernel} and hybrids.
+
+    \subsection{Supervisor mode}
+
+        \vspace{10pt}
+
+        FabRISC is a privileged architecture and makes use of the supervisor to create a border between the OS and the user. With supervisor privileges the executing code has complete and total control over the hardware and any access to protected resources in user mode, such as particular instructions, registers, or addresses must generate the appropriate fault. The hart should only enter the supervisor mode if an appropriate event is triggered and a dedicated instruction (ERET) is provided to transfer the control back to the user (consult section 7 for more information). If the system makes use of a multicore / multithreaded processor, then each core must have the ability to be in supervisor mode or not independently.
+
+        \vspace{10pt}
+
+        When booting up, the system should start in supervisor mode with only one core active to allow the loading of the OS itself and the creation of all the required data structures. This is indicated by the xxx bit in the status register. After the booting phase is done, this bit can simply be set to zero causing the processor to execute normally.
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{Having a supervisor mode is essential for implementing a working operative system. This special mode allows the executing code to have complete and total control over the CPU and is used, by the OS, to protect itself from other processes that could, intentionally or not, compromise the system. When the processor isn't running in supervisor mode it will run in user mode with restrictions, mainly in manipulating certain hardware state including some special registers, addresses and instructions. This, along with virtual memory, will effectively confine any user level process to its own sandbox protecting itself and others from damage.}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Virtual memory}
+
+        \vspace{10pt}
+
+        FabRISC provides privileged customizable and implementation specific instructions to interface directly with the MMU, if the processor has one, allowing the OS to modify and manage that particular unit (see section 7 for more details), alternatively, the managing can be automatic if the hardware supports it. A special purpose register called PTP is also provided to hold the physical address of the page table to perform the page table walk in case of a TLB miss. PTP must be set by the supervisor only with the appropriate address every time a context switch happens and a write operation on PTP in user mode must cause a fault. The TLB can also make use the process ID in the PID register to avoid flushing during context switches and page swapping can be supported via the generation of the \textit{page fault} event that can be handled by the OS.
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{Virtual memory is a central concept in any operative system and i wanted to provide, at least, basic support without going too crazy (this is pretty much as simple as it gets). The CSR also has a special bit to enable or disable paging by bypassing the TLB and avoid doing the virtual to physical translation all together. The process ID can help reducing the burst of TLB misses caused by context switches especially with frequent system calls in microkernel based solutions.}
+        \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Hardware thread communication}
+
+        \vspace{10pt}
+
+        Thanks to the already discussed IPC interrupts, it is possible to implement efficient low level hardware thread communication. Initialization and termination of threads, however, is mandatory since it effectively allows the creation and destruction of threads if the processor has multiple cores or threads. With IPC interrupts it possible to perform:
+
+        \begin{itemize}
+
+            \item \textit{\textbf{Thread signalling}: this form of communication is achieved by the use of dedicated interrupts as suggested earlier. The signal can be sent to an IO controller just like a request from an external IO device which can then forward the request to the destination thread that is interrupted.}
+
+            \item \textit{\textbf{Message passing}: this form of communication is achieved by the use of dedicated MMIO addresses to send and receive small messages through the IO controller. The message formats should use a common convention agreed by the hardware designer and the programmer for everybody.}
+
+            \item \textit{\textbf{Thread initialization} and \textbf{Thread termination}: this form of communication is vital to be able to start and stop threads at will in multicore / multithreaded systems. Starting a thread can be achieved by sending a dedicated IPC interrupt that has the ability to wake up the destination core or hardware thread from the halted state. A similar and symmetric picture can employed to stop running cores or threads via a dedicated halting IPC interrupt. An alternative would be to directly talk to the IO controller, which in turn, enables or disables threads.}
+
+        \end{itemize}
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{Efficient communication is key to achieve good performance in any system. I decided to support simple message passing and signalling directly in hardware to lower the latencies as much as possible since an FPGA CPU will only have clock speeds in the hundreds of MHz. The only form of communication that isn't explicitly listed here is ``shared memory'' simply because it is a natural consequence of virtual memory and paging. In this subsection i assumed the presence of a centralized IO controller that manages interrupts, IO requests, data transfers as well as thread initialization and termination. Any other solution that behaves similarly to that is completely possible and allowed, for example a more distributed kind of controller where each core has its own independent logic (or something along those lines) could be a possible alternative.}
+    \par\noindent\rule{\textwidth}{0.4pt}

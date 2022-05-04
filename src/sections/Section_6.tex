@@ -2,7 +2,7 @@
 
     \vspace{10pt}
 
-    This section is dedicated to the specification of exceptions, faults and interrupts which are needed to implement the UEVNT and SEVNT modules. FabRISC uses the term \textit{event} to indicate the generic categorization of these kinds of situations. Events can be used to communicate with other harts, processes, IO devices, signal system faults or simply trigger software exceptions. Events are sub divided into two main categories: Synchronous and Asynchronous.
+    This section is dedicated to the specification of exceptions, faults and interrupts which are needed to implement the EXC, FLT, IOINT and IPCINT modules. FabRISC uses the term \textit{event} to indicate the generic categorization of these kinds of situations. Events can be used to communicate with other harts, processes, IO devices, signal system faults or simply trigger software exceptions. Events are sub divided into two main categories: Synchronous and Asynchronous.
 
     \subsection{Synchronous}
 
@@ -39,6 +39,24 @@
     \par\noindent\rule{\textwidth}{0.4pt}
     \textit{I think that interrupts are a great tool that allow the IO devices themselves to start the communication, as opposed to the time consuming polling. This option is especially useful when low latency is required and can be used in conjunction with the regular low speed memory mapped IO transfers or the faster DMA. For devices that do not need any kind of bandwidth or responsiveness, polling can still be a valid choice without utilizing any extra resources. A shadow register file can potentially be utilized to reduce the latency to a minimum, however, it must behave transparently to the programmer.}
     \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Event requirements}
+
+        In order to be able to handle any kind of event, the hardware must provide the CAUSE register which is used to store the unique identifier of the triggered event. If multiple event modules are implemented, multiple instances of the same requirements are obviously needed just once.
+
+        \begin{itemize}
+
+            \item \textit{\textbf{EXC module}: this module adds exceptions to the architecture. The hardware must implement the UEB0, UEB1 and UEHP registers that are used as buffers when an exception is triggered. EXC also offers exception events which are listed in the user event table (table xxx) at the bottom of this section.}
+
+            \item \textit{\textbf{FLT module}: this module adds faults to the architecture. The hardware must implement the SEB0, SEB1, SEB2, UEB2 and SEHP registers that are used as buffers when a fault is triggered. Faults are a promoting event and relies on the presence of the supervisor. FLT also offers fault events which are listed in the supervisor event table (table xxx) at the bottom of this section.}
+
+            \item \textit{\textbf{IOINT module}: this module adds IO interrupts to the architecture. The hardware must implement the SEB0, SEB1, SEB2, UEB2 and SEHP registers that are used as buffers when an IO interrupt is triggered. IO interrupts are a promoting event and relies on the presence of the supervisor. IOINT also offers IO events which are listed in the supervisor event table (table xxx) at the bottom of this section.}
+
+            \item \textit{\textbf{IPCINT module}: this module adds IPC interrupts to the architecture. The hardware must implement the SEB0, SEB1, SEB2, UEB2 and SEHP registers that are used as buffers when an IPC interrupt is triggered. IPC interrupts are a promoting event and relies on the presence of the supervisor. IPCINT also offers IPC events which are listed in the supervisor event table (table xxx) at the bottom of this section.}
+
+        \end{itemize}
+
+        If the supervisor is not decided to be implemented, the FLT, IOINT and IPCINT modules can still be implemented without the supervisor without any problems. Some events, specifically the ILLI, MALI, MISI and INCI are mandatory and must always be implemented. FabRISC categorizes them as privileged synchronous events (faults), but if the supervisor isn't implemented, then the handlers can be programmed in a constant fixed location. This is a small special case in the specification in order to accommodate very simple machines such as small micro controllers which don't need or require any privileged ISA capability because they, usually, don't run an OS.
 
     \subsection{Event handling}
 
@@ -79,10 +97,6 @@
         \end{enumerate}
 
         After the execution of the desired handler code, the last instruction will trigger the returning phase. During that phase, it is sufficient to restore the value of the program counter, the status register and, if the event was promoting, the CAUSE register by storing into them the values of the appropriate buffer registers previously written. It is important to note that the processor must always trap preemptively, that is, before the trapping instruction writes the result and, after the return phase, the processor must replay the instruction that caused the event.
-
-        \vspace{10pt}
-
-        Some events, specifically the ILLI, MALI, MISI and INCI are mandatory and must always be implemented. FabRISC categorizes them as privileged synchronous events (faults), but if the SUPER module isn't implemented the handlers can be programmed in a constant fixed location. This is a small special case in the specification in order to accomodate very simple machines such as small micro controllers which don't need or require any privileged ISA capability because they, usually, don't run an OS.
 
         \vspace{10pt} 
 

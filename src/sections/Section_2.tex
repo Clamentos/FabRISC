@@ -7,13 +7,14 @@
     \begin{enumerate}
 
         \item \textit{\textbf{Instruction modules}: these modules add instructions only.}
+
         \item \textit{\textbf{Miscellaneous modules}: these modules can add things other than instructions such as registers, counters, events, processor operating modes, etc\ldots}
 
     \end{enumerate}
 
     \subsection{Instruction modules}
 
-        Instruction modules only concern instructions and their implementation. These modules are further divided into four general sub-categories each of which contains the actual instruction modules:
+        Instruction modules only concern instructions and their implementation. Some modules might require the presence of dedicated hardware execution units in order to actually perform the specified calculations. These modules are further divided into four general sub-categories each of which contains the actual instruction modules:
 
         \begin{enumerate}
 
@@ -21,30 +22,32 @@
 
                 \begin{itemize}
 
-                    \item 1) \textit{\textbf{CNISB}: computational-normal-integer-scalar-basic.}
-                    \item 2) \textit{\textbf{CNISA}: computational-normal-integer-scalar-advanced.}
+                    \item 1) \textit{\textbf{CISB}: computational-integer-scalar-basic.}
+                    \item 2) \textit{\textbf{CISA}: computational-integer-scalar-advanced.}
 
-                    \item 3) \textit{\textbf{CNIVB}: computational-normal-integer-vector-basic.}
-                    \item 4) \textit{\textbf{CNIVA}: computational-normal-integer-vector-advanced.}
-                    \item 5) \textit{\textbf{CNIVR}: computational-normal-integer-vector-reduction.}
+                    \item 3) \textit{\textbf{CIVB}: computational-integer-vector-basic.}
+                    \item 4) \textit{\textbf{CIVA}: computational-integer-vector-advanced.}
+                    \item 5) \textit{\textbf{CIVR}: computational-integer-vector-reduction.}
 
-                    \item 6) \textit{\textbf{CNISB}: computational-normal-integer-scalar-basic.}
-                    \item 7) \textit{\textbf{CNISA}: computational-normal-integer-scalar-advanced.}
+                    \item 6) \textit{\textbf{CFSB}: computational-FP-scalar-basic.}
+                    \item 7) \textit{\textbf{CFSA}: computational-FP-scalar-advanced.}
 
-                    \item 8) \textit{\textbf{CNFVB}: computational-normal-floating point-vector-basic.}
-                    \item 9) \textit{\textbf{CNFVA}: computational-normal-floating point-vector-advanced.}
-                    \item 10) \textit{\textbf{CNFVR}: computational-normal-floating point-vector-reduction.}
+                    \item 8) \textit{\textbf{CFVB}: computational-FP-vector-basic.}
+                    \item 9) \textit{\textbf{CFVA}: computational-FP-vector-advanced.}
+                    \item 10) \textit{\textbf{CFVR}: computational-FP-vector-reduction.}
 
                     \item 11) \textit{\textbf{CCIB}: computational-compressed-integer-basic.}
                     \item 12) \textit{\textbf{CCIA}: computational-compressed-integer-advanced.}
 
-                    \item 13) \textit{\textbf{CCFB}: computational-compressed-floating point-basic.}
-                    \item 14) \textit{\textbf{CCFA}: computational-compressed-floating point-advanced.}
+                    \item 13) \textit{\textbf{CCFB}: computational-compressed-FP-basic.}
+                    \item 14) \textit{\textbf{CCFA}: computational-compressed-FP-advanced.}
 
-                    \item 14) \textit{\textbf{...}: computational-...} % casts & conversions
-                    \item 15) \textit{\textbf{...}: computational-...}
+                    \item 15) \textit{\textbf{...}: computational-...} % casts & conversions
                     \item 16) \textit{\textbf{...}: computational-...}
                     \item 17) \textit{\textbf{...}: computational-...}
+                    \item 18) \textit{\textbf{...}: computational-...}
+
+                    \item \textit{\textbf{CSM}: computational-scalar-mask.}
 
                 \end{itemize}
 
@@ -52,16 +55,15 @@
 
                 \begin{itemize}
 
-                    \item 18) \textit{\textbf{DNSB}: data transfer-normal-scalar-basic.}
-                    \item 19) \textit{\textbf{DNSA}: data transfer-normal-scalar-advanced.}
+                    \item 19) \textit{\textbf{DSB}: data transfer-scalar-basic.}
+                    \item 20) \textit{\textbf{DSA}: data transfer-scalar-advanced.}
 
-                    \item 18) \textit{\textbf{DNVB}: data transfer-normal-vector-basic.}
-                    \item 19) \textit{\textbf{DNVA}: data transfer-normal-vector-advanced.}
-                    \item 20) \textit{\textbf{DNVG}: data transfer-normal-vector-gather scatter.}
+                    \item 21) \textit{\textbf{DVB}: data transfer-vector-basic.}
+                    \item 22) \textit{\textbf{DVA}: data transfer-vector-advanced.}
+                    \item 23) \textit{\textbf{DVG}: data transfer-vector-gather scatter.}
 
-                    \item 21) \textit{\textbf{DA}: data transfer-atomic.}
-                    \item 22) \textit{\textbf{DB}: data transfer-block.}
-                    \item 23) \textit{\textbf{DC}: data transfer-compressed.}
+                    \item 24) \textit{\textbf{DC}: data transfer-compressed.}
+                    \item 25) \textit{\textbf{DB}: data transfer-block.}
 
                 \end{itemize}
 
@@ -69,21 +71,21 @@
 
                 \begin{itemize}
 
-                    \item 24) \textit{\textbf{FNISB}: flow transfer-normal-integer-scalar-basic.}
-                    \item 25) \textit{\textbf{FNISA}: flow transfer-normal-integer-scalar-advanced.}
-                    \item 26) \textit{\textbf{FNISM}: flow transfer-normal-integer-scalar-mask.}
+                    \item 26) \textit{\textbf{FISB}: flow transfer-integer-scalar-basic.}
+                    \item 27) \textit{\textbf{FISA}: flow transfer-integer-scalar-advanced.}
+                    \item 28) \textit{\textbf{FISM}: flow transfer-integer-scalar-mask.}
 
-                    \item 27) \textit{\textbf{FNIVB}: flow transfer-normal-integer-vector-basic.}
-                    \item 28) \textit{\textbf{FNIVA}: flow transfer-normal-integer-vector-advanced.}
+                    \item 29) \textit{\textbf{FIVB}: flow transfer-integer-vector-basic.}
+                    \item 30) \textit{\textbf{FIVA}: flow transfer-integer-vector-advanced.}
 
-                    \item 29) \textit{\textbf{FNFSB}: flow transfer-normal-floating point-scalar-basic.}
-                    \item 30) \textit{\textbf{FNFSA}: flow transfer-normal-floating point-scalar-advanced.}
-                    \item 31) \textit{\textbf{FNFSM}: flow transfer-normal-floating point-scalar-mask.}
+                    \item 31) \textit{\textbf{FFSB}: flow transfer-floating point-scalar-basic.}
+                    \item 32) \textit{\textbf{FFSA}: flow transfer-floating point-scalar-advanced.}
+                    \item 33) \textit{\textbf{FFSM}: flow transfer-floating point-scalar-mask.}
 
-                    \item 32) \textit{\textbf{FNFVB}: flow transfer-normal-floating point-vector-basic.}
-                    \item 33) \textit{\textbf{FNFVA}: flow transfer-normal-floating point-vector-advanced.}
+                    \item 34) \textit{\textbf{FFVB}: flow transfer-floating point-vector-basic.}
+                    \item 35) \textit{\textbf{FFVA}: flow transfer-floating point-vector-advanced.}
 
-                    \item 34) \textit{\textbf{FC}: flow transfer-compressed.}
+                    \item 36) \textit{\textbf{FC}: flow transfer-compressed.}
 
                 \end{itemize}
 
@@ -91,10 +93,8 @@
 
                 \begin{itemize}
 
-                    \item 35) \textit{\textbf{SB}: system-basic.}
-                    \item 36) \textit{\textbf{SA}: system-advanced.}
-                    \item 37) \textit{\textbf{SF}: system-fences.}
-                    \item 38) \textit{\textbf{ST}: system-transactional.}
+                    \item 37) \textit{\textbf{SB}: system-basic.}
+                    \item 38) \textit{\textbf{SA}: system-advanced.}
 
                 \end{itemize}
 
@@ -102,15 +102,21 @@
 
     \subsection{Miscellaneous modules}
 
-        Miscellaneous modules are more flexible, they can provide useful features such as debugging, performance counters, user events, system events, etc\ldots. Supervisor modules allow FabRISC to become a privileged architecture to better help with OS implementation. The list of modules is the following:
+        Miscellaneous modules are more flexible, they can provide useful features such as debugging, performance counters, user events, system events, extra instructions, etc\ldots. Supervisor modules allow FabRISC to become a privileged architecture to better help with OS implementation. The list of modules is the following:
 
         \begin{itemize}
 
-            \item 39) \textit{\textbf{UEVNT}: user events.}
-            \item 40) \textit{\textbf{SEVNT}: system events.}
-            \item 41) \textit{\textbf{BPREG}: breakpoint registers.}
-            \item 42) \textit{\textbf{PERFC}: performance counters.}
-            \item 43) \textit{\textbf{SUPER}: supervisor.}
+            \item 39) \textit{\textbf{EXC}: exceptions.}                %
+            \item 40) \textit{\textbf{FLT}: faults.}                    %
+            \item 41) \textit{\textbf{IOINT}: IO interrupts.}           
+            \item 42) \textit{\textbf{IPCINT}: IPC interrupts.}
+            \item 43) \textit{\textbf{DBGR}: debugging registers.}
+            \item 44) \textit{\textbf{PERFC}: performance counters.}
+            \item 45) \textit{\textbf{SUPER}: supervisor.}
+
+            \item 46) \textit{\textbf{FNC}: fences.}
+            \item 47) \textit{\textbf{TM}: transactional-memory.}
+            \item 48) \textit{\textbf{AM}: atomic-memory.}
 
         \end{itemize}
 
