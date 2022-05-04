@@ -1,14 +1,45 @@
-\contentsline {section}{\numberline {1}Introduction}{3}{}%
-\contentsline {subsection}{\numberline {1.1}Terminology}{3}{}%
-\contentsline {subsection}{\numberline {1.2}Implementation specific parameters}{4}{}%
-\contentsline {section}{\numberline {2}ISA modules list}{6}{}%
-\contentsline {subsection}{\numberline {2.1}Instruction modules}{6}{}%
-\contentsline {subsection}{\numberline {2.2}Miscellaneous modules}{7}{}%
-\contentsline {section}{\numberline {3}Low-level data types}{8}{}%
-\contentsline {subsection}{\numberline {3.1}Integer types}{8}{}%
-\contentsline {subsection}{\numberline {3.2}Floating point types}{8}{}%
-\contentsline {section}{\numberline {4}Memory}{9}{}%
-\contentsline {subsection}{\numberline {4.1}Data alignment}{9}{}%
-\contentsline {subsection}{\numberline {4.2}Synchronization}{9}{}%
-\contentsline {subsection}{\numberline {4.3}Coherence}{11}{}%
-\contentsline {subsection}{\numberline {4.4}Consistency}{11}{}%
+\contentsline {section}{\numberline {1}Introduction}{4}{}%
+\contentsline {subsection}{\numberline {1.1}Terminology}{4}{}%
+\contentsline {subsection}{\numberline {1.2}Implementation specific parameters}{5}{}%
+\contentsline {section}{\numberline {2}ISA modules list}{7}{}%
+\contentsline {subsection}{\numberline {2.1}Instruction modules}{7}{}%
+\contentsline {subsection}{\numberline {2.2}Miscellaneous modules}{8}{}%
+\contentsline {section}{\numberline {3}Low-level data types}{9}{}%
+\contentsline {subsection}{\numberline {3.1}Integer types}{9}{}%
+\contentsline {subsection}{\numberline {3.2}Floating point types}{9}{}%
+\contentsline {section}{\numberline {4}Memory}{10}{}%
+\contentsline {subsection}{\numberline {4.1}Data alignment}{10}{}%
+\contentsline {subsection}{\numberline {4.2}Synchronization}{10}{}%
+\contentsline {subsection}{\numberline {4.3}Coherence}{12}{}%
+\contentsline {subsection}{\numberline {4.4}Consistency}{12}{}%
+\contentsline {section}{\numberline {5}Input Output}{14}{}%
+\contentsline {subsection}{\numberline {5.1}Memory mapped IO}{14}{}%
+\contentsline {subsection}{\numberline {5.2}Direct memory access}{14}{}%
+\contentsline {section}{\numberline {6}Events}{16}{}%
+\contentsline {subsection}{\numberline {6.1}Synchronous}{16}{}%
+\contentsline {subsection}{\numberline {6.2}Asynchronous}{16}{}%
+\contentsline {subsection}{\numberline {6.3}Event requirements}{17}{}%
+\contentsline {subsection}{\numberline {6.4}Event handling}{17}{}%
+\contentsline {section}{\numberline {7}OS support}{21}{}%
+\contentsline {subsection}{\numberline {7.1}Supervisor mode}{21}{}%
+\contentsline {subsection}{\numberline {7.2}Virtual memory}{21}{}%
+\contentsline {subsection}{\numberline {7.3}Hardware thread communication}{21}{}%
+\contentsline {section}{\numberline {8}ISA specification}{23}{}%
+\contentsline {subsection}{\numberline {8.1}Register file}{23}{}%
+\contentsline {subsubsection}{\numberline {8.1.1}Register ABI}{23}{}%
+\contentsline {subsubsection}{\numberline {8.1.2}Special purpose register bank}{24}{}%
+\contentsline {subsubsection}{\numberline {8.1.3}Processor operating modes}{26}{}%
+\contentsline {subsubsection}{\numberline {8.1.4}Helper register bank}{27}{}%
+\contentsline {subsection}{\numberline {8.2}Instruction formats}{27}{}%
+\contentsline {subsection}{\numberline {8.3}Decoding guidelines}{29}{}%
+\contentsline {subsubsection}{\numberline {8.3.1}Opcode extraction}{30}{}%
+\contentsline {subsubsection}{\numberline {8.3.2}Micro-operation format}{30}{}%
+\contentsline {section}{\numberline {9}Instruction list}{31}{}%
+\contentsline {subsection}{\numberline {9.1}Basic scalar integer computational}{31}{}%
+\contentsline {subsubsection}{\numberline {9.1.1}(ADD) Addition}{31}{}%
+\contentsline {subsubsection}{\numberline {9.1.2}(SUB) Subtraction}{31}{}%
+\contentsline {subsection}{\numberline {9.2}Data transfer instructions}{31}{}%
+\contentsline {subsection}{\numberline {9.3}Control transfer instructions}{31}{}%
+\contentsline {subsection}{\numberline {9.4}System instructions}{31}{}%
+\contentsline {section}{\numberline {10}Macro-op fusion}{32}{}%
+\contentsline {section}{\numberline {11}License}{33}{}%

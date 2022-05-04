@@ -1,4 +1,4 @@
-\section[OS support]{\LARGE\underline{OS support}} % 5
+\section[OS support]{\LARGE\underline{OS support}}
 
     \vspace{10pt}
 
@@ -8,11 +8,11 @@
 
         \vspace{10pt}
 
-        FabRISC is a privileged architecture and makes use of the supervisor to create a border between the OS and the user. With supervisor privileges the executing code has complete and total control over the hardware and any access to protected resources in user mode, such as particular instructions, registers, or addresses must generate the appropriate fault. The hart should only enter the supervisor mode if an appropriate event is triggered and a dedicated instruction (ERET) is provided to transfer the control back to the user (consult section 7 for more information). If the system makes use of a multicore / multithreaded processor, then each core must have the ability to be in supervisor mode or not independently.
+        FabRISC is a privileged architecture and makes use of the supervisor to create a border between the OS and the user. With supervisor privileges the executing code has complete and total control over the hardware and any access to protected resources in user mode, such as particular instructions, registers, or addresses must generate the appropriate fault. The hart should only enter the supervisor mode if an appropriate event is triggered and a dedicated instruction (ERET) is provided to transfer the control back to the user (consult section xxx for more information). If the system makes use of a multicore / multithreaded processor, then each core must have the ability to be in supervisor mode or not independently.
 
         \vspace{10pt}
 
-        When booting up, the system should start in supervisor mode with only one core active to allow the loading of the OS itself and the creation of all the required data structures. This is indicated by the xxx bit in the status register. After the booting phase is done, this bit can simply be set to zero causing the processor to execute normally.
+        When booting up, the system should start in supervisor mode with only one core active to allow the loading of the OS itself and the creation of all the required data structures. This is indicated by the xxx bit in the control and status register. After the booting phase is done, this bit can simply be set to zero causing the processor to execute normally.
 
     \par\noindent\rule{\textwidth}{0.4pt}
     \textit{Having a supervisor mode is essential for implementing a working operative system. This special mode allows the executing code to have complete and total control over the CPU and is used, by the OS, to protect itself from other processes that could, intentionally or not, compromise the system. When the processor isn't running in supervisor mode it will run in user mode with restrictions, mainly in manipulating certain hardware state including some special registers, addresses and instructions. This, along with virtual memory, will effectively confine any user level process to its own sandbox protecting itself and others from damage.}
@@ -22,7 +22,7 @@
 
         \vspace{10pt}
 
-        FabRISC provides privileged customizable and implementation specific instructions to interface directly with the MMU, if the processor has one, allowing the OS to modify and manage that particular unit (see section 7 for more details), alternatively, the managing can be automatic if the hardware supports it. A special purpose register called PTP is also provided to hold the physical address of the page table to perform the page table walk in case of a TLB miss. PTP must be set by the supervisor only with the appropriate address every time a context switch happens and a write operation on PTP in user mode must cause a fault. The TLB can also make use the process ID in the PID register to avoid flushing during context switches and page swapping can be supported via the generation of the \textit{page fault} event that can be handled by the OS.
+        FabRISC provides privileged customizable and implementation specific instructions to interface directly with the MMU, if the processor has one, allowing the OS to modify and manage that particular unit (see section xxx for more details), alternatively, the managing can be automatic if the hardware supports it. A special purpose register called PTP is also provided to hold the physical address of the page table to perform the page table walk in case of a TLB miss. PTP must be set by the supervisor only with the appropriate address every time a context switch happens and a write operation on PTP in user mode must cause a fault. The TLB can also make use the process ID in the PID register to avoid flushing during context switches and page swapping can be supported via the generation of the \textit{page fault} event that can be handled by the OS.
 
     \par\noindent\rule{\textwidth}{0.4pt}
     \textit{Virtual memory is a central concept in any operative system and i wanted to provide, at least, basic support without going too crazy (this is pretty much as simple as it gets). The CSR also has a special bit to enable or disable paging by bypassing the TLB and avoid doing the virtual to physical translation all together. The process ID can help reducing the burst of TLB misses caused by context switches especially with frequent system calls in microkernel based solutions.}

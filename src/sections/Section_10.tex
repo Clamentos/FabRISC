@@ -1,0 +1,17 @@
+\section[Macro-op fusion]{Macro-op fusion}
+
+    \vspace{10pt}
+
+    This section is dedicated to give a brief explanation of the macro-op fusion technique. Macro-op fusion can help to increase performance by combining common instruction idioms, usually just pairs of instructions, into one micro-op that can be executed in a single cycle by the back-end of the processor. A fixed and hard-coded set of fusible instruction sequences is needed to tell the hardware when the fusion is applicable and when it is not, however, the only constraint is that a fused sequence must behave in the same way as a non fused sequence of the same instructions. In short, breaking a fusible sequence with a NOP or other non fusible instruction should not yield different architectural states. Some sequences are listed below, but more are possible:
+
+    \begin{enumerate}
+
+        \item ...
+
+    \end{enumerate}
+
+    [to be continued...]
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{This is a very interesting technique that can help improve performance, especially in cases where the hardware is capable of doing certain operations in one cycle, but the ISA can't. The instruction decoder, though, needs to be designed with this capability in mind and the use of a micro-op cache greatly helps minimizing the pipeline bubbles created by the fusion. The micro-op cache also helps reducing power because it stores decoded instructions avoiding re decoding them every time the same code is executed. Fetching branches from this cache reduces their penalty in case of incorrect prediction.}
+    \par\noindent\rule{\textwidth}{0.4pt}
