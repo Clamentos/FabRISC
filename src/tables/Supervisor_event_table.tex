@@ -2,54 +2,54 @@
 
     \begin{center}
 
-    \begin{tabular}{|c|l|l|l|l|}
+    \begin{tabular}{|c|l|l|l|l|l|}
 
         \hline
-        ID & Name & Mnemonic & Type & Requirement \\
+        ID & Name & Mnemonic & Type & Requirement & Global priority \\
         \hline
         \addlinespace[10pt]
         \hline
-        00 & Interrupt 0 & INT0 & IO interrupt & SEVNT module \\
+        00 & Interrupt 0 & INT0 & IO interrupt & SEVNT module & 5 \\
         \hline
-        ... & ... & ... & ... & ... \\
+        ... & ... & ... & ... & ... & ... \\
         \hline
-        3F & Interrupt 63 & INT63 & IO interrupt & SEVNT module \\
+        3F & Interrupt 63 & INT63 & IO interrupt & SEVNT module & 5 \\
         \hline
-        40 & Interrupt 64 & INT64 & IPC interrupt & SEVNT module \\
+        40 & Interrupt 64 & INT64 & IPC interrupt & SEVNT module & 5 \\
         \hline
-        ... & ... & ... & ... & ... \\
+        ... & ... & ... & ... & ... & ... \\
         \hline
-        7F & Interrupt 127 & INT127 & IPC interrupt & SEVNT module \\
+        7F & Interrupt 127 & INT127 & IPC interrupt & SEVNT module & 5 \\
         \hline
-        80 & System call 0 & SYSCL0 & Fault & SEVNT module \\
+        80 & System call 0 & SYSCL0 & Fault & SEVNT module & 4 \\
         \hline
-        ... & ... & ... & ... & ... \\
+        ... & ... & ... & ... & ... & ... \\
         \hline
-        E3 & System call 99 & SYSCL99 & Fault & SEVNT module \\
+        E3 & System call 99 & SYSCL99 & Fault & SEVNT module & 4 \\
         \hline
-        E4 & Illegal instruction & ILLI & Fault & mandatory \\
+        E4 & Illegal instruction & ILLI & Fault & mandatory & 4 \\
         \hline
-        E5 & Malformed instruction & MALI & Fault & mandatory \\
+        E5 & Malformed instruction & MALI & Fault & mandatory & 4 \\
         \hline
-        E6 & Misaligned instruction & MISI & Fault & mandatory \\
+        E6 & Misaligned instruction & MISI & Fault & mandatory & 4 \\
         \hline
-        E7 & Illegal execute address & IEXE & Fault & SEVNT module  \\
+        E7 & Illegal execute address & IEXE & Fault & SEVNT module & 4 \\
         \hline
-        E8 & Illegal read address & IRDA & Fault & SEVNT module  \\
+        E8 & Illegal read address & IRDA & Fault & SEVNT module & 4 \\
         \hline
-        E9 & Illegal write address & IWRA & Fault & SEVNT module  \\
+        E9 & Illegal write address & IWRA & Fault & SEVNT module & 4 \\
         \hline
-        EA & Misaligned address & MISA & Fault & ??? \\
+        EA & Misaligned address & MISA & Fault & mandatory & 4 \\
         \hline
-        EB & Page fault & PGFT & Fault & SEVNT module \\
+        EB & Page fault & PGFT & Fault & SEVNT module & 4 \\
         \hline
-        EC & Incompatible instruction & INCI & Fault & mandatory \\
+        EC & Incompatible instruction & INCI & Fault & mandatory & 4 \\
         \hline
-        ED & Reserved & - & - & - \\
+        ED & Reserved & - & - & - & - \\
         \hline
-        ... & ... & ... & ... & ... \\
+        ... & ... & ... & ... & ... & ... \\
         \hline
-        FF & Reserved & - & - & - \\
+        FF & Reserved & - & - & - & - \\
         \hline
 
     \end{tabular}

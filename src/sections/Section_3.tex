@@ -2,11 +2,11 @@
 
     \vspace{10pt}
 
-    This section is dedicated to explain the various proposed low-level data types including integer and floating point. The smallest addressable object in FabRISC is the ``byte'', that is, eight consecutive bits. Longer types are constructed from multiple bytes side by side following powers of two: one, two, four or eight bytes.
+    This section is dedicated to explain the various proposed low-level data types including integer and floating point. The smallest addressable object in FabRISC is the ``byte'', that is, eight consecutive bits. Longer types are constructed from multiple bytes side by side following powers of two: one, two, four or eight bytes in little-endian order.
 
     \subsection{Integer types}
 
-        Integer types are arguably the most common data types. Integers are always signed using 2's complement notations and depending on their length, they can have various names:
+        Integers are arguably the most common data types. They are always signed using 2's complement notations and depending on their length, they can have various names:
 
         \begin{itemize}
 
@@ -31,9 +31,13 @@
 
         \end{itemize}
 
+        % pointer operations
+
     \subsection{Floating point types}
 
         ...
+
+        % 
 
     \par\noindent\rule{\textwidth}{0.4pt}
     \textit{...}

@@ -2,74 +2,74 @@
 
     \begin{center}
 
-    \begin{tabular}{|c|l|l|l|l|}
+    \begin{tabular}{|c|l|l|l|l|l|}
 
         \hline
-        ID & Name & Mnemonic & Type & Requirement\\
+        ID & Name & Mnemonic & Type & Requirement & Global priority \\
         \hline
         \addlinespace[10pt]
         \hline
-        00 & Carry over exception & COVRE & Exception & UEVNT module\\
+        00 & Carry over exception & COVRE & Exception & EXC module & 2 \\
         \hline
-        01 & Carry under exception & CUNDE & Exception & UEVNT module \\
+        01 & Carry under exception & CUNDE & Exception & EXC module & 2 \\
         \hline
-        02 & Overflow exception & OVFLE & Exception & UEVNT module \\
+        02 & Overflow exception & OVFLE & Exception & EXC module & 2 \\
         \hline
-        03 & Underflow exception & UNFLE & Exception & UEVNT module \\
+        03 & Underflow exception & UNFLE & Exception & EXC module & 2 \\
         \hline
-        04 & Division by 0 exception & DIV0E & Exception & UEVNT module \\
+        04 & Division by 0 exception & DIV0E & Exception & EXC module & 2 \\
         \hline
-        05 & Associativity abort & AABT & Exception & ST module \\
+        05 & Conflict abort & CABT & Exception & TM module & 1 \\
         \hline
-        06 & Conflict abort & CABT & Exception & ST module \\
+        06 & Event abort & EABT & Exception & TM module & 1 \\
         \hline
-        07 & Event abort & EABT & Exception & ST module \\
+        07 & Depth overflow abort & OABT & Exception & TM module & 1 \\
         \hline
-        08 & Depth overflow abort & OABT & Exception & ST module \\
+        08 & Replacement abort & RABT & Exception & TM module & 1 \\
         \hline
-        09 & Size abort & SABT & Exception & ST module \\
+        09 & Size abort & SABT & Exception & TM module & 1 \\
         \hline
-        0A & Depth underflow abort & UABT & Exception & ST module \\
+        0A & Depth underflow abort & UABT & Exception & TM module & 1 \\
         \hline
-        0B & Break on instruction address EQ & BIAEQ & Exception & UEVNT module \\
+        0B & Break on instruction address EQ & BIAEQ & Exception & DBGR module & 0 \\
         \hline
-        0C & Break on instruction address LE & BIALE & Exception & UEVNT module \\
+        0C & Break on instruction address LE & BIALE & Exception & DBGR module & 0 \\
         \hline
-        0D & Break on instruction address GE & BIAGE & Exception & UEVNT module \\
+        0D & Break on instruction address GE & BIAGE & Exception & DBGR module & 0 \\
         \hline
-        0E & Break on read address EQ & BRAEQ & Exception & UEVNT module \\
+        0E & Break on read address EQ & BRAEQ & Exception & DBGR module & 0 \\
         \hline
-        0F & Break on read address LE & BRALE & Exception & UEVNT module \\
+        0F & Break on read address LE & BRALE & Exception & DBGR module & 0 \\
         \hline
-        10 & Break on read address GE & BRAGE & Exception & UEVNT module \\
+        10 & Break on read address GE & BRAGE & Exception & DBGR module & 0 \\
         \hline
-        11 & Break on write address EQ & BWAEQ & Exception & UEVNT module \\
+        11 & Break on write address EQ & BWAEQ & Exception & DBGR module & 0 \\
         \hline
-        12 & Break on write address LE & BWALE & Exception & UEVNT module \\
+        12 & Break on write address LE & BWALE & Exception & DBGR module & 0 \\
         \hline
-        13 & Break on write address GE & BWAGE & Exception & UEVNT module \\
+        13 & Break on write address GE & BWAGE & Exception & DBGR module & 0 \\
         \hline
-        14 & Break on instruction 16 & BIN16 & Exception & UEVNT module \\
+        14 & Break on instruction 16 & BIN16 & Exception & DBGR module & 0 \\
         \hline
-        15 & Break on instruction 32 & BIN32 & Exception & UEVNT module \\
+        15 & Break on instruction 32 & BIN32 & Exception & DBGR module & 0 \\
         \hline
-        16 & Break on instruction 48 & BIN48 & Exception & UEVNT module \\
+        16 & Break on instruction 48 & BIN48 & Exception & DBGR module & 0 \\
         \hline
-        17 & Break on carry over & BCOVR & Exception & UEVNT module \\
+        17 & Break on carry over & BCOVR & Exception & DBGR module & 0 \\
         \hline
-        18 & Break on carry under & BCUND & Exception & UEVNT module \\
+        18 & Break on carry under & BCUND & Exception & DBGR module & 0 \\
         \hline
-        19 & Break on overflow & BOVFL & Exception & UEVNT module \\
+        19 & Break on overflow & BOVFL & Exception & DBGR module & 0 \\
         \hline
-        1A & Break on underflow & BUNFL & Exception & UEVNT module \\
+        1A & Break on underflow & BUNFL & Exception & DBGR module & 0 \\
         \hline
-        1B & Break on division by 0 & BDIV0 & Exception & UEVNT module \\
+        1B & Break on division by 0 & BDIV0 & Exception & DBGR module & 0 \\
         \hline
-        1C & Reserved & - & Exception & - \\
+        1C & Reserved & - & Exception & - & - \\
         \hline
-        ... & ... & ... & Exception & ... \\
+        ... & ... & ... & Exception & ... & ... \\
         \hline
-        FF & Reserved & - & Exception & - \\
+        FF & Reserved & - & Exception & - & - \\
         \hline
 
     \end{tabular}

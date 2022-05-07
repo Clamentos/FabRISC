@@ -23,7 +23,7 @@
 \contentsline {section}{\numberline {7}OS support}{21}{}%
 \contentsline {subsection}{\numberline {7.1}Supervisor mode}{21}{}%
 \contentsline {subsection}{\numberline {7.2}Virtual memory}{21}{}%
-\contentsline {subsection}{\numberline {7.3}Hardware thread communication}{21}{}%
+\contentsline {subsection}{\numberline {7.3}Hardware thread communication}{22}{}%
 \contentsline {section}{\numberline {8}ISA specification}{23}{}%
 \contentsline {subsection}{\numberline {8.1}Register file}{23}{}%
 \contentsline {subsubsection}{\numberline {8.1.1}Register ABI}{23}{}%
@@ -42,4 +42,4 @@
 \contentsline {subsection}{\numberline {9.3}Control transfer instructions}{31}{}%
 \contentsline {subsection}{\numberline {9.4}System instructions}{31}{}%
 \contentsline {section}{\numberline {10}Macro-op fusion}{32}{}%
-\contentsline {section}{\numberline {11}License}{33}{}%
+\contentsline {section}{\numberline {11}License and changelog}{33}{}%

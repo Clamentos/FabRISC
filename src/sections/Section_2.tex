@@ -14,7 +14,7 @@
 
     \subsection{Instruction modules}
 
-        Instruction modules only concern instructions and their implementation. Some modules might require the presence of dedicated hardware execution units in order to actually perform the specified calculations. These modules are further divided into four general sub-categories each of which contains the actual instruction modules:
+        Instruction modules only concern instructions and their implementation. Some modules might require the presence of dedicated hardware execution units in order to actually perform the specified calculations, such as multiplication and division. These modules are further divided into four general sub-categories each of which contains the actual instruction modules:
 
         \begin{enumerate}
 
@@ -102,7 +102,7 @@
 
     \subsection{Miscellaneous modules}
 
-        Miscellaneous modules are more flexible, they can provide useful features such as debugging, performance counters, user events, system events, extra instructions, etc\ldots. Supervisor modules allow FabRISC to become a privileged architecture to better help with OS implementation. The list of modules is the following:
+        Miscellaneous modules are more flexible and they can provide useful features such as debugging, performance counters, user events, system events, extra instructions, etc\ldots. Supervisor features allow FabRISC to become a privileged architecture to better help with OS implementation and sandboxing. The list of modules is the following:
 
         \begin{itemize}
 
@@ -110,8 +110,10 @@
             \item 40) \textit{\textbf{FLT}: faults.}
             \item 41) \textit{\textbf{IOINT}: IO interrupts.}           
             \item 42) \textit{\textbf{IPCINT}: IPC interrupts.}
+
             \item 43) \textit{\textbf{DBGR}: debugging registers.}
             \item 44) \textit{\textbf{PERFC}: performance counters.}
+
             \item 45) \textit{\textbf{SUPER}: supervisor.}
 
             \item 46) \textit{\textbf{FNC}: fences.}

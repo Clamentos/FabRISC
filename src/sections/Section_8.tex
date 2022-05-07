@@ -2,7 +2,7 @@
 
     \vspace{10pt}
 
-    In this section the register file organization, vector model, processor modes and the instruction modules are presented. FabRISC is a modular ISA composed of four macro instruction modules each divided into several micro modules that the hardware designer can choose. The macro modules, as discussed in section xxx, concern computational, data transfer, flow transfer and system instructions. Processors that don't support certain modules must generate the xxx fault whenever an unimplemented instruction is fetched. Processors must also generate the xxx fault whenever a combination of all zeros or all ones is fetched in order to increase safety against buffer overflows exploits or accidental access of uninitialized memory locations.
+    In this section the register file organization, vector model, processor modes and the instruction modules are presented. FabRISC is a modular ISA composed of four macro instruction modules each divided into several micro modules that the hardware designer can choose. The macro modules, as discussed in section 2, concern computational, data transfer, flow transfer and system instructions. Processors that don't support certain modules must generate the INCI fault whenever an unimplemented instruction is fetched. Processors must also generate the ILLI fault whenever a combination of all zeros or all ones is fetched in order to increase safety against buffer overflows exploits or accidental access of uninitialized memory locations.
 
     \subsection{Register file}
 
@@ -16,9 +16,9 @@
 
             \item \textit{\textbf{Special purpose registers} (SPRs): this bank is composed of 32 registers which are internally used to keep track of state, modes, flags and other system related things. The registers can be WLEN or 32 bits wide with some being privileged resources.}
 
-            \item \textit{\textbf{Vector general purpose registers} (VGPRs): this bank is composed of 32 registers which can be used for holding values during execution. The registers are all MXVL bits wide and are used by vector integer and floating point instructions. This bank is only necessary if the machine in question supports vector execution. All of these registers are non privileged.}
+            \item \textit{\textbf{Vector general purpose registers} (VGPRs): this bank is composed of 32 registers which can be used for holding values during execution. The registers are all MXVL bits wide and are used by vector integer and floating point instructions. This bank is only necessary if the machine in question supports any vector execution. All of these registers are non privileged.}
 
-            \item \textit{\textbf{Helper registers} (HLPRs): this bank is composed of 32 registers which can be used for debugging, performance counters, memory safety and more. These registers can WLEN or 32 bits wide and all are not privileged.}
+            \item \textit{\textbf{Helper registers} (HLPRs): this bank is composed of 32 registers which can be used for debugging, performance counters, memory safety and more. These registers can WLEN or 32 bits wide and are not privileged.}
 
         \end{enumerate}
 
@@ -46,7 +46,7 @@
 
             \end{itemize}
 
-            Vector registers are all considered persistent, which means that the callee save scheme must be utilized since it's assumed that their value will be retained across function calls. Special instructions are also provided to move vector registers, or part of them, to and from the scalar bank (see section 7 for more information).
+            Vector registers are all considered persistent, which means that the callee save scheme must be utilized since it's assumed that their value will be retained across function calls. Special instructions are also provided to move vector registers, or part of them, to and from the scalar bank (see section 9 for more information).
 
         \subsubsection{Special purpose register bank}
 
@@ -56,7 +56,7 @@
 
             \begin{itemize}
 
-                \item \textit{\textbf{Exception buffers}: registers prefixed with ``EB'' are used as temporary buffers for exception handling. They are transparent registers that are automatically managed by the hart during the launch and return phases of the handling. EB0 will store the program counter (PC), while EB1 will store the status register (CSR). All EB register are WLEN bits wide and are not privileged.}
+                \item \textit{\textbf{Exception buffers}: registers prefixed with ``EB'' are used as temporary buffers for exception handling. They are transparent registers that are automatically managed by the hart during the launch and return phases of the handling. EB0 will store the program counter (PC), EB1 will store the status register (CSR) and EB2 will store the cause register (CAUSE). All EB register are WLEN bits wide and are not privileged.}
 
                 \item \textit{\textbf{User event handler pointer}: this register, called ``UEHP'', is used to hold the logical address of the exception handler for the current executing process. During the launching phase, UEHP will be used to perform an absolute branch (copy of UEHP value plus exception identifier into the PC). UEHP is WLEN bits wide and is not privileged.}
 
@@ -76,11 +76,13 @@
 
                 \item \textit{\textbf{Process identifier}: this register, called ``PID'', holds the process identifier for the currently executing process. The MMU can use PID to avoid flushing the TLB during context switches because PID serves as a discriminant. If the CPU transitions from user to supervisor mode, PID must hold the identifier of the privileged process (kernel) via the use of hardwired values. PID is WLEN bits wide and is privileged.}
 
-                % maybe a thread ID reg?
+                \item \textit{\textbf{Thread identifier}: this register, called ``TID'', holds the thread identifier for the currently executing thread. The MMU can use TID to avoid flushing the TLB during context switches because TID serves as a discriminant. If the CPU transitions from user to supervisor mode, TID must hold the identifier of the privileged thread via the use of hardwired values. TID is WLEN bits wide and is privileged.}
 
                 \item \textit{\textbf{File usage}: registers prefixed with ``FU'' are used to hold information about which register in which bank was modified since the scheduling of the process. FU registers are used by specific instructions to store or load only the necessary registers for context switches. This is achieved by the use of a single bit per register to indicate if the target register is modified or not. FU0 is reserved for bank 0, FU1 for bank 1, FU2 for bank 2 and FU3 for bank 3. All FU registers are 32 bits and are privileged.}
 
                 \item \textit{\textbf{Kernel register}: registers prefixed with ``KR'' are kernel reserved general purpose registers. KR registers are all WLEN bits wide and are privileged.}
+
+                \item \textit{\textbf{Extra volatile registers}: these registers are simply extra volatile registers for the user.}
 
             \end{itemize}
 
@@ -131,8 +133,6 @@
 
                 \item \textit{\textbf{Cache bit} (CACB): this bit indicates if the hart can access cache or not.}
 
-                \item \textit{\textbf{Compatibility bit} (CPTB): this bit indicates if the hart must fault when encountering an unsupported instruction or simply execute a no-operation.}
-
                 \item \textit{\textbf{reserved}: the remaining bits are unused.}
 
             \end{itemize}
@@ -156,8 +156,6 @@
                 \item \textit{\textbf{Auto exceptions mode}: this CSR bit dictates the exception handling mechanism currently being employed and, if set, it causes the hart to branch to the handler whenever an exception is triggered. If the bit is not set, the hart discards any exception limiting itself to setting the flags only.}
 
                 \item \textit{\textbf{Cached mode}: this CSR bit dictates if a particular hart is allowed to use caches as part of it's operation. A value of zero will cause the hart to bypass the whole cache hierarchy.}
-
-                \item \textit{\textbf{Compatibility mode}: this CSR bit dictates the instruction compatibility mode of the current hart. A value of zero will cause the INCI fault to be triggered every time an unimplemented instruction is fetched. A value of one will bypass this and transform any unimplemented instruction into a no-operation.}
 
             \end{itemize}
 

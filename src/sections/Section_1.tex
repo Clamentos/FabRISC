@@ -83,10 +83,10 @@
 
                 \end{itemize}
 
-            \item \textit{\textbf{ISA Modules} (ISAMOD): this parameter indicates the implemented instruction set modules of the processor. This parameter is xxx bits long and works as a checklist where each bit indicates the desired module. The list of all possible modules is presented in the next section.}
+            \item \textit{\textbf{ISA Modules} (ISAMOD): this parameter indicates the implemented instruction set modules of the processor. This parameter is 48 bits long and works as a checklist where each bit indicates the desired module. The list of all possible modules is presented in the next section.}
 
         \end{itemize}
 
     \par\noindent\rule{\textwidth}{0.4pt}
-    \textit{I consider 512 bits for 64 bit machines and 256 for 32 bit machines to be a good maximum limit since i doubt that even advanced architectures would benefit in a practical way from a wider vector pipeline except, perhaps, in some very specific situations. This length can already be a bit of a challenge because of the shear width, necessitating a very large number of bits for the reservation station entries in out-of-order machines. Other than a practical limit, there is also a physical limit to the vector length which is given by the length of the vector mask register (VMSK) in the special purpose register file. This is because VMSK must be VLEN bits wide which, in the case of 64 bit machines can allocate up to 64 mask bits (one per byte element). The same logic applies for 32 bit machines which are limited to 32 mask bits.}
+    \textit{I consider 512 bits for 64 bit machines and 256 for 32 bit machines to be a good maximum limit since i doubt that even advanced architectures would benefit in a practical way from a wider vector pipeline except, perhaps, in some very specific situations. This length can already be a bit of a challenge because of the shear width, necessitating a very large number of bits for the reservation station entries in out-of-order machines. Other than a practical limit, there is also a physical limit to the vector length which is given by the length of the vector mask register (VMSK) in the special purpose register file. This is because VMSK must be WLEN bits wide which, in the case of 64 bit machines can allocate up to 64 mask bits (one per byte element). The same logic applies for 32 bit machines which are limited to 32 mask bits.}
     \par\noindent\rule{\textwidth}{0.4pt}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.6.10)  4 MAY 2022 11:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.6.10)  7 MAY 2022 12:06
 entering extended mode
 **./FabRISC_spec.tex
 (FabRISC_spec.tex
@@ -237,12 +237,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 92--33
 [6] (sections/Section_2.tex [7
 
 ])
-Underfull \hbox (badness 10000) in paragraph at lines 125--35
+Underfull \hbox (badness 10000) in paragraph at lines 127--35
 
  []
 
 [8] (sections/Section_3.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 40--37
+Underfull \hbox (badness 10000) in paragraph at lines 44--37
 
  []
 
@@ -264,8 +264,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 49--41
 
 [15] (sections/Section_6.tex [16
 
-] [17] (Tables/Supervisor_event_table.tex)
-(Tables/User_event_table.tex)) [18] [19] [20] (sections/Section_7.tex [21
+] [17] (Tables/Supervisor_event_table.tex
+[18]) (Tables/User_event_table.tex)) [19] [20] (sections/Section_7.tex [21
 
 ])
 Underfull \hbox (badness 10000) in paragraph at lines 49--45
@@ -281,7 +281,7 @@ Overfull \hbox (19.91747pt too wide) in paragraph at lines 5--27
  []
 
 ) [27] [28] [29])
-Underfull \hbox (badness 10000) in paragraph at lines 324--47
+Underfull \hbox (badness 10000) in paragraph at lines 322--47
 
  []
 
@@ -298,7 +298,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 17--51
 <./Images/LICENSE.png, id=123, 97.0827pt x 33.9669pt>
 File: ./Images/LICENSE.png Graphic file (type png)
 <use ./Images/LICENSE.png>
-Package pdftex.def Info: ./Images/LICENSE.png  used on input line 13.
+Package pdftex.def Info: ./Images/LICENSE.png  used on input line 21.
 (pdftex.def)             Requested size: 77.66624pt x 27.17354pt.
 ) [33
 
@@ -310,7 +310,7 @@ Here is how much of TeX's memory you used:
  19530 multiletter control sequences out of 15000+600000
  409946 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,9n,66p,1874b,311s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 57i,9n,66p,1874b,253s stack positions out of 5000i,500n,10000p,200000b,80000s
  <C:\Users\egatt\AppData\Local\MiK
 TeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/egatt/AppData/Loca
 l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/egatt/App
@@ -325,7 +325,7 @@ ype1/public/amsfonts/cm/cmr12.pfb><C:/Users/egatt/AppData/Local/Programs/MiKTeX
 s/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/egatt/AppData/Local/
 Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/egatt/AppDa
 ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on FabRISC_spec.pdf (33 pages, 287447 bytes).
+Output written on FabRISC_spec.pdf (33 pages, 288587 bytes).
 PDF statistics:
  179 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

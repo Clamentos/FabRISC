@@ -8,7 +8,7 @@
 
         \vspace{10pt}
 
-        FabRISC, overall, treats the main memory and the MMIO regions as collections of byte-addressable locations in \textit{little endian} order with a range of \(2^{WLEN}\) addresses in total. The specification leaves to the hardware designer the choice of supporting aligned or unaligned memory accesses or both for data. If aligned is decided to be the only supported scheme, the hart must generate the MISA fault every time the constraint is violated (consult section xxx for more information). When it comes to instructions, it's mandatory to have fetch engines that support accesses at the 16-bit boundary alignment. This is because the greatest common denominator of the instruction sizes, with or without compressed instructions, is 16 and the programmer must ensure that the code is aligned at said boundary, if not, the MISI fault must be generated. Branch offsets, as a result of this, are logically shifted by one place to the left before being added to the program counter (PC). This means that said offsets will specify 16-bits as the smallest addressable object, effectively doubling the range in terms of bytes.
+        FabRISC, overall, treats the main memory and the MMIO regions as collections of byte-addressable locations in \textit{little endian} order with a range of \(2^{WLEN}\) addresses in total. The specification leaves to the hardware designer the choice of supporting aligned or unaligned memory accesses or both for data. If aligned is decided to be the only supported scheme, the hart must generate the MISA fault every time the constraint is violated (consult section 6 for more information). When it comes to instructions, it's mandatory to have fetch engines that support accesses aligned at the 16-bit boundary. This is because the greatest common denominator of the instruction sizes, with or without compressed instructions, is 16 and the programmer must ensure that the code is aligned at said boundary, if not, the MISI fault must be generated. Branch offsets, as a result of this, are logically shifted by one place to the left before being added to the program counter (PC). This means that said offsets will specify 16-bits as the smallest addressable object, effectively doubling the range in terms of bytes.
 
     \par\noindent\rule{\textwidth}{0.4pt}
     \textit{Data alignment issues can arise when the processor wants to read or write an item whose size is greater than the smallest addressable thing. This problem is tricky to design hardware for, especially caches, because misaligned items can cross cache line boundaries as well as page boundaries. Alignment networks and more complex caches are needed which can increase complexity and slow down the critical path too much for simple designs. For already complex multicore out-of-order superscalar machines, however, i believe that supporting unaligned accesses can be handy so that the software writer can make decisions freely without having to worry about this problem, potentially decrease the memory footprint.}
@@ -42,7 +42,7 @@
 
         \end{itemize}
 
-        The LL \& SC pair, as briefly mentioned above, necessitate of a transparent register that is used to hold the address of the fetched element. Once the reservation is completed and marked as valid, accesses performed by other cores must be monitored by snooping any other memory access made by other cores. If a memory write request to the matching address is snooped by another core, then that particular reservation must be immediately invalidated. The CAS instruction, in order to be atomic, it must perform it's job all in the same bus request. This ensures that no other core or device has access to the memory potentially changing the target variable in the middle of the operation.
+        The LL \& SC pair, as briefly mentioned above, necessitates of a transparent register that is used to hold the address of the fetched element as well as its size. Once the reservation is completed and marked as valid, accesses performed by other cores must be monitored by snooping any other memory access made by other cores. If a memory write request to the matching address is snooped by another core, then that particular reservation must be immediately invalidated. The CAS instruction, in order to be atomic, must perform it's job all in the same bus request. This ensures that no other core or device has access to the memory potentially changing the target variable in the middle of the operation.
 
         \vspace{10pt}
 
@@ -60,21 +60,21 @@
 
         \end{itemize}
 
-        The TM instruction module necessitates the presence of exceptions (consult section xxx for more information), as briefly mentioned above, called \textit{abort codes} that can be used by the programmer to take the appropriate actions in case the transaction was aborted. Each abort code specifies the reason why the current (most nested) transaction was aborted. As a result of this, the TM module requires the EXC module to also be implemented. The TM module extends the EXC module adding the following exceptions:
+        The TM instruction module necessitates the presence of exceptions (consult section 6 for more information), as briefly mentioned above, called \textit{abort codes} that can be used by the programmer to take the appropriate actions in case the transaction was aborted. Each abort code specifies the reason why the current (most nested) transaction was aborted. As a result of this, the TM module requires the presence of the same special buffer registers as the EXC module. The TM module adds the following extra exception events to the architecture:
 
         \begin{itemize}
 
-            \item \textit{\textbf{Conflict abort} (CABT): the current transaction was aborted because a write on shared variables was detected by the coherence protocol. This exception has an id of xxx.}
+            \item \textit{\textbf{Conflict abort} (CABT): the current transaction was aborted because a write on shared variables was detected by the coherence protocol. This exception has an id of 05.}
 
-            \item \textit{\textbf{Event abort} (EABT): the current transaction was aborted because an event, beside the ones in this list, got triggered. This exception has an id of xxx.}
+            \item \textit{\textbf{Event abort} (EABT): the current transaction was aborted because an event, beside the ones in this list, got triggered. This exception has an id of 06.}
 
-            \item \textit{\textbf{Depth overflow abort} (OABT): the current transaction was aborted because it exceeded the upper transaction depth limit. This exception has an id of xxx.}
+            \item \textit{\textbf{Depth overflow abort} (OABT): the current transaction was aborted because it exceeded the upper transaction depth limit. This exception has an id of 07.}
 
-            \item \textit{\textbf{Replacement abort} (RABT): the current transaction was aborted because a cache line was evicted back to memory for not enough associativity. This exception has an id of xxx.}
+            \item \textit{\textbf{Replacement abort} (RABT): the current transaction was aborted because a cache line was evicted back to memory for not enough associativity. This exception has an id of 08.}
 
-            \item \textit{\textbf{Size abort} (SABT): the current transaction was aborted because a cache line was evicted for back to memory not enough space. This exception has an id of xxx.}
+            \item \textit{\textbf{Size abort} (SABT): the current transaction was aborted because a cache line was evicted for back to memory not enough space. This exception has an id of 09.}
 
-            \item \textit{\textbf{Depth underflow abort} (UABT): this abort code is only generated if a TEND instruction is executed and the depth counter is zero. This exception has an id of xxx.}
+            \item \textit{\textbf{Depth underflow abort} (UABT): this abort code is only generated if a TEND instruction is executed and the depth counter is zero. This exception has an id of 0A.}
 
         \end{itemize}
 
@@ -96,7 +96,7 @@
 
         \vspace{10pt}
 
-        FabRISC utilizes a fully relaxed memory consistency model formally known as \textit{release consistency} that allows all possible orderings in order to give harts the freedom to reorder memory instructions to different addresses in any way they want. For debugging and specific situations the stricter \textit{sequential consistency} model can be utilized and the hart must be able to switch between the two at any time via a dedicated bit in the control and status register. Special instructions, called \textit{``fences''}, are provided by the SF instruction module to let the programmer impose an order on memory operations when the relaxed model is in use. If the hart doesn't reorder memory operations this module is not necessary and can be skipped. The proposed fencing instructions are:
+        FabRISC utilizes a fully relaxed memory consistency model formally known as \textit{release consistency} that allows all possible orderings in order to give harts the freedom to reorder memory instructions to different addresses in any way they want. For debugging and specific situations the stricter \textit{sequential consistency} model can be utilized and the hart must be able to switch between the two at any time via a dedicated bit in the control and status register. Special instructions, called \textit{``fences''}, are provided by the FNC module to let the programmer impose an order on memory operations when the relaxed model is in use. If the hart doesn't reorder memory operations this module is not necessary and can be skipped. The proposed fencing instructions are:
 
         \begin{itemize}
 
@@ -108,7 +108,7 @@
 
         \end{itemize}
 
-        The fences can be used on any memory type of instruction, including the LL \& SC pair and CAS to forbid reordering when acquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache controller via the dedicated implementation specific CACOP instruction as briefly discussed above. The FNC module also requires the ability for the hart to switch between the release consistency and the more stringent \textit{sequential consistency} models via the use of a dedicated bit in the control and status register (CSR).
+        The fences can be used on any memory type of instruction, including the LL \& SC pair and CAS to forbid reordering when acquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache controller via the dedicated implementation specific CACOP instruction as briefly discussed above. The FNC module also requires the ability for the hart to switch between the release consistency and the more stringent sequential consistency model via the use of a dedicated bit in the control and status register (CSR).
 
     \par\noindent\rule{\textwidth}{0.4pt}
     \textit{The memory consistency model i wanted to utilize was a very relaxed model to allow all kinds of performance optimization to take place inside the system. However one has to provide some sort of restrictions, effectively special memory operations, to avoid absurd situations. Even with those restrictions debugging could be quite difficult because the program might behave very weirdly, so i decided to include the sequential model that forbids reordering of any kind of memory instruction. If a program is considered well synchronized (data race-free and all critical sections are protected) consistency becomes less of an issue because there will be no contention for resources and, therefore, the model can be completely relaxed without any side effects. Achieving this level of code quality is quite the challenge and so these consistency instructions can be employed in making sure that everything works out.}
