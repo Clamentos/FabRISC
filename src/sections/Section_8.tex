@@ -163,7 +163,7 @@
 
             \vspace{10pt}
 
-            ...
+            [coming soon...]
 
         \par\noindent\rule{\textwidth}{0.4pt}
         \textit{The entirety of the register file is divided into three banks with several registers each. This can sound like a lot of state (and it kinda is), but other ISAs such as full RISC-V implementation would arguably contain more because of the way CSRs are implemented. In FabRISC, the first bank offers a 32 entry flat register file in order to efficiently support modern graph-coloring driven compiler register allocation. Integer and floating-point registers are shared to ease conversions and the extra GPRs found in the special purpose bank can alleviate some of the pressure caused by the sharing. Because there is no hardware stack pointer nor return address register, standard calling conventions can be used to give a ``purpose'' to all the GPRs in the bank. Compressed instructions, because of the size limitations, are only able to access eight registers of the bank. The second bank is where the ``magic'' happens: special registers are present to help with event handling as well as keeping track of state and resource usage to reduce the overhead on context switches. File usage registers help with that, for example, if no vector register was written during the time quantum of a particular process, then there is no need to save them again. The last bank includes a collection of ``helper'' registers that can be used for debugging, performance monitoring and memory safety.}

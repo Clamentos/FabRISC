@@ -76,17 +76,17 @@
 
                 \begin{itemize}
 
-                    \item \textit{for non-promoting events, simply copy the PC into the exception buffer 0 (EB0) and the CSR into the user exception buffer 1 (UEB1).}
+                    \item \textit{for non-promoting events, simply copy the PC into the exception buffer 0 (EB0), the CSR into the exception buffer 1 (EB1) and the old CAUSE register into the exception buffer 2 (EB2).}
 
-                    \item \textit{for promoting events, simply copy the PC, into the supervisor event buffer 0 (SEB0), the CSR into the supervisor event buffer 1 (SEB1) and the CAUSE register into the supervisor event buffer 2 (SEB2). The reason for the copy of the cause register is to avoid state corruption since the currently interrupted hart might already be handling an exception.}
+                    \item \textit{for promoting events, simply copy the PC, into the supervisor event buffer 0 (SEB0), the CSR into the supervisor event buffer 1 (SEB1) and the old CAUSE register into the supervisor event buffer 2 (SEB2).}
 
                 \end{itemize}
 
-            \item \textit{mask any other interrupt if the triggered event is promoting, otherwise skip this step. The masking can be accomplished by simply setting the xxx and xxx bits in the CSR to one.}
+            \item \textit{mask any other interrupt if the triggered event is promoting, otherwise skip this step. The masking can be accomplished by simply setting the IPCM and IOIM bits in the CSR to one.}
 
-            \item \textit{set the xxx bit of the CSR to one in order to signify that the hart is handling an event.}
+            \item \textit{set the TRAP bit of the CSR to one in order to signify that the hart is handling an event.}
 
-            \item \textit{switch to supervisor mode if the triggered event is promoting by setting the xxx bit in the CSR, otherwise skip this step.}
+            \item \textit{switch to supervisor mode if the triggered event is promoting by setting the SUPB bit in the CSR, otherwise skip this step.}
 
             \item \textit{jump to the handler location with the use of the appropriate pointer register. Depending of the privilege level of the event this step will involve:}
 
