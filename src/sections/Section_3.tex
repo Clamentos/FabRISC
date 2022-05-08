@@ -31,13 +31,11 @@
 
         \end{itemize}
 
-        % pointer operations
+        Values that serve as pointers are also manipulated as signed two's complement integers. Although the concept of sign doesn't make much sense for addresses, signed arithmetic can still be applied without many problems. Addition and subtraction of addresses will always yield the same exact bit pattern regardless of the interpretation of the operands. Multiplication can still produce the same pattern as well but only if the result is WLEN long. The only comparisons that do not depend on sign are equality and inequality because they simply amount to checking if each individual bit of one operand is equal or not to the ones in the other operand.
 
     \subsection{Floating point types}
 
         [coming soon...]
-
-        % 
 
     \par\noindent\rule{\textwidth}{0.4pt}
     \textit{[coming soon...]}

@@ -1,80 +1,76 @@
-\begin{table}[hbt!]
+\begin{table}[hbt!] % fully done
 
     \begin{center}
 
-    \begin{tabular}{|c|l|l|l|l|l|}
+    \begin{tabular}{|c|l|l|l|l|r|r|}
 
         \hline
-        ID & Name & Mnemonic & Type & Requirement & Global priority \\
+        ID & Name & Mnemonic & Type & Requirement & GP & LP \\
         \hline
         \addlinespace[10pt]
         \hline
-        00 & Carry over exception & COVRE & Exception & EXC module & 2 \\
+        00 & Carry over exception & COVRE & Exception & EXC module & 2 & - \\
         \hline
-        01 & Carry under exception & CUNDE & Exception & EXC module & 2 \\
+        01 & Carry under exception & CUNDE & Exception & EXC module & 2 & - \\
         \hline
-        02 & Overflow exception & OVFLE & Exception & EXC module & 2 \\
+        02 & Overflow exception & OVFLE & Exception & EXC module & 2 & - \\
         \hline
-        03 & Underflow exception & UNFLE & Exception & EXC module & 2 \\
+        03 & Underflow exception & UNFLE & Exception & EXC module & 2 & - \\
         \hline
-        04 & Division by 0 exception & DIV0E & Exception & EXC module & 2 \\
+        04 & Division by 0 exception & DIV0E & Exception & EXC module & 2 & - \\
         \hline
-        05 & Conflict abort & CABT & Exception & TM module & 1 \\
+        05 & Conflict abort & CABT & Exception & TM module & 1 & - \\
         \hline
-        06 & Event abort & EABT & Exception & TM module & 1 \\
+        06 & Event abort & EABT & Exception & TM module & 1 & - \\
         \hline
-        07 & Depth overflow abort & OABT & Exception & TM module & 1 \\
+        07 & Depth overflow abort & OABT & Exception & TM module & 1 & - \\
         \hline
-        08 & Replacement abort & RABT & Exception & TM module & 1 \\
+        08 & Replacement abort & RABT & Exception & TM module & 1 & - \\
         \hline
-        09 & Size abort & SABT & Exception & TM module & 1 \\
+        09 & Size abort & SABT & Exception & TM module & 1 & - \\
         \hline
-        0A & Depth underflow abort & UABT & Exception & TM module & 1 \\
+        0A & Depth underflow abort & UABT & Exception & TM module & 1 & - \\
         \hline
-        0B & Break on instruction address EQ & BIAEQ & Exception & DBGR module & 0 \\
+        0B & Trap on execute address & EXT & Exception & DBGR module & 0 & 14 \\
         \hline
-        0C & Break on instruction address LE & BIALE & Exception & DBGR module & 0 \\
+        0C & Trap on read address & RDT & Exception & DBGR module & 0 & 13 \\
         \hline
-        0D & Break on instruction address GE & BIAGE & Exception & DBGR module & 0 \\
+        0D & Trap on write address & WRT & Exception & DBGR module & 0 & 12 \\
         \hline
-        0E & Break on read address EQ & BRAEQ & Exception & DBGR module & 0 \\
+        0E & Trap on read write address & RWT & Exception & DBGR module & 0 & 11 \\
         \hline
-        0F & Break on read address LE & BRALE & Exception & DBGR module & 0 \\
+        0F & Trap on read write execute address & RWET & Exception & DBGR module & 0 & 10 \\
         \hline
-        10 & Break on read address GE & BRAGE & Exception & DBGR module & 0 \\
+        10 & Trap on execute range & EXRT & Exception & DBGR module & 0 & 9 \\
         \hline
-        11 & Break on write address EQ & BWAEQ & Exception & DBGR module & 0 \\
+        11 & Trap on read range & RDRT & Exception & DBGR module & 0 & 8 \\
         \hline
-        12 & Break on write address LE & BWALE & Exception & DBGR module & 0 \\
+        12 & Trap on write range & WRRT & Exception & DBGR module & 0 & 7 \\
         \hline
-        13 & Break on write address GE & BWAGE & Exception & DBGR module & 0 \\
+        13 & Trap on read write range & RWRT & Exception & DBGR module & 0 & 6 \\
         \hline
-        14 & Break on instruction 16 & BIN16 & Exception & DBGR module & 0 \\
+        14 & Trap on read write execute range & RWERT & Exception & DBGR module & 0 & 5 \\
         \hline
-        15 & Break on instruction 32 & BIN32 & Exception & DBGR module & 0 \\
+        15 & Trap on COVR flag & COVRT & Exception & DBGR module & 0 & 4 \\
         \hline
-        16 & Break on instruction 48 & BIN48 & Exception & DBGR module & 0 \\
+        16 & Trap on CUND flag & CUNDT & Exception & DBGR module & 0 & 3 \\
         \hline
-        17 & Break on carry over & BCOVR & Exception & DBGR module & 0 \\
+        17 & Trap on OVFL flag & OVFLT & Exception & DBGR module & 0 & 2 \\
         \hline
-        18 & Break on carry under & BCUND & Exception & DBGR module & 0 \\
+        18 & Trap on UNFL flag & UNFLT & Exception & DBGR module & 0 & 1 \\
         \hline
-        19 & Break on overflow & BOVFL & Exception & DBGR module & 0 \\
+        19 & Trap on DIV0 flag & DIV0T & Exception & DBGR module & 0 & 0 \\
         \hline
-        1A & Break on underflow & BUNFL & Exception & DBGR module & 0 \\
+        1A & Reserved & - & Exception & - & - & - \\
         \hline
-        1B & Break on division by 0 & BDIV0 & Exception & DBGR module & 0 \\
+        ... & ... & ... & Exception & ... & ... & ... \\
         \hline
-        1C & Reserved & - & Exception & - & - \\
-        \hline
-        ... & ... & ... & Exception & ... & ... \\
-        \hline
-        FF & Reserved & - & Exception & - & - \\
+        FF & Reserved & - & Exception & - & - & - \\
         \hline
 
     \end{tabular}
 
-    \caption[User event table]{User event table.}
+    \caption[User event table]{User event table. GP and LP are abbreviations for Global Priority and Local Priority respectively.}
 
     \end{center}
 

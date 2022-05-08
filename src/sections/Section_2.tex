@@ -2,125 +2,100 @@
 
     \vspace{10pt}
 
-    This section is dedicated to provide a brief but full description of all the different modules that the FabRISC ISA offers. There are no mandatory modules in this specification in order to maximize the flexibility, however, once a particular extension is chosen, the hardware must provide all the features and abstractions of said extension. The requirements for each and every module will be extensively explained in the next sections. Modules are divided into two main categories:
+    This section is dedicated to provide a brief but full description of all the different modules that the FabRISC ISA offers. There are no mandatory modules in this specification in order to maximize the flexibility, however, once a particular extension is chosen, the hardware must provide all the features and abstractions of said extension. The requirements for each and every module will be extensively explained in the next sections. The following, is the list of all modules:
 
     \begin{enumerate}
 
-        \item \textit{\textbf{Instruction modules}: these modules add instructions only.}
+        \item \textit{\textbf{Computational}: these instructions perform arithmetic or logic operations.}
 
-        \item \textit{\textbf{Miscellaneous modules}: these modules can add things other than instructions such as registers, counters, events, processor operating modes, etc\ldots}
+            \begin{itemize}
 
-    \end{enumerate}
+                \item 1) \textit{\textbf{CISB}: computational-integer-scalar-basic.}
+                \item 2) \textit{\textbf{CISA}: computational-integer-scalar-advanced.}
 
-    \subsection{Instruction modules}
+                \item 3) \textit{\textbf{CIVB}: computational-integer-vector-basic.}
+                \item 4) \textit{\textbf{CIVA}: computational-integer-vector-advanced.}
+                \item 5) \textit{\textbf{CIVR}: computational-integer-vector-reduction.}
 
-        Instruction modules only concern instructions and their implementation. Some modules might require the presence of dedicated hardware execution units in order to actually perform the specified calculations, such as multiplication and division. These modules are further divided into four general sub-categories each of which contains the actual instruction modules:
+                \item 6) \textit{\textbf{CFSB}: computational-FP-scalar-basic.}
+                \item 7) \textit{\textbf{CFSA}: computational-FP-scalar-advanced.}
 
-        \begin{enumerate}
+                \item 8) \textit{\textbf{CFVB}: computational-FP-vector-basic.}
+                \item 9) \textit{\textbf{CFVA}: computational-FP-vector-advanced.}
+                \item 10) \textit{\textbf{CFVR}: computational-FP-vector-reduction.}
 
-            \item \textit{\textbf{Computational}: these instructions perform arithmetic or logic operations.}
+                \item 11) \textit{\textbf{CCIB}: computational-compressed-integer-basic.}
+                \item 12) \textit{\textbf{CCIA}: computational-compressed-integer-advanced.}
 
-                \begin{itemize}
+                \item 13) \textit{\textbf{CCFB}: computational-compressed-FP-basic.}
+                \item 14) \textit{\textbf{CCFA}: computational-compressed-FP-advanced.}
 
-                    \item 1) \textit{\textbf{CISB}: computational-integer-scalar-basic.}
-                    \item 2) \textit{\textbf{CISA}: computational-integer-scalar-advanced.}
+                \item 15) \textit{\textbf{CSM}: computational-scalar-mask.}
 
-                    \item 3) \textit{\textbf{CIVB}: computational-integer-vector-basic.}
-                    \item 4) \textit{\textbf{CIVA}: computational-integer-vector-advanced.}
-                    \item 5) \textit{\textbf{CIVR}: computational-integer-vector-reduction.}
+            \end{itemize}
 
-                    \item 6) \textit{\textbf{CFSB}: computational-FP-scalar-basic.}
-                    \item 7) \textit{\textbf{CFSA}: computational-FP-scalar-advanced.}
+        \item \textit{\textbf{Data transfer}: these instructions perform memory load, store, register move and swap operations.}
 
-                    \item 8) \textit{\textbf{CFVB}: computational-FP-vector-basic.}
-                    \item 9) \textit{\textbf{CFVA}: computational-FP-vector-advanced.}
-                    \item 10) \textit{\textbf{CFVR}: computational-FP-vector-reduction.}
+            \begin{itemize}
 
-                    \item 11) \textit{\textbf{CCIB}: computational-compressed-integer-basic.}
-                    \item 12) \textit{\textbf{CCIA}: computational-compressed-integer-advanced.}
+                \item 16) \textit{\textbf{DSB}: data transfer-scalar-basic.}
+                \item 17) \textit{\textbf{DSA}: data transfer-scalar-advanced.}
 
-                    \item 13) \textit{\textbf{CCFB}: computational-compressed-FP-basic.}
-                    \item 14) \textit{\textbf{CCFA}: computational-compressed-FP-advanced.}
+                \item 18) \textit{\textbf{DVB}: data transfer-vector-basic.}
+                \item 19) \textit{\textbf{DVA}: data transfer-vector-advanced.}
+                \item 20) \textit{\textbf{DVG}: data transfer-vector-gather scatter.}
 
-                    \item 15) \textit{\textbf{...}: computational-...} % casts & conversions
-                    \item 16) \textit{\textbf{...}: computational-...}
-                    \item 17) \textit{\textbf{...}: computational-...}
-                    \item 18) \textit{\textbf{...}: computational-...}
+                \item 21) \textit{\textbf{DC}: data transfer-compressed.}
+                \item 22) \textit{\textbf{DB}: data transfer-block.}
 
-                    \item \textit{\textbf{CSM}: computational-scalar-mask.}
+            \end{itemize}
 
-                \end{itemize}
+        \item \textit{\textbf{Flow transfer}: these instructions perform conditional branch, jump, call and return operations.}
 
-            \item \textit{\textbf{Data transfer}: these instructions perform memory load, store, register move and swap operations.}
+            \begin{itemize}
 
-                \begin{itemize}
+                \item 23) \textit{\textbf{FISB}: flow transfer-integer-scalar-basic.}
+                \item 24) \textit{\textbf{FISA}: flow transfer-integer-scalar-advanced.}
+                \item 25) \textit{\textbf{FISM}: flow transfer-integer-scalar-mask.}
 
-                    \item 19) \textit{\textbf{DSB}: data transfer-scalar-basic.}
-                    \item 20) \textit{\textbf{DSA}: data transfer-scalar-advanced.}
+                \item 26) \textit{\textbf{FIVB}: flow transfer-integer-vector-basic.}
+                \item 27) \textit{\textbf{FIVA}: flow transfer-integer-vector-advanced.}
 
-                    \item 21) \textit{\textbf{DVB}: data transfer-vector-basic.}
-                    \item 22) \textit{\textbf{DVA}: data transfer-vector-advanced.}
-                    \item 23) \textit{\textbf{DVG}: data transfer-vector-gather scatter.}
+                \item 28) \textit{\textbf{FFSB}: flow transfer-FP-scalar-basic.}
+                \item 29) \textit{\textbf{FFSA}: flow transfer-FP-scalar-advanced.}
+                \item 30) \textit{\textbf{FFSM}: flow transfer-FP-scalar-mask.}
 
-                    \item 24) \textit{\textbf{DC}: data transfer-compressed.}
-                    \item 25) \textit{\textbf{DB}: data transfer-block.}
+                \item 31) \textit{\textbf{FFVB}: flow transfer-FP-vector-basic.}
+                \item 32) \textit{\textbf{FFVA}: flow transfer-FP-vector-advanced.}
 
-                \end{itemize}
+                \item 33) \textit{\textbf{FC}: flow transfer-compressed.}
 
-            \item \textit{\textbf{Flow transfer}: these instructions perform conditional branch, jump, call and return operations.}
+            \end{itemize}
 
-                \begin{itemize}
+        \item \textit{\textbf{System}: these instructions perform system various related operations.}
 
-                    \item 26) \textit{\textbf{FISB}: flow transfer-integer-scalar-basic.}
-                    \item 27) \textit{\textbf{FISA}: flow transfer-integer-scalar-advanced.}
-                    \item 28) \textit{\textbf{FISM}: flow transfer-integer-scalar-mask.}
+            \begin{itemize}
 
-                    \item 29) \textit{\textbf{FIVB}: flow transfer-integer-vector-basic.}
-                    \item 30) \textit{\textbf{FIVA}: flow transfer-integer-vector-advanced.}
+                \item 34) \textit{\textbf{SB}: system-basic.}
+                \item 35) \textit{\textbf{SA}: system-advanced.}
 
-                    \item 31) \textit{\textbf{FFSB}: flow transfer-floating point-scalar-basic.}
-                    \item 32) \textit{\textbf{FFSA}: flow transfer-floating point-scalar-advanced.}
-                    \item 33) \textit{\textbf{FFSM}: flow transfer-floating point-scalar-mask.}
+            \end{itemize}
 
-                    \item 34) \textit{\textbf{FFVB}: flow transfer-floating point-vector-basic.}
-                    \item 35) \textit{\textbf{FFVA}: flow transfer-floating point-vector-advanced.}
+        \item 36) \textit{\textbf{FNC}: fences.}
+        \item 37) \textit{\textbf{TM}: transactional-memory.}
+        \item 38) \textit{\textbf{AM}: atomic-memory.}
 
-                    \item 36) \textit{\textbf{FC}: flow transfer-compressed.}
+        \item 39) \textit{\textbf{EXC}: exceptions.}
+        \item 40) \textit{\textbf{FLT}: faults.}
+        \item 41) \textit{\textbf{IOINT}: IO interrupts.}           
+        \item 42) \textit{\textbf{IPCINT}: IPC interrupts.}
 
-                \end{itemize}
+        \item 43) \textit{\textbf{DBGR}: debugging registers.}
+        \item 44) \textit{\textbf{PERFC}: performance counters.}
 
-            \item \textit{\textbf{System}: these instructions perform system various related operations.}
-
-                \begin{itemize}
-
-                    \item 37) \textit{\textbf{SB}: system-basic.}
-                    \item 38) \textit{\textbf{SA}: system-advanced.}
-
-                \end{itemize}
+        \item 45) \textit{\textbf{SUPER}: supervisor.}
 
         \end{enumerate}
-
-    \subsection{Miscellaneous modules}
-
-        Miscellaneous modules are more flexible and they can provide useful features such as debugging, performance counters, user events, system events, extra instructions, etc\ldots. Supervisor features allow FabRISC to become a privileged architecture to better help with OS implementation and sandboxing. The list of modules is the following:
-
-        \begin{itemize}
-
-            \item 39) \textit{\textbf{EXC}: exceptions.}
-            \item 40) \textit{\textbf{FLT}: faults.}
-            \item 41) \textit{\textbf{IOINT}: IO interrupts.}           
-            \item 42) \textit{\textbf{IPCINT}: IPC interrupts.}
-
-            \item 43) \textit{\textbf{DBGR}: debugging registers.}
-            \item 44) \textit{\textbf{PERFC}: performance counters.}
-
-            \item 45) \textit{\textbf{SUPER}: supervisor.}
-
-            \item 46) \textit{\textbf{FNC}: fences.}
-            \item 47) \textit{\textbf{TM}: transactional-memory.}
-            \item 48) \textit{\textbf{AM}: atomic-memory.}
-
-        \end{itemize}
 
     \par\noindent\rule{\textwidth}{0.4pt}
     \textit{The high number of modules and extensions is very useful because it allows the hardware designers to only implement what they really want and very little extra. The fact that there is no explicit mandatory subset of the ISA helps can with specialized systems. With this, it becomes perfectly possible to create, for example, a floating-point only processor with no integer instructions to alleviate overheads.}

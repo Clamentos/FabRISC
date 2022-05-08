@@ -64,9 +64,9 @@
 
                 \item \textit{\textbf{Program counter}: this register, called ``PC'', is the program counter. It is used to point to the currently executing instruction. PC is WLEN bits wide and is not privileged.}
 
-                \item \textit{\textbf{Control and status register}: this register, called ``CSR'', is used to hold the hart supervisor and system state (see table below for more information). CSR is 32 bits wide and is privileged.}
+                \item \textit{\textbf{Event cause register}: this register, called ``CAUSE'', is used to hold the identifier of the latest occurring event. This register can be used inside the handler code to perform a case statement in order to execute the correct action. Event identifiers are small 8 bit values that uniquely identify each individual event: 256 possible for the user and another 256 possible for the supervisor. The remaining 23 bits can be used to hold extra information about the triggered event. CAUSE is 32 bits wide and is not privileged.}
 
-                \item \textit{\textbf{Event cause register}: this register, called ``CAUSE'', is used to hold the identifier of the latest occurring event. This register can be used inside the handler code to perform a case statement in order to execute the correct action. CAUSE is 32 bits wide and is privileged.}
+                \item \textit{\textbf{Control and status register}: this register, called ``CSR'', is used to hold the hart supervisor and system state (see table below for more information). CSR is 32 bits wide and is privileged.}
 
                 \item \textit{\textbf{Supervisor event buffers}: registers prefixed with ``SEB'' are used as temporary buffers for supervisor event handling. They are transparent registers and are automatically managed by the CPU during the launch and return phase of the handling. SEB0 will store the program counter (PC), while SEB1 will store the status register (CSR) and SEB2 the event cause register (CAUSE). All SEB register are WLEN bits wide and are privileged.}
 
@@ -163,7 +163,69 @@
 
             \vspace{10pt}
 
-            [coming soon...]
+            The fourth bank is dedicated to helper registers, such as debugging and performance counting registers. This bank is optional and is only needed by the DBGR and PERFC modules. The bank is divided into two sections, the first holds debugging registers while the second holds the performance counters.
+
+            \begin{itemize}
+
+                \item \textit{\textbf{Debugging registers}: registers prefixed with ``DBG'' are used to hold a value that is constantly checked every cycle against a particular condition. If the condition is met, the register will trigger an exception causing a subsequent jump to the handler for that exception. DBG registers are all WLEN bits wide and are not privileged.}
+
+                \item \textit{\textbf{Debugging mode registers}: registers prefixed with ``DBGM'' are used to hold the configuration bits for each DBG register in this bank. Each DBGM register will hold a 4 bit code for each DBG register that specifies its operating mode. DBGM0 will hold the codes for DBG0 through DBG7, while DBGM1 will hold the codes for DBG8 through DBG15. DBGM registers are all 32 bits wide and are not privileged.}
+
+                \item \textit{\textbf{Performance counters}: registers prefixed with ``PCNT'' are used as general purpose performance counters or, alternatively, as real-time counters. It is important to note that PCNT registers are only active during the lifetime of the hart that uses them and are freezed during context switches. PCNT registers are all 64 bits wide and are not privileged.}
+
+                \item \textit{\textbf{Performance counters mode}: registers prefixed with ``PCNTM'' are used to hold configuration bits for each PCNT register in this bank. Each PCNTM register will hold a 5 bit code for each PCNT register that specifies its operating mode. PCNTM0 will hold the codes for PCNT0 through PCNT5, while PCNTM1 will hold the codes for PCNT6 through PCNT11. PCNTM registers are all 32 bits wide and are not privileged.}
+
+            \end{itemize}
+
+        \subsubsection{Debugging and Performance measurement modules}
+
+            The DBGR and PERFC modules can be included in the design in order to provide to the programmer the ability to perform debugging via breakpoints, zero-cost memory boundary checks as well as various performance and time monitoring operations. The two mentioned modules will require the implementation of some specific instructions (see section 9 for more information) as well as the previously mentioned helper registers. FabRISC defines some standard configuration modes for the DBG registers:
+
+            \begin{itemize}
+
+                \item \textit{\textbf{Disabled}: this mode, code 0000, doesn't do anything and simply ignores any value written in the corresponding DBG register.}
+
+                \item \textit{\textbf{Trap on execute address}: this mode, code 0001, will cause the corresponding DBG register to generate the EXT exception as soon as the hart tries to fetch the instruction at the specified address.}
+
+                \item \textit{\textbf{Trap on read address}: this mode, code 0010, will cause the corresponding DBG register to generate the RDT exception as soon as the hart tries to read data at the specified address.}
+
+                \item \textit{\textbf{Trap on write address}: this mode, code 0011, will cause the corresponding DBG register to generate the WRT exception as soon as the hart tries to write data at the specified address.}
+
+                \item \textit{\textbf{Trap on read or address}: this mode, code 0100, will cause the corresponding DBG register to generate the RWT exception as soon as the hart tries to read or write data at the specified address.}
+
+                \item \textit{\textbf{Trap on read or write or execute address}: this mode, code 0101, will cause the corresponding DBG register to generate the RWET exception as soon as the hart tries to read or write data or fetch the instruction at the specified address.}
+
+                \item \textit{\textbf{Trap on execute range}: this mode, code 0110, will cause the corresponding DBG register to generate the EXRT exception as soon as the hart tries to fetch instructions outside the specified range. If this mode is selected, the value of the specified DBG register will be considered the starting address of the range. The terminating address of the range will be held in the DBG register after the specified one and its mode will be ignored.}
+
+                \item \textit{\textbf{Trap on read range}: this mode, code 0111, will cause the corresponding DBG register to generate the RDRT exception as soon as the hart tries to read data outside the specified range. If this mode is selected, the value of the specified DBG register will be considered the starting address of the range. The terminating address of the range will be held in the DBG register after the specified one and its mode will be ignored.}
+
+                \item \textit{\textbf{Trap on write range}: this mode, code 1000, will cause the corresponding DBG register to generate the WRRT exception as soon as the hart tries to write data outside the specified range. If this mode is selected, the value of the specified DBG register will be considered the starting address of the range. The terminating address of the range will be held in the DBG register after the specified one and its mode will be ignored.}
+
+                \item \textit{\textbf{Trap on read or write range}: this mode, code 1001, will cause the corresponding DBG register to generate the RWRT exception as soon as the hart tries to read or write data outside the specified range. If this mode is selected, the value of the specified DBG register will be considered the starting address of the range. The terminating address of the range will be held in the DBG register after the specified one and its mode will be ignored.}
+
+                \item \textit{\textbf{Trap on read or write or execute range}: this mode, code 1010, will cause the corresponding DBG register to generate the RWERT exception as soon as the hart tries to read or write data or fetch instructions outside the specified range. If this mode is selected, the value of the specified DBG register will be considered the starting address of the range. The terminating address of the range will be held in the DBG register after the specified one and its mode will be ignored.}
+
+                \item \textit{\textbf{Trap on COVR flag}: this mode, code 1011, will cause the corresponding DBG register to generate the COVRT exception as soon as the COVR flag is raised at the instruction address held in the specified DBG register.}
+
+                \item \textit{\textbf{Trap on CUND flag}: this mode, code 1100, will cause the corresponding DBG register to generate the CUNDT exception as soon as the CUND flag is raised at the instruction address held in the specified DBG register.}
+
+                \item \textit{\textbf{Trap on OVFL flag}: this mode, code 1101, will cause the corresponding DBG register to generate the OVFLT exception as soon as the OVFL flag is raised at the instruction address held in the specified DBG register.}
+
+                \item \textit{\textbf{Trap on UNFL flag}: this mode, code 1110, will cause the corresponding DBG register to generate the UNFLT exception as soon as the UNFL flag is raised at the instruction address held in the specified DBG register.}
+
+                \item \textit{\textbf{Trap on DIV0 flag}: this mode, code 1111, will cause the corresponding DBG register to generate the DIV0T exception as soon as the DIV0 flag is raised at the instruction address held in the specified DBG register.}
+
+            \end{itemize}
+
+            Performance counter modes are left as implementation specific since the microarchitecture can vary quite dramatically across different designs. The hardware designer has at his disposal up to 32 different possible modes.
+
+            \vspace{10pt}
+
+            It is worth noting that when a DBG register triggers an event, the upper 23 bits of the CAUSE registers can be used to write which specific DBG caused the exception, allowing the programmer to distinguish between DBG registers that check for the same condition.
+
+            \vspace{10pt}
+
+            If multiple DBG register specify multiple address ranges, those ranges must be AND-ed together in order to allow proper automatic boundary checking inside the process address space. This can be useful for high-level languages that provide memory-safe operations without hindering performance at all.
 
         \par\noindent\rule{\textwidth}{0.4pt}
         \textit{The entirety of the register file is divided into three banks with several registers each. This can sound like a lot of state (and it kinda is), but other ISAs such as full RISC-V implementation would arguably contain more because of the way CSRs are implemented. In FabRISC, the first bank offers a 32 entry flat register file in order to efficiently support modern graph-coloring driven compiler register allocation. Integer and floating-point registers are shared to ease conversions and the extra GPRs found in the special purpose bank can alleviate some of the pressure caused by the sharing. Because there is no hardware stack pointer nor return address register, standard calling conventions can be used to give a ``purpose'' to all the GPRs in the bank. Compressed instructions, because of the size limitations, are only able to access eight registers of the bank. The second bank is where the ``magic'' happens: special registers are present to help with event handling as well as keeping track of state and resource usage to reduce the overhead on context switches. File usage registers help with that, for example, if no vector register was written during the time quantum of a particular process, then there is no need to save them again. The last bank includes a collection of ``helper'' registers that can be used for debugging, performance monitoring and memory safety.}
@@ -173,7 +235,7 @@
 
             \vspace{10pt}
 
-            FabRISC specifies 15 different instruction formats to allocate as much space as possible to the operands, while leaving some opcode encoding space to implement extra application specific instructions. Formats can be variable length from two up to six bytes in order to accommodate larger immediate constants for addresses and data. Formats are divided into several bit fields that are scrambled around in order to reduce decoding logic. Many also carry with them a ``modifier'' field, called mod, that can provide extra information such as mask, data type length, vector mode and more. All instructions treat data as signed unless explicitly noted.
+            FabRISC specifies 16 different instruction formats to allocate as much space as possible to the operands, while leaving some opcode encoding space to implement extra application specific instructions. Formats can be variable length from two up to six bytes in order to accommodate larger immediate constants for addresses and data. Formats are divided into several bit fields that are scrambled around in order to reduce decoding logic. Many also carry with them a ``modifier'' field, called mod, that can provide extra information such as mask, data type length, vector mode and more. All instructions treat data as signed unless explicitly noted.
 
             \vspace{10pt}
             \input{./Tables/Formats.tex}
@@ -212,11 +274,13 @@
 
                     \end{enumerate}
 
-                \item \textit{\textbf{C}: this format has four instruction modifier classes:}
+                \item \textit{\textbf{C}: this format has five instruction modifier classes:}
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{tt m ---}: this class is used by scalar computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
+                        \item \textit{\textbf{tt m -- v}: this class is used by computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'v' indicates the instruction mode: scalar or vector.}
+
+                        \item \textit{\textbf{tt m -- d}: this class is used by computational vector reduction instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'd' specifies the direction for non commutative operations.}
 
                         \item \textit{\textbf{tt m - tt}: this class is used by casts and conversion instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not.}
 
