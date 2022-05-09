@@ -2,7 +2,7 @@
 
     \vspace{10pt}
 
-    This section is dedicated to explain the various proposed low-level data types including integer and floating point. The smallest addressable object in FabRISC is the ``byte'', that is, eight consecutive bits. Longer types are constructed from multiple bytes side by side following powers of two: one, two, four or eight bytes in little-endian order.
+    This section is dedicated to explain the various proposed low-level data types including integer and floating point. The smallest addressable object in FabRISC is the \textit{byte}, that is, eight consecutive bits. Longer types are constructed from multiple bytes side by side following powers of two: one, two, four or eight bytes in \textit{little-endian} order.
 
     \subsection{Integer types}
 
@@ -31,12 +31,12 @@
 
         \end{itemize}
 
-        Values that serve as pointers are also manipulated as signed two's complement integers. Although the concept of sign doesn't make much sense for addresses, signed arithmetic can still be applied without many problems. Addition and subtraction of addresses will always yield the same exact bit pattern regardless of the interpretation of the operands. Multiplication can still produce the same pattern as well but only if the result is WLEN long. The only comparisons that do not depend on sign are equality and inequality because they simply amount to checking if each individual bit of one operand is equal or not to the ones in the other operand.
+        Values that serve as pointers are also manipulated as signed two's complement integers. Although the concept of sign doesn't make much sense for addresses, signed arithmetic can still be applied without many problems. Addition and subtraction will always yield the same exact bit pattern regardless of the interpretation of the operands. Multiplication can still produce the same pattern as well but only if the result is WLEN long, which means ignoring the upper WLEN bits. The only comparisons that do not depend on sign are equality and inequality because they simply amount to checking if each individual bit of one operand is equal or not to the ones in the other operand. Other comparisons, such as less than or greater than are risky if the object is close to the sign boundary from 0x7FFFFFFF \ldots F to 0x80000000 \ldots 0.
 
     \subsection{Floating point types}
 
         [coming soon...]
 
     \par\noindent\rule{\textwidth}{0.4pt}
-    \textit{[coming soon...]}
+    \textit{The low level data types are more or less the usual ones. Interesting and, perhaps, annoying situations can arise when manipulating addresses because all integer values are treated as signed. Usually though, pointer arithmetic is not something that should be heavily relied on because some operations are deemed illegal such as multiplication, division, modulo and bitwise logic. The sign boundary on 64 bit systems can be considered a non issue since the address space is absolutely huge and everything could fit into one of the two partitions. Systems with smaller WLEN might encounter some difficulties but some amount of pointer arithmetic can still be done without problems. [FP types comment...]}
     \par\noindent\rule{\textwidth}{0.4pt}

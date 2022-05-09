@@ -2,11 +2,81 @@
 
     \vspace{10pt}
 
-    This section is dedicated to a full and extensive list of all the proposed instructions in the ISA which are divided into their corresponding macro module and micro module. Each micro module will list its instructions in alphabetical order.
+    This section is dedicated to a full and extensive list of all the proposed instructions in the ISA which are divided into their corresponding module. Computational instructions can generate flags but, since there is no flags register, they will be ignored unless the AEXC bit is set for automatic arithmetic exceptions.
 
-    \subsection{Computational instructions}
+    \subsection{Computational-integer-scalar-basic}
 
-        [Coming soon...]
+        \begin{multicols}{2}
+
+            \begin{itemize}
+
+                \item \textit{\textbf{(ADD) Addition}: this instruction computes \(ra = rb + rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the COVR, OVFL and UNFL flags. This instruction is scalar.}
+
+                \item \textit{\textbf{(SUB) Subtraction}: this instruction computes \(ra = rb - rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the COVR, OVFL and UNFL flags. This instruction is scalar.}
+
+                \item \textit{\textbf{(AND) Bitwise AND}: this instruction computes \(ra = rb \wedge rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+
+                \item \textit{\textbf{(NAND) Bitwise NAND}: this instruction computes \(ra = \neg(rb \wedge rc)\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+
+                \item \textit{\textbf{(OR) Bitwise OR}: this instruction computes \(ra = rb \vee rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+
+                \item \textit{\textbf{(NOR) Bitwise NOR}: this instruction computes \(ra = \neg(rb \vee rc)\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+
+                \item \textit{\textbf{(XOR) Bitwise XOR}: this instruction computes \(ra = rb \& rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+
+                \item \textit{\textbf{(XNOR) Bitwise XNOR}: this instruction computes \(ra = rb \& rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+
+                \item \textit{\textbf{(ALSH) Arithmetic left shift}: this instruction computes \(ra = rb <<< rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+
+                \item \textit{\textbf{ARSH}: this instruction computes \(ra = rb >>> rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+
+                \item \textit{\textbf{LLSH}: this instruction computes \(ra = rb << rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+
+                \item \textit{\textbf{LRSH}: this instruction computes \(ra = rb >> rc\); belongs to the A format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+
+                \item \textit{\textbf{IADD}: this instruction computes \(ra = rb + imm_8\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+
+                \item \textit{\textbf{ISUB}: this instruction computes \(ra = rb - imm_8\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+
+                %\item \textit{\textbf{IAND}: }
+
+                %\item \textit{\textbf{INAND}: }
+
+                %\item \textit{\textbf{IOR}: }
+
+                %\item \textit{\textbf{INOR}: }
+
+                %\item \textit{\textbf{IXOR}: }
+
+                %\item \textit{\textbf{IXNOR}: }
+
+                %\item \textit{\textbf{IASH}: }
+
+                %\item \textit{\textbf{ILSH}: }
+
+                %\item \textit{\textbf{LIADD}: }
+
+                %\item \textit{\textbf{LISUB}: }
+
+                %\item \textit{\textbf{LIAND}: }
+
+                %\item \textit{\textbf{LINAND}: }
+
+                %\item \textit{\textbf{LIOR}: }
+
+                %\item \textit{\textbf{LINOR}: }
+
+                %\item \textit{\textbf{LIXOR}: }
+
+                %\item \textit{\textbf{LIXNOR}: }
+
+                %\item \textit{\textbf{IIC}: }
+
+            \end{itemize}
+
+        \end{multicols}
+
+        [To be continued...]
 
     \subsection{Data transfer instructions}
 

@@ -12,9 +12,9 @@
 
         \begin{itemize}
 
-            \item \textit{\textbf{CPU segment}: this portion, starting from address zero, is composed of 128 bytes and should be used to hold CPU information, such as implemented ISA extensions, cache sizes as well as other CPU capabilities and characteristics.}
+            \item \textit{\textbf{CPU segment}: this portion, starting from address zero of the MMIO space, is composed of 128 bytes and should be used to hold CPU information, such as implemented ISA extensions, cache sizes as well as other CPU capabilities and characteristics.}
 
-            \item \textit{\textbf{IO segment}: this portion, starting from address 128, is composed of 65408 bytes and should be used to communicate with external devices via MMIO.}
+            \item \textit{\textbf{IO segment}: this portion, starting from address 128 of the MMIO space, is composed of 65408 bytes and should be used to communicate with external devices via MMIO.}
 
         \end{itemize}
 
@@ -45,5 +45,5 @@
         The DMA protocol or scheme implemented by the hardware designer must also take consistency into account since memory operations to different addresses are allowed to be done out-of-order. This means that fencing instructions must retain their effect from the point of view of the hart and IO devices, which must provide similar fencing features as well.
 
     \par\noindent\rule{\textwidth}{0.4pt}
-    \textit{For more bandwidth demanding devices, DMA can be used to transfer data at very high speeds in the order of several Gb/s without interfering with the CPU. This scheme however, is more complex than plain MMIO because of the special arbiter that handles and grants the requests. IO coherence, as well as its consistency, is actually the main reason of this subsection as a remainder that it needs to be considered during the development of the underlying microarchitecture, including the devices themselves.}
+    \textit{For more bandwidth demanding devices, DMA can be used to transfer data at very high speeds in the order of several Gb/s without interfering with the CPU. This scheme however, is more complex than plain MMIO because of the special arbiter that handles and grants the requests. IO coherence, as well as its consistency, is actually the main reason of this subsection as a remainder that it needs to be considered during the development of the underlying microarchitecture, including the devices themselves via the use of atomic and fencing operations.}
     \par\noindent\rule{\textwidth}{0.4pt}

@@ -2,59 +2,61 @@
 
     \begin{center}
 
-    \begin{tabular}{|c|l|l|l|l|r|}
+    \begin{tabular}{|c|l|l|l|l|r|r|}
 
         \hline
-        ID & Name & Mnemonic & Type & Requirement & GP \\
+        ID & Name & Mnemonic & Type & Requirement & GP & LP \\
         \hline
         \addlinespace[10pt]
         \hline
-        00 & Interrupt 0 & INT0 & IO interrupt & SEVNT module & 5 \\
+        00 & Switch interrupt & SWITCH & IO interrupt & SUPER module & 5 & max \\
+        \hline
+        01 & Interrupt 0 & INT0 & IO interrupt & SEVNT module & 5 & cstm \\
+        \hline
+        ... & ... & ... & ... & ... & ... & ... \\
+        \hline
+        40 & Interrupt 63 & INT63 & IO interrupt & SEVNT module & 5 & cstm \\
+        \hline
+        41 & Interrupt 64 & INT64 & IPC interrupt & SEVNT module & 5 & cstm \\
+        \hline
+        ... & ... & ... & ... & ... & ... & ... \\
+        \hline
+        80 & Interrupt 127 & INT127 & IPC interrupt & SEVNT module & 5 & cstm \\
+        \hline
+        81 & System call 0 & SYSCL0 & Fault & SEVNT module & 4 & - \\
         \hline
         ... & ... & ... & ... & ... & ... \\
         \hline
-        3F & Interrupt 63 & INT63 & IO interrupt & SEVNT module & 5 \\
+        E4 & System call 99 & SYSCL99 & Fault & SEVNT module & 4 & - \\
         \hline
-        40 & Interrupt 64 & INT64 & IPC interrupt & SEVNT module & 5 \\
+        E5 & Illegal instruction & ILLI & Fault & mandatory & 4 & - \\
         \hline
-        ... & ... & ... & ... & ... & ... \\
+        E6 & Malformed instruction & MALI & Fault & mandatory & 4 & - \\
         \hline
-        7F & Interrupt 127 & INT127 & IPC interrupt & SEVNT module & 5 \\
+        E7 & Misaligned instruction & MISI & Fault & mandatory & 4 & - \\
         \hline
-        80 & System call 0 & SYSCL0 & Fault & SEVNT module & 4 \\
+        E8 & Illegal execute address & IEXE & Fault & SEVNT module & 4 & - \\
         \hline
-        ... & ... & ... & ... & ... & ... \\
+        E9 & Illegal read address & IRDA & Fault & SEVNT module & 4 & - \\
         \hline
-        E3 & System call 99 & SYSCL99 & Fault & SEVNT module & 4 \\
+        EA & Illegal write address & IWRA & Fault & SEVNT module & 4 & - \\
         \hline
-        E4 & Illegal instruction & ILLI & Fault & mandatory & 4 \\
+        EB & Misaligned address & MISA & Fault & mandatory & 4 & - \\
         \hline
-        E5 & Malformed instruction & MALI & Fault & mandatory & 4 \\
+        EC & Page fault & PGFT & Fault & SEVNT module & 4 & - \\
         \hline
-        E6 & Misaligned instruction & MISI & Fault & mandatory & 4 \\
+        ED & Incompatible instruction & INCI & Fault & mandatory & 4 & - \\
         \hline
-        E7 & Illegal execute address & IEXE & Fault & SEVNT module & 4 \\
+        EE & Reserved & - & - & - & - & - \\
         \hline
-        E8 & Illegal read address & IRDA & Fault & SEVNT module & 4 \\
+        ... & ... & ... & ... & ... & ... & ... \\
         \hline
-        E9 & Illegal write address & IWRA & Fault & SEVNT module & 4 \\
-        \hline
-        EA & Misaligned address & MISA & Fault & mandatory & 4 \\
-        \hline
-        EB & Page fault & PGFT & Fault & SEVNT module & 4 \\
-        \hline
-        EC & Incompatible instruction & INCI & Fault & mandatory & 4 \\
-        \hline
-        ED & Reserved & - & - & - & - \\
-        \hline
-        ... & ... & ... & ... & ... & ... \\
-        \hline
-        FF & Reserved & - & - & - & - \\
+        FF & Reserved & - & - & - & - & - \\
         \hline
 
     \end{tabular}
 
-    \caption[Supervisor event table]{Supervisor event table. GP is the abbreviation for Global Priority.}
+    \caption[Supervisor event table]{Supervisor event table. GP and LP are abbreviations for Global Priority and Local Priority respectively. The term ``cstm'' stands for custom because it can be decided on the fly by the supervisor, while ``max'' simply means the highest possible value.}
 
     \end{center}
 

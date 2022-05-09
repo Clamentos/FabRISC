@@ -22,7 +22,7 @@
 
         \end{enumerate}
 
-        \vspace{10pt}
+        \clearpage
         \input{./Tables/Register_file.tex}
         \vspace{10pt}
 
@@ -82,11 +82,13 @@
 
                 \item \textit{\textbf{Kernel register}: registers prefixed with ``KR'' are kernel reserved general purpose registers. KR registers are all WLEN bits wide and are privileged.}
 
+                \item \textit{\textbf{Watchdog timer}: this register, called ``WDT'', is a counter that periodically counts down from a set value towards zero. Once at zero, the counter will generate the SWITCH IO interrupt and reset itself to the previously set value. The generated interrupt must be directed to the hart itself in order to invoke the supervisor to perform a context switch. This timer is controlled via the WDAB bit in the CSR. WDT is 32 bits wide and is privileged.}
+
                 \item \textit{\textbf{Extra volatile registers}: these registers are simply extra volatile registers for the user.}
 
             \end{itemize}
 
-            The CSR register is divided into several bits and flags fields in order to provide granular control over the supervisor mode state. If the micro-architecture doesn't support certain features, then the corresponding bits for those features can be ignored. The first 18 bits can be accessed in user mode while the remaining bits are privileged only. The bits are listed from 0 to 31 in the order that they appear:
+            The CSR register is divided into several bits and flags fields in order to provide granular control over the supervisor mode state. If the micro-architecture doesn't support certain features, then the corresponding bits for those features can be ignored. The first 20 bits can be accessed in user mode while the remaining bits are privileged only. The bits are listed from 0 to 31 in the order that they appear:
 
             \begin{itemize}
 
@@ -111,6 +113,10 @@
 
                         \item \textit{\textbf{Auto exceptions bit} (AEXC): this bit indicates if the hart should trap every time a trapping arithmetic flag is set or not.}
 
+                        \item \textit{\textbf{Debugging registers freeze bit} (DBGF): this bit indicates if the debugging registers are active or not for this particular hart. This bit serves to suppress exception events triggered by debugging registers during the handling of events.}
+
+                        \item \textit{\textbf{Counter registers freeze bit} (CNTF): this bit indicates if the performance counter registers are active or not for this particular hart. This bit serves to suppress any counter during the handling of events in order to preserve its value for the preempted process.}
+
                     \end{itemize}
 
                 \item \textit{\textbf{Transactional memory section}: reserved for storing the eight bit transaction nesting depth counter (TND). Every time a transactional memory instruction is executed, this counter may be modified by either incrementing or decrementing. If the counter overflows or underflows, the OABT or UABT exceptions must be triggered accordingly.}
@@ -127,13 +133,17 @@
 
                 \item \textit{\textbf{IO interrupts mask} (IOIM): this bit indicates if the IO interrupts are masked or not.}
 
-                \item \textit{\textbf{Trapped bit} (TRAP): this bit indicates if the hart is currently handling a promoting event. This bit can be red by the IO controller to better understand where to route incoming interrupts.}
+                \item \textit{\textbf{Trapped bit} (TRAP): this bit indicates if the hart is currently handling a promoting event. This bit can be red by the IO controller to better understand where to route incoming interrupts in order to not skew the load.}
+
+                \item \textit{\textbf{Double fault bit} (DBF): this bit indicates if the hart generated a double fault. This bit can be fed to the IO controller in order to be red by the master core.}
 
                 \item \textit{\textbf{Halt bit} (HLTB): this bit indicates if the hart is halted or not.}
 
                 \item \textit{\textbf{Cache bit} (CACB): this bit indicates if the hart can access cache or not.}
 
-                \item \textit{\textbf{reserved}: the remaining bits are unused.}
+                \item \textit{\textbf{Watchdog active bit} (WDAB): this bit indicates if the watchdog timer WDT is active or not. In order to operate the WDT register, the supervisor must write said register with a value greater than zero. Once the value has been written, the timer can be enabled by asserting this bit to one.}
+
+                \item \textit{\textbf{reserved}: the remaining bit is unused.}
 
             \end{itemize}
 
@@ -156,6 +166,10 @@
                 \item \textit{\textbf{Auto exceptions mode}: this CSR bit dictates the exception handling mechanism currently being employed and, if set, it causes the hart to branch to the handler whenever an exception is triggered. If the bit is not set, the hart discards any exception limiting itself to setting the flags only.}
 
                 \item \textit{\textbf{Cached mode}: this CSR bit dictates if a particular hart is allowed to use caches as part of it's operation. A value of zero will cause the hart to bypass the whole cache hierarchy.}
+
+                \item \textit{\textbf{Trapped mode}: this CSR bit dictates if a particular hart is handling an event or not. The only usage for this bit is to notify other harts within the system who is doing what.}
+
+                \item \textit{\textbf{Halted mode}: this CSR bit dictates if the hart is halted or not. The halted state simply disables the hart in question. The hart can be still be ``unlocked'' by waking IPC interrupts sent by other harts.}
 
             \end{itemize}
 
@@ -262,7 +276,7 @@
 
                         \item \textit{\textbf{tt m --}: this class is used by vector gather and scatter instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
 
-                        \item \textit{\textbf{tt m ff}: this class is used by the CAS instruction. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'ff' states the condition to check: EQ, NE, LT or LE.}
+                        \item \textit{\textbf{tt m cc}: this class is used by the CAS instruction. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'cc' states the condition to check: EQ, NE, LT or LE.}
 
                     \end{enumerate}
 
@@ -282,11 +296,11 @@
 
                         \item \textit{\textbf{tt m -- d}: this class is used by computational vector reduction instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'd' specifies the direction for non commutative operations.}
 
-                        \item \textit{\textbf{tt m - tt}: this class is used by casts and conversion instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not.}
+                        \item \textit{\textbf{tt m - tt}: this class is used by casts and conversion instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
 
                         \item \textit{\textbf{tt m nnn}: this class is used by move and swap multiple instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'nnn' specifies how many registers are acted on, from one to eight inclusive.}
 
-                        \item \textit{\textbf{tt m s ff}: this class is used by mask setting on compare instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not, 's' states if the instruction operates on signed or unsigned data and 'ff' states the condition to check: EQ, NE, LT or LE.}
+                        \item \textit{\textbf{tt m - cc}: this class is used by mask setting on compare instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'cc' states the condition to check: EQ, NE, LT or LE.}
 
                     \end{enumerate}
 
@@ -314,11 +328,11 @@
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{rr m -}: this class is used by block memory instructions. 'rr' specifies which register file: SGPRs, SPRs or VGPRs and 'm' states if the instruction is masked or not}
+                        \item \textit{\textbf{rr m -}: this class is used by block memory instructions. 'rr' specifies which register file: SGPRs, SPRs, VGPRs or HLPRs and 'm' states if the instruction is masked or not.}
 
-                        \item \textit{\textbf{ff p -}: this class is used by test branch instructions. 'ff' specifies the condition: EQ, NE, LT or LE and 'p' states if the instruction mode: integer or floating point.}
+                        \item \textit{\textbf{cc p -}: this class is used by test branch instructions. 'cc' specifies the condition: EQ, NE, LT or LE and 'p' states the instruction mode: integer or floating point.}
 
-                        \item \textit{\textbf{iiii}: this class is used by direct function calls and jump instructions. 'iiii' extends the offset by four bits.}
+                        \item \textit{\textbf{iiii}: this class is used by direct function calls and jump instructions. 'iiii' extends the immediate offset by four bits.}
 
                         \item \textit{\textbf{e h m s}: this class is used by special bit-field manipulation instructions. 'e' specifies how the immediate is filled: zero-filled or one-filled. 'h' specifies the immediate highlighting mode: zeros ignore and ones select or zero clear and ones select. 'm' states if the instruction is masked or not and 's' signifies if the immediate is shifted by 32 positions to the left or not.}
 
@@ -328,7 +342,7 @@
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{tt p}: this class is used by compressed computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'p' states if the instruction mode: integer or floating point.}
+                        \item \textit{\textbf{tt p}: this class is used by compressed computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'p' states the instruction mode: integer or floating point.}
 
                     \end{enumerate}
 
@@ -338,7 +352,7 @@
         \textit{The moderate number of formats arise from the fact that i wanted to ``best-fit'' several groups of instructions in order to leave as much space as possible to the operands without hindering the opcode space. I believe, however, that the decoding complexity is still very manageable due to the high degree of similarity among the formats. Some times is just a few bits changing purpose and or position. The register specifiers are always in the same position and the MSB of immediates are also always in the same position to reduce decoding complexity. The first seven bits, although sometimes not enough for the full opcode, will always be enough to encode the format and, therefore, the length of the instruction.}
         \par\noindent\rule{\textwidth}{0.4pt}
 
-        \subsection{Decoding guidelines}    % FINISH <<<<<<<<<<<<<<<<<<
+        \subsection{Decoding guidelines}
 
             \vspace{10pt}
 
@@ -379,8 +393,8 @@
 
                 Micro-operation formats should be few with regular and easy to decode fields. Having one format with fixed length will simplify the logic that handles the micro-op at the cost of more space required to store it. Variable length formats can be an good choice to increase density, especially in the micro-op cache at the cost of more complex logic. Finding a good balance is can get tricky, but the following fixed length format can be a good starting point:
 
-                ...
+                [to be continued...]
 
         \par\noindent\rule{\textwidth}{0.4pt}
-        \textit{The most expensive part of the decoding process is the micro-code ROM, which is going to roughly be 1024 bytes assuming a 32 bit entries. This might seem a lot, but most FPGAs have dedicated memory blocks that can cover the needed size. Block rams are quite fast and are often multi-ported to allow simultaneous access from different locations. This means that one block-ram is enough even for super-scalar micro-architectures where multiple instructions are decoded in parallel. The micro-instruction is the result of the decoding process, which holds all the information needed for later steps such as register and operation specifiers as well as other control signals all in one single object. As mentioned above, complex instructions might need to be ``unrolled'' or expanded into more than one micro-instruction before the processor advances to the next macro-instruction.}
+        \textit{The most expensive part of the decoding process is the micro-code ROM, which is going to roughly be 1024 bytes assuming a 32 bit entries. This might seem a lot, but most FPGAs have dedicated memory blocks that can cover the needed size. Block rams are quite fast and are often multi-ported to allow simultaneous access from different locations. This means that one block-ram is enough even for super-scalar micro-architectures where multiple instructions are decoded in parallel. The micro-instruction is the result of the decoding process, which holds all the information needed for later steps such as register and operation specifiers as well as other control signals all in one single object. As mentioned above, complex instructions might need to be ``unrolled'' or expanded into more than one micro-instruction before the processor advances to the next macro-instruction. This sequencing however is still quite simple because it often just amounts to moving or swapping multiple registers. A single micro-instruction can be normally emitted and the later stages can be left doing the heavy lifting of actual sequencing the operation. This second slightly different approach can reduce the complexity of the main control unit at the expense of having a simpler and smaller ``micro control unit'' later in the pipeline. At the end of the day, it's all about compromises.}
         \par\noindent\rule{\textwidth}{0.4pt}

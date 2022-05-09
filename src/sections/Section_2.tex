@@ -6,7 +6,7 @@
 
     \begin{enumerate}
 
-        \item \textit{\textbf{Computational}: these instructions perform arithmetic or logic operations.}
+        \item \textit{\textbf{Computational}: these modules include instructions that perform arithmetic or logic operations:}
 
             \begin{itemize}
 
@@ -34,7 +34,7 @@
 
             \end{itemize}
 
-        \item \textit{\textbf{Data transfer}: these instructions perform memory load, store, register move and swap operations.}
+        \item \textit{\textbf{Data transfer}: these modules include instructions that perform memory load, store, register move and swap operations:}
 
             \begin{itemize}
 
@@ -50,7 +50,7 @@
 
             \end{itemize}
 
-        \item \textit{\textbf{Flow transfer}: these instructions perform conditional branch, jump, call and return operations.}
+        \item \textit{\textbf{Flow transfer}: these modules include instructions that perform conditional branch, jump, call and return operations:}
 
             \begin{itemize}
 
@@ -58,45 +58,45 @@
                 \item 24) \textit{\textbf{FISA}: flow transfer-integer-scalar-advanced.}
                 \item 25) \textit{\textbf{FISM}: flow transfer-integer-scalar-mask.}
 
-                \item 26) \textit{\textbf{FIVB}: flow transfer-integer-vector-basic.}
-                \item 27) \textit{\textbf{FIVA}: flow transfer-integer-vector-advanced.}
+                \item 26) \textit{\textbf{FIV}: flow transfer-integer-vector.}
 
-                \item 28) \textit{\textbf{FFSB}: flow transfer-FP-scalar-basic.}
-                \item 29) \textit{\textbf{FFSA}: flow transfer-FP-scalar-advanced.}
-                \item 30) \textit{\textbf{FFSM}: flow transfer-FP-scalar-mask.}
+                \item 27) \textit{\textbf{FFSB}: flow transfer-FP-scalar-basic.}
+                \item 28) \textit{\textbf{FFSA}: flow transfer-FP-scalar-advanced.}
+                \item 29) \textit{\textbf{FFSM}: flow transfer-FP-scalar-mask.}
 
-                \item 31) \textit{\textbf{FFVB}: flow transfer-FP-vector-basic.}
-                \item 32) \textit{\textbf{FFVA}: flow transfer-FP-vector-advanced.}
+                \item 30) \textit{\textbf{FFVB}: flow transfer-FP-vector.}
 
-                \item 33) \textit{\textbf{FC}: flow transfer-compressed.}
+                \item 31) \textit{\textbf{FC}: flow transfer-compressed.}
 
             \end{itemize}
 
-        \item \textit{\textbf{System}: these instructions perform system various related operations.}
+        \item \textit{\textbf{System}: these modules include instructions that perform system various related operations:}
 
             \begin{itemize}
 
-                \item 34) \textit{\textbf{SB}: system-basic.}
-                \item 35) \textit{\textbf{SA}: system-advanced.}
+                \item 32) \textit{\textbf{SB}: system-basic.}
+                \item 33) \textit{\textbf{SA}: system-advanced.}
 
             \end{itemize}
 
-        \item 36) \textit{\textbf{FNC}: fences.}
-        \item 37) \textit{\textbf{TM}: transactional-memory.}
-        \item 38) \textit{\textbf{AM}: atomic-memory.}
+        \item \textit{\textbf{Miscellaneous}: these modules include miscellaneous components such as extra instructions, register banks, events and more:}
 
-        \item 39) \textit{\textbf{EXC}: exceptions.}
-        \item 40) \textit{\textbf{FLT}: faults.}
-        \item 41) \textit{\textbf{IOINT}: IO interrupts.}           
-        \item 42) \textit{\textbf{IPCINT}: IPC interrupts.}
+        \item 34) \textit{\textbf{FNC}: fences.}
+        \item 35) \textit{\textbf{TM}: transactional-memory.}
+        \item 36) \textit{\textbf{AM}: atomic-memory.}
 
-        \item 43) \textit{\textbf{DBGR}: debugging registers.}
-        \item 44) \textit{\textbf{PERFC}: performance counters.}
+        \item 37) \textit{\textbf{EXC}: exceptions.}
+        \item 38) \textit{\textbf{FLT}: faults.}
+        \item 39) \textit{\textbf{IOINT}: IO interrupts.}           
+        \item 40) \textit{\textbf{IPCINT}: IPC interrupts.}
 
-        \item 45) \textit{\textbf{SUPER}: supervisor.}
+        \item 41) \textit{\textbf{DBGR}: debugging registers.}
+        \item 42) \textit{\textbf{PERFC}: performance counters.}
+
+        \item 43) \textit{\textbf{SUPER}: supervisor.}
 
         \end{enumerate}
 
     \par\noindent\rule{\textwidth}{0.4pt}
-    \textit{The high number of modules and extensions is very useful because it allows the hardware designers to only implement what they really want and very little extra. The fact that there is no explicit mandatory subset of the ISA helps can with specialized systems. With this, it becomes perfectly possible to create, for example, a floating-point only processor with no integer instructions to alleviate overheads.}
+    \textit{The high number of modules and extensions is very useful because it allows the hardware designers to only implement what they really want and very little extra. The fact that there is no explicit mandatory subset of the ISA helps can with specialized systems. With this, it becomes perfectly possible to create, for example, a floating-point only processor with no integer instructions to alleviate overheads. This method makes possible the implementation of silly things such as having no flow transfer instructions, thus it kind of relies on the common sense of the hardware designers when it comes to realize sensible microarchitectures.}
     \par\noindent\rule{\textwidth}{0.4pt}
