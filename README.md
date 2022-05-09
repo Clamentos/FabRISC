@@ -13,3 +13,7 @@ FabRISC is an open-source, modular, RISC-like instruction set architecture for 3
 ### Compiling from source
 
 This repository holds the LaTeX source code for the specification. The steps to compile are very simple and all is necessary is to compile the "FabRISC_spec.tex" file in the "./src" folder with PDFLaTeX to generate the PDF document.
+
+#### Disclaimer
+
+This is just a personal project used as a learning experience so don't expect anything ground breaking, however any kind of feedback is absolutely welcome and needed!
