@@ -1,0 +1,48 @@
+number = 123;
+steps = 0;
+
+while(number > 1) {
+	
+	if(number % 2 == 0) {
+
+		number = number / 2;
+		steps = steps + 1;
+	}
+
+	else {
+
+		number = number * 3;
+		number = number + 1;
+		number = number / 2;
+		steps = steps + 2;
+	}
+}
+---------------------------------------------------------------------
+
+LDI.xxx: $S0, #123; 	// number = 123; 															4
+LDI.xxx: $S1, #0; 		// steps = 0; 																2
+LDI.xxx: $S2, #1; 		// const 																	2
+
+.while:
+
+	BLE.8i: $S0, $S2, @end; 			// if(number <= 1) {end} else {continue} 					4
+	IAND.8ns: $S3, $S0, #1; 			// temp = number % 2; 										4
+	BTST.EQZI: $S3, @even; 				// if(temp == 0) {even} else {continue} 					4
+
+	.odd:
+
+		IMUL.8ns: $S0, $S0, #3; 		// number = number * 3; 									2
+		IADD.8ns: $S0, $S0, #1; 		// number = number + 1; 									2
+		IASH.8ns: $S0, $S0, #-1; 		// number = number / 2; 									2
+		IADD.8ns: $S1, $S1, #2; 		// steps = steps + 2; 										2
+
+	.even:
+
+		IASH.8ns: $S0, $S0, #-1; 		// number = number / 2; 									2
+		IADD.8ns: $S1, $S1, #1; 		// steps = steps + 1; 										2
+
+	JMP: @while; 						// goto .while 												2
+
+.end:
+
+	HLT; 								// stop 													2

@@ -249,7 +249,7 @@
 
             \vspace{10pt}
 
-            FabRISC specifies 16 different instruction formats to allocate as much space as possible to the operands, while leaving some opcode encoding space to implement extra application specific instructions. Formats can be variable length from two up to six bytes in order to accommodate larger immediate constants for addresses and data. Formats are divided into several bit fields that are scrambled around in order to reduce decoding logic. Many also carry with them a ``modifier'' field, called mod, that can provide extra information such as mask, data type length, vector mode and more. All instructions treat data as signed unless explicitly noted.
+            FabRISC specifies 14 different instruction formats to allocate as much space as possible to the operands, while leaving some opcode encoding space to implement extra application specific instructions. Formats can be variable length from two up to six bytes in order to accommodate larger immediate constants for addresses and data. Formats are divided into several bit fields that are scrambled around in order to reduce decoding logic. Many also carry with them a ``modifier'' field, called mod, that can provide extra information such as mask, data type length, vector mode and more. All instructions treat data as signed unless explicitly noted.
 
             \vspace{10pt}
             \input{./Tables/Formats.tex}
@@ -268,23 +268,25 @@
 
             \begin{itemize}
 
-                \item \textit{\textbf{A}: this format has three instruction modifier classes:}
+                \item \textit{\textbf{A}: this format has two instruction modifier classes:}
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{tt m vv}: this class is used by scalar computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'vv' indicates the instruction mode: scalar, vector-vector or vector-scalar.}
+                        \item \textit{\textbf{tt m uu}: this class is used by scalar memory instructions (R,R,R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'uu' specifies what auto update mode to use: nothing, post-increment, post-decrement or pre-decrement.}
 
-                        \item \textit{\textbf{tt m --}: this class is used by vector gather and scatter instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
-
-                        \item \textit{\textbf{tt m cc}: this class is used by the CAS instruction. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'cc' states the condition to check: EQ, NE, LT or LE.}
+                        \item \textit{\textbf{-a m uu}: this class is used by vector memory instructions (R,R,R,R). 'a' encodes the addressing mode: standard or striding, 'm' states if the instruction is masked or not and 'uu' specifies what auto update mode to use: nothing, post-increment, post-decrement or pre-decrement.}
 
                     \end{enumerate}
 
-                \item \textit{\textbf{B and B.l}: this format has one instruction modifier class:}
+                \item \textit{\textbf{B}: this format has three instruction modifier classes:}
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{tt m v}: this class is used by scalar and vector computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'v' indicates the instruction mode: scalar or vector-scalar.}
+                        \item \textit{\textbf{tt m vv}: this class is used by computational instructions (R,R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'vv' dictates the instruction mode: scalar, vector-vector or vector-scalar.}
+
+                        \item \textit{\textbf{tt m --}: this class is used by vector gather and scatter memory instructions (R,R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not}
+
+                        \item \textit{\textbf{tt m cc}: this class is used by the CAS atomic memory instructions (R,R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'cc' dictates the condition: EQ, NE, LT, or LE.}
 
                     \end{enumerate}
 
@@ -292,57 +294,89 @@
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{tt m -- v}: this class is used by computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'v' indicates the instruction mode: scalar or vector.}
+                        \item \textit{\textbf{tt m -- v}: this class is used by computational instructions (R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'v' dictates the instruction mode: scalar or vector}
 
-                        \item \textit{\textbf{tt m -- d}: this class is used by computational vector reduction instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'd' specifies the direction for non commutative operations.}
+                        \item \textit{\textbf{tt m -- d}: this class is used by reduction instructions (R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'd' dictates the direction for non commutative operations.}
 
-                        \item \textit{\textbf{tt m - tt}: this class is used by casts and conversion instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
+                        \item \textit{\textbf{tt m - tt}: this class is used by conversion instructions (R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
 
-                        \item \textit{\textbf{tt m nnn}: this class is used by move and swap multiple instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'nnn' specifies how many registers are acted on, from one to eight inclusive.}
+                        \item \textit{\textbf{tt m nnn}: this class is used by move and swap instructions (R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'nnn' specifies how many registers to act on from one to eight inclusive.}
 
-                        \item \textit{\textbf{tt m - cc}: this class is used by mask setting on compare instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'cc' states the condition to check: EQ, NE, LT or LE.}
-
-                    \end{enumerate}
-
-                \item \textit{\textbf{D and E}: these formats have two instruction modifier classes:}
-
-                    \begin{enumerate}
-
-                        \item \textit{\textbf{tt m}: this class is used by scalar memory instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
-
-                        \item \textit{\textbf{- m a}: this class is used by vector memory instructions. 'a' encodes the addressing mode: standard or striding and 'm' states if the instruction is masked or not.}
+                        \item \textit{\textbf{tt m - cc}: this class is used by compare based mask setting instructions (R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'cc' dictates the condition: EQ, NE, LT, or LE.}
 
                     \end{enumerate}
 
-                \item \textit{\textbf{D.l, E.l and F}: these formats have two instruction modifier classes:}
+                \item \textit{\textbf{D}: this format has two instruction modifier classes:}
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{tt m uu}: this class is used by scalar memory instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'uu' specifies what auto update mode to use: nothing, post-increment, post-decrement or pre-decrement.}
+                        \item \textit{\textbf{tt m}: this class is used by scalar load and store memory instructions (R,R,R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'm' states if the instruction is masked or not.}
 
-                        \item \textit{\textbf{-- m a uu}: this class is used by vector memory instructions. 'a' encodes the addressing mode: standard or striding, 'm' states if the instruction is masked or not and 'uu' specifies what auto update mode to use: nothing, post-increment, post-decrement or pre-decrement.}
+                        \item \textit{\textbf{- a m}: this class is used by vector load and store memory instructions (R,R,R,I). 'a' specifies the addressing mode: standard or striding and 'm' states if the instruction is masked or not.}
 
                     \end{enumerate}
 
-                \item \textit{\textbf{G and G.l}: this format has four instruction modifier classes:}
+                \item \textit{\textbf{D.l}: this format has two instruction modifier classes:}
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{rr m -}: this class is used by block memory instructions. 'rr' specifies which register file: SGPRs, SPRs, VGPRs or HLPRs and 'm' states if the instruction is masked or not.}
+                        \item \textit{\textbf{tt m uu}: this class is used by scalar load and store memory instructions (R,R,R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'uu' specifies the auto-update mode: nothing, post-increment, post-decrement or pre-decrement.}
 
-                        \item \textit{\textbf{cc p -}: this class is used by test branch instructions. 'cc' specifies the condition: EQ, NE, LT or LE and 'p' states the instruction mode: integer or floating point.}
-
-                        \item \textit{\textbf{iiii}: this class is used by direct function calls and jump instructions. 'iiii' extends the immediate offset by four bits.}
-
-                        \item \textit{\textbf{e h m s}: this class is used by special bit-field manipulation instructions. 'e' specifies how the immediate is filled: zero-filled or one-filled. 'h' specifies the immediate highlighting mode: zeros ignore and ones select or zero clear and ones select. 'm' states if the instruction is masked or not and 's' signifies if the immediate is shifted by 32 positions to the left or not.}
+                        \item \textit{\textbf{- a m uu}: this class is used by vector load and store memory instructions (R,R,R,I). 'a' specifies the addressing mode: standard or striding, 'm' states if the instruction is masked or not and 'uu' specifies the auto-update mode: nothing, post-increment, post-decrement or pre-decrement.}
 
                     \end{enumerate}
 
-                \item \textit{\textbf{H}: this format has one instruction modifier class:}
+                \item \textit{\textbf{E}: this format has five instruction modifier classes:}
 
                     \begin{enumerate}
 
-                        \item \textit{\textbf{tt p}: this class is used by compressed computational instructions. 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'p' states the instruction mode: integer or floating point.}
+                        \item \textit{\textbf{tt m v o}: this class is used by computational instructions (R,R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not, 'v' dictates the instruction mode: scalar or vector and 'o' is simply and extra opcode bit.}
+
+                        \item \textit{\textbf{tt m ii}: this class is used scalar load and store memory instructions (R,R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'ii' are simply extra immediate bits.}
+
+                        \item \textit{\textbf{- a m ii}: this class is used by vector load and store instructions (R,R,I). this class is used by vector load and store memory instructions. 'a' specifies the addressing mode: standard or striding, 'm' states if the instruction is masked or not and 'ii' are simply extra immediate bits.}
+
+                        \item \textit{\textbf{tt p ii}: this class is used by compare based conditional branch instructions (R,R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'p' dictates the instruction mode: integer or floating point and 'ii' are simply extra immediate bits.}
+
+                        \item \textit{\textbf{iiiii}: this class is used by indirect function calls and jump instructions (R,R,I). 'iiiii' are simply extra immediate bits.}
+
+                    \end{enumerate}
+
+                \item \textit{\textbf{E.l}: this format has five instruction modifier classes:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{tt m v o}: this class is used by computational instructions (R,R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not, 'v' dictates the instruction mode: scalar or vector and 'o' is simply and extra opcode bit.}
+
+                        \item \textit{\textbf{tt m uu}: this class is used scalar load and store memory instructions (R,R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'm' states if the instruction is masked or not and 'uu' specifies the auto-update mode: nothing, post-increment, post-decrement or pre-decrement.}
+
+                        \item \textit{\textbf{- a m uu}: this class is used by vector load and store instructions (R,R,I). 'a' specifies the addressing mode: standard or striding, 'm' states if the instruction is masked or not and 'uu' specifies the auto-update mode: nothing, post-increment, post-decrement or pre-decrement.}
+
+                        \item \textit{\textbf{tt p cc}: this class is used by compare based conditional branch instructions (R,R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes, 'p' dictates the instruction mode: integer or floating point and 'cc' dictates the condition: EQ, NE, LT, or LE.}
+
+                        \item \textit{\textbf{iiiii}: this class is used by indirect function calls and jump instructions (R,R,I). 'iiiii' are simply extra immediate bits.}
+
+                    \end{enumerate}
+
+                \item \textit{\textbf{F and F.l}: this format has four instruction modifier classes:}
+
+                \begin{enumerate}
+
+                    \item \textit{\textbf{- m ff}: this class is used by block load and store memory instructions (R,I). 'ff' specifies the target register file: SGPRs, VGPRs, SPRs or HLPRs and 'm' states if the instruction is masked or not.}
+
+                    \item \textit{\textbf{tt cc}: this class is used by test based branches (R,I). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'cc' dictates the condition: EQ, NE, LT, or LE.}
+
+                    \item \textit{\textbf{iiii}: this class is used by direct function calls and jump instructions (R,I). 'iiii' are simply extra immediate bits.}
+
+                    \item \textit{\textbf{tt m c}: this class is used by bit manipulation instructions (R,I). ...}
+
+                \end{enumerate}
+
+                \item \textit{\textbf{G}: this format has one instruction modifier class:}
+
+                    \begin{enumerate}
+
+                        \item \textit{\textbf{tt p}: this class is used by compressed computational instructions (R,R). 'tt' encodes the data type length: 1, 2, 4 or 8 bytes and 'p' dictates the instruction mode: integer or floating point.}
 
                     \end{enumerate}
 
@@ -374,18 +408,20 @@
 
                 \vspace{10pt}
 
-                Instruction opcodes can be of variable length of 7, 8, 12 and 16 bits. The length of the opcode can be retrieved by looking at the first 7 seven bits. From there, with the help of a hard coded logic array, the full opcode can be obtained. Once fully composed, the opcode can then be used to index into the microcode ROM where information such as the format is held. Opcodes are distributed in the following manner:
+                Instruction opcodes can be of variable length of 7, 11, 12 and 16 bits. The length of the opcode can be retrieved by looking at the first 7 seven bits. From there, with the help of a hard coded logic array, the full opcode can be obtained. Once fully composed, the opcode can then be used to index into the microcode ROM where information such as the format is held. Opcodes are distributed in the following manner:
 
                 \begin{itemize}
 
-                    \item \textit{\textbf{7 bits} 0000000xxxxxxxxx $\rightarrow$ 1011011xxxxxxxxx with a total of 92 combinations.}
-                    \item \textit{\textbf{8 bits} 10111000xxxxxxxx $\rightarrow$ 11110111xxxxxxxx with a total of 64 combinations.}
-                    \item \textit{\textbf{12 bits} 111110000000xxxx $\rightarrow$ 111110111111xxxx with a total of 64 combinations.}
-                    \item \textit{\textbf{16 bits} 1111110000000000 $\rightarrow$ 1111110001111111 with a total of 128 combinations.}
+                    \item \textit{\textbf{7 bits} 0000000xxxxxxxxx $\rightarrow$ 1111011xxxxxxxxx with a total of 124 combinations.}
+                    \item \textit{\textbf{11 bits} 11111000000xxxxx $\rightarrow$ 11111001111xxxxx with a total of 16 combinations.}
+                    \item \textit{\textbf{12 bits} 111110100000xxxx $\rightarrow$ 111111011111xxxx with a total of 64 combinations.}
+                    \item \textit{\textbf{16 bits} 1111111000000000 $\rightarrow$ 1111111001111111 with a total of 128 combinations.}
+
+                    \item \textit{there are 384 unused opcode combinations going from: 111111101xxxxxxx $\rightarrow$ 111111111xxxxxxx. These combinations can be used by custom application specific instructions.}
 
                 \end{itemize}
 
-                The total size of the encoding space amounts to 348 instructions, however, only xxx opcodes are used in total. It's possible to reserve one entry in the microcode ROM for each possible instruction but opcodes are assigned in a specific way to reduce the size of the ROM. Instructions that fundamentally perform the same operation but on different data types such as integer and floating point will map to the same entry, compressing the encoding space to just under 256 entries. This compression requires a hard coded logic array that composes the target 8 bit ROM address. Some instructions might require some form of sequencing which can be achieved by either emitting multiple micro-instructions or letting the target functional unit handle the sequencing. It's important to note that the sequencing required is very simple because the instructions that need it effectively perform the same operation but multiple times, for example: block moves simply copy multiple registers. If it's decided to sequence the actual microcode, then the remaining entries of the ROM can be used for that very purpose.
+                The total size of the encoding space amounts to 332 instructions, however, only xxx opcodes are used in total. It's possible to reserve one entry in the microcode ROM for each possible instruction but opcodes are assigned in a specific way to reduce the size of the ROM. Instructions that fundamentally perform the same operation but on different data types such as integer and floating point will map to the same entry, compressing the encoding space to just under 256 entries. This compression requires a hard coded logic array that composes the target 8 bit ROM address. Some instructions might require some form of sequencing which can be achieved by either emitting multiple micro-instructions or letting the target functional unit handle the sequencing. It's important to note that the sequencing required is very simple because the instructions that need it effectively perform the same operation but multiple times, for example: block moves simply copy multiple registers. If it's decided to sequence the actual microcode, then the remaining entries of the ROM can be used for that very purpose.
 
                 [opcode compression table here...]
 
