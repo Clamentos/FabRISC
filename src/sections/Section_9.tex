@@ -6,69 +6,71 @@
 
     \subsection{Computational-integer-scalar-basic}
 
+        This instruction module provides simple, computational scalar instructions concerning arithmetic and logic:
+
         \begin{multicols}{2}
 
             \begin{itemize}
 
-                \item \textit{\textbf{(ADD) Addition}: this instruction computes \((ra = rb + rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the COVR, OVFL and UNFL flags. This instruction is scalar.}
+                \item \textit{\textbf{(ADD) Addition}: this instruction computes \((ra = rb + rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the COVR, OVFL and UNFL flags.}
 
-                \item \textit{\textbf{(SUB) Subtraction}: this instruction computes \((ra = rb - rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the COVR, OVFL and UNFL flags. This instruction is scalar.}
+                \item \textit{\textbf{(SUB) Subtraction}: this instruction computes \((ra = rb - rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the COVR, OVFL and UNFL flags.}
 
-                \item \textit{\textbf{(AND) Bitwise AND}: this instruction computes \((ra = rb \wedge rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+                \item \textit{\textbf{(AND) Bitwise AND}: this instruction computes \((ra = rb \wedge rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags.}
 
-                \item \textit{\textbf{(NAND) Bitwise NAND}: this instruction computes \((ra = \neg(rb \wedge rc))\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+                \item \textit{\textbf{(NAND) Bitwise NAND}: this instruction computes \((ra = \neg(rb \wedge rc))\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags.}
 
-                \item \textit{\textbf{(OR) Bitwise OR}: this instruction computes \((ra = rb \vee rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+                \item \textit{\textbf{(OR) Bitwise OR}: this instruction computes \((ra = rb \vee rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags.}
 
-                \item \textit{\textbf{(NOR) Bitwise NOR}: this instruction computes \((ra = \neg(rb \vee rc))\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+                \item \textit{\textbf{(NOR) Bitwise NOR}: this instruction computes \((ra = \neg(rb \vee rc))\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags.}
 
-                \item \textit{\textbf{(XOR) Bitwise XOR}: this instruction computes \((ra = rb \oplus rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+                \item \textit{\textbf{(XOR) Bitwise XOR}: this instruction computes \((ra = rb \oplus rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags.}
 
-                \item \textit{\textbf{(XNOR) Bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus rc))\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags. This instruction is scalar.}
+                \item \textit{\textbf{(XNOR) Bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus rc))\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags.}
 
-                \item \textit{\textbf{(ALSH) Arithmetic left shift}: this instruction computes \((ra = rb <<< rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(ALSH) Arithmetic left shift}: this instruction computes \((ra = rb <<< rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(ARSH) Arithmetic right shift}: this instruction computes \((ra = rb >>> rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(ARSH) Arithmetic right shift}: this instruction computes \((ra = rb >>> rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LLSH) Logical left shift}: this instruction computes \((ra = rb << rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LLSH) Logical left shift}: this instruction computes \((ra = rb << rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LRSH) Logical right shift}: this instruction computes \((ra = rb >> rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LRSH) Logical right shift}: this instruction computes \((ra = rb >> rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IADD) Immediate addition}: this instruction computes \((ra = rb + signxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(IADD) Immediate addition}: this instruction computes \((ra = rb + signxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(ISUB) Immediate subtraction}: this instruction computes \((ra = rb - signxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(ISUB) Immediate subtraction}: this instruction computes \((ra = rb - signxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IAND) Immediate bitwise AND}: this instruction computes \((ra = rb \wedge zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(IAND) Immediate bitwise AND}: this instruction computes \((ra = rb \wedge zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(INAND) Immediate bitwise NAND}: this instruction computes \((ra = \neg(rb \wedge zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(INAND) Immediate bitwise NAND}: this instruction computes \((ra = \neg(rb \wedge zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IOR) Immediate bitwise OR}: this instruction computes \((ra = rb \vee zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(IOR) Immediate bitwise OR}: this instruction computes \((ra = rb \vee zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(INOR) Immediate bitwise NOR}: this instruction computes \((ra = \neg(rb \vee zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(INOR) Immediate bitwise NOR}: this instruction computes \((ra = \neg(rb \vee zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IXOR) Immediate bitwise XOR}: this instruction computes \((ra = rb \oplus zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(IXOR) Immediate bitwise XOR}: this instruction computes \((ra = rb \oplus zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IXNOR) Immediate bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(IXNOR) Immediate bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IASH) Immediate arithmetic shift}: this instruction computes \((ra = rb <<<>>> imm_8)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar and the direction of the shift is dictated by imm[7] bit.}
+                \item \textit{\textbf{(IASH) Immediate arithmetic shift}: this instruction computes \((ra = rb <<<>>> imm_8)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. The direction of the shift is dictated by imm[7] bit.}
 
-                \item \textit{\textbf{(ILSH) Immediate logical shift}: this instruction computes \((ra = rb <<>> imm_8)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar and the direction of the shift is dictated by imm[7] bit.}
+                \item \textit{\textbf{(ILSH) Immediate logical shift}: this instruction computes \((ra = rb <<>> imm_8)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. The direction of the shift is dictated by imm[7] bit.}
 
-                \item \textit{\textbf{(LIADD) Long immediate addition}: this instruction computes \((ra = rb + signxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LIADD) Long immediate addition}: this instruction computes \((ra = rb + signxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LISUB) Long immediate subtraction}: this instruction computes \((ra = rb - signxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LISUB) Long immediate subtraction}: this instruction computes \((ra = rb - signxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LIAND) Long Immediate bitwise AND}: this instruction computes \((ra = rb \wedge zeroxt(imm_{26}))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LIAND) Long Immediate bitwise AND}: this instruction computes \((ra = rb \wedge zeroxt(imm_{26}))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LINAND) Long Immediate bitwise NAND}: this instruction computes \((ra = \neg(rb \wedge zeroxt(imm_{26})))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LINAND) Long Immediate bitwise NAND}: this instruction computes \((ra = \neg(rb \wedge zeroxt(imm_{26})))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LIOR) Long Immediate bitwise OR}: this instruction computes \((ra = rb \vee zeroxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LIOR) Long Immediate bitwise OR}: this instruction computes \((ra = rb \vee zeroxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LINOR) Long Immediate bitwise NOR}: this instruction computes \((ra = \neg(rb \vee zeroxt(imm_{26})))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LINOR) Long Immediate bitwise NOR}: this instruction computes \((ra = \neg(rb \vee zeroxt(imm_{26})))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LIXOR) Long Immediate bitwise XOR}: this instruction computes \((ra = rb \oplus zeroxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LIXOR) Long Immediate bitwise XOR}: this instruction computes \((ra = rb \oplus zeroxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LIXNOR) Long Immediate bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus zeroxt(imm_{26})))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. This instruction is scalar.}
+                \item \textit{\textbf{(LIXNOR) Long Immediate bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus zeroxt(imm_{26})))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
                 \item \textit{\textbf{(IIC) Integer-integer cast}: this isntruction computes \((ra = signxt_{mod}(rb))\); belongs to the C format; uses the modifier class 3; has an opcode of xxxxxxxxxxxx and generates the xxx flags.}
 
@@ -84,61 +86,61 @@
 
                 \item \textit{\textbf{(MUL) Multiplication}: ...}
 
-                \item \textit{\textbf{(MAC) }: ...}
+                \item \textit{\textbf{(MAC) Multiply and Accumulate}: ...}
 
-                \item \textit{\textbf{(DIV) }: ...}
+                \item \textit{\textbf{(DIV) Division}: ...}
                 
-                \item \textit{\textbf{(REM) }: ...}
+                \item \textit{\textbf{(REM) Remainder}: ...}
 
-                \item \textit{\textbf{(IMP) }: ...}
+                \item \textit{\textbf{(IMP) Bitwise IMP}: ...}
 
-                \item \textit{\textbf{(NIMP) }: ...}
+                \item \textit{\textbf{(NIMP) Bitwise NIMP}: ...}
 
-                \item \textit{\textbf{(LRT) }: ...}
+                \item \textit{\textbf{(LRT) Left Rotation}: ...}
                 
-                \item \textit{\textbf{(RRT) }: ...}
+                \item \textit{\textbf{(RRT) Right Rotation}: ...}
 
-                \item \textit{\textbf{(SWP) }: ...}
+                \item \textit{\textbf{(SWP) Bit Swap}: ...}
 
-                \item \textit{\textbf{(IMUL) }: ...}
+                \item \textit{\textbf{(IMUL) Immediate Multiplication}: ...}
 
-                \item \textit{\textbf{(IMAC) }: ...}
+                \item \textit{\textbf{(IMAC) Immediate Multiply and Accumulate}: ...}
                 
-                \item \textit{\textbf{(IDIV) }: ...}
+                \item \textit{\textbf{(IDIV) Immediate Division}: ...}
 
-                \item \textit{\textbf{(IREM) }: ...}
+                \item \textit{\textbf{(IREM) Immediate Remainder}: ...}
 
-                \item \textit{\textbf{(IIMP) }: ...}
+                \item \textit{\textbf{(IIMP) Immediate Bitwise IMP}: ...}
 
-                \item \textit{\textbf{(INIMP) }: ...}
+                \item \textit{\textbf{(INIMP) Immediate Bitwise NIMP}: ...}
                 
-                \item \textit{\textbf{(IRT) }: ...}
+                \item \textit{\textbf{(IRT) Immediate Rotation}: ...}
 
-                \item \textit{\textbf{(ISWP) }: ...}
+                \item \textit{\textbf{(ISWP) Immediate Bit Swap}: ...}
 
-                \item \textit{\textbf{(LIMUL) }: ...}
+                \item \textit{\textbf{(LIMUL) Long Immediate Multiplication}: ...}
 
-                \item \textit{\textbf{(LIMAC) }: ...}
+                \item \textit{\textbf{(LIMAC) Long Immediate Multiply and Accumulate}: ...}
                 
-                \item \textit{\textbf{(LIDIV) }: ...}
+                \item \textit{\textbf{(LIDIV) Long Immediate Division}: ...}
 
-                \item \textit{\textbf{(LIREM) }: ...}
+                \item \textit{\textbf{(LIREM) Long Immediate Remainder}: ...}
 
-                \item \textit{\textbf{(LIIMP) }: ...}
+                \item \textit{\textbf{(LIIMP) Long Immediate Bitwise IMP}: ...}
 
-                \item \textit{\textbf{(LINIMP) }: ...}
+                \item \textit{\textbf{(LINIMP) Long Immediate Bitwise NIMP}: ...}
                 
-                \item \textit{\textbf{(CTO) }: ...}
+                \item \textit{\textbf{(CTO) Count Ones}: ...}
 
-                \item \textit{\textbf{(CTLO) }: ...}
+                \item \textit{\textbf{(CTLO) Count Leading Ones}: ...}
 
-                \item \textit{\textbf{(CTTO) }: ...}
+                \item \textit{\textbf{(CTTO) Count Trailing Ones}: ...}
 
-                \item \textit{\textbf{(CTZ) }: ...}
+                \item \textit{\textbf{(CTZ) Count Zeros}: ...}
                 
-                \item \textit{\textbf{(CTLZ) }: ...}
+                \item \textit{\textbf{(CTLZ) Count Leading Zeros}: ...}
 
-                \item \textit{\textbf{(CTTZ) }: ...}
+                \item \textit{\textbf{(CTTZ) Count Trailing Zeros}: ...}
 
                 \item \textit{\textbf{(MWADD) }: ...}
 
