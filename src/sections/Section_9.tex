@@ -72,11 +72,15 @@
 
                 \item \textit{\textbf{(LIXNOR) Long Immediate bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus zeroxt(imm_{26})))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IIC) Integer-integer cast}: this isntruction computes \((ra = signxt_{mod}(rb))\); belongs to the C format; uses the modifier class 3; has an opcode of xxxxxxxxxxxx and generates the xxx flags.}
+                \item \textit{\textbf{(IIC) Integer-Integer Cast}: this instruction computes \((ra = signxt_{mod}(rb))\); belongs to the C format; uses the modifier class 3; has an opcode of xxxxxxxxxxxx and generates the xxx flags.}
 
             \end{itemize}
 
         \end{multicols}
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{This instruction module adds simple instructions such as addition, subtraction, logic and some bit-shifting. Immediate variants can choose between two immediate lengths at the cost of a longer instruction. The IIC instructions allows the programmer to change data type length and the bit-field instructions allows precise manipulation of individual bits, including the loading of immediate values directly.}
+    \par\noindent\rule{\textwidth}{0.4pt}
 
     \subsection{Computational-integer-scalar-advanced}
 
@@ -159,6 +163,64 @@
                 \item \textit{\textbf{(MLRSH) }: ...}
 
             \end{itemize}  
+
+        \end{multicols}
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{This instruction module adds more advanced and complex instructions such as multiplication, division, remainder, rotates and multi-word specific operations. Instructions concerning multiplication will only save the lower half of the result in order to streamline simpler implementations. Multi-word instructions can help with arbitrary precision arithmetic and are implemented without the need of a dedicated ``flag register'' at the cost of more operands. The low average dynamic count of these instructions, though, shouldn't result in notable structural hazards even if the number of register read ports is not high.}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Computational-integer-vector-basic}
+
+        This instruction modules requires the presence of the vector registers (VGPRs), the VMSK register located in the special purpose bank and the VLEN bits in the CSR register. The hardware must also provide the ability to execute instructions of the CISB module in vector mode with the help of the 'vv' bits in the modifier classes. The vector modes must be capable of executing \textit{vector-vector} and \textit{vector-scalar} configurations. This module doesn't explicitly add extra instructions because it essentially extends the capabilities of the CISB module.
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{...}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Computational-integer-vector-advanced}
+
+        This instruction modules requires the presence of the vector registers (VGPRs), the VMSK register located in the special purpose bank and the VLEN bits in the CSR register. The hardware must also provide the ability to execute instructions of the CISA module in vector mode with the help of the 'vv' bits in the modifier classes. The vector modes must be capable of executing \textit{vector-vector} and \textit{vector-scalar} configurations. This module doesn't explicitly add extra instructions because it essentially extends the capabilities of the CISA module.
+
+    \par\noindent\rule{\textwidth}{0.4pt}
+    \textit{...}
+    \par\noindent\rule{\textwidth}{0.4pt}
+
+    \subsection{Computational-integer-vector-reduction}
+
+        This instruction modules requires the presence of the vector registers (VGPRs), the VMSK register located in the special purpose bank and the VLEN bits in the CSR register. This module also adds the following extra instructions that are vector only:
+
+        \begin{multicols}{2}
+
+            \begin{itemize}
+
+                \item \textit{\textbf{(RADD) Reduction Addition}: ...}
+
+                \item \textit{\textbf{(RSUB) Reduction Subtraction}: ...}
+
+                \item \textit{\textbf{(RMUL) Reduction Multiplication}: ...}
+
+                \item \textit{\textbf{(RMAC) Reduction Multiply and Accumulate}: ...}
+
+                \item \textit{\textbf{(RDIV) Reduction Division}: ...}
+
+                \item \textit{\textbf{(RAND) Reduction Bitwise AND}: ...}
+
+                \item \textit{\textbf{(RNAND) Reduction Bitwise NAND}: ...}
+
+                \item \textit{\textbf{(ROR) Reduction Bitwise OR}: ...}
+
+                \item \textit{\textbf{(RNOR) Reduction Bitwise NOR}: ...}
+
+                \item \textit{\textbf{(RXOR) Reduction Bitwise XOR}: ...}
+
+                \item \textit{\textbf{(RXNOR) Reduction Bitwise XNOR}: ...}
+
+                \item \textit{\textbf{(RIMP) Reduction Bitwise IMP}: ...}
+
+                \item \textit{\textbf{(RNIMP) Reduction Bitwise NIMP}: ...}
+
+            \end{itemize}
 
         \end{multicols}
 
