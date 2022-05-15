@@ -1,0 +1,271 @@
+work in progress
+
+[A] (MWADD)--Multiword Addition----------------------------------OPCODE: 0000001-------------------0xxxxxxx
+[A] (MWSUB)--Multiword Subtraction-------------------------------OPCODE: 0000010-------------------0xxxxxxx
+[A] (MWMUL)--Multiword Multiplication----------------------------OPCODE: 0000011-------------------0xxxxxxx
+[A] (MWDIV)--Multiword Division----------------------------------OPCODE: 0000100-------------------0xxxxxxx
+[A] (MALSH)--Multiword Arithmetic Left Shift---------------------OPCODE: 0000101-------------------0xxxxxxx
+[A] (MARSH)--Multiword Arithmetic Right Shift--------------------OPCODE: 0000110-------------------0xxxxxxx
+[A] (MLLSH)--Multiword Logical Left Shift------------------------OPCODE: 0000111-------------------0xxxxxxx
+[A] (MLRSH)--Multiword Logical Right Shift-----------------------OPCODE: 0001000-------------------0xxxxxxx
+[A]   (RIMLD)--Register Indexed Memory Load----------------------OPCODE: 0001001-------------------0xxxxxxx
+[A]   (RIMST)--Register Indexed Memory Store---------------------OPCODE: 0001010-------------------0xxxxxxx
+[A]   (VRIMLD)--Vector Register Indexed Memory Load--------------OPCODE: 0001011-------------------0xxxxxxx
+[A]   (VRIMST)--Vector Register Indexed Memory Store-------------OPCODE: 0001100-------------------0xxxxxxx
+
+[D]   (IMLD)---Indexed Memory Load-------------------------------OPCODE: 0001101-------------------0xxxxxxx
+[D]   (IMST)---Indexed Memory Store------------------------------OPCODE: 0001110-------------------0xxxxxxx
+[D]   (VIMLD)---Vector Indexed Memory Load-----------------------OPCODE: 0001111-------------------0xxxxxxx
+[D]   (VIMST)---Vector Indexed Memory Store----------------------OPCODE: 0010000-------------------0xxxxxxx
+
+[D.l] (LIMLD)--Long Indexed Memory Load--------------------------OPCODE: 0010001-------------------0xxxxxxx
+[D.l] (LIMST)--Long Indexed Memory Store-------------------------OPCODE: 0010010-------------------0xxxxxxx
+[D.l] (LVIMLD)--Long Vector Indexed Memory Load------------------OPCODE: 0010011-------------------0xxxxxxx
+[D.l] (LVIMST)--Long Vector Indexed Memory Store-----------------OPCODE: 0010100-------------------0xxxxxxx
+
+[E] (IADD)---Immediate Addition----------------------------------OPCODE: 0010101-------------------0xxxxxxx
+[E] (ISUB)---Immediate Subtraction-------------------------------OPCODE: 0010110-------------------0xxxxxxx
+[E] (IAND)---Immediate Bitwise AND-------------------------------OPCODE: 0010111-------------------0xxxxxxx
+[E] (INAND)--Immediate Bitwise NAND------------------------------OPCODE: 0011000-------------------0xxxxxxx
+[E] (IOR)----Immediate Bitwise OR--------------------------------OPCODE: 0011001-------------------0xxxxxxx
+[E] (INOR)---Immediate Bitwise NOR-------------------------------OPCODE: 0011010-------------------0xxxxxxx
+[E] (IXOR)---Immediate Bitwise XOR-------------------------------OPCODE: 0011011-------------------0xxxxxxx
+[E] (IXNOR)--Immediate Bitwise XNOR------------------------------OPCODE: 0011100-------------------0xxxxxxx
+[E] (IASH)---Immediate Arithmetic Shift--------------------------OPCODE: 0011101-------------------0xxxxxxx
+[E] (ILSH)---Immediate Logical Shift-----------------------------OPCODE: 0011110-------------------0xxxxxxx
+[E] (IMUL)---Immediate Multiplication----------------------------OPCODE: 0011111-------------------0xxxxxxx
+[E] (IMAC)---Immediate Multiply Accumulate-----------------------OPCODE: 0100000-------------------0xxxxxxx
+[E] (IDIV)---Immediate Division----------------------------------OPCODE: 0100001-------------------0xxxxxxx
+[E] (IREM)---Immediate Remainder---------------------------------OPCODE: 0100010-------------------0xxxxxxx
+[E] (UIMUL)--Upper Immediate Multiplication----------------------OPCODE: 0100011-------------------0xxxxxxx
+[E] (UIMAC)--Upper Immediate Multiply Accumulate-----------------OPCODE: 0100100-------------------0xxxxxxx
+[E] (IIMP)---Immediate Bitwise IMP-------------------------------OPCODE: 0100101-------------------0xxxxxxx
+[E] (INIMP)--Immediate Bitwise NIMP------------------------------OPCODE: 0100110-------------------0xxxxxxx
+[E] (IRT)----Immediate Rotate------------------------------------OPCODE: 0100111-------------------0xxxxxxx
+[E] (ISWP)---Immediate Bit Swap----------------------------------OPCODE: 0101000-------------------0xxxxxxx
+[E] (IFADD)--Immediate FP. Addition------------------------------OPCODE: 0101001-------------------0xxxxxxx
+[E] (IFSUB)--Immediate FP. Subtraction---------------------------OPCODE: 0101010-------------------0xxxxxxx
+[E] (IFMUL)--Immediate FP. Multiplication------------------------OPCODE: 0101011-------------------0xxxxxxx
+[E] (IFDIV)--Immediate FP. Division------------------------------OPCODE: 0101100-------------------0xxxxxxx
+[E] (IFMAC)--Immediate FP. Multiply Accumulate-------------------OPCODE: 0101101-------------------0xxxxxxx
+[E] (IFPOW)--Immediate FP. Power---------------------------------OPCODE: 0101110-------------------0xxxxxxx
+[E] (IFPOW)--Immediate FP. Remainder-----------------------------OPCODE: 0101111-------------------0xxxxxxx
+[E]   (MLD)---Memory Load----------------------------------------OPCODE: 0110000-------------------0xxxxxxx
+[E]   (MST)---Memory Store---------------------------------------OPCODE: 0110001-------------------0xxxxxxx
+[E]   (VMLD)---Vector Memory Load--------------------------------OPCODE: 0110010-------------------0xxxxxxx
+[E]   (VMST)---Vector Memory Store-------------------------------OPCODE: 0110011-------------------0xxxxxxx
+[E]   (BEQ)---Branch If Equal------------------------------------OPCODE: 0110100-------------------0xxxxxxx
+[E]   (BNE)---Branch If Not Equal--------------------------------OPCODE: 0110101-------------------0xxxxxxx
+[E]   (BLT)---Branch If Less Than--------------------------------OPCODE: 0110110-------------------0xxxxxxx
+[E]   (BLE)---Branch If Less Equal-------------------------------OPCODE: 0110111-------------------0xxxxxxx
+[E]   (RCAL)--Register Function Call-----------------------------OPCODE: 0111000-------------------0xxxxxxx
+[E] (CACOP)-Cache Operation--------------------------------------OPCODE: 0111001-------------------0xxxxxxx
+[E] (MMUOP)--MMU Operation---------------------------------------OPCODE: 0111010-------------------0xxxxxxx
+
+[E.l] (LIADD)--Long Immediate Addition---------------------------OPCODE: same as ^^
+[E.l] (LISUB)--Long Immediate Subtraction------------------------OPCODE:
+[E.l] (LIAND)--Long Immediate Bitwise AND------------------------OPCODE:
+[E.l] (LINAND)-Long Immediate Bitwise NAND-----------------------OPCODE:
+[E.l] (LIOR)---Long Immediate Bitwise OR-------------------------OPCODE:
+[E.l] (LINOR)--Long Immediate Bitwise NOR------------------------OPCODE:
+[E.l] (LIXOR)--Long Immediate Bitwise XOR------------------------OPCODE:
+[E.l] (LIXNOR)-Long Immediate Bitwise XNOR-----------------------OPCODE:
+[E.l] (LIMUL)--Long Immediate Multiplication---------------------OPCODE:
+[E.l] (LIMAC)--Long Immediate Multiply Accumulate----------------OPCODE:
+[E.l] (LIDIV)--Long Immediate Division---------------------------OPCODE:
+[E.l] (LIREM)--Long Immediate Remainder--------------------------OPCODE:
+[E.l] (LUIMUL)-Long Upper Immediate Multiplication---------------OPCODE:
+[E.l] (LUIMAC)-Long Upper Immediate Multiply Accumulate----------OPCODE:
+[E.l] (LIIMP)--Long Immediate Bitwise IMP------------------------OPCODE:
+[E.l] (LINIMP)-Long Immediate Bitwise NIMP-----------------------OPCODE:
+[E.l] (ILFADD)-Long Immediate FP. Addition-----------------------OPCODE:
+[E.l] (ILFSUB)-Long Immediate FP. Subtraction--------------------OPCODE:
+[E.l] (ILFMUL)-Long Immediate FP. Multiplication-----------------OPCODE:
+[E.l] (ILFDIV)-Long Immediate FP. Division-----------------------OPCODE:
+[E.l] (ILFMAC)-Long Immediate FP. Multiply Accumulate------------OPCODE:
+[E.l] (ILFPOW)-Long Immediate FP. Power--------------------------OPCODE:
+[E.l] (ILFPOW)-Long Immediate FP. Remainder----------------------OPCODE:
+[E.l] (LMLD)--Long Memory Load-----------------------------------OPCODE:
+[E.l] (LMST)--Long Memory Store----------------------------------OPCODE:
+[E.l] (LVMLD)--Long Vector Memory Load---------------------------OPCODE:
+[E.l] (LVMST)--Long Vector Memory Store--------------------------OPCODE:
+[E.l] (LCB)---Long Compare Branch--------------------------------OPCODE:
+[E.l] (LRCAL)-Long Register Function Call------------------------OPCODE:
+
+[F]   (GBF)--Get Bit Field---------------------------------------OPCODE: 0111011-------------------0xxxxxxx
+[F]   (SBF)--Set Bit Field---------------------------------------OPCODE: 0111100-------------------0xxxxxxx
+[F]   (BLD)--Block Load------------------------------------------OPCODE: 0111101-------------------0xxxxxxx
+[F]   (BST)--Block Store-----------------------------------------OPCODE: 0111110-------------------0xxxxxxx
+[F]   (CAL)---Function Call--------------------------------------OPCODE: 0111111-------------------0xxxxxxx
+[F]   (JMP)---Jump-----------------------------------------------OPCODE: 1000000-------------------0xxxxxxx
+[F]   (BTST)--Branch If Test-------------------------------------OPCODE: 1000001-------------------0xxxxxxx
+[F]   (RJMP)---Register Jump-------------------------------------OPCODE: 1000010-------------------0xxxxxxx
+[F]   (ISMSKT)-Integer Scalar Mask Set on Test-------------------OPCODE: 1000011-------------------0xxxxxxx
+[F]   (FBTST)--FP. Branch If Test--------------------------------OPCODE: 1000100-------------------0xxxxxxx
+[F]   (VVFMSKT)-Vector-Vector Integer Mask Set on Test-----------OPCODE: 1000101-------------------0xxxxxxx
+[F]   (VSFMSKT)-Vector-Scalar Integer Mask Set on Test-----------OPCODE: 1000110-------------------0xxxxxxx
+[F]   (VVFMSKT)-Vector-Vector FP Mask Set on Test----------------OPCODE: 1000111-------------------0xxxxxxx
+[F]   (VSFMSKT)-Vector-Scalar FP Mask Set on Test----------------OPCODE: 1001000-------------------0xxxxxxx
+
+[F.l] (LGBF)-Long Get Bit Field----------------------------------OPCODE: 1001001-------------------0xxxxxxx
+[F.l] (LSBF)-Long Set Bit Field----------------------------------OPCODE: 1001010-------------------0xxxxxxx
+[F.l] (LBLD)-Long Block Load-------------------------------------OPCODE: 1001011-------------------0xxxxxxx
+[F.l] (LBST)-Long Block Store------------------------------------OPCODE: 1001100-------------------0xxxxxxx
+[F.l] (LCAL)--Long Function Call---------------------------------OPCODE: 1001101-------------------0xxxxxxx
+[F.l] (LJMP)--Long Jump------------------------------------------OPCODE: 1001110-------------------0xxxxxxx
+[F.l] (LBTST)-Long Branch If Test--------------------------------OPCODE: 1001111-------------------0xxxxxxx
+[F.l] (LEJMP)--Long Register Jump--------------------------------OPCODE: 1010000-------------------0xxxxxxx
+[F.l] (LFBTST)-Long FP. Branch If Test---------------------------OPCODE: 1010001-------------------0xxxxxxx
+
+[G] (CADD)   Compressed Addition---------------------------------OPCODE: 1010010-------------------0xxxxxxx
+[G] (CSUB)   Compressed Subtraction------------------------------OPCODE: 1010011-------------------0xxxxxxx
+[G] (CMUL)   Compressed Multiplication---------------------------OPCODE: 1010100-------------------0xxxxxxx
+[G] (CDIV)   Compressed Division---------------------------------OPCODE: 1010101-------------------0xxxxxxx
+[G] (CLSH)   Compressed Left Shift-------------------------------OPCODE: 1010110-------------------0xxxxxxx
+[G] (CRSH)   Compressed Right Shift------------------------------OPCODE: 1010111-------------------0xxxxxxx
+[G] (CFADD)  Compressed FP. Addition-----------------------------OPCODE: 1011000-------------------0xxxxxxx
+[G] (CFSUB)  Compressed FP. Subtraction--------------------------OPCODE: 1011001-------------------0xxxxxxx
+[G] (CFMUL)  Compressed FP. Multiplication-----------------------OPCODE: 1011010-------------------0xxxxxxx
+[G] (CFDIV)  Compressed FP. Division-----------------------------OPCODE: 1011011-------------------0xxxxxxx
+[G] (CMLD)   Compressed Memory Load------------------------------OPCODE: 1011100-------------------0xxxxxxx
+[G] (CMST)   Compressed Memory Store-----------------------------OPCODE: 1011101-------------------0xxxxxxx
+
+[I] (CIADD)  Compressed Immediate Addition 08--------------------OPCODE: 1011110-------------------0xxxxxxx
+[I] (CIADD)  Compressed Immediate Addition 16--------------------OPCODE: 1011111-------------------0xxxxxxx
+[I] (CIADD)  Compressed Immediate Addition 32--------------------OPCODE: 1100000-------------------0xxxxxxx
+[I] (CIADD)  Compressed Immediate Addition 64--------------------OPCODE: 1100001-------------------0xxxxxxx
+[I] (CBEQZ)  Compressed Branch If NEZ 08-------------------------OPCODE: 1100010-------------------0xxxxxxx
+[I] (CBEQZ)  Compressed Branch If NEZ 16-------------------------OPCODE: 1100011-------------------0xxxxxxx
+[I] (CBEQZ)  Compressed Branch If NEZ 32-------------------------OPCODE: 1100100-------------------0xxxxxxx
+[I] (CBEQZ)  Compressed Branch If NEZ 64-------------------------OPCODE: 1100101-------------------0xxxxxxx
+[I] (CFBEQZ)  Compressed FP. Branch If NEZ 08--------------------OPCODE: 1100110-------------------0xxxxxxx
+[I] (CFBEQZ)  Compressed FP. Branch If NEZ 16--------------------OPCODE: 1100111-------------------0xxxxxxx
+[I] (CFBEQZ)  Compressed FP. Branch If NEZ 32--------------------OPCODE: 1101000-------------------0xxxxxxx
+[I] (CFBEQZ)  Compressed FP. Branch If NEZ 64--------------------OPCODE: 1101001-------------------0xxxxxxx
+[I] (CILSH)   Compressed Immediate Logical Shift 08--------------OPCODE: 1101010-------------------0xxxxxxx
+[I] (CILSH)   Compressed Immediate Logical Shift 16--------------OPCODE: 1101011-------------------0xxxxxxx
+[I] (CILSH)   Compressed Immediate Logical Shift 32--------------OPCODE: 1101100-------------------0xxxxxxx
+[I] (CILSH)   Compressed Immediate Logical Shift 64--------------OPCODE: 1101101-------------------0xxxxxxx
+[I] (CIASH)   Compressed Immediate Arithmetic Shift 08-----------OPCODE: 1101110-------------------0xxxxxxx
+[I] (CIASH)   Compressed Immediate Arithmetic Shift 16-----------OPCODE: 1101111-------------------0xxxxxxx
+[I] (CIASH)   Compressed Immediate Arithmetic Shift 32-----------OPCODE: 1110000-------------------0xxxxxxx
+[I] (CIASH)   Compressed Immediate Arithmetic Shift 64-----------OPCODE: 1110001-------------------0xxxxxxx
+
+[J] (CCAL)-Compressed Function Call------------------------------OPCODE: 1110010-------------------0xxxxxxx
+[J] (BPTRG)-Breakpoint Trigger-----------------------------------OPCODE: 1110011-------------------0xxxxxxx
+[J] (SYSCL)--System Call-----------------------------------------OPCODE: 1110100-------------------0xxxxxxx
+
+1110101
+1110110
+1110111
+1111000
+1111001
+1111010
+1111011
+...6
+
+[H]   (RET)---Function Return------------------------------------OPCODE: 11111000000---------------1000xxxx
+[H] (RSYSCL)-Register System Call--------------------------------OPCODE: 11111000001---------------1000xxxx
+[H] (SDMP)---State Dump------------------------------------------OPCODE: 11111000010---------------1000xxxx
+[H] (SRST)---State Restore---------------------------------------OPCODE: 11111000011---------------1000xxxx
+[H] (TCHK)--Transaction Check------------------------------------OPCODE: 11111000100---------------1000xxxx
+
+[B] (ADD)----Addition--------------------------------------------OPCODE: 111110100000--------------1001xxxx
+[B] (SUB)----Subtraction-----------------------------------------OPCODE: 111110100001--------------1001xxxx
+[B] (AND)----Bitwise AND-----------------------------------------OPCODE: 111110100010--------------1001xxxx
+[B] (NAND)---Bitwise NAND----------------------------------------OPCODE: 111110100011--------------1001xxxx
+[B] (OR)-----Bitwise OR------------------------------------------OPCODE: 111110100100--------------1001xxxx
+[B] (NOR)----Bitwise NOR-----------------------------------------OPCODE: 111110100101--------------1001xxxx
+[B] (XOR)----Bitwise XOR-----------------------------------------OPCODE: 111110100110--------------1001xxxx
+[B] (XNOR)---Bitwise XNOR----------------------------------------OPCODE: 111110100111--------------1001xxxx
+[B] (ALSH)---Arithmetic Left Shift-------------------------------OPCODE: 111110101000--------------1001xxxx
+[B] (ARSH)---Arithmetic Right Shift------------------------------OPCODE: 111110101001--------------1001xxxx
+[B] (LLSH)---Logical Left Shift----------------------------------OPCODE: 111110101010--------------1001xxxx
+[B] (LRSH)---Logical Right Shift---------------------------------OPCODE: 111110101011--------------1001xxxx
+[B] (MUL)----Multiplication--------------------------------------OPCODE: 111110101100--------------1001xxxx
+[B] (MAC)----Multiply Accumulate---------------------------------OPCODE: 111110101101--------------1001xxxx
+[B] (DIV)----Division--------------------------------------------OPCODE: 111110101110--------------1001xxxx
+[B] (REM)----Remainder-------------------------------------------OPCODE: 111110101111--------------1001xxxx
+[B] (UMUL)---Upper Multiplication--------------------------------OPCODE: 111110110000--------------1010xxxx
+[B] (UMAC)---Upper Multiply Accumulate---------------------------OPCODE: 111110110001--------------1010xxxx
+[B] (IMP)----Bitwise IMP-----------------------------------------OPCODE: 111110110010--------------1010xxxx
+[B] (NIMP)---Bitwise NIMP----------------------------------------OPCODE: 111110110011--------------1010xxxx
+[B] (LRT)----Left Rotate-----------------------------------------OPCODE: 111110110100--------------1010xxxx
+[B] (RRT)----Right Rotate----------------------------------------OPCODE: 111110110101--------------1010xxxx
+[B] (SWP)----Bit Swap--------------------------------------------OPCODE: 111110110110--------------1010xxxx
+[B] (FADD)---FP. Addition----------------------------------------OPCODE: 111110110111--------------1010xxxx
+[B] (FSUB)---FP. Subtraction-------------------------------------OPCODE: 111110111000--------------1010xxxx
+[B] (FMUL)---FP. Multiplication----------------------------------OPCODE: 111110111001--------------1010xxxx
+[B] (FDIV)---FP. Division----------------------------------------OPCODE: 111110111010--------------1010xxxx
+[B] (FMAC)---FP. Multiply Accumulate-----------------------------OPCODE: 111110111011--------------1010xxxx
+[B] (FPOW)---FP. Power-------------------------------------------OPCODE: 111110111100--------------1010xxxx
+[B] (FPOW)---FP. Remainder---------------------------------------OPCODE: 111110111101--------------1010xxxx
+[B]   (VGAT)---Vector Gather-------------------------------------OPCODE: 111110111110--------------1010xxxx
+[B]   (VSCA)---Vector Scatter------------------------------------OPCODE: 111110111111--------------1010xxxx
+[B] (LL)--Load Linked--------------------------------------------OPCODE: 111111000000--------------101100xx
+[B] (SC)--Store Conditional--------------------------------------OPCODE: 111111000001--------------101100xx
+[B] (CAS)-Compare And Swap---------------------------------------OPCODE: 111111000010--------------101100xx
+
+[C] (IIC)----Integer-Integer Cast--------------------------------OPCODE: 1111111000000000----------101101xx
+[C] (CTO)----Count Ones------------------------------------------OPCODE: 1111111000000001----------101101xx
+[C] (CTLO)---Count Leading Ones----------------------------------OPCODE: 1111111000000010----------101101xx
+[C] (CTTO)---Count Trailing Ones---------------------------------OPCODE: 1111111000000011----------101101xx
+[C] (CTZ)----Count Zeros-----------------------------------------OPCODE: 1111111000000100----------101110xx
+[C] (CTLZ)---Count Leading Zeros---------------------------------OPCODE: 1111111000000101----------101110xx
+[C] (CTTZ)---Count Trailing Zeros--------------------------------OPCODE: 1111111000000110----------101110xx
+[C] (FFC)----FP-FP Cast------------------------------------------OPCODE: 1111111000000111----------101110xx
+[C] (IFC)----Integer-FP Cast-------------------------------------OPCODE: 1111111000001000----------101111xx
+[C] (FIC)----FP-Integer Cast-------------------------------------OPCODE: 1111111000001001----------101111xx
+[C] (SIN)----Sin-------------------------------------------------OPCODE: 1111111000001010----------101111xx
+[C] (COS)----Cos-------------------------------------------------OPCODE: 1111111000001011----------101111xx
+[C] (ASIN)---Arcsin----------------------------------------------OPCODE: 1111111000001100----------110000xx
+[C] (ACOS)---Arccos----------------------------------------------OPCODE: 1111111000001101----------110000xx
+[C] (RADD)----Reduced Addition-----------------------------------OPCODE: 1111111000001110----------110000xx
+[C] (RSUB)----Reduced Subtraction--------------------------------OPCODE: 1111111000001111----------110000xx
+[C] (RMUL)----Reduced Multiplication-----------------------------OPCODE: 1111111000010000----------110001xx
+[C] (RMAC)----Reduced Multiply Accumulate------------------------OPCODE: 1111111000010001----------110001xx
+[C] (RDIV)----Reduced Division-----------------------------------OPCODE: 1111111000010010----------110001xx
+[C] (RAND)----Reduced Bitwise AND--------------------------------OPCODE: 1111111000010011----------110001xx
+[C] (RNAND)---Reduced Bitwise NAND-------------------------------OPCODE: 1111111000010100----------110010xx
+[C] (ROR)-----Reduced Bitwise OR---------------------------------OPCODE: 1111111000010101----------110010xx
+[C] (RNOR)----Reduced Bitwise NOR--------------------------------OPCODE: 1111111000010110----------110010xx
+[C] (RXOR)----Reduced Bitwise XOR--------------------------------OPCODE: 1111111000010111----------110010xx
+[C] (RXNOR)---Reduced Bitwise XNOR-------------------------------OPCODE: 1111111000011000----------110011xx
+[C] (RIMP)----Reduced Bitwise IMP--------------------------------OPCODE: 1111111000011001----------110011xx
+[C] (RNIMP)---Reduced Bitwise NIMP-------------------------------OPCODE: 1111111000011010----------110011xx
+[C] (VSIN)----Vector Sin-----------------------------------------OPCODE: 1111111000011011----------110011xx
+[C] (VCOS)----Vector Cos-----------------------------------------OPCODE: 1111111000011100----------110100xx
+[C] (VASIN)---Vector Arcsin--------------------------------------OPCODE: 1111111000011101----------110100xx
+[C] (VACOS)---Vector Arccos--------------------------------------OPCODE: 1111111000011110----------110100xx
+[C] (VRFADD)--Vector Reduced FP. Addition------------------------OPCODE: 1111111000011111----------110100xx
+[C] (VRFSUB)--Vector Reduced FP. Subtraction---------------------OPCODE: 1111111000100000----------110101xx
+[C] (VRFMUL)--Vector Reduced FP. Multiplication------------------OPCODE: 1111111000100001----------110101xx
+[C] (VRFMAC)--Vector Reduced FP. Multiply Accumulate-------------OPCODE: 1111111000100010----------110101xx
+[C] (VRFDIV)--Vector Reduced FP. Division------------------------OPCODE: 1111111000100011----------110101xx
+[C]   (MOVTS)--Move To Special-----------------------------------OPCODE: 1111111000100100----------110110xx
+[C]   (MOVFS)--Move From Special---------------------------------OPCODE: 1111111000100101----------110110xx
+[C]   (SWP)----Swap----------------------------------------------OPCODE: 1111111000100110----------110110xx
+[C]   (SWPTS)--Swap To Special-----------------------------------OPCODE: 1111111000100111----------110110xx
+[C]   (SWPFS)--Swap From Special---------------------------------OPCODE: 1111111000101000----------110111xx
+[C]   (MOVTV)--Move To Vector------------------------------------OPCODE: 1111111000101001----------110111xx
+[C]   (MOVFV)--Move From Vector----------------------------------OPCODE: 1111111000101010----------110111xx
+[C]   (VSWP)---Vector Swap---------------------------------------OPCODE: 1111111000101011----------110111xx
+[C]   (SWPTV)--Swap To Vector------------------------------------OPCODE: 1111111000101100----------111000xx
+[C]   (SWPFV)--Swap From Vector----------------------------------OPCODE: 1111111000101101----------111000xx
+[C]   (ISMSKC)-Integer Scalar Mask Set on Compare----------------OPCODE: 1111111000101110----------111000xx
+[C]   (FSMSKC)-FP Scalar Mask Set on Compare---------------------OPCODE: 1111111000101111----------111000xx
+[C]   (VVIMSKC)-Vector-Vector Integer Mask Set on Compare--------OPCODE: 1111111000110000----------111001xx
+[C]   (VSIMSKC)-Vector-Scalar Integer Mask Set on Compare--------OPCODE: 1111111000110001----------111001xx
+[C]   (VVFMSKC)-Vector-Vector FP Mask Set on Compare-------------OPCODE: 1111111000110010----------111001xx
+[C]   (VSFMSKC)-Vector-Scalar FP Mask Set on Compare-------------OPCODE: 1111111000110011----------111001xx
+
+[K]   (SIMSK)--Scalar Invert Mask--------------------------------OPCODE: 1111111000110100----------111010xx
+[K]   (VIMSK)---Vector-Invert Mask-------------------------------OPCODE: 1111111000110101----------111010xx
+[K] (NOP)---No Operation-----------------------------------------OPCODE: 1111111000110110----------111010xx
+[K] (ERET)---Event Return----------------------------------------OPCODE: 1111111000110111----------111010xx
+[K] (FNCL)--Fence Loads------------------------------------------OPCODE: 1111111000111000----------111011xx
+[K] (FNCS)--Fence Stores-----------------------------------------OPCODE: 1111111000111001----------111011xx
+[K] (FNCLS)-Fence Loads and Stores-------------------------------OPCODE: 1111111000111010----------111011xx
+[K] (TBEG)--Transaction Begin------------------------------------OPCODE: 1111111000111011----------111011xx
+[K] (TEND)--Transaction End--------------------------------------OPCODE: 1111111000111100----------111100xx
+[K] (TABT)--Transaction Abort------------------------------------OPCODE: 1111111000111101----------111100xx

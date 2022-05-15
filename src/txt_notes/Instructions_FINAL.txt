@@ -1,4 +1,5 @@
 raw txt list of all the instructions
+these are organized by module
 
 
 TODO: 
@@ -15,13 +16,13 @@ instruction interpretation:
 
 ______________________________________________________________________________________________________________________________________________________________________
 
-Computational { (118 total so far)
+Computational { (128 total so far)
 	
 	Integer {
 
 		Scalar {
 
-			Basic { [31]
+			Basic { [35]==================================================================================================== OK
 
 				[B] (ADD)----Addition--------------------------------------------OPCODE:
 	            [B] (SUB)----Subtraction-----------------------------------------OPCODE:
@@ -31,6 +32,7 @@ Computational { (118 total so far)
 	            [B] (NOR)----Bitwise NOR-----------------------------------------OPCODE:
 	            [B] (XOR)----Bitwise XOR-----------------------------------------OPCODE:
 	            [B] (XNOR)---Bitwise XNOR----------------------------------------OPCODE:
+
 	            [B] (ALSH)---Arithmetic Left Shift-------------------------------OPCODE:
 	            [B] (ARSH)---Arithmetic Right Shift------------------------------OPCODE:
 	            [B] (LLSH)---Logical Left Shift----------------------------------OPCODE:
@@ -44,28 +46,38 @@ Computational { (118 total so far)
 	            [E] (INOR)---Immediate Bitwise NOR-------------------------------OPCODE:
 	            [E] (IXOR)---Immediate Bitwise XOR-------------------------------OPCODE:
 	            [E] (IXNOR)--Immediate Bitwise XNOR------------------------------OPCODE:
+
 	            [E] (IASH)---Immediate Arithmetic Shift--------------------------OPCODE:
 	            [E] (ILSH)---Immediate Logical Shift-----------------------------OPCODE:
-	            [E] (LIADD)--Long Immediate Addition-----------------------------OPCODE:
-	            [E] (LISUB)--Long Immediate Subtraction--------------------------OPCODE:
-	            [E] (LIAND)--Long Immediate Bitwise AND--------------------------OPCODE:
-	            [E] (LINAND)-Long Immediate Bitwise NAND-------------------------OPCODE:
-	            [E] (LIOR)---Long Immediate Bitwise OR---------------------------OPCODE:
-	            [E] (LINOR)--Long Immediate Bitwise NOR--------------------------OPCODE:
-	            [E] (LIXOR)--Long Immediate Bitwise XOR--------------------------OPCODE:
-	            [E] (LIXNOR)-Long Immediate Bitwise XNOR-------------------------OPCODE:
+
+	            [E.l] (LIADD)--Long Immediate Addition-----------------------------OPCODE:
+	            [E.l] (LISUB)--Long Immediate Subtraction--------------------------OPCODE:
+	            [E.l] (LIAND)--Long Immediate Bitwise AND--------------------------OPCODE:
+	            [E.l] (LINAND)-Long Immediate Bitwise NAND-------------------------OPCODE:
+	            [E.l] (LIOR)---Long Immediate Bitwise OR---------------------------OPCODE:
+	            [E.l] (LINOR)--Long Immediate Bitwise NOR--------------------------OPCODE:
+	            [E.l] (LIXOR)--Long Immediate Bitwise XOR--------------------------OPCODE:
+	            [E.l] (LIXNOR)-Long Immediate Bitwise XNOR-------------------------OPCODE:
 
 	            [C] (IIC)----Integer-Integer Cast--------------------------------OPCODE:
+
+	            [F]   (GBF)--Get Bit Field---------------------------------------OPCODE:
+				[F]   (SBF)--Set Bit Field---------------------------------------OPCODE:
+				[F.l] (LGBF)-Long Get Bit Field----------------------------------OPCODE:
+				[F.l] (LSBF)-Long Set Bit Field----------------------------------OPCODE:
 			}
 
-			Advanced { [37]
+			Advanced { [43]================================================================================================= OK
 
 				[B] (MUL)----Multiplication--------------------------------------OPCODE:
 	            [B] (MAC)----Multiply Accumulate---------------------------------OPCODE:
 	            [B] (DIV)----Division--------------------------------------------OPCODE:
 	            [B] (REM)----Remainder-------------------------------------------OPCODE:
+	            [B] (UMUL)---Upper Multiplication--------------------------------OPCODE:
+	            [B] (UMAC)---Upper Multiply Accumulate---------------------------OPCODE:
 	            [B] (IMP)----Bitwise IMP-----------------------------------------OPCODE:
 	            [B] (NIMP)---Bitwise NIMP----------------------------------------OPCODE:
+
 	            [B] (LRT)----Left Rotate-----------------------------------------OPCODE:
 	            [B] (RRT)----Right Rotate----------------------------------------OPCODE:
 	            [B] (SWP)----Bit Swap--------------------------------------------OPCODE:
@@ -74,16 +86,22 @@ Computational { (118 total so far)
 	            [E] (IMAC)---Immediate Multiply Accumulate-----------------------OPCODE:
 	            [E] (IDIV)---Immediate Division----------------------------------OPCODE:
 	            [E] (IREM)---Immediate Remainder---------------------------------OPCODE:
+	            [E] (UIMUL)--Upper Immediate Multiplication----------------------OPCODE:
+				[E] (UIMAC)--Upper Immediate Multiply Accumulate-----------------OPCODE:
 	            [E] (IIMP)---Immediate Bitwise IMP-------------------------------OPCODE:
 	            [E] (INIMP)--Immediate Bitwise NIMP------------------------------OPCODE:
+
 	            [E] (IRT)----Immediate Rotate------------------------------------OPCODE:
 	            [E] (ISWP)---Immediate Bit Swap----------------------------------OPCODE:
-	            [E] (LIMUL)--Long Immediate Multiplication-----------------------OPCODE:
-	            [E] (LIMAC)--Long Immediate Multiply Accumulate------------------OPCODE:
-	            [E] (LIDIV)--Long Immediate Division-----------------------------OPCODE:
-	            [E] (LIREM)--Long Immediate Remainder----------------------------OPCODE:
-	            [E] (LIIMP)--Long Immediate Bitwise IMP--------------------------OPCODE:
-	            [E] (LINIMP)-Long Immediate Bitwise NIMP-------------------------OPCODE:
+
+	            [E.l] (LIMUL)--Long Immediate Multiplication-----------------------OPCODE:
+	            [E.l] (LIMAC)--Long Immediate Multiply Accumulate------------------OPCODE:
+	            [E.l] (LIDIV)--Long Immediate Division-----------------------------OPCODE:
+	            [E.l] (LIREM)--Long Immediate Remainder----------------------------OPCODE:
+	            [E.l] (LUIMUL)-Long Upper Immediate Multiplication-----------------OPCODE:
+				[E.l] (LUIMAC)-Long Upper Immediate Multiply Accumulate------------OPCODE:
+	            [E.l] (LIIMP)--Long Immediate Bitwise IMP--------------------------OPCODE:
+	            [E.l] (LINIMP)-Long Immediate Bitwise NIMP-------------------------OPCODE:
 
 	            [C] (CTO)----Count Ones------------------------------------------OPCODE:
 	            [C] (CTLO)---Count Leading Ones----------------------------------OPCODE:
@@ -96,10 +114,13 @@ Computational { (118 total so far)
 	            [A] (MWSUB)--Multiword Subtraction-------------------------------OPCODE:
 	            [A] (MWMUL)--Multiword Multiplication----------------------------OPCODE:
 	            [A] (MWDIV)--Multiword Division----------------------------------OPCODE:
+
 	            [A] (MALSH)--Multiword Arithmetic Left Shift---------------------OPCODE:
 	            [A] (MARSH)--Multiword Arithmetic Right Shift--------------------OPCODE:
 	            [A] (MLLSH)--Multiword Logical Left Shift------------------------OPCODE:
 	            [A] (MLRSH)--Multiword Logical Right Shift-----------------------OPCODE:
+
+	            // multiword with immediates ?
 			}
 		}
 
@@ -107,7 +128,7 @@ Computational { (118 total so far)
 
 			Integer {
 
-				Basic {
+				Basic { ==================================================================================================== OK
 
 					- requires V registers
 					- requires VMSK register
@@ -115,7 +136,7 @@ Computational { (118 total so far)
 					-> to implement: make the (integer scalar basic) capable of vector via mod
 				}
 
-				Advanced {
+				Advanced { ================================================================================================= OK
 
 					- requires V registers
 					- requires VMSK register
@@ -130,7 +151,7 @@ Computational { (118 total so far)
 
 		Scalar {
 
-			Basic { [15]
+			Basic { [15]==================================================================================================== OK
 
 				[B] (FADD)---FP. Addition----------------------------------------OPCODE:
 	            [B] (FSUB)---FP. Subtraction-------------------------------------OPCODE:
@@ -141,17 +162,18 @@ Computational { (118 total so far)
 	            [E] (IFSUB)--Immediate FP. Subtraction---------------------------OPCODE:
 	            [E] (IFMUL)--Immediate FP. Multiplication------------------------OPCODE:
 	            [E] (IFDIV)--Immediate FP. Division------------------------------OPCODE:
-	            [E] (ILFADD)-Long Immediate FP. Addition-------------------------OPCODE:
-	            [E] (ILFSUB)-Long Immediate FP. Subtraction----------------------OPCODE:
-	            [E] (ILFMUL)-Long Immediate FP. Multiplication-------------------OPCODE:
-	            [E] (ILFDIV)-Long Immediate FP. Division-------------------------OPCODE:
+
+	            [E.l] (ILFADD)-Long Immediate FP. Addition-------------------------OPCODE:
+	            [E.l] (ILFSUB)-Long Immediate FP. Subtraction----------------------OPCODE:
+	            [E.l] (ILFMUL)-Long Immediate FP. Multiplication-------------------OPCODE:
+	            [E.l] (ILFDIV)-Long Immediate FP. Division-------------------------OPCODE:
 
 	            [C] (FFC)----FP-FP Cast------------------------------------------OPCODE:
 	            [C] (IFC)----Integer-FP Cast-------------------------------------OPCODE:
 	    		[C] (FIC)----FP-Integer Cast-------------------------------------OPCODE:
 			}
 
-			Advanced { [13]
+			Advanced { [13]================================================================================================= OK
 
 				[B] (FMAC)---FP. Multiply Accumulate-----------------------------OPCODE:
 	            [B] (FPOW)---FP. Power-------------------------------------------OPCODE:
@@ -160,9 +182,10 @@ Computational { (118 total so far)
 	            [E] (IFMAC)--Immediate FP. Multiply Accumulate-------------------OPCODE:
 	            [E] (IFPOW)--Immediate FP. Power---------------------------------OPCODE:
 	            [E] (IFPOW)--Immediate FP. Remainder-----------------------------OPCODE:
-	            [E] (ILFMAC)-Long Immediate FP. Multiply Accumulate--------------OPCODE:
-	            [E] (ILFPOW)-Long Immediate FP. Power----------------------------OPCODE:
-	            [E] (ILFPOW)-Long Immediate FP. Remainder------------------------OPCODE:
+
+	            [E.l] (ILFMAC)-Long Immediate FP. Multiply Accumulate--------------OPCODE:
+	            [E.l] (ILFPOW)-Long Immediate FP. Power----------------------------OPCODE:
+	            [E.l] (ILFPOW)-Long Immediate FP. Remainder------------------------OPCODE:
 
 	            [C] (SIN)----Sin-------------------------------------------------OPCODE:
 	            [C] (COS)----Cos-------------------------------------------------OPCODE:
@@ -173,7 +196,7 @@ Computational { (118 total so far)
 
 		Vector {
 
-			Basic {
+			Basic { ======================================================================================================== OK
 
 				- requires V registers
 				- requires VMSK register
@@ -181,7 +204,7 @@ Computational { (118 total so far)
 				-> to implement: make the (FP scalar basic) capable of vector via mod
 			}
 
-			Advanced {
+			Advanced { ===================================================================================================== OK
 
 				- requires V registers
 				- requires VMSK register
@@ -191,7 +214,7 @@ Computational { (118 total so far)
 		}
 	}
 
-	Reduction { [22]
+	Reduction { [22]======================================================================================================== OK
 
 		- requires V registers
 		- requires VMSK register
@@ -223,28 +246,22 @@ Computational { (118 total so far)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-Data transfer { (45 total so far)
+Data transfer { (39 total so far)
 	
 	Scalar {
 
-		Basic { [11]
+		Basic { [6]========================================================================================================= OK
 
 			[E]   (MLD)---Memory Load----------------------------------------OPCODE:
             [E]   (MST)---Memory Store---------------------------------------OPCODE:
             [E.l] (LMLD)--Long Memory Load-----------------------------------OPCODE:
             [E.l] (LMST)--Long Memory Store----------------------------------OPCODE:
 
-            [F]   (LDI)---Load Immediate-------------------------------------OPCODE: <<<<<<<<<
-            [F.l] (LLDI)--Long Load Immediate--------------------------------OPCODE:
-            [F]   (ULDI)--Upper Load Immediate-------------------------------OPCODE:
-            [F.l] (LULDI)-Long Upper Load Immediate--------------------------OPCODE:
-
-            [C]   (MOV)----Move----------------------------------------------OPCODE:
     		[C]   (MOVTS)--Move To Special-----------------------------------OPCODE:
     		[C]   (MOVFS)--Move From Special---------------------------------OPCODE:
 		}
 
-		Advanced { [9]
+		Advanced { [9]====================================================================================================== OK
 
 			[D]   (IMLD)---Indexed Memory Load-------------------------------OPCODE:
             [D]   (IMST)---Indexed Memory Store------------------------------OPCODE:
@@ -265,19 +282,18 @@ Data transfer { (45 total so far)
 		- requires V registers
 		- requires VMSK register
 
-		Basic { [7]
+		Basic { [6]========================================================================================================= OK
 
 			[E]   (VMLD)---Vector Memory Load--------------------------------OPCODE:
             [E]   (VMST)---Vector Memory Store-------------------------------OPCODE:
             [E.l] (LVMLD)--Long Vector Memory Load---------------------------OPCODE:
             [E.l] (LVMST)--Long Vector Memory Store--------------------------OPCODE:
 
-            [C]   (VMOV)---Vector Move---------------------------------------OPCODE:
     		[C]   (MOVTV)--Move To Vector------------------------------------OPCODE:
     		[C]   (MOVFV)--Move From Vector----------------------------------OPCODE:
 		}
 
-		Advanced { [11]
+		Advanced { [11]===================================================================================================== OK
 
 			[D]   (VIMLD)---Vector Indexed Memory Load-----------------------OPCODE:
             [D]   (VIMST)---Vector Indexed Memory Store----------------------OPCODE:
@@ -296,14 +312,14 @@ Data transfer { (45 total so far)
 		}
 	}
 
-	Atomic { [3]
+	Atomic { [3]============================================================================================================ OK
 
 		[B] (LL)--Load Linked------------------------------------------------OPCODE:
         [B] (SC)--Store Conditional------------------------------------------OPCODE:
         [B] (CAS)-Compare And Swap-------------------------------------------OPCODE:
 	}
 
-	Block { [4]
+	Block { [4]============================================================================================================= OK
 
 		[F]   (BLD)--Block Load----------------------------------------------OPCODE:
         [F]   (BST)--Block Store---------------------------------------------OPCODE:
@@ -313,13 +329,13 @@ Data transfer { (45 total so far)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
-Flow transfer { (26 in total so far)
+Flow transfer { (32 in total so far)
 	
 	Scalar {
 
 		Integer {
 
-			Basic { [8]
+			Basic { [10]==================================================================================================== OK
 
 				[E]   (BEQ)---Branch If Equal--------------------------------------OPCODE:
             	[E]   (BNE)---Branch If Not Equal----------------------------------OPCODE:
@@ -330,64 +346,70 @@ Flow transfer { (26 in total so far)
             	[F]   (CAL)---Function Call----------------------------------------OPCODE:
 				[F.l] (LCAL)--Long Function Call-----------------------------------OPCODE:
 
-				//JMP missing????
+				[F]   (JMP)---Jump-------------------------------------------------OPCODE:
+				[F.l] (LJMP)--Long Jump--------------------------------------------OPCODE:
 
 				[H]   (RET)---Function Return--------------------------------------OPCODE:
 			}
 
-			Advanced { [4]
+			Advanced { [6]================================================================================================== OK
 
 				[F]   (BTST)--Branch If Test---------------------------------------OPCODE:
 				[F.l] (LBTST)-Long Branch If Test----------------------------------OPCODE:
 
 				[E]   (RCAL)--Register Function Call-------------------------------OPCODE:
 				[E.l] (LRCAL)-Long Register Function Call--------------------------OPCODE:
+
+				[F]   (RJMP)---Register Jump---------------------------------------OPCODE:
+				[F.l] (LEJMP)--Long Register Jump----------------------------------OPCODE:
 			}
 
-			Mask { [2]
+			Mask { [3]====================================================================================================== OK
 
             	[C]   (ISMSKC)-Integer Scalar Mask Set on Compare------------------OPCODE:
-            	[?]   (ISMSKT)-Integer Scalar Mask Set on Test---------------------OPCODE:
+            	[F]   (ISMSKT)-Integer Scalar Mask Set on Test---------------------OPCODE:
+            	[K]   (SIMSK)--Scalar Invert Mask----------------------------------OPCODE:
 			}
 		}
 
 		Floating point {
 
-			Basic {
+			Basic { ======================================================================================================== OK
 
 				-> to implement: make the (integer basic) capable of FP via mod
 			}
 
-			Advanced { [2]
+			Advanced { [2]================================================================================================== OK
 
 				[F]   (FBTST)--FP. Branch If Test----------------------------------OPCODE:
 				[F.l] (LFBTST)-Long FP. Branch If Test-----------------------------OPCODE:
 			}
 
-			Mask { [2]
+			Mask { [2]====================================================================================================== OK
 
 				[C]   (FSMSKC)-FP Scalar Mask Set on Compare------------------OPCODE:
-            	[?]   (FSMSKT)-FP Scalar Mask Set on Test---------------------OPCODE:
+            	[F]   (FSMSKT)-FP Scalar Mask Set on Test---------------------OPCODE:
 			}
 		}
 	}
 
 	Vector {
 
-		Integer { [4]
+		Integer { [5]======================================================================================================= OK
 
 			[C]   (VVIMSKC)-Vector-Vector Integer Mask Set on Compare------------------OPCODE:
             [C]   (VSIMSKC)-Vector-Scalar Integer Mask Set on Compare------------------OPCODE:
-			[?]   (VVFMSKT)-Vector-Vector Integer Mask Set on Test---------------------OPCODE:
-            [?]   (VSFMSKT)-Vector-Scalar Integer Mask Set on Test---------------------OPCODE:
+			[F]   (VVFMSKT)-Vector-Vector Integer Mask Set on Test---------------------OPCODE:
+            [F]   (VSFMSKT)-Vector-Scalar Integer Mask Set on Test---------------------OPCODE:
+            [K]   (VIMSK)---Vector-Invert Mask-----------------------------------------OPCODE:
 		}
 
-		Floating point { [4]
+		Floating point { [4]================================================================================================ OK
 
-			[C]   (VVFMSKC)-Vector-Vector FP Mask Set on Compare------------------OPCODE:
-            [C]   (VSFMSKC)-Vector-Scalar FP Mask Set on Compare------------------OPCODE:
-			[?]   (VVFMSKT)-Vector-Vector FP Mask Set on Test----------------------OPCODE:
-            [?]   (VSFMSKT)-Vector-Scalar FP Mask Set on Test----------------------OPCODE:
+			[C]   (VVFMSKC)-Vector-Vector FP Mask Set on Compare-----------------------OPCODE:
+            [C]   (VSFMSKC)-Vector-Scalar FP Mask Set on Compare-----------------------OPCODE:
+			[F]   (VVFMSKT)-Vector-Vector FP Mask Set on Test--------------------------OPCODE:
+            [F]   (VSFMSKT)-Vector-Scalar FP Mask Set on Test--------------------------OPCODE:
 		}
 	}
 }
@@ -395,11 +417,11 @@ ________________________________________________________________________________
 
 System { (17 in total so far)
 	
-	basic {
+	basic { [3]
 
         [K] (NOP)---No Operation---------------------------------------------OPCODE:
       * [E] (CACOP)-Cache Operation------------------------------------------OPCODE:
-        [?] (BPTRG)-Breakpoint Trigger---------------------------------------OPCODE:
+        [J] (BPTRG)-Breakpoint Trigger---------------------------------------OPCODE:
     }
 
     advanced {

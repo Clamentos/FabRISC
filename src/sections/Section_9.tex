@@ -4,7 +4,7 @@
 
     This section is dedicated to a full and extensive list of all the proposed instructions in the ISA which are divided into their corresponding module. Computational instructions can generate flags but, since there is no flags register, they will be ignored unless the AEXC bit is set for automatic arithmetic exceptions.
 
-    \subsection{Computational-integer-scalar-basic}
+    \subsection{Computational-Integer-Scalar-Basic}
 
         This instruction module provides simple, computational scalar instructions concerning arithmetic and logic:
 
@@ -28,33 +28,33 @@
 
                 \item \textit{\textbf{(XNOR) Bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus rc))\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and doesn't generate any flags.}
 
-                \item \textit{\textbf{(ALSH) Arithmetic left shift}: this instruction computes \((ra = rb <<< rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(ALSH) Arithmetic Left Shift}: this instruction computes \((ra = rb <<< rc)\); belongs to the B format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(ARSH) Arithmetic right shift}: this instruction computes \((ra = rb >>> rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(ARSH) Arithmetic Right Shift}: this instruction computes \((ra = rb >>> rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LLSH) Logical left shift}: this instruction computes \((ra = rb << rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(LLSH) Logical Left Shift}: this instruction computes \((ra = rb << rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(LRSH) Logical right shift}: this instruction computes \((ra = rb >> rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(LRSH) Logical Right Shift}: this instruction computes \((ra = rb >> rc)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IADD) Immediate addition}: this instruction computes \((ra = rb + signxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(IADD) Immediate Addition}: this instruction computes \((ra = rb + signxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(ISUB) Immediate subtraction}: this instruction computes \((ra = rb - signxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(ISUB) Immediate Subtraction}: this instruction computes \((ra = rb - signxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IAND) Immediate bitwise AND}: this instruction computes \((ra = rb \wedge zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(IAND) Immediate Bitwise AND}: this instruction computes \((ra = rb \wedge zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(INAND) Immediate bitwise NAND}: this instruction computes \((ra = \neg(rb \wedge zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(INAND) Immediate Bitwise NAND}: this instruction computes \((ra = \neg(rb \wedge zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IOR) Immediate bitwise OR}: this instruction computes \((ra = rb \vee zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(IOR) Immediate Bitwise OR}: this instruction computes \((ra = rb \vee zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(INOR) Immediate bitwise NOR}: this instruction computes \((ra = \neg(rb \vee zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(INOR) Immediate Bitwise NOR}: this instruction computes \((ra = \neg(rb \vee zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IXOR) Immediate bitwise XOR}: this instruction computes \((ra = rb \oplus zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(IXOR) Immediate Bitwise XOR}: this instruction computes \((ra = rb \oplus zeroxt(imm_8))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IXNOR) Immediate bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
+                \item \textit{\textbf{(IXNOR) Immediate Bitwise XNOR}: this instruction computes \((ra = \neg(rb \oplus zeroxt(imm_8)))\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
-                \item \textit{\textbf{(IASH) Immediate arithmetic shift}: this instruction computes \((ra = rb <<<>>> imm_8)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. The direction of the shift is dictated by imm[7] bit.}
+                \item \textit{\textbf{(IASH) Immediate Arithmetic Shift}: this instruction computes \((ra = rb <<<>>> imm_8)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. The direction of the shift is dictated by imm[7] bit.}
 
-                \item \textit{\textbf{(ILSH) Immediate logical shift}: this instruction computes \((ra = rb <<>> imm_8)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. The direction of the shift is dictated by imm[7] bit.}
+                \item \textit{\textbf{(ILSH) Immediate Logical Shift}: this instruction computes \((ra = rb <<>> imm_8)\); belongs to the E format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags. The direction of the shift is dictated by imm[7] bit.}
 
                 \item \textit{\textbf{(LIADD) Long immediate addition}: this instruction computes \((ra = rb + signxt(imm_{26}))\); belongs to the E.l format; uses the modifier class 1; has an opcode of xxxxxxxxxxxx and can generate the xxx flags.}
 
@@ -188,7 +188,7 @@
 
     \subsection{Computational-integer-vector-reduction}
 
-        This instruction modules requires the presence of the vector registers (VGPRs), the VMSK register located in the special purpose bank and the VLEN bits in the CSR register. This module also adds the following extra instructions that are vector only:
+        This instruction modules requires the presence of the vector registers (VGPRs), the VMSK register located in the special purpose bank and the VLEN bits in the CSR register. This module also adds xxx extra instructions that are vector only. The 'd' bit for the modifier class 2 of the C format only affects non commutative operations, otherwise it is ignored. The proposed instructions are:
 
         \begin{multicols}{2}
 
@@ -226,7 +226,7 @@
 
         [To be continued...]
 
-    \subsection{Data transfer instructions}
+    \subsection{Data transfer-scalar-basic}
 
         [Coming soon...]
 

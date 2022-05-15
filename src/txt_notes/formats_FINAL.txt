@@ -20,10 +20,10 @@
 [K]   |OPCODE(16)| 													-
 ______________________________________________________________________________________________________________________________________________________________________
 
-0000000xxxxxxxxx -> 1111011xxxxxxxxx 		124
-11111000000xxxxx -> 11111001111xxxxx 		 16
-111110100000xxxx -> 111111011111xxxx 		 64
-1111111000000000 -> 1111111001111111 		128
+0000001 xxxxxxxxx -> 1111011 xxxxxxxxx 		(max: 123) (current: 112) [A] [D] [D.l] [E] [E.l] [F] [F.l] [G] [I] [J]
+1111100 0000xxxxx -> 1111100 1111xxxxx 		(max:  16) (current:   5) [H]
+1111101 00000xxxx -> 1111110 11111xxxx 		(max:  64) (current:  35) [B]
+1111111 000000000 -> 1111111 001111111 		(max: 128) (current:  62) [C] [K]
 
 384 combinations left
 ______________________________________________________________________________________________________________________________________________________________________
@@ -32,9 +32,17 @@ ________________________________________________________________________________
 	
 	[A]   |OPCODE(07)|MOD(05)|RA(05)|RB(05)|RC(05)|RD(05)|    length: 4B
 
-	scalar load & store instructions:
+    type: R,R,R,R
+
+	scalar memory & strided vector:
 
         MOD(05): "ttmuu"
+
+        {
+
+            reg[RA] <--> mem[reg[RB] + (reg[RC] * reg[RD])];
+            reg[RB] = update(reg[RB]);
+        }
 
         ('tt' is data type length: 8, 16, 32, 64)
         ('m' is maks: 0 unmasked, 1 masked)
@@ -42,10 +50,16 @@ ________________________________________________________________________________
 
     vector load & store instructions:
 
-        MOD(05): "mauu-"
+        MOD(05): "oomuu"
 
+        {
+
+            reg[RA] <--> mem[reg[RB] + (reg[RC] * reg[RD])];
+            reg[RB] = update(reg[RB]);
+        }
+
+        ('oo' are extra opcode bits)
         ('m' is mask: 0 unmasked, 1 masked)
-        ('a' is addressing mode: 0 standard, 1 striding)
         ('uu' is update mode: 00 nothing, 01 post-inc, 10 post-dec, 11 pre-dec)
 }
 ______________________________________________________________________________________________________________________________________________________________________
@@ -54,7 +68,9 @@ ________________________________________________________________________________
 	
 	[B]   |OPCODE(12)|MOD(04)|RA(05)|RB(05)|RC(05)|    length: 4B
 
-	computational [R-R-R] instructions:
+    type: R,R,R
+
+	computational instructions:
 
         MOD(05): "ttmvv"
 
@@ -83,7 +99,9 @@ ________________________________________________________________________________
 	
 	[C]   |OPCODE(16)|MOD(06)|RA(05)|RB(05)|    length: 4B
 
-	computational [R-R] instructions:
+    type: R,R
+
+	computational instructions:
     
         MOD(06): "ttm--v"
 
@@ -129,7 +147,9 @@ ________________________________________________________________________________
 	[D]   |OPCODE(07)|MOD(03)|RA(05)|RB(05)|RC(05)|IMM(07)|    length: 4B
 	[D.l] |OPCODE(07)|MOD(05)|RA(05)|RB(05)|RC(05)|IMM(21)|    length: 6B
 
-	scalar load & store instructions:
+    type: R,R,R,I
+
+	scalar memory & strided vector instructions:
 
         MOD(03): "ttm"
         MOD(05): "ttmuu"
@@ -140,11 +160,11 @@ ________________________________________________________________________________
 
     vector load & store instructions:
 
-        MOD(03): "ma-"
-        MOD(05): "mauu-"
+        MOD(03): "oom"
+        MOD(05): "oomuu"
 
+        ('oo' are extra opcode bits)
         ('m' is mask: 0 unmasked, 1 masked)
-        ('a' is addressing mode: 0 standard, 1 striding)
         ('uu' is update mode: 00 nothing, 01 post-inc, 10 post-dec, 11 pre-dec)
 }
 ______________________________________________________________________________________________________________________________________________________________________
@@ -154,8 +174,9 @@ ________________________________________________________________________________
 	[E]   |OPCODE(07)|MOD(05)|RA(05)|RB(05)|IMM(10)|    length: 4B
 	[E.l] |OPCODE(07)|MOD(05)|RA(05)|RB(05)|IMM(26)|    length: 6B
 
+    type: R,R,I
 
-	computational [R-R-I] instructions:
+	computational instructions:
 
         [E, E.l] MOD(05): "ttmvo"
 
@@ -164,7 +185,7 @@ ________________________________________________________________________________
         ('v' is vector mode: 0 scalar, 1 vector-scalar)
         ('o' is extra opcode bit)
 
-	scalar load & store instructions:
+	scalar memory & strided vector instructions:
 
         [E]   MOD(05): "ttmii"
         [E.l] MOD(05): "ttmuu"
@@ -176,11 +197,11 @@ ________________________________________________________________________________
 
     vector load & store instructions:
 
-        [E]   MOD(05): "ma-ii"
-        [E.l] MOD(05): "mauu-"
+        [E]   MOD(05): "omaii"
+        [E.l] MOD(05): "omauu"
 
+        ('o' is extra opcode bit)
         ('m' is mask: 0 unmasked, 1 masked)
-        ('a' is addressing mode: 0 standard, 1 striding)
         ('i' is extra immediate)
         ('uu' is update mode: 00 nothing, 01 post-inc, 10 post-dec, 11 pre-dec)
 
@@ -208,14 +229,16 @@ ________________________________________________________________________________
 	[F]   |OPCODE(07)|MOD(04)|RA(05)|IMM(16)|    length: 4B
 	[F.l] |OPCODE(07)|MOD(04)|RA(05)|IMM(32)|    length: 6B
 
+    type: R,I
+
 	block load & store instructions:
     
         MOD(04): "ffm-"
 
-        ('ff' is file selector: 00 SGPRs, 01 SPRs, 10 VGPRs)
+        ('ff' is file selector: 00 SGPRs, 01 SPRs, 10 VGPRs, 11 HLPRs)
         ('m' is mask: 0 unmasked, 1 masked)
 
-    test branches:
+    test branches & mask setting:
 
         MOD(04): "ttff"
 
@@ -234,7 +257,7 @@ ________________________________________________________________________________
 
         ('m' is mask: 0 unmasked, 1 masked)
         ('tt' is data type length: 8, 16, 32, 64)
-        ('c' ...)
+        ('c' imm extend mode: ...)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
@@ -242,34 +265,44 @@ ________________________________________________________________________________
 	
 	[G]   |OPCODE(07)|MOD(03)|RD/RS1(03)|RS2(03)|    length: 2B
 
-	compressed computational [R-R] instructions:
+    type: R,R
 
-        MOD(02): "ttp"
+	compressed computational instructions:
+
+        MOD(02): "tto"
 
         ('tt' is data type length: 8, 16, 32, 64)
-        ('p' is for floating point mode)
+        ('o' is extra opcode bit)
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
 [H] format {
+
+    type: R
 	
 	[H]   |OPCODE(11)|RS(05)|    length: 2B
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
 [I] format {
+
+    type: R,I
 	
 	[I]   |OPCODE(07)|RA(03)|IMM(06)|    length: 2B
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
 [J] format {
+
+    type: I
 	
 	[J]   |OPCODE(07)|IMM(09)|    length: 2B
 }
 ______________________________________________________________________________________________________________________________________________________________________
 
 [K] format {
+
+    type: O
 	
 	|OPCODE(16)|    length: 2B
 }
