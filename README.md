@@ -7,7 +7,7 @@ FabRISC is an open-source, modular, RISC-like instruction set architecture for 3
 - Variable length instructions of 2, 4 and 6 bytes.
 - Scalar and vector capabilities.
 - Atomic and transactional memory support.
-- Privileged architecture three different modes.
+- Privileged architecture with user and machine modes.
 - Classically virtualizable.
 - Performance monitoring counters and more!
 
