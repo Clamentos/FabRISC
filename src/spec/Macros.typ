@@ -1,4 +1,7 @@
 ///
+#import "@preview/tablex:0.0.5": tablex, colspanx, rowspanx
+
+///
 #let comment(body) = {
 
     linebreak()
@@ -8,6 +11,7 @@
     linebreak()
 }
 
+///..
 #let section(title, ..body) = {
 
     text(18pt)[#heading(level: 1, title)]
@@ -19,6 +23,7 @@
     }
 }
 
+///..
 #let subSection(title, ..body) = {
 
     text(16pt)[#heading(level: 2, title)]
@@ -30,6 +35,7 @@
     }
 }
 
+///..
 #let subSubSection(title, ..body) = {
 
     text(14pt)[#heading(level: 3, title)]

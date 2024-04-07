@@ -4,6 +4,9 @@
 ///
 #section(
 
+    // TODO: integrate this paragraph:
+    /*[In this section the register file organization, vector model, operating modes, events and instruction formats are presented. Processors that don't support certain modules must generate the INCI fault whenever an unimplemented or incompatible instruction is fetched or attempted to be processed in any other way. Processors must also generate the ILLI fault whenever a combination of all zeros or all ones is fetched in order to increase safety against buffer overflows exploits or accidental accesses of uninitialized memory locations. The full instruction list will be presented separately in the next section as it's quite large.]*/
+
     [(WORK IN PROGRESS) Instruction list],
 
     [This section is dedicated to provide a full and extensive list of all the proposed instructions in the ISA divided into their corresponding module.],
@@ -34,5 +37,7 @@
             [...], [...], [...], [...]
         ))
     )
+
+#pagebreak()
 
 ///
