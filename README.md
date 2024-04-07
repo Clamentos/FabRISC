@@ -15,7 +15,7 @@ FabRISC is an open-source, modular, RISC-like instruction set architecture for 3
 
 This repository simply holds the [Typst](https://github.com/typst/typst) source code to generate the PDF documents for the privileged and unprivileged specifications. Currently, only the unprivileged specification is close to being complete. The steps to compile are very simple and all is needed is to compile the `Main.typ` file in the `./src/unprivileged` directory and run the following comand:
 
-> typst compile Main.typ --root ../
+```sh typst compile Main.typ --root ../```
 
 #### Disclaimer
 
