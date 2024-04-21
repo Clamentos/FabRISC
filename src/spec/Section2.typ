@@ -6,21 +6,22 @@
 
     [ISA modules],
 
-    [This section is dedicated to provide an overview of the modular capabilities of the FabRISC ISA. The list of modules and implementation specific parameters will be presented shortly.],
+    [This section is dedicated to provide an overview of the modular capabilities of the FabRISC ISA. The list of modules and some implementation specific parameters will be presented shortly.],
 
     ///.
     subSection(
 
         [Module list],
 
-        [Features and capabilities are packaged in modules which can be composed of instructions or other requirements such as registers, events, operating modes and more. There are no mandatory modules in this specification in order to maximize the flexibility, however, once a particular extension is chosen, the hardware must provide all the features and abstractions of said extension. The requirements for each and every module will be extensively explained in the upcoming sections when required. The following is a simple table of all the existing modules:],
+        [Features and capabilities are packaged in modules which can be composed of instructions or other requirements such as registers, events, operating modes and more. There are no mandatory modules in this specification in order to maximize flexibility, however, once a particular extension is chosen, the hardware must provide all the features and abstractions of said extension. The requirements for each and every module will be extensively explained in the upcoming sections when required. The following is a simple table of all the existing base modules:],
 
         align(center, table(
 
-            columns: (10fr, 20fr, 70fr),
+            columns: (15fr, 20fr, 65fr),
             inset: 8pt,
             align: (x, y) => (right, left + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Index*])], [#align(center, [*Short name*])], [#align(center, [*Full name*])],
 
@@ -89,23 +90,21 @@
 
         [Implementation specific parameters],
 
-        [FabRISC makes use of some implementation specific microarchitectural parameters to clear potential misunderstandings in both the documentation and the running software, as well as making the ISA more general, flexible and extensible. These parameters, along with other information, must be physically stored internally in the shape of read-only registers so that programs can gather information about various characteristics of the system via dedicated operations such as the SYSINFO instruction (see section 6 and 7 for more information). Depending on which modules are implemented, some of these parameters can be ignored and set to a default value. Some parameters are presented here as they are fundamental, while others are declared in the following sections when appropriate. This is not an exhaustive list.],
+        [FabRISC makes use of some implementation specific microarchitectural parameters to clear potential misunderstandings in both the documentation and the running software, as well as making the ISA more general, flexible and extensible. These parameters, along with other information, must be physically stored internally in the shape of read-only registers so that programs can gather information about various characteristics of the system via dedicated operations such as the SYSINFO instruction (see section 6 and 7 for more information). Depending on which modules are implemented, some of these parameters can be ignored and set to a default value. Some parameters are presented here as they are fundamental and mandator, while others are declared in the following sections when appropriate. This is not an exhaustive list:],
 
         list(tight: false,
 
-            [*ISA Modules (ISAMOD)* _This 64-bit parameter indicates the implemented instruction set modules of the processor as previously described. ISAMOD works as a checklist where each bit indicates the desired module: the least significant bit will be the first module, while the most significant bit will be the last module in the list (see the "index" column from the module table). The remaining most significant bits are reserved for future expansion as well as custom extensions._],
+            [*ISA Modules (ISAMOD):* _This 64-bit parameter indicates the implemented instruction set modules as previously described. ISAMOD works as a checklist where each bit indicates the desired module: the least significant bit will be the first module, while the most significant bit will be the last module in the list (see the "index" column from the module table). The remaining most significant bits are reserved for future expansion as well as custom extensions._],
 
-            [*ISA Version (ISAVER)* _This 16-bit parameter indicates the currently implemented ISA version. ISAVER is subdivided into two bytes with the most significant byte representing the major and the least significant byte the minor version. Minor versions are considered compatible with each other, while major versions may be not and it will depend on the actual change history made to the architecture._]
+            [*ISA Version (ISAVER):* _This 16-bit parameter indicates the currently implemented ISA version. ISAVER is subdivided into two bytes with the most significant byte representing the major and the least significant byte the minor version. Minor versions are considered compatible with each other, while major versions may be not and it will depend on the actual change history made to the architecture._]
         ),
 
         ///..
         comment([
 
-            I consider this modular approach to be a wise idea because it allows the hardware designers to only implement what they really want with high degree of granularity and little extra. The fact that there is no explicit mandatory subset of the ISA can help with specialized systems, as well as to simplify the specification. With this, it becomes perfectly possible to create, for example, a floating-point only processor with very few integer instructions to alleviate overheads and extra complexities. This decision, however, makes silly and nonsensical things possible such as having no flow transfer or no memory operations. The ISA, in the end, kind of relies on the common sense of the hardware designers when it comes to realizing sensible microarchitectures.
-            
-            The hardware can inform the software of its capabilities by transforming the above seen list into a simple checklist from the first module as the least significant bit, all the way to the last module as the most significant one. This number is then written into the ISAMOD parameter (see the next subsection below for more information) and the software can then read this parameter via the SYSINFO instruction (see section 6 and 7 for more information).
+            I consider this modular approach to be a wise idea because it allows the hardware designers to only implement what they really want with high degree of granularity and little extra. The fact that there is no explicit mandatory subset of the ISA can help with specialized systems, as well as to greatly simplify the specification. With this, it becomes perfectly possible to create, for example, a floating-point only processor with very few integer instructions to alleviate overheads and extra complexities. This decision, however, makes silly and nonsensical things possible such as having no flow transfer or no memory operations. The ISA, in the end, kind of relies on the common sense of the hardware designers when it comes to realizing sensible microarchitectures.
 
-            The miscellaneous modules also contain the USER module, which is responsible for giving the ISA different privilege levels by restricting access to some resources and functionalities. FabRISC only supports a maximum of two privilege levels: user mode and machine mode.
+            The miscellaneous modules also contain the USER module, which is responsible for giving the ISA different privilege levels by restricting access to some resources and functionalities. FabRISC currently only supports a maximum of two privilege levels: user mode and machine mode.
 
             The EXC, IOINT, IPCINT, HLPR and PERFC allow the implementation of hardware-level event-driven computation which, in conjunction with the earlier mentioned modules, is what really helps in supporting fully fledged operating systems, proper memory and process virtualization techniques as well as aiding higher-level event-driven programming.
 

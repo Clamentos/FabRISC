@@ -3,61 +3,59 @@ WORK IN PROGRESS
 
 name    format                                             allocated   current     cost(singular)  cost(total) [allocated * cost(singular)]
 
-[2R.A]  |OPCODE(20)|MD(02)|RA(05)|RB(05)|------------------{ 96}-------{ 87}-------{    1}---------{    96}
-[3R.A]  |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|-----------{144}-------{140}-------{   32}---------{  4608}
-[4R.A]  |OPCODE(10)|MD(02)|RA(05)|RB(05)|RC(05)|RD(05)|----{ 24}-------{ 21}-------{ 1024}---------{ 24576}
-[RI.A]  |OPCODE(09)|MD(02)|RA(05)|IM(16)|------------------{ 32}-------{ 26}-------{ 2048}---------{ 65536}
-[2RI.A] |OPCODE(17)|MD(02)|RA(05)|RB(05)|IM(19)|-----------{ 80}-------{ 71}-------{    8}---------{   640}     6B 
-[3RI.A] |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|IM(16)|----{ 16}-------{ 13}-------{   32}---------{   512}     6B
+[2R.A]  |OPCODE(20)|MD(02)|RA(05)|RB(05)|------------------{ 96}-------{ 91}-------{    1}---------{    91}
+[3R.A]  |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|-----------{144}-------{141}-------{   32}---------{  4512}
+[4R.A]  |OPCODE(10)|MD(02)|RA(05)|RB(05)|RC(05)|RD(05)|----{ 24}-------{ 21}-------{ 1024}---------{ 21504}
+[RI.A]  |OPCODE(09)|MD(02)|RA(05)|IM(16)|------------------{ 32}-------{ 24}-------{ 2048}---------{ 49152}
+[2RI.A] |OPCODE(17)|MD(02)|RA(05)|RB(05)|IM(19)|-----------{ 80}-------{ 76}-------{    8}---------{   608}     6B 
+[3RI.A] |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|IM(16)|----{ 16}-------{ 13}-------{   32}---------{   416}     6B
 
-[2RI.B] |OPCODE(08)|MD(02)|RA(05)|RB(05)|IM(12)|-----------{ 48}-------{ 48}-------{ 4096}---------{196608}
-[I.A]   |OPCODE(08)|IM(24)|--------------------------------{  4}-------{  2}-------{ 4096}---------{ 16384}
+[2RI.B] |OPCODE(08)|MD(02)|RA(05)|RB(05)|IM(12)|-----------{ 48}-------{ 47}-------{ 4096}---------{192512}
+[I.A]   |OPCODE(08)|IM(24)|--------------------------------{  4}-------{  2}-------{ 4096}---------{  8192}
 
-[2R.B]  |OPCODE(10)|RA(03)|RB(03)|-------------------------{ 16}-------{ 15}-------{ 1024}---------{ 16384}
+[2R.B]  |OPCODE(10)|RA(03)|RB(03)|-------------------------{ 16}-------{ 16}-------{ 1024}---------{ 16384}
 [2R.C]  |OPCODE(06)|RA(05)|RB(05)|-------------------------{  4}-------{  4}-------{16384}---------{ 65536}
 [2R.D]  |OPCODE(08)|MD(02)|RA(03)|RB(03)|------------------{  8}-------{  8}-------{ 4096}---------{ 32768}
 [I.B]   |OPCODE(06)|IM(10)|--------------------------------{  2}-------{  2}-------{16384}---------{ 32768}
-[RI.B]  |OPCODE(08)|RA(03)|IM(05)|-------------------------{  8}-------{  7}-------{ 4096}---------{ 32768}
-[RI.C]  |OPCODE(05)|RA(03)|IM(08)|-------------------------{  8}-------{  6}-------{32768}---------{262144}
+[RI.B]  |OPCODE(08)|RA(03)|IM(05)|-------------------------{  8}-------{  7}-------{ 4096}---------{ 28672}
+[RI.C]  |OPCODE(05)|RA(03)|IM(08)|-------------------------{  8}-------{  6}-------{32768}---------{196608}
 [2RI.D] |OPCODE(04)|RA(03)|RB(03)|IM(06)|------------------{  4}-------{  4}-------{65536}---------{262144}
 
-Remaining budget: 35104
-
-// TODO: swaps
+Remaining budget: 136709
 
 ///
 opcode distribution:
 
-    15 [2RI.D]---- 00xx                        1111000xx   4   -
+    15 [2RI.D]---- 00xx                        1111000xx   4   -        2B
 
-    14 [RI.C]----- 01xxx                       110110xxx   8   -
+    14 [RI.C]----- 01xxx                       110110xxx   8   -        2B
 
-    10 [2R.C]----- 1000xx                      1111001xx   4   -
-    12 [I.B]------ 10010x                      11110110x   2   -
+    10 [2R.C]----- 1000xx                      1111001xx   4   -        2B
+    12 [I.B]------ 10010x                      11110110x   2   -        2B
 
-    13 [RI.B]----- 10011xxx                    110111xxx   8   -
-    7  [2RI.B]---- 101xxxxx                    1000xxxxx   32  -
-    7  [2RI.B]---- 1100xxxx                    10100xxxx   16  -
-    11 [2R.D]----- 11010xxx                    111000xxx   8   -
-    8  [I.A]------ 110110xx                    1111010xx   4   -
+    13 [RI.B]----- 10011xxx                    110111xxx   8   -        2B
+    7  [2RI.B]---- 101xxxxx                    1000xxxxx   32  -        4B
+    7  [2RI.B]---- 1100xxxx                    10100xxxx   16  -        4B
+    11 [2R.D]----- 11010xxx                    111000xxx   8   -        2B
+    8  [I.A]------ 110110xx                    1111010xx   4   -        4B
 
-    4  [RI.A]----- 110111xxx                   111001xxx   8   -
-    4  [RI.A]----- 11100xxxx                   10101xxxx   16  -
-    4  [RI.A]----- 111010xxx                   111010xxx   8   -
+    4  [RI.A]----- 110111xxx                   111001xxx   8   -        4B
+    4  [RI.A]----- 11100xxxx                   10101xxxx   16  -        4B
+    4  [RI.A]----- 111010xxx                   111010xxx   8   -        4B
 
-    9  [2R.B]----- 111011xxxx                  10110xxxx   16  -
-    3  [4R.A]----- 111100xxxx                  10111xxxx   16  -
-    3  [4R.A]----- 1111010xxx                  111011xxx   8   -
+    9  [2R.B]----- 111011xxxx                  10110xxxx   16  -        2B
+    3  [4R.A]----- 111100xxxx                  10111xxxx   16  -        4B
+    3  [4R.A]----- 1111010xxx                  111011xxx   8   -        4B
 
-    2  [3R.A]----- 11110110xxxxxxx             00xxxxxxx   128 -
-    2  [3R.A]----- 11110111000xxxx             11000xxxx   16  -
-    6  [3RI.A]---- 11110111001xxxx             11001xxxx   16  -
+    2  [3R.A]----- 11110110xxxxxxx             00xxxxxxx   128 -        4B
+    2  [3R.A]----- 11110111000xxxx             11000xxxx   16  -        4B
+    6  [3RI.A]---- 11110111001xxxx             11001xxxx   16  -        6B
 
-    5  [2RI.A]---- 11110111010xxxxxx           010xxxxxx   64  -
-    5  [2RI.A]---- 1111011101100xxxx           11010xxxx   16  -
+    5  [2RI.A]---- 11110111010xxxxxx           010xxxxxx   64  -        6B
+    5  [2RI.A]---- 1111011101100xxxx           11010xxxx   16  -        6B
 
-    1  [2R.A]----- 11110111011010xxxxxx        011xxxxxx   64  -
-    1  [2R.A]----- 111101110110110xxxxx        1001xxxxx   32  -
+    1  [2R.A]----- 11110111011010xxxxxx        011xxxxxx   64  -        4B
+    1  [2R.A]----- 111101110110110xxxxx        1001xxxxx   32  -        4B
 
 ///
 Instruction classes:
@@ -127,6 +125,8 @@ advanced scalar integer: OK
 
 [name]----------------------------------------------[mnemonic]---[format]-[class]
 
+SWAP------------------------------------------------SWP----------[2R.A]---[1]
+
 MULTIPLICATION--------------------------------------MUL----------[3R.A]---[7]
 HIGH MULTIPLICATION---------------------------------HMUL---------[3R.A]---[7]
 DIVISION--------------------------------------------DIV----------[3R.A]---[7]
@@ -152,7 +152,7 @@ BIT SWAP IMMEDIATE----------------------------------BSWI---------[2RI.B]--[0] //
 BIT REVERSE IMMEDIATE-------------------------------BRVI---------[2RI.B]--[0]
 BIT FLIP IMMEDIATE----------------------------------BFLI---------[2RI.B]--[0]
 CARRYLESS MULTIPLICATION IMMEDIATE------------------CLMULI-------[2RI.B]--[0]
--
+
 MULTIPLY ACCUMULATE IMMEDIATE-----------------------MACI---------[3RI.A]--[7]
 BLEND IMMEDIATE-------------------------------------BNDI---------[3RI.A]--[0] // Ra = (Rb << Imm) | Rc;
 
@@ -416,6 +416,7 @@ advanced vector integer: OK
 
 [name]----------------------------------------------[mnemonic]---[format]-[class]
 
+VECTOR SWAP-----------------------------------------VSWP---------[2R.A]---[4]
 VECTOR COUNT ZEROS----------------------------------VCZ----------[2R.A]---[4]
 VECTOR COUNT LEADING ZEROS--------------------------VCLZ---------[2R.A]---[4]
 VECTOR COUNT TRAILING ZEROS-------------------------VCTZ---------[2R.A]---[4]
@@ -643,7 +644,7 @@ COMPRESSED RIGHT SHIFT------------------------------CRSH---------[2R.B]---[/]
 COMPRESSED SET IF EQUAL ZERO------------------------CSEQZ--------[2R.B]---[/]
 COMPRESSED SET IF LESS THAN ZERO--------------------CSLTZ--------[2R.B]---[/]
 COMPRESSED SET IF LESS OR EQUAL THAN ZERO-----------CSLEZ--------[2R.B]---[/]
-...
+COMPRESSED SWAP-------------------------------------CSWP---------[2R.B]---[/]
 
 COMPRESSED ADDITION IMMEDIATE-----------------------CADDI--------[RI.B]---[/]
 COMPRESSED SUBTRACTION IMMEDIATE--------------------CSUBI--------[RI.B]---[/]
@@ -716,18 +717,19 @@ SYSTEM INFORMATION----------------------------------SYSINFO------[2R.A]---[1]
 SYSTEM INFORMATION IMMEDIATE------------------------SYSINFI------[RI.A]---[1]
 
 CACHE OPERATION-------------------------------------CACOP--------[2RI.A]--[0] * // INCI fault if no caches are implemented.
+
+///.
+eventing: OK
+
+EVENT RETURN----------------------------------------ERET---------[2R.A]---[0] * // Perform eret; Ra = Rb;   (machine -> machine)
+
+///.
+user mode: OK
+
+USER EVENT RETURN-----------------------------------UERET--------[2R.A]---[0] // same ^^^                   (user -> user)
+USER RETURN-----------------------------------------URET---------[2R.A]---[0] * // same ^^^                 (machine -> user)
+
 USER CACHE OPERATION--------------------------------UCACOP-------[2RI.A]--[0]   // INCI fault if no caches are implemented.
-
-///.
-eventing
-
-EVENT RETURN----------------------------------------ERET---------[2R.A]---[0] * // Perform eret; Ra = Rb;   (machine->machine)
-USER EVENT RETURN-----------------------------------UERET--------[2R.A]---[0] // same ^^^                   (user->user)
-USER RETURN-----------------------------------------URET---------[2R.A]---[0] * // same ^^^                 (machine->user)
-
-///.
-user mode:
-...
 
 ///.
 advanced system: OK
@@ -786,21 +788,26 @@ basic atomic memory: OK
 
 [name]----------------------------------------------[mnemonic]---[format]-[class]
 
-LOAD LINKED-----------------------------------------LL-----------[3R.A]---[1]
-STORE CONDITIONAL-----------------------------------ST-----------[3R.A]---[1]
+COMPARE AND SWAP------------------------------------CAS----------[3R.A]---[1]
 
 ///.
 advanced atomic memory: OK
 
 [name]----------------------------------------------[mnemonic]---[format]-[class]
 
-COMPARE AND SWAP------------------------------------CAS----------[3R.A]---[1]
 ATOMIC ADD------------------------------------------AADD---------[3R.A]---[1] // Always signed.
 ATOMIC SUB------------------------------------------ASUB---------[3R.A]---[1] // Always signed.
+ATOMIC AND------------------------------------------AAND---------[3R.A]---[1]
+ATOMIC OR-------------------------------------------AOR----------[3R.A]---[1]
+ATOMIC XOR------------------------------------------AXOR---------[3R.A]---[1]
 
 VESRIONED COMPARE AND SWAP--------------------------VECAS--------[4R.A]---[1]
 
-ATOMIC ADD IMMEDIATE--------------------------------AADDI--------[2RI.B]--[1] // Always signed.
+ATOMIC ADD IMMEDIATE--------------------------------AADDI--------[2RI.A]--[1] // Always signed.
+ATOMIC SUB IMMEDIATE--------------------------------ASUBI--------[2RI.A]--[1] // Always signed.
+ATOMIC AND IMMEDIATE--------------------------------AANDI--------[2RI.A]--[1]
+ATOMIC OR IMMEDIATE---------------------------------AORI---------[2RI.A]--[1]
+ATOMIC XOR IMMEDIATE--------------------------------AXORI--------[2RI.A]--[1]
 
 ///.
 transactional memory: OK
@@ -812,119 +819,5 @@ TRANSACTION COMMIT----------------------------------------TCOM---------[2R.A]---
 TRANSACTION CHECK-----------------------------------------TCHK---------[2R.A]---[0] // Ra = status code of failure, Rb not used.
 TRANSACTION ABORT-----------------------------------------TABT---------[2R.A]---[0] // Regs not used.
 TRANSACTION ABORT ALL-------------------------------------TABTA--------[2R.A]---[0] // Regs not used.
-
-///
-SPECIAL PURPOSE REGISTERS:
-
-    [mnemonic]----[name]----------------------------[privilege]----[lives across switches]----[length]
-
-    PC------------Program Counter-----------------------U----------------N---------------------WLEN
-    SR------------Status Register-----------------------S----------------N---------------------32b
-
-    VSH-----------Vector Shape--------------------------U----------------N---------------------2 + log_2(MXVL / 8) bits
-    VM1-----------Vector Mask 1-------------------------U----------------N---------------------1/8 MXVL
-    VM2-----------Vector Mask 2-------------------------U----------------N---------------------1/8 MXVL
-    VM3-----------Vector Mask 3-------------------------U----------------N---------------------1/8 MXVL
-
-    UEPC----------User Event PC-------------------------U----------------N---------------------WLEN
-    UESR----------User Event SR-------------------------U----------------N---------------------32b
-    UEC-----------User Event Cause----------------------U----------------N---------------------16b
-    UED-----------User Event Data-----------------------U----------------N---------------------WLEN
-    UEHP----------User Event Handler Pointer------------U----------------N---------------------WLEN
-    UET0----------User Event Temporary 0----------------P----------------N---------------------WLEN
-    UET1----------User Event Temporary 1----------------P----------------N---------------------WLEN
-
-    MEPC----------Machine Event PC----------------------P----------------N---------------------WLEN
-    MESR----------Machine Event SR----------------------P----------------N---------------------32b
-    MEC-----------Machine Event Cause-------------------P----------------N---------------------16b
-    MED-----------Machine Event Data--------------------P----------------N---------------------WLEN
-    MEHP----------Machine Event Handler Pointer---------P----------------N---------------------WLEN
-    MET0----------Machine Event Temporary 0-------------P----------------N---------------------WLEN
-    MET1----------Machine Event Temporary 1-------------P----------------N---------------------WLEN
-
-    SGPRBU--------SGPRB Usage---------------------------P----------------N---------------------SRFS bits
-    VGPRBU--------VGPRB Usage---------------------------P----------------N---------------------VRFS bits
-    HLPRBU--------HLPRB Usage---------------------------P----------------N---------------------HRFS bits
-    PERFCBU-------PERFCB Usage--------------------------P----------------N---------------------CRFS bits
-    PID-----------Process ID----------------------------P----------------Y---------------------32b
-    TID-----------Thread ID-----------------------------P----------------Y---------------------32b
-    HPID----------Hypervisor PID------------------------P----------------Y---------------------32b
-
-    5 remaining...
-
-///
-SR bit layout:
-
-    RMD      rounding mode               2
-        - round to nearest even
-        - round towards zero
-        - round towards negative infinity
-        - round towards positive infinity
-
-    TND      transaction depth           8
-    CMD      consistency mode            1
-    GEE      global exc enable           1
-    HLPRE    HLPR enable                 4
-    PERFCE   PERFC enable                1
-    CNTU     PERFC time unit             2
-    PMOD     privilege mode              1 *
-    PWRS     power state                 4 *
-
-    HLT      halt                        3 *
-        - Not halted
-        - Explicit halt. The hart executed the halt instruction
-        - Implicit halt. The hart was stopped by the STOP IPC interrupt
-        - Catastrophic halt. The hart was halted due to a "double event" situation
-
-    IM       interrupt mask              2 *
-
-    ...
-
-///
-Events:
-
-    IOINT_0             IO Interrupt 0                      IOINT module
-    ...
-    IOINT_15            IO Interrupt 15
-
-    IPCINT_0            IPC Interrupt 0                     IPCINT module
-    ...
-    IPCINT_15           IPC Interrupt 15
-
-    TQE                 Time Quantum Expired                USER module
-    ...
-
-    PGFLT               Page Fault
-    ...
-    MISA                Misaligned Address
-    MISI                Misaligned Instruction
-    INCI                Incompatible Instruction
-    ILLI                Illegal Instruction
-    FORA                Forbidden Address
-
-///
-Parameter Table
-
-    ISAMOD    8B    P    ISA Modules
-    ISAVER    2B    P    ISA Version
-    WLEN      1B    P    Word Length
-    MXVL      1B    P    Max Vector Length
-    CLEN      1B    P    Counter Length
-    SRFS      1B    P    Scalar Register File Size
-    VRFS      1B    P    Vector Register File Size
-    HRFS      1B    P    Helper Register File Size
-    CRFS      1B    P    Counter Register File Size
-    IOS       1B    G    IO Size
-    DMAMOD    1B    G    DMA Mode
-    DMAS      1B    G    DMA Size
-
-    CPUID     8B    G    CPU ID
-    CPUVID    8B    G    CPU Vendor ID
-    CPUNAME   127B  G    CPU Name
-    NCORES    2B    G    Total Number of cores
-    NTHREADS  2B    G    Total Number of threads
-    HID       2B    P    Hart ID
-
-    ... custom space
 
 ///

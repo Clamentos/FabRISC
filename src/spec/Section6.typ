@@ -22,6 +22,7 @@
             inset: 8pt,
             align: left + horizon,
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Name*])], [#align(center, [*Description*])],
 
@@ -33,10 +34,10 @@
 
             [PERFCB], [*Performance counter bank*: \ This bank is composed of CRFS number of registers which can be used for performance diagnostic, timers and counters. These registers are all $"CLEN" + 8$ bits wide, not privileged, private for each hart and are only needed when the system implements the PERFC module.],
 
-            [SPRB], [*Special purpose register bank*: \ This bank is composed of various special purpose registers used to keep track of the system status. The number of these registers as well as their width can vary depending on which modules are chosen and some are privileged, while others are not.]
+            [SPRB], [*Special purpose register bank*: \ This bank is composed of various special purpose registers used to keep track of the system status and operation. The number of these registers as well as their width can vary depending on which modules are chosen plus some are privileged, while others are not.]
         )),
 
-        [FabRISC provides a 2-bit ISA parameter called *Scalar Register File Size (SRFS)* to indicate the number of registers of the scalar file. Depending on the value of this parameter, the calling convention will differ slightly. The possible values are listed in the following table:],
+        [FabRISC provides the *Scalar Register File Size (SRFS)* 2-bit ISA parameter, to indicate the number of registers of the scalar file. Depending on the value of this parameter, the calling convention will differ slightly. The possible values are listed in the following table:],
 
         align(center, table(
 
@@ -44,6 +45,7 @@
             inset: 8pt,
             align: (x, y) => (center, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Value*])],
 
@@ -53,7 +55,7 @@
             [11], [Reserved for future uses.]
         )),
 
-        [FabRISC provides a 2-bit ISA parameter called *Vector Register File Size (VRFS)* to indicate the number of registers of the vector file. If the system doesn't support any module that necessitates the vector register file, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
+        [FabRISC provides the *Vector Register File Size (VRFS)* 2-bit ISA parameter, to indicate the number of registers of the vector file. If the system doesn't support any module that necessitates the vector register file, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
 
         align(center, table(
 
@@ -61,6 +63,7 @@
             inset: 8pt,
             align: (x, y) => (center, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Value*])],
 
@@ -70,7 +73,7 @@
             [11], [Reserved for future uses.]
         )),
 
-        [FabRISC provides a 3-bit ISA parameter called *Maximum Vector Length (MXVL)* to indicate the maximum vector length in bits. If the system doesn't support any vector capability, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the following table:],
+        [FabRISC provides the *Maximum Vector Length (MXVL)* 3-bit ISA parameter, to indicate the maximum vector length in bits. If the system doesn't support any vector capability, then this parameter must be set to zero for convention. The possible values are listed in the following table:],
 
         align(center, table(
 
@@ -78,6 +81,7 @@
             inset: 8pt,
             align: (x, y) => (center, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Value*])],
 
@@ -91,7 +95,7 @@
             [111], [Reserved for future uses.],
         )),
 
-        [FabRISC provides a 2-bit ISA parameter called *Helper Register File Size (HRFS)* to indicate the number of registers of the helper file. If the system doesn't support the HLPR module, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
+        [FabRISC provides the *Helper Register File Size (HRFS)* 2-bit ISA parameter, to indicate the number of registers of the helper file. If the system doesn't support the HLPR module, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
 
         align(center, table(
 
@@ -99,6 +103,7 @@
             inset: 8pt,
             align: (x, y) => (center, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Value*])],
 
@@ -108,7 +113,7 @@
             [11], [Reserved for future uses.]
         )),
 
-        [FabRISC provides a 2-bit ISA parameter called *Counter Register File Size (CRFS)* to indicate the number of registers of the performance counter file. If the system doesn't support the PERFC module, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
+        [FabRISC provides the *Counter Register File Size (CRFS)* 2-bit ISA parameter, to indicate the number of registers of the performance counter file. If the system doesn't support the PERFC module, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
 
         align(center, table(
 
@@ -116,6 +121,7 @@
             inset: 8pt,
             align: (x, y) => (center, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Value*])],
 
@@ -127,7 +133,7 @@
 
         comment([
 
-            Five banks of several registers might seem overkill, but thanks to FabRISC flexibility the hardware designers can choose only what they desire and how much. The SGPRB and VGPRB are standard across many ISAs and are the classic scalar general purpose and vector files. I decided to not split integer and floating point further into separate files because i wanted to allow easy bit fiddling on floating point data without having to move back and forth between files, as well as simplicity and fewer state. This can increase the register pressure but the ISA provides instructions that allow efficient data packing and unpacking, thus reclaiming some of the pressure. Another issue could potentially be a higher number of structural hazards as both integer and floating point instructions will read and write to the same bank.
+            Five banks of several registers might seem overkill, but thanks to FabRISC flexibility the hardware designers can choose only what they desire and how much. The SGPRB and VGPRB are standard across many ISAs and are the classic scalar general purpose and vector files. I decided to not split integer and floating point further into separate files because i wanted to allow easy bit fiddling on floating point data without having to move back and forth between files, as well as for simplicity and lower amount state. This can increase the register pressure in some situations but the ISA provides instructions that allow efficient data packing and unpacking, thus reclaiming some, if not all, of the pressure. Another issue could potentially be a higher number of structural hazards as both integer and floating point instructions will read and write to the same bank.
 
             The HLPRB and PERFCB are a "nice to have" features for more advanced systems allowing a very granular amount of control over arithmetic edge cases, memory boundary checking, debugging, as well as performance monitoring. Performance counters are a standard feature among modern high performance processors because they are essential in determine what causes stalls and bottlenecks, thus allowing for proper software profiling. It is not recommended to perform register renaming on these registers as they are mostly a "set and forget" kind of resources. Instructions that modify these banks should behave in a similar manner to fences (see section 7 for more information).
 
@@ -150,6 +156,7 @@
             inset: 8pt,
             align: (x, y) => (center + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Marker*])], [#align(center, [*Description*])],
 
@@ -176,6 +183,7 @@
             inset: 8pt,
             align: center + horizon,
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*SRFS = 0*])], [#align(center, [*SRFS = 1*])], [#align(center, [*SRFS = 2*])],
 
@@ -228,14 +236,15 @@
 
         [Helper register bank],
 
-        [This bank houses the helper registers which, as mentioned earlier, can be used for debugging, address range checks and triggering exceptions. These registers are all WLEN bits wide and their operating mode can be programmed via an extra 8-bits attached to each of them. The HLPR module requires the implementation of this bank, some special instructions (see section 7 for more information) and some exception events. It is important to note that these registers are considered "global" and are not scoped, that is, they are visible to anyone at any time regardless of the privilege. The operating modes are the following:],
+        [This bank houses the helper registers which, as mentioned earlier, can be used for debugging, address range checks and triggering exceptions. These registers are all WLEN bits wide and their operating mode can be programmed via an additional 8-bits attached to each of them. The HLPR module requires the implementation of this bank, some special instructions (see section 7 for more information) and some exception events. It is important to note that these registers are considered "global" and are not scoped, that is, they are visible to any process at any time regardless of the privilege, however, they are hart private. The operating modes are the following:],
 
         align(center, table(
 
             columns: (10fr, 90fr),
             inset: 8pt,
-            align: (x, y) => (center + horizon, left + horizon).at(x),
+            align: (x, y) => (right + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Description*])],
 
@@ -296,20 +305,21 @@
             [128], [Left as a free slot for implementation specific features.],
             [...], [...],
             [254], [Left as a free slot for implementation specific features.],
+
             [255], [*Range end*: \ This mode simply signifies that the corresponding register value is the end of an address range started by the previous register. If the previous register does not specify an address range, then this mode will behave in the same way as mode 0.]
         )),
 
         [If multiple helper registers specify ranges, those ranges must be AND-ed together in order to allow proper automatic boundary checking.],
 
-        [If multiple same events are triggered in the same cycle, then they must be queued to avoid loss of information. In order to avoid any ambiguity when such situations arise, the ordering convention gives the $"HLPR"_0$ the highest priority and $"HLPR"_n$ the lowest.],
+        [If multiple same events are triggered in the same cycle, then they must be queued to avoid loss of information. In order to avoid any ambiguity when such situations arise. The ordering convention, in case multiple events are generated for the same instruction address, gives the $"HLPR"_0$ the highest priority and $"HLPR"_n$ the lowest.],
 
         [It is important to note that the COVRnT, CUNDT, OVFLnT and UNFLnT events must overwrite the COVRE, CUNDE, OVFLE, UNFLE and DIV0E arithmetic exceptions (see section 3 and the subsections below for more information) of the EXC module if present, where $n = 1/8 dot 2^"WLEN"$.],
 
         comment([
 
-            This bank can be used to aid the programmer in a variety of situations. A big one is memory safety: by specifying address ranges on instruction fetch, loads and stores, the system can automatically throw the appropriate exception when the constraint is violated without checking with a branch each time. This is helpful to avoid accidentally overwriting portions of memory, thus reducing chances of exploits and increase memory safety. The triggered exceptions can be caught in order to execute handling / recovery code without invoking the operative system.
+            This bank can be used to aid the programmer in a variety of situations. A big one is memory safety: by specifying address ranges on instruction fetch, loads and stores, the system can automatically throw the appropriate exception when the constraint is violated without explicitly checking with a branch each time. This is helpful to avoid unintentionally overwriting portions of memory, thus reducing chances of exploits and increase memory safety. The triggered exceptions can be caught in order to execute handling / recovery code without needing to invoke the operative system.
 
-            Another situation is debugging: by placing the desired breakpoints in the desired spots of the program, exceptions can be triggered and handled to perform things like memory dumping, or any other action that might help the programmer understand what might be going on. All of this can be achieved with near zero performance penalty and interference with the code.
+            Another situation is debugging: by placing the desired breakpoints in the desired spots of the program, exceptions can be triggered and handled to perform things like memory / state dumping, or any other action that might help the programmer understand what is going on in the system. All of this can be achieved with near zero performance penalty and interference with the actual code.
 
             One final application can be in handling unavoidable arithmetic edge cases without performance penalties, enabling safer arithmetic as well as aiding arbitrary precision data types.
         ])
@@ -320,17 +330,17 @@
 
         [Performance counter bank],
 
-        [This bank houses the performance counters which, as mentioned earlier, can be used for performance diagnostic, timers and counters. These registers are all CLEN bits wide and their operating mode can be programmed via an extra 8-bits attached to each of them. The PERFC module requires the implementation of this bank, some special instructions (see section 7 for more information) and some exception events. It is important to note that if a counter reaches its maximum value, it will silently overflow. The operating modes are the following:],
+        [This bank houses the performance counters which, as mentioned earlier, can be used for performance diagnostic, timers and counters. These registers are all CLEN bits wide and their operating mode can be programmed via an extra 8-bits attached to each of them. The PERFC module requires the implementation of this bank, some special instructions (see section 7 for more information) and some exception events. It is important to note that if a counter reaches its maximum value, it will silently overflow. These registers are considered "global" and are not scoped, that is, they are visible to any process at any time regardless of the privilege, however, they are hart private. The operating modes are the following:],
 
         align(center, table(
 
             columns: (10fr, 90fr),
             inset: 8pt,
-            align: (x, y) => (center + horizon, left + horizon).at(x),
+            align: (x, y) => (right + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Description*])],
-
 
             [  0], [*Disabled*: \ This mode doesn't do anything.],
             [  1], [*Instruction counter*: \ This mode is a simple instruction counter that increments with each retired instruction.],
@@ -358,7 +368,7 @@
             [255], [Left as a free slot for implementation specific features.]
         )),
 
-        [FabRISC provides a 2-bit ISA parameter called *Counter Length (CLEN)* indicates the bit width of the performance counters in bits (see section 6 and 7 for more information). If the system doesn't support the PERFC module, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the following table:],
+        [FabRISC provides the *Counter Length (CLEN)* 2-bit ISA parameter, indicates the bit width of the performance counters in bits (see section 6 and 7 for more information). If the system doesn't support the PERFC module, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the following table:],
 
         align(center, table(
 
@@ -366,6 +376,7 @@
             inset: 8pt,
             align: (x, y) => (center, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Value*])],
 
@@ -382,12 +393,11 @@
     ),
 
     ///.
-    pagebreak(),
     subSection(
 
         [Special purpose bank],
 
-        [In this subsection the special purpose registers are discussed. Some of these registers are unprivileged, that is, accessible to anyone at any time regardless of the privilege, while others are machine mode only and the ILLI fault must be triggered if an access is performed in user mode to those resources. These registers are also _hart private_, which means that, each hart must hold its own copy of these registers.],
+        [In this subsection the special purpose registers are discussed. Some of these registers are unprivileged, that is, accessible to any process at any time regardless of the privilege, while others are machine mode only and the ILLI fault must be triggered if an access is performed in user mode to those resources. These registers are also _hart private_, which means that, each hart must hold its own copy of these registers.],
 
         align(center, table(
 
@@ -395,14 +405,15 @@
             inset: 8pt,
             align: (x, y) => (left + horizon, left + horizon, left + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Short*])], [#align(center, [*Size*])], [#align(center, [*Description*])],
 
             [PC], [WLEN], [*Program Counter*: \ This register points to the currently executing instruction. This register is not privileged and is always mandatory.],
 
-            [SR], [32-bit], [*Status Register*: \ This register holds several flags that keep track of the current status of the processor. This register is semi-privileged and is always mandatory. Depending on which modules are implemented, only certain bits must be present while the others can be ignored. The precise bit layout will be discussed in the next section.],
+            [SR], [32-bit], [*Status Register*: \ This register holds several flags that keep track of the current status of the processor. This register is semi-privileged and is always mandatory. Depending on which modules are implemented, only certain bits must be present while the others can be ignored and set to 0 as a default. The precise bit layout will be discussed in the next section.],
 
-            [VSH], [$2 + log_2("MXVL" / 8)$], [*Vector shape*: \ This register specifies the current vector configuration and is divided into two parts: the most significant two bits specify the size of the singular element, while the remaining least significant bits specify the number of active elements. Illegal configurations must generate the ILLI fault. This register is not privileged and is only needed when the system implements the VC module, otherwise the default vector shape must always dictate the maximum number of WLEN sized elements.],
+            [VSH], [8-bit], [*Vector shape*: \ This register specifies the current vector configuration and is divided into two parts: the most significant two bits specify the size of the singular element, while the remaining least significant bits specify the number of active elements. Illegal configurations must generate the ILLI fault. This register is not privileged and is only needed when the system implements the VC module, otherwise the default vector shape must always dictate the maximum number of WLEN sized elements.],
 
             [VM1], [$1/8 "MXVL"$], [*Vector mask 1*: \ This register is the vector mask number 1. Each bit maps to a byte in the vector register bank. This register is not privileged and is only needed when the system implements the VF module.],
 
@@ -440,7 +451,7 @@
 
             [PFPA], [WLEN], [*Page Fault Physical Address*: \ This register holds the page table physical address of the currently running process. This register is privileged and is only needed when the system implements the USER module.],
 
-            [SGPRBU], [SRFS], [*SGPRB Usage*: \ This register keeps track of which registers of the SGPRB have been written by associating each bit to the corresponding register in the SGPRB, thus helping to reduce the amount of state that needs to be saved and restored during context switches. This register is privileged and is only needed when the system implements the USER and CTXR modules and the SGPRB is present.],
+            [SGPRBU], [SRFS], [*SGPRB Usage*: \ This register keeps track of which registers of the SGPRB have been written by associating each bit to the corresponding register in the SGPRB, thus helping to reduce the amount of state that needs to be saved and restored during context switches. This register is privileged and is only needed when the system implements the USER and CTXR modules],
 
             [VGPRBU], [VRFS], [*VGPRB Usage*: \ This register keeps track of which registers of the VGPRB have been written by associating each bit to the corresponding register in the VGPRB, thus helping to reduce the amount of state that needs to be saved and restored during context switches. This register is privileged and is only needed when the system implements the USER and CTXR modules and the VGPRB is present.],
 
@@ -454,14 +465,16 @@
 
             [HPID], [32-bit], [*Hypervisor PID*: \ This register holds the id of the supervisor associated to the currently running process. This register is privileged and is only needed when the system implements the USER module.],
 
-            [TPTR], [WLEN], [*Thread Pointer*: \ This register holds the pointer to the currently running software thread. This register is privileged and is only needed when the system implements the USER module.]
+            [TPTR], [WLEN], [*Thread Pointer*: \ This register holds the pointer to the currently running software thread. This register is privileged and is only needed when the system implements the USER module.],
+
+            [WDT], [32-bit], [*Watchdog Timer*: \ This register is a counter that periodically count down and triggers the TQE event when it reaches zero. This register is privileged and is only needed when the system implements the USER module.]
         )),
 
         comment([
 
             This bank houses a variety of registers used to alter and change the behavior of the system while it operates. Many of the modules will require the presence of some special purpose registers in order to function such as vector extensions, transaction module, helper registers, performance counters and others.
 
-            The registers prefixed with "User Event" or "Machine Event" hold the "critical state" of the hart, that is, state that is particularly delicate for privileged systems. Access to privileged resources in user mode is forbidden and blocked in order to protect the operating system from exploits, as well as ensuring that the ISA will be classically virtualizable.
+            The registers prefixed with "User Event" or "Machine Event" hold the "critical state" of the hart, that is, state that is particularly delicate for event handling in privileged implementations. Access to privileged resources in user mode is forbidden and blocked in order to protect the operating system from exploits, as well as ensuring that the ISA remains classically virtualizable.
 
             Special "usage" registers are also provided if the CTXR module is implemented which allow to reduce the average number of registers that must be saved and restored during context switches. This is achieved by setting the corresponding bit to one whenever a register in the covered banks is written. This can then be used by special instructions to only write to memory the registers with the corresponding usage bit to one.
 
@@ -482,12 +495,13 @@
             inset: 8pt,
             align: (x, y) => (left + horizon, left + horizon, left + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Short*])], [#align(center, [*Size*])], [#align(center, [*Description*])],
 
             [RMD], [2-bit], [*FP Rounding Mode*: \ Dictates the current floating point rounding mode. These bits are not privileged, only needed when the system implements the FRMD module and, if not present, the default rounding mode must always be _round to nearest even_. The possible mode are:
 
-                #list(tight: false,
+                #enum(tight: false,
 
                     [_Round to nearest even._],
                     [_Round towards zero._],
@@ -508,7 +522,7 @@
 
             [CNTU], [2-bit], [*PERFC Time Unit*: \ Dictates the time unit of the PERFC when they are in _time counter_ mode. This bit is not privileged and only needed when the system implements the PERFC module. The possible modes are:
 
-                #list(tight: false,
+                #enum(tight: false,
 
                     [_Seconds._],
                     [_Milliseconds._],
@@ -521,23 +535,22 @@
 
             [PMOD], [1-bit], [*Privilege Mode*: \ Dictates the current hart privilege level: zero for machine mode and one for user mode. This bit is privileged and only needed when the system implements the USER module.],
 
+            [WDTE], [1-bit], [*Watchdog Timer Enable*: \ Enables or disables the WDT register. This bit is privileged and only needed when the system implements the USER module.],
+
             [PWRS], [4-bit], [*Power State*: \ Holds the current hart power state. The actual possible values are implementation specific and left to the hardware designers to define. These bits are privileged and only needed when the system implements the SA module.],
 
             [HLTS], [3-bit], [*Halt State*: \ Holds the current hart halting state. These bits are privileged and always mandatory. The possible states are:
 
-                #list(tight: false,
+                #enum(tight: false,
 
                     [_Not halted._],
                     [_Explicit halt: the halt was caused by the HLT instruction._],
-
-                    [_Implicit halt: the halt was caused by the STOP IPC interrupt. This state is only possible when the system implements the IPCINT module._],
-
-                    [_Catastrophic halt: the halt was caused by the "double event" situation. This state is only possible when the system implements one of the following modules: EXC, IOINT, IPCINT_]
+                    [_Catastrophic halt: the halt was caused by the "double event" situation._]
                 )
             ]
         )),
 
-        [It is important to note that when some bits are not needed, any write operation to those should be silently discarded and should not produce any visible architectural change]
+        [It is important to note that when some bits are not needed, any write operation to those should be silently discarded and should not produce any visible architectural changes.]
     ),
 
     ///.
@@ -545,7 +558,7 @@
 
         [Events],
 
-        [In this subsection, all the possible events are defined. In general, the term "event" is used to refer to any extraordinary situation that may happen at any time and should be handled as soon as possible. Events can be "promoting" or "non promoting", that is, elevate the trapped hart to a higher privilege level or not. If the USER module is not implemented, then this distinction is not needed since the system always runs at the highest possible privilege level: machine mode. Events also have _global priority_ and _local priority_ which together define a deterministic handling order. Global priority dictates the priority for groups of events, while local priority defines the level for each event within each group. Higher values mean higher priority and, for some groups of events, local priority is not defined since they should be handled in program order.],
+        [In this subsection, all the possible events are defined. In general, the term "event" is used to refer to any extraordinary situation that may happen at any time and should be handled as soon as possible. Events can be "promoting" or "non promoting", that is, elevate the trapped hart to a higher privilege level or not. If the USER module is not implemented, then this distinction is not needed since the system always runs at the highest possible privilege level: machine mode. Events also have _global priority_ and _local priority_ which together define a deterministic handling order (lower numbers signify higher priority). Global priority dictates the priority for classes of events, while local priority defines the level for each event within each group. Higher values mean higher priority and, for some groups of events, local priority is not defined since they should be handled in program order.],
 
         [The following is the event taxonomy:],
 
@@ -578,100 +591,104 @@
             inset: 6pt,
             align: (x, y) => (right + horizon, left + horizon, left + horizon, center + horizon, left + horizon, left + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Code*])], [#align(center, [*Short*])], [#align(center, [*Module*])], [#align(center, [*GP*])], [#align(center, [*LP*])], [#align(center, [*Type*])], [#align(center, [*Description*])],
 
             // Mandatory
-            [   1], [MISI], [Mandatory], [0], [Program order], [Fault], [*Misaligned Instruction*: \ Triggered when the hart tries to fetch a misaligned instruction. The MED special purpose register must be populated with the address of the causing instruction.],
+            [   1], [MISI], [Mandatory], [0], [Program order], [Fault], [*Misaligned Instruction*: \ Triggered when the hart tries to fetch a misaligned instruction. This event doesn't carry any extra information.],
 
-            [   2], [INCI], [Mandatory], [0], [Program order], [Fault], [*Incompatible Instruction*: \ Triggered when the hart fetches a non supported instruction. Even if a particular opcode is supported, not all operands might be legal. The MED special purpose register must be populated with the address of the causing instruction.],
+            [   2], [INCI], [Mandatory], [0], [Program order], [Fault], [*Incompatible Instruction*: \ Triggered when the hart fetches a non supported instruction. Even if a particular opcode is supported, not all operands might be legal. This event doesn't carry any extra information.],
 
-            [   3], [ILLI], [Mandatory], [0], [Program order], [Fault], [*Illegal Instruction*: \ Triggered when the hart tries fetch an instruction that is all zeros, all ones or otherwise deemed as illegal. The MED special purpose register must be populated with the address of the causing instruction.],
+            [   3], [ILLI], [Mandatory], [0], [Program order], [Fault], [*Illegal Instruction*: \ Triggered when the hart tries fetch an instruction that is all zeros, all ones or otherwise deemed as illegal. This event doesn't carry any extra information.],
 
             [   4], [-],   [-], [-],   [-],   [-], [Reserved for future uses.],
             [ ...], [...], [...], [...], [...], [...], [...],
             [  16], [-],   [-],   [-],   [-],   [-], [Reserved for future uses.],
 
             // IOINT module
-            [  17], [IOINT_0], [IOINT], [1], [0], [IO Interrupt], [*IO Interrupt 0*: \ Generic IO interrupt. This event doesn't have any extra information.],
+            [  17], [IOINT_0], [IOINT], [1], [0], [IO Interrupt], [*IO Interrupt 0*: \ Generic IO interrupt. This event doesn't carry any extra information.],
 
             [ ...], [...], [...], [...], [...], [...], [...],
 
-            [  48], [IOINT_31], [IOINT], [1], [31], [IO Interrupt], [*IO Interrupt 31*: \ Generic IO interrupt. This event doesn't have any extra information.],
+            [  48], [IOINT_31], [IOINT], [1], [31], [IO Interrupt], [*IO Interrupt 31*: \ Generic IO interrupt. This event doesn't carry any extra information.],
 
             // IPCINT module
-            [  49], [IPCINT_0], [IPCINT], [2], [1], [IPC Interrupt], [*IPC Interrupt 0*: \ Generic IPC interrupt. This event doesn't have any extra information.],
+            [  49], [IPCINT_0], [IPCINT], [2], [1], [IPC Interrupt], [*IPC Interrupt 0*: \ Generic IPC interrupt. This event doesn't carry any extra information.],
 
             [ ...], [...], [...], [...], [...], [...], [...],
 
-            [  80], [IPCINT_31], [IPCINT], [2], [32], [IPC Interrupt], [*IPC Interrupt 31*: \ Generic IPC interrupt. This event doesn't have any extra information.],
+            [  80], [IPCINT_31], [IPCINT], [2], [32], [IPC Interrupt], [*IPC Interrupt 31*: \ Generic IPC interrupt. This event doesn't carry any extra information.],
 
             // DALIGN module
-            [  81], [MISD], [DALIGN], [0], [Program order], [Fault], [*Misaligned Data*: \ Triggered when the hart accesses unaligned data. The MED special purpose register must be populated with the causing address.],
+            [  81], [MISD], [DALIGN], [0], [Program order], [Fault], [*Misaligned Data*: \ Triggered when the hart accesses unaligned data. This event doesn't carry any extra information.],
 
             // USER module
-            [  82], [PFLT], [USER], [0], [Program order], [Fault], [*Page Fault*: \ ...],
-            [  83], [ILLA], [USER], [0], [Program order], [Fault], [*Illegal Address*: \ ...],
-            [  84], [SYSC], [USER], [0], [Program order], [Fault], [*System Call*: \ ...],
-            [  85], [TQE ], [USER], [1], [0], [IPC Interrupt], [*Time quantum expired*: \ ...],
+            [  82], [PFLT], [USER], [0], [Program order], [Fault], [*Page Fault*: \ Triggered when the addressed page could not be found in memory. The MED register must be populated with the faulting address.],
+
+            [  83], [ILLA], [USER], [0], [Program order], [Fault], [*Illegal Address*: \ Triggered when the user accesses "illegal" address, that is, an address that is not accessible in user mode. The MED register must be populated with the faulting address.],
+
+            [  84], [SYSC], [USER], [0], [Program order], [Fault], [*System Call*: \ Triggered by the system call instruction explicitly. (see section 7 for more information).],
+
+            [  85], [TQE ], [USER], [1], [0], [IPC Interrupt], [*Time quantum expired*: \ Triggered by the internal watchdog timer. This event doesn't carry any extra information.],
 
             [  86], [-],   [-],   [-],   [-],   [-],   [Reserved for future uses.],
             [ ...], [...], [...], [...], [...], [...], [...],
             [  97], [-],   [-],   [-],   [-],   [-],   [Reserved for future uses.],
 
             // EXC module
-            [  98], [COVRE], [EXC], [3], [Program order], [Exception], [*Carry Over Exception*: \ This event is triggered by the COVRn flag, where  \ $n = 1/8 dot 2^"WLEN"$. The MED / UED special purpose register must be populated with the address of the causing instruction.],
+            [  98], [COVRE], [EXC], [3], [Program order], [Exception], [*Carry Over Exception*: \ This event is triggered by the COVRn flag, where  \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
 
-            [  99], [CUNDE], [EXC], [3], [Program order], [Exception], [*Carry Under Exception*: \ This event is triggered by the CUND flag. The MED / UED special purpose register must be populated with the address of the causing instruction.],
+            [  99], [CUNDE], [EXC], [3], [Program order], [Exception], [*Carry Under Exception*: \ This event is triggered by the CUND flag. This event doesn't carry any extra information.],
 
-            [ 100], [OVFLE], [EXC], [3], [Program order], [Exception], [*Overflow Exception*: \ This event is triggered by the OVFLn flag, where \ $n = 1/8 dot 2^"WLEN"$. The MED / UED special purpose register must be populated with the address of the causing instruction.],
+            [ 100], [OVFLE], [EXC], [3], [Program order], [Exception], [*Overflow Exception*: \ This event is triggered by the OVFLn flag, where \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
 
-            [ 101], [UNFLE], [EXC], [3], [Program order], [Exception], [*Underflow Exception*: \ This event is triggered by the UNFLn flag, where \ $n = 1/8 dot 2^"WLEN"$. The MED / UED special purpose register must be populated with the address of the causing instruction.],
+            [ 101], [UNFLE], [EXC], [3], [Program order], [Exception], [*Underflow Exception*: \ This event is triggered by the UNFLn flag, where \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
 
-            [ 102], [DIV0E], [EXC], [3], [Program order], [Exception], [*Division by Zero Exception*: \ This event is triggered by the DIV0 flag. The MED / UED special purpose register must be populated with the address of the causing instruction.],
+            [ 102], [DIV0E], [EXC], [3], [Program order], [Exception], [*Division by Zero Exception*: \ This event is triggered by the DIV0 flag. This event doesn't carry any extra information.],
 
             [ 103], [-], [EXC], [3], [Program order], [Exception], [Reserved for future uses.],
             [ ...], [...], [...], [...], [...], [...], [...],
             [ 113], [-], [EXC], [3], [Program order], [Exception], [Reserved for future uses.],
 
             // HLPR module
-            [ 114], [RDT], [HLPR], [3], [See subsection 6.3], [Exception], [*Read Trigger*: \ Event for mode 1 and 6 of the helper registers. The MED / UED special purpose register must be populated with the causing address and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 114], [RDT], [HLPR], [3], [See subsection 6.3], [Exception], [*Read Trigger*: \ Event for mode 1 and 6 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 115], [WRT], [HLPR], [3], [See subsection 6.3], [Exception], [*Write Trigger*: \ Event for mode 2 and 7 of the helper registers. The MED / UED special purpose register must be populated with the causing address and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 115], [WRT], [HLPR], [3], [See subsection 6.3], [Exception], [*Write Trigger*: \ Event for mode 2 and 7 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 116], [EXT], [HLPR], [3], [See subsection 6.3], [Exception], [*Execute Trigger*: \ Event for mode 3 and 8 of the helper registers. The MED / UED special purpose register must be populated with the causing address and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 116], [EXT], [HLPR], [3], [See subsection 6.3], [Exception], [*Execute Trigger*: \ Event for mode 3 and 8 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 117], [RWT], [HLPR], [3], [See subsection 6.3], [Exception], [*Read-Write Trigger*: \ Event for mode 4 and 9 of the helper registers. The MED / UED special purpose register must be populated with the causing address and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 117], [RWT], [HLPR], [3], [See subsection 6.3], [Exception], [*Read-Write Trigger*: \ Event for mode 4 and 9 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 118], [RWET], [HLPR], [3], [See subsection 6.3], [Exception], [*Read-Write-Execute Trigger*: \ Event for mode 5 and 10 of the helper registers. The MED / UED special purpose register must be populated with the causing address and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 118], [RWET], [HLPR], [3], [See subsection 6.3], [Exception], [*Read-Write-Execute Trigger*: \ Event for mode 5 and 10 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 119], [COVR1T], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Over 1 Trigger*: \ Event for mode 11 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 119], [COVR1T], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Over 1 Trigger*: \ Event for mode 11 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 120], [COVR2T], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Over 2 Trigger*: \ Event for mode 12 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 120], [COVR2T], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Over 2 Trigger*: \ Event for mode 12 of the helper registers. The causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 121], [COVR4T], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Over 4 Trigger*: \ Event for mode 13 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 121], [COVR4T], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Over 4 Trigger*: \ Event for mode 13 of the helper registers. The causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 122], [COVR8T], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Over 8 Trigger*: \ Event for mode 14 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 122], [COVR8T], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Over 8 Trigger*: \ Event for mode 14 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 123], [CUNDT], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Under Trigger*: \ Event for mode 15 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 123], [CUNDT], [HLPR], [3], [See subsection 6.3], [Exception], [*Carry Under Trigger*: \ Event for mode 15 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 124], [OVFL1T], [HLPR], [3], [See subsection 6.3], [Exception], [*Overflow 1 Trigger*: \ Event for mode 16 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 124], [OVFL1T], [HLPR], [3], [See subsection 6.3], [Exception], [*Overflow 1 Trigger*: \ Event for mode 16 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 125], [OVFL2T], [HLPR], [3], [See subsection 6.3], [Exception], [*Overflow 2 Trigger*: \ Event for mode 17 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 125], [OVFL2T], [HLPR], [3], [See subsection 6.3], [Exception], [*Overflow 2 Trigger*: \ Event for mode 17 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 126], [OVFL4T], [HLPR], [3], [See subsection 6.3], [Exception], [*Overflow 4 Trigger*: \ Event for mode 18 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 126], [OVFL4T], [HLPR], [3], [See subsection 6.3], [Exception], [*Overflow 4 Trigger*: \ Event for mode 18 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 127], [OVFL8T], [HLPR], [3], [See subsection 6.3], [Exception], [*Overflow 8 Trigger*: \ Event for mode 19 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 127], [OVFL8T], [HLPR], [3], [See subsection 6.3], [Exception], [*Overflow 8 Trigger*: \ Event for mode 19 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 128], [UNFL1T], [HLPR], [3], [See subsection 6.3], [Exception], [*Underflow 1 Trigger*: \ Event for mode 20 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 128], [UNFL1T], [HLPR], [3], [See subsection 6.3], [Exception], [*Underflow 1 Trigger*: \ Event for mode 20 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 129], [UNFL2T], [HLPR], [3], [See subsection 6.3], [Exception], [*Underflow 2 Trigger*: \ Event for mode 21 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 129], [UNFL2T], [HLPR], [3], [See subsection 6.3], [Exception], [*Underflow 2 Trigger*: \ Event for mode 21 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 130], [UNFL4T], [HLPR], [3], [See subsection 6.3], [Exception], [*Underflow 4 Trigger*: \ Event for mode 22 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 130], [UNFL4T], [HLPR], [3], [See subsection 6.3], [Exception], [*Underflow 4 Trigger*: \ Event for mode 22 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 131], [UNFL8T], [HLPR], [3], [See subsection 6.3], [Exception], [*Underflow 8 Trigger*: \ Event for mode 23 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 131], [UNFL8T], [HLPR], [3], [See subsection 6.3], [Exception], [*Underflow 8 Trigger*: \ Event for mode 23 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
-            [ 132], [DIV0T], [HLPR], [3], [See subsection 6.3], [Exception], [*Division by Zero Trigger*: \ Event for mode 24 of the helper registers. The MED / UED special purpose register must be populated with the address of the causing instruction and the address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
+            [ 132], [DIV0T], [HLPR], [3], [See subsection 6.3], [Exception], [*Division by Zero Trigger*: \ Event for mode 24 of the helper registers. The address of the causing register must be written into the MEC / UEC special purpose register as additional information.],
 
             [ 133], [-], [HLPR], [3], [See subsection 6.3], [Exception], [Reserved for future uses.],
             [ ...], [...], [...], [...], [...], [...], [...],
@@ -700,6 +717,7 @@
                     [_HLPRE to 0 if present._],
                     [_PERFCE to 0 if present._],
                     [_PMOD to 1._],
+                    [_WDTE to 0._],
                     [_IM to 3 if present._]
                 )
             ],
@@ -732,7 +750,7 @@
             [_Write the current value of the UEHP special purpose register into the PC._]
         ),
 
-        [After reaching the handling procedure, it's extremely important to save to memory the all the "critical" state that was temporarily copied into the MEPC and MESR for machine level events, or UEPC and UESR for user level events. This is because in order to support the nesting of events, it must be possible to restore the critical state of the previous handler. If the hart is re-trapped, for any reason, before the critical state is saved to memory, loss of information will occur and it won't be possible to restore it. This catastrophic failure must be detected and the hart must be immediately halted with code 3 in the HLT section of the Status Register. It is important to note that trapping a hart with a promoting event while in user mode, is always possible and will never result in the "double event" situation since the target event registers will be different.],
+        [After reaching the handling procedure, it's extremely important to save to memory the all the "critical" state that was temporarily copied into the MEPC and MESR for machine level events, or UEPC and UESR for user level events. This is because in order to support the nesting of events, it must be possible to restore the critical state of the previous handler. If the hart is re-trapped, for any reason, before the critical state is saved to memory, loss of information will occur and it won't be possible to restore it. This catastrophic failure must be detected and the hart must be immediately halted with code 2 in the HLT section of the Status Register. It is important to note that trapping a hart with a promoting event while in user mode, is always possible and will never result in the "double event" situation since the target event registers will be different.],
 
         [Returning from an event handler requires executing the appropriate dedicated return instruction: ERET, UERET or URET (see section 7 for  more information). Such instructions will undo the associated sequences described above by performing the same step in reverse order.],
 
@@ -763,6 +781,7 @@
                 #list(tight: false,
 
                     [_PMOD to 0._],
+                    [_WDTE to 1._],
                 )
             ],
 
@@ -770,22 +789,25 @@
         ),
 
         [During event handling, other events might be received by the hart. This situation was already mentioned in the previous paragraphs and a queuing system is needed in order to avoid loss of information. Queues have finite length so it's important to handle the events more rapidly than they come, however if the events are too frequent the queues will eventually fill. Any IO and IPC interrupt that is received while the queues are full, must be discarded and the interrupting device must be notified.],
+        // TODO: other event queues might fill up too...
 
-        [When any event is received and the hart is in the transactional state, then all executing memory transactions must immediately fail with the abort code EABT. Any LL & SC reservation may be invalidated as well, depending on the weakness of the pair. In case of a relaxed implementation, the reservation should not be invalidated.],
+        [When any event is received and the hart is in a transactional state, then all executing memory transactions must immediately fail with the abort code EABT.],
+
+        [Software interrupts can be easily implemented by injecting the appropriate values into the critical registers and then performing the appropriate returning sequence. This will cause the hart to return from a handler with the event id not at zero, thus triggering again the launching sequence. A hart with an event id of zero in its cause register is not considered as trapped.],
 
         comment([
 
             Events are a very powerful way to react to different things "on the fly", which is very useful for event-driven programming, managing external devices at low latency and are essential for privileged architectures.
 
-            The division in different categories might seem a bit strange at first, but the two broad classes are the usual ones: synchronous and asynchronous events. The different types of events within each class are roughly based on "severity" (which is basically the global priority metric), as well as a local priority which can depend on different things.
+            The division in different categories might seem a bit strange at first, but the two broad classes are the usual ones: synchronous and asynchronous events, that is, deterministic and non-deterministic ones. The different types of events within each class are roughly based on "severity" (which is basically the global priority metric), as well as a local priority which can depend on different things.
 
-            Exceptions are the lowest severity among all other events and the program order defines the order in which they must be handled. The only complication to this rule is for helper register exceptions, which have a higher intrinsic priority and the handling order depends on which particular helper register fired. These exceptions might also clash with the previously mentioned regular arithmetic ones but, since the helper ones have a higher innate priority, they all take over and override.
+            Exceptions are the lowest severity among all other events and the program order defines the order in which they must be handled. The only complication to this rule is for helper register exceptions, which have a higher intrinsic priority and the handling order depends on which particular helper register fired. These exceptions might also clash with the previously mentioned regular arithmetic ones but, since the helper ones have a higher innate priority, they all take over and override. This behavior stems from the fact that HLPR registers allow for fine control, while the GEE bit allows exceptions to be enabled or disabled globally. In both instances, it's possible to distinguish if the exception was caused by a HLPR register or not. 
 
-            Faults are also synchronous just like exceptions, but their severity is the highest among any other event and they often signify that something bad happened. Because they are synchronous, they must be handled in program order.
+            Faults are also synchronous just like exceptions, but their severity is the highest among any other event and they often signify that something bad happened, such as an access to an illegal address. Because they are synchronous, they must be handled in program order.
 
-            IO Interrupts are the lowest global priority asynchronous event and they are used to handle external device requests. They have a progressive local priority that defines the order in which they must be handled.
+            IO Interrupts are the lowest global priority asynchronous event and they are used to handle external device requests. They have a progressive local priority that defines the order in which they must be handled when received.
 
-            IPC Interrupts are a higher priority version of the IO Interrupt. IPC Interrupts are used by harts to send signals to each other, which may also be used for quickly starting and stopping other harts.
+            IPC Interrupts are a higher priority version of the IO Interrupt. IPC Interrupts are used by harts to send signals to each other, which may also be used for quickly starting and stopping other harts. Just like the IO variant, they have a progressive local priority that defines the order in which they must be handled when received.
 
             In some situations it may be necessary to queue an event in order to handle it after another and to avoid loss of information. If the queue is full, the events must be discarded and, whoever generated the event, must be notified. This includes IO devices or other harts that generated an IPC interrupt, in this last case, by making their IPC interrupt generating instruction fail.
         ])
@@ -796,15 +818,15 @@
 
         [Configuration segment],
 
-        [In previous sections, this document introduced several different configuration constants, which describe the features, that any system must have in order to be considered compliant to the FabRISC architecture. These parameters must be stored in a dedicated static, read-only memory-like region (byte addressable). Some of these parameters are global for all harts, while others are private. The parameters are listed in the following table:],
+        [In previous sections, this document introduced several different configuration constants, which describe the features, that any system must have in order to be considered compliant to the FabRISC architecture. These parameters must be stored in a dedicated static, read-only memory-like region that is byte addressable. Some of these parameters are global for all harts, while others are private. The parameters are all unprivileged and are listed in the following table:],
 
-        pagebreak(),
         align(center, table(
 
             columns: (auto, auto, auto, auto, auto),
             inset: 8pt,
             align: (x, y) => (right + horizon, right + horizon, left + horizon, left + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Start*])], [#align(center, [*End*])], [#align(center, [*Parameter*])], [#align(center, [*Visibility*])], [#align(center, [*Description*])],
 
@@ -855,8 +877,8 @@
             [#align(center, tablex(
 
                 columns: (auto,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,auto),
-
                 align: center + horizon,
+                fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
                 [*Name*],[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26],[27],[28],[29],[30],[31],[32...47],
 
@@ -870,8 +892,8 @@
             #align(center, tablex(
 
                 columns: (auto,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr),
-
                 align: center + horizon,
+                fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
                 [*Name*],[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26],[27],[28],[29],[30],[31],
 
@@ -901,6 +923,7 @@
 
                 columns: (auto,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,),
                 align: center + horizon,
+                fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
                 [*Name*],[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15],
 
@@ -935,6 +958,7 @@
             inset: 8pt,
             align: (x, y) => (left + horizon, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Class*])], [#align(center, [*Description*])],
 
@@ -946,7 +970,16 @@
             [.U, .S, -, -], [Simple sign modes: Unsigned and signed.],
             [.NI, IN, -, -], [Simple bitwise invert modes: No invert and invert.],
             [.U, .S, .UI, SI], [Bitwise inversion and sign modes: Unsigned, signed, unsigned with inversion and signed with inversion.]
-        ))
+        )),
+
+        comment([
+
+            FabRISC is provides 15 different variable length instruction formats of 2, 4 and 6 bytes in length. I chose this path because variable length encoding, if done right, can increase the code density by more than 25%, which can mean an effective increase in instruction cache capacity by that amount. The downside of this is the more complex hardware required to fetch and decode the instructions since they can now span across multiple cache lines and, potentially, multiple OS pages.
+
+            I felt that three sizes would be sweet spot: 4 byte as the "standard" length, 2 byte as the compressed variant of the standard and the 6 byte as an extended, more niche length for larger and more complex formats. Anything else would either feel like something was missing or there was too much. With this configuration the ISA can enjoy the code density gains, while also being relatively easy to fetch and decode compared to other solutions like x86.
+
+            To increase the expressivity and flexibility of the formats, without introducing too many of them, i included a "format class" system. Formats that have the "md" (modifier) field can be considered "polymorphic" and can be adapted to many different classes of instructions. This also helps in condensing similar instructions together by parametrizing them, thus simplifying the specification and potentially the underlying hardware.
+        ])
     )
 )
 

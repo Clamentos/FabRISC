@@ -13,10 +13,10 @@
 #align(center, image("../resources/LOGO-1.png", height: 25%))
 #align(center, text(32pt)[Instruction Set Architecture])
 #align(center, text(16pt)[Specification version 1.0])
-#align(center, text(16pt)[Document version 1.1.0])
+#align(center, text(16pt)[Document version 1.2.0])
 #linebreak()
 #align(center, text(16pt)[Enrico Gatto Monticone])
-#align(center, text(12pt)[07/04/2024])
+#align(center, text(12pt)[21/04/2024])
 #linebreak()
 
 #align(left + bottom, text(12pt)[

@@ -8,7 +8,7 @@
 
     [This section is dedicated to explain the various proposed low-level data types including integer and floating point. The smallest addressable object in FabRISC is the _byte_, that is, eight consecutive bits. Longer types are constructed from multiple bytes side by side following powers of two: one, two, four or eight bytes in _little-endian_ order. If bigger types are desired, then they can be simulated in software or primitively handled via custom defined extensions.],
 
-    [FabRISC provides a 2-bit ISA parameter, called *Word Length (WLEN)*, to indicate the natural scalar word length of the processor in bits. The possible values are listed in the table below:],
+    [FabRISC provides the *Word Length (WLEN)* 2-bit ISA parameter, to indicate the natural scalar word length of the processor in bits. The possible values are listed in the table below:],
 
     align(center, table(
 
@@ -16,6 +16,7 @@
         inset: 8pt,
         align: (x, y) => (center, left + horizon).at(x),
         stroke: 0.75pt,
+        fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
         [#align(center, [*Code*])], [#align(center, [*Value*])],
 
@@ -30,7 +31,7 @@
 
         [Integer types],
 
-        [Integers are arguably the most common data types. They can be signed or unsigned and, when they are, 2's complement notation is used. Depending on the length they can have various names:],
+        [Integers are arguably the most common data types. They can be signed or unsigned and, when they are, 2's complement notation is used. Depending on the length they can have various names and FabRISC uses the following:],
 
         align(center, table(
 
@@ -38,6 +39,7 @@
             inset: 8pt,
             align: (x, y) => (center, left + horizon).at(x),
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Type*])], [#align(center, [*Size*])],
 
@@ -55,6 +57,7 @@
             inset: 8pt,
             align: left + horizon,
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Case*])], [#align(center, [*Description*])],
 
@@ -75,6 +78,7 @@
             inset: 8pt,
             align: left + horizon,
             stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
             [#align(center, [*Name*])], [#align(center, [*Description*])],
 
@@ -112,11 +116,11 @@
 
     comment([
 
-        The low level data types are, more or less, the usual ones. Addresses can be interpreted as both signed and unsigned values, though pointer arithmetic is not something that should be heavily relied on because some operations are often deemed "illegal" such as multiplication, division, modulo and bitwise logic in many programming languages. Even if the addresses are always considered signed, the boundary on 64 bit systems can be considered a non issue since the address space is so huge that everything could fit into one of the two partitions.
+        The low level data types are, more or less, the usual ones. Addresses can be interpreted as both signed and unsigned values, though pointer arithmetic is not something that should be heavily relied on because some operations are often deemed "illegal" such as multiplication, division, modulo and bitwise logic in many programming languages. Even if the addresses are always considered signed, the boundary on 64 bit systems can be considered a non issue since the address space is so huge that everything could fit into one of the two partitions. Systems with smaller WLEN might encounter some difficulties but some amount of pointer arithmetic can still be done without too much hassle. FabRISC, fortunately, includes unsigned operations and comparisons in the basic modules, which makes this argument moot.
 
-        Systems with smaller WLEN might encounter some difficulties but some amount of pointer arithmetic can still be done without too much hassle. FabRISC, fortunately, includes unsigned operations and comparisons in the basic modules, which makes this argument moot.
+        I chose to use the little-endian format since it can simplify accesses to portions of a variable without needing to change the address. For example a 64-bit memory location with the content of: $mono(5E 00 00 00 00 00 00 00)$ can be red at the same address as an 8-bit value: $mono(5E)$, 16-bit value: $mono(5E 00)$, 32-bit value: $mono(5E 00 00 00)$ or 64-bit value: $mono(5E 00 00 00 00 00 00 00)$ which are all the same value. Endianness is mostly a useless debate as the advantages or disadvantages that each type has is often just a tiny rounding error in the grand scheme of things. The reason for this decision is that i simply found the aforementioned property to be interesting to have.
 
-        The proposed flags might seem a bit weird and unnecessary, however they allow the detection of any arithmetic edge-case in a very granular manner. Many ISAs don't have any way of easily detecting overflows and, when present, they either provide instructions that trap or a flag register. In both cases the system will only allow the programmer to check if an overflow occurred at the word length only. FabRISC, not only provides the ability to check at all the standard lengths, but it also distinguishes overflows into two categories depending on the direction. This is useful to provide to the programmer a greater control and insight of the underlying system, as well as, enabling better backwards compatibility and emulation of CPUs with smaller word lengths.
+        The proposed flags might seem weird and unnecessary, however they allow the detection of arithmetic edge-cases in a very granular manner. Many ISAs don't have any way of easily detecting overflows and, when present, they either provide instructions that trap or a flag register. In both cases the system will only allow the programmer to check if an overflow occurred at the word length only. FabRISC, not only provides the ability to check at all the standard lengths, but it also distinguishes overflows into two categories depending on the direction. This is useful to provide to the programmer a greater control and insight of the underlying system, as well as, enabling better backwards compatibility and emulation of CPUs with smaller word lengths.
     ])
 
     // fp comment
