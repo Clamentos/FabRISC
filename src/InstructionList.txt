@@ -58,18 +58,44 @@ opcode distribution:
     1  [2R.A]----- 111101110110110xxxxx        1001xxxxx   32  -        4B
 
 ///
+boundary finding:
+
+    2B [2RI.D]    00?? ...                                  15
+    2B [RI.C]     01??xxxxx? ...                            14
+    2B [2R.C]     1000xxxxx?? ...                           10
+    2B [I.B]      1001xxxxx0? ...                           12
+    2B [RI.B]     1001xxxxx1??? ...                         13
+    4B [2RI.B]    101?xxxxx???? ...
+    4B [2RI.B]    1100xxxxx???? ...
+    2B [2R.D]     1101xxxxx0??? ...                         11
+    4B [I.A]      1101xxxxx10?? ...
+    4B [RI.A]     1101xxxxx11??? ...
+    4B [RI.A]     1110xxxxx0???? ...
+    4B [RI.A]     1110xxxxx10??? ...
+    2B [2R.B]     1110xxxxx11???? ...                        9
+    4B [4R.A]     1111xxxxx00???? ...
+    4B [4R.A]     1111xxxxx010??? ...
+    4B [3R.A]     1111xxxxx0110??????? ...
+    4B [3R.A]     1111xxxxx0111000???? ...
+    6B [3RI.A]    1111xxxxx0111001???? ...
+    6B [2RI.A]    1111xxxxx0111010?????? ...
+    6B [2RI.A]    1111xxxxx011101100???? ...
+    4B [2R.A]     1111xxxxx0111011010?????? ...
+    4B [2R.A]     1111xxxxx01110110110????? ...
+
+///
 Instruction classes:
 
 MD(02) field can be:
 
-    - Class 0: nothing, these bits are ignored.
-    - Class 1: data type size (8, 16, 32, 64 bits).
-    - Class 4: vector mask select.
-    - Class 5: file selector (SGPRB, VGPRB, HLPRB, PERFCB).
-    - Class 6: extra immediate (always most significant).
-    - Class 7: 00: unsigned. 01: signed. 10: - 11: -
-    - Class 8: 00: no invert. 01: invert. 10: - 11: -
-    - Class 9:
+    - Class 0: nothing, these bits are ignored.                         0
+    - Class 1: data type size (8, 16, 32, 64 bits).                     1
+    - Class 4: vector mask select.                                      2
+    - Class 5: file selector (SGPRB, VGPRB, HLPRB, PERFCB).             3
+    - Class 6: extra immediate (always most significant).               4
+    - Class 7: 00: unsigned. 01: signed. 10: - 11: -                    5
+    - Class 8: 00: no invert. 01: invert. 10: - 11: -                   6
+    - Class 9:                                                          7
         00: unsigned.
         01: signed.
         10: bitwise inverted output + unsigned.
@@ -105,10 +131,10 @@ ADDITION IMMEDIATE----------------------------------ADDI---------[2RI.B]--[7]
 SUBTRACTION IMMEDIATE-------------------------------SUBI---------[2RI.B]--[7]
 MINIMUM IMMEDIATE-----------------------------------MINI---------[2RI.B]--[7]
 MAXIMUM IMMEDIATE-----------------------------------MAXI---------[2RI.B]--[7]
-BITWISE AND IMMEDIATE-------------------------------ANDI---------[2RI.B]--[9]
-BITWISE OR IMMEDIATE--------------------------------ORI----------[2RI.B]--[9]
-BITWISE XOR IMMEDIATE-------------------------------XORI---------[2RI.B]--[9]
-BITWISE IMPLY IMMEDIATE-----------------------------IMPI---------[2RI.B]--[9]
+BITWISE AND IMMEDIATE-------------------------------ANDI---------[2RI.B]--[9] 8
+BITWISE OR IMMEDIATE--------------------------------ORI----------[2RI.B]--[9] 8
+BITWISE XOR IMMEDIATE-------------------------------XORI---------[2RI.B]--[9] 8
+BITWISE IMPLY IMMEDIATE-----------------------------IMPI---------[2RI.B]--[9] 8
 LEFT SHIFT IMMEDIATE--------------------------------LSHI---------[2RI.B]--[7]
 RIGHT SHIFT IMMEDIATE-------------------------------RSHI---------[2RI.B]--[7]
 SET IF EQUAL IMMEDIATE------------------------------SEQI---------[2RI.B]--[9]
@@ -573,7 +599,6 @@ advanced vector floating point: OK
 VECTOR FP. SQUARE ROOT------------------------------VSQRT--------[2R.A]---[4]
 
 VECTOR FP. POWER------------------------------------VFPOW--------[3R.A]---[4]
-
 MIXED FP. POWER-------------------------------------MFPOW--------[3R.A]---[4]
 
 VECTOR FP. POWER IMMEDIATE--------------------------VFPOWI-------[2RI.A]--[4]
@@ -698,7 +723,7 @@ compressed integer flow: OK
 
 COMPRESSED BRANCH IF EQUAL TO ZERO------------------CBEQZ--------[RI.C]---[/]
 COMPRESSED BRANCH IF LESS THAN ZERO-----------------CBLTZ--------[RI.C]---[/]
-COMPRESSED BRANCH IF LESS OF EQUAL TO ZERO----------CBLEZ--------[RI.C]---[/]
+COMPRESSED BRANCH IF LESS OR EQUAL TO ZERO----------CBLEZ--------[RI.C]---[/]
 COMPRESSED JUMP AND LINK OFFSET---------------------CJALO--------[RI.C]---[/]
 COMPRESSED JUMP OFFSET------------------------------CJMPO--------[RI.C]---[/]
 

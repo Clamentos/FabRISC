@@ -2,7 +2,7 @@
 
 **This the official repository for the FabRISC project.**
 
-FabRISC is an open-source, modular, RISC-like instruction set architecture for 32 and 64 bit microprocessors (8 and 16-bit are also possible too). Some features of this specifications are:
+FabRISC is an open-source, modular, RISC-like instruction set architecture for 32 and 64-bit microprocessors (8 and 16-bit are also possible too). Some features of this specifications are:
 
 - Variable length instructions of 2, 4 and 6 bytes.
 - Scalar and vector capabilities.
