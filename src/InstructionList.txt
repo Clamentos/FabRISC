@@ -1,848 +1,638 @@
 ///
-WORK IN PROGRESS
+name    format                                                     allocated   current      cost(singular)  cost(total) length
 
-name    format                                             allocated   current     cost(singular)  cost(total) [allocated * cost(singular)]
+[2R.A]  |OPCODE(20)|MD(02)|RA(05)|RB(05)|--------------------------{ 64}-------{ 39}-------{    1}---------{    64}     4 B
+[3R.A]  |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|-------------------{ 80}-------{ 66}-------{   32}---------{  2560}     4 B
+[4R.A]  |OPCODE(10)|MD(02)|RA(05)|RB(05)|RC(05)|RD(05)|------------{ 24}-------{ 15}-------{ 1024}---------{ 24576}     4 B
 
-[2R.A]  |OPCODE(20)|MD(02)|RA(05)|RB(05)|------------------{ 96}-------{ 91}-------{    1}---------{    91}
-[3R.A]  |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|-----------{144}-------{141}-------{   32}---------{  4512}
-[4R.A]  |OPCODE(10)|MD(02)|RA(05)|RB(05)|RC(05)|RD(05)|----{ 24}-------{ 21}-------{ 1024}---------{ 21504}
-[RI.A]  |OPCODE(09)|MD(02)|RA(05)|IM(16)|------------------{ 32}-------{ 24}-------{ 2048}---------{ 49152}
-[2RI.A] |OPCODE(17)|MD(02)|RA(05)|RB(05)|IM(19)|-----------{ 80}-------{ 76}-------{    8}---------{   608}     6B 
-[3RI.A] |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|IM(16)|----{ 16}-------{ 13}-------{   32}---------{   416}     6B
+[I.A]   |OPCODE(08)|IM(24)|----------------------------------------{  2}-------{  2}-------{ 4096}---------{  8192}     4 B
+[RI.A]  |OPCODE(09)|MD(02)|RA(05)|IM(16)|--------------------------{ 32}-------{ 25}-------{ 2048}---------{ 65536}     4 B
+[2RI.A] |OPCODE(08)|MD(02)|RA(05)|RB(05)|IM(12)|-------------------{ 48}-------{ 47}-------{ 4096}---------{196608}     4 B
+[2RI.B] |OPCODE(15)|MD(02)|RA(05)|RB(05)|IM(21)|-------------------{ 32}-------{ 18}-------{   32}---------{  1024}     6 B
+[3RI.A] |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|IM(16)|------------{ 16}-------{  7}-------{   32}---------{   512}     6 B
 
-[2RI.B] |OPCODE(08)|MD(02)|RA(05)|RB(05)|IM(12)|-----------{ 48}-------{ 47}-------{ 4096}---------{192512}
-[I.A]   |OPCODE(08)|IM(24)|--------------------------------{  4}-------{  2}-------{ 4096}---------{  8192}
+[4R.B]  |OPCODE(20)|MD(02)|VMD(06)|RA(05)|RB(05)|RC(05)|RD(05)|----{ 64}-------{ 40}-------{    1}---------{    64}     6 B
+[3RI.B] |OPCODE(15)|MD(02)|VMD(02)|RA(05)|RB(05)|RC(05)|IM(14)|----{ 64}-------{ 38}-------{   32}---------{  2048}     6 B
 
-[2R.B]  |OPCODE(10)|RA(03)|RB(03)|-------------------------{ 16}-------{ 16}-------{ 1024}---------{ 16384}
-[2R.C]  |OPCODE(06)|RA(05)|RB(05)|-------------------------{  4}-------{  4}-------{16384}---------{ 65536}
-[2R.D]  |OPCODE(08)|MD(02)|RA(03)|RB(03)|------------------{  8}-------{  8}-------{ 4096}---------{ 32768}
-[I.B]   |OPCODE(06)|IM(10)|--------------------------------{  2}-------{  2}-------{16384}---------{ 32768}
-[RI.B]  |OPCODE(08)|RA(03)|IM(05)|-------------------------{  8}-------{  7}-------{ 4096}---------{ 28672}
-[RI.C]  |OPCODE(05)|RA(03)|IM(08)|-------------------------{  8}-------{  6}-------{32768}---------{196608}
-[2RI.D] |OPCODE(04)|RA(03)|RB(03)|IM(06)|------------------{  4}-------{  4}-------{65536}---------{262144}
+[2R.B]  |OPCODE(08)|MD(02)|RA(03)|RB(03)|--------------------------{  8}-------{  8}-------{ 4096}---------{ 32768}     2 B
+[I.B]   |OPCODE(06)|IM(10)|----------------------------------------{  2}-------{  2}-------{16384}---------{ 32768}     2 B
+[RI.B]  |OPCODE(05)|RA(03)|IM(08)|---------------------------------{ 12}-------{ 10}-------{32768}---------{393216}     2 B
+[2RI.C] |OPCODE(04)|RA(03)|RB(03)|IM(06)|--------------------------{  4}-------{  4}-------{65536}---------{262144}     2 B
 
-Remaining budget: 136709
+unmapped encoding space: 26496
 
 ///
 opcode distribution:
 
-    15 [2RI.D]---- 00xx                        1111000xx   4   -        2B
+    [2RI.C]         00xx                    4       1101100xx
 
-    14 [RI.C]----- 01xxx                       110110xxx   8   -        2B
+    [RI.B]          01xxx                   8       110010xxx
+    [RI.B]          100xx                   4       1101101xx
 
-    10 [2R.C]----- 1000xx                      1111001xx   4   -        2B
-    12 [I.B]------ 10010x                      11110110x   2   -        2B
+    [I.B]           10100x                  2       11011110x
 
-    13 [RI.B]----- 10011xxx                    110111xxx   8   -        2B
-    7  [2RI.B]---- 101xxxxx                    1000xxxxx   32  -        4B
-    7  [2RI.B]---- 1100xxxx                    10100xxxx   16  -        4B
-    11 [2R.D]----- 11010xxx                    111000xxx   8   -        2B
-    8  [I.A]------ 110110xx                    1111010xx   4   -        4B
+    [2R.B]          10101xxx                8       110011xxx
+    [2RI.A]         1011xxxx                16      10100xxxx
+    [2RI.A]         110xxxxx                32      1000xxxxx
+    [I.A]           1110000x                2       11011111x
 
-    4  [RI.A]----- 110111xxx                   111001xxx   8   -        4B
-    4  [RI.A]----- 11100xxxx                   10101xxxx   16  -        4B
-    4  [RI.A]----- 111010xxx                   111010xxx   8   -        4B
+    [RI.A]          1110001xx               4       1101110xx
+    [RI.A]          111001xxx               8       110100xxx
+    [RI.A]          11101xxxx               16      10101xxxx
+    [RI.A]          1111000xx               2       11100000x
 
-    9  [2R.B]----- 111011xxxx                  10110xxxx   16  -        2B
-    3  [4R.A]----- 111100xxxx                  10111xxxx   16  -        4B
-    3  [4R.A]----- 1111010xxx                  111011xxx   8   -        4B
+    [4R.A]          1111001xxx              8       110101xxx
+    [4R.A]          111101xxxx              16      10110xxxx
 
-    2  [3R.A]----- 11110110xxxxxxx             00xxxxxxx   128 -        4B
-    2  [3R.A]----- 11110111000xxxx             11000xxxx   16  -        4B
-    6  [3RI.A]---- 11110111001xxxx             11001xxxx   16  -        6B
+    [2RI.B]         1111100000xxxxx         32      1001xxxxx
+    [3RI.A]         11111000010xxxx         16      10111xxxx
+    [3R.A]          11111000011xxxx         16      11000xxxx
+    [3R.A]          111110001xxxxxx         64      000xxxxxx
+    [3RI.B]         111110010xxxxxx         64      001xxxxxx
 
-    5  [2RI.A]---- 11110111010xxxxxx           010xxxxxx   64  -        6B
-    5  [2RI.A]---- 1111011101100xxxx           11010xxxx   16  -        6B
-
-    1  [2R.A]----- 11110111011010xxxxxx        011xxxxxx   64  -        4B
-    1  [2R.A]----- 111101110110110xxxxx        1001xxxxx   32  -        4B
-
-///
-boundary finding:
-
-    2B [2RI.D]    00?? ...                                  15
-    2B [RI.C]     01??xxxxx? ...                            14
-    2B [2R.C]     1000xxxxx?? ...                           10
-    2B [I.B]      1001xxxxx0? ...                           12
-    2B [RI.B]     1001xxxxx1??? ...                         13
-    4B [2RI.B]    101?xxxxx???? ...
-    4B [2RI.B]    1100xxxxx???? ...
-    2B [2R.D]     1101xxxxx0??? ...                         11
-    4B [I.A]      1101xxxxx10?? ...
-    4B [RI.A]     1101xxxxx11??? ...
-    4B [RI.A]     1110xxxxx0???? ...
-    4B [RI.A]     1110xxxxx10??? ...
-    2B [2R.B]     1110xxxxx11???? ...                        9
-    4B [4R.A]     1111xxxxx00???? ...
-    4B [4R.A]     1111xxxxx010??? ...
-    4B [3R.A]     1111xxxxx0110??????? ...
-    4B [3R.A]     1111xxxxx0111000???? ...
-    6B [3RI.A]    1111xxxxx0111001???? ...
-    6B [2RI.A]    1111xxxxx0111010?????? ...
-    6B [2RI.A]    1111xxxxx011101100???? ...
-    4B [2R.A]     1111xxxxx0111011010?????? ...
-    4B [2R.A]     1111xxxxx01110110110????? ...
+    [2R.A]          11111001100000xxxxxx    64      010xxxxxx
+    [4R.B]          11111001100001xxxxxx    64      011xxxxxx
 
 ///
 Instruction classes:
 
-MD(02) field can be:
+    MD(02) field can be:
 
-    - Class 0: nothing, these bits are ignored.                         0
-    - Class 1: data type size (8, 16, 32, 64 bits).                     1
-    - Class 4: vector mask select.                                      2
-    - Class 5: file selector (SGPRB, VGPRB, HLPRB, PERFCB).             3
-    - Class 6: extra immediate (always most significant).               4
-    - Class 7: 00: unsigned. 01: signed. 10: - 11: -                    5
-    - Class 8: 00: no invert. 01: invert. 10: - 11: -                   6
-    - Class 9:                                                          7
-        00: unsigned.
-        01: signed.
-        10: bitwise inverted output + unsigned.
-        11: bitwise inverted output + signed.
+        class A: (some of these might be redundant / nonsensical for some instructions)
+
+            00: unsigned / logical operation.
+            01: signed / arithmetic operation.
+            10: unsigned / logical operation with inverted output.
+            11: signed / arithmetic operation with inverted output.
+
+        class B:
+
+            00 8 bits.
+            01 16 bits.
+            10 32 bits.
+            11 64 bits.
+
+        class C:
+
+            00: use SGPRB.
+            01: use VGPRB.
+            10: use HLPRB.
+            11: use PERFCB.
+
+        class D: 2 extra immediate bits (always most significant).
+
+        class E:
+
+            00: unmasked
+            01: masked
+            10: ~ maksed
+            11: -
+
+        class F:
+
+            00 loads
+            01 stores
+            10 loads & stores
+            11 fetch
+
+        class G: extend register specifiers (usable in compressed formats only)
+
+        class H:
+
+            00   (a * b) + c
+            01 - (a * b) + c
+            10   (a * b) + c
+            11 - (a * b) - c
 
 ///
-basic scalar integer: OK
+Vector modes
+
+    VMD(06):
+
+        xxx000 unmasked v-v
+        xxx001 unmasked v-s
+        xxx010 masked v-v
+        xxx011 masked v-s
+        xxx100 ~ masked v-v
+        xxx101 ~ masked v-s
+
+    VMD(02):
+
+        00: unmasked
+        01: masked
+        10: ~ masked
+        11: -
+
+///
+INSTRUCTION LIST
 
 [name]----------------------------------------------[mnemonic]---[format]-[class]
 
-ABSOLUTE VALUE--------------------------------------ABS----------[2R.A]---[0]
+///..
+basic scalar integer:
 
-ADDITION--------------------------------------------ADD----------[3R.A]---[7]
-SUBTRACTION-----------------------------------------SUB----------[3R.A]---[7]
-MINIMUM---------------------------------------------MIN----------[3R.A]---[7]
-MAXIMUM---------------------------------------------MAX----------[3R.A]---[7]
-BITWISE AND-----------------------------------------AND----------[3R.A]---[8]
-BITWISE OR------------------------------------------OR-----------[3R.A]---[8]
-BITWISE XOR-----------------------------------------XOR----------[3R.A]---[8]
-BITWISE IMPLY---------------------------------------IMP----------[3R.A]---[8]
-LEFT SHIFT------------------------------------------LSH----------[3R.A]---[7]
-RIGHT SHIFT-----------------------------------------RSH----------[3R.A]---[7]
-SET IF EQUAL----------------------------------------SEQ----------[3R.A]---[8]
-SET IF LESS THAN------------------------------------SLT----------[3R.A]---[9]
-SET IF LESS OR EQUAL--------------------------------SLE----------[3R.A]---[9]
-CONDITIONAL MOVE------------------------------------CMV----------[3R.A]---[0]
+ABSOLUTE VALUE--------------------------------------ABS----------[2R.A]---[/]
+SIGN EXTEND-----------------------------------------EXT----------[2R.A]---[B]
 
-LOAD IMMEDIATE--------------------------------------LDI----------[RI.A]---[6]
-BIG LOAD IMMEDIATE----------------------------------BLDI---------[RI.A]---[6] // Ra = Ra << 18 | Imm;
-ADD IMMEDIATE HIGH TO PC----------------------------ADDIHPC------[RI.A]---[6] // Ra = PC + (Imm << 16);
+ADDITION--------------------------------------------ADD----------[3R.A]---[A]
+SUBTRACTION-----------------------------------------SUB----------[3R.A]---[A]
+MINIMUM---------------------------------------------MIN----------[3R.A]---[A]
+MAXIMUM---------------------------------------------MAX----------[3R.A]---[A]
+BITWISE AND-----------------------------------------AND----------[3R.A]---[A]
+BITWISE OR------------------------------------------OR-----------[3R.A]---[A]
+BITWISE XOR-----------------------------------------XOR----------[3R.A]---[A]
+LEFT SHIFT------------------------------------------LSH----------[3R.A]---[A]
+RIGHT SHIFT-----------------------------------------RSH----------[3R.A]---[A]
+SET IF EQUAL----------------------------------------SEQ----------[3R.A]---[A]
+SET IF LESS THAN------------------------------------SLT----------[3R.A]---[A]
+SET IF LESS OR EQUAL--------------------------------SLE----------[3R.A]---[A]
+CONDITIONAL MOVE------------------------------------CMV----------[3R.A]---[B]
 
-ADDITION IMMEDIATE----------------------------------ADDI---------[2RI.B]--[7]
-SUBTRACTION IMMEDIATE-------------------------------SUBI---------[2RI.B]--[7]
-MINIMUM IMMEDIATE-----------------------------------MINI---------[2RI.B]--[7]
-MAXIMUM IMMEDIATE-----------------------------------MAXI---------[2RI.B]--[7]
-BITWISE AND IMMEDIATE-------------------------------ANDI---------[2RI.B]--[9] 8
-BITWISE OR IMMEDIATE--------------------------------ORI----------[2RI.B]--[9] 8
-BITWISE XOR IMMEDIATE-------------------------------XORI---------[2RI.B]--[9] 8
-BITWISE IMPLY IMMEDIATE-----------------------------IMPI---------[2RI.B]--[9] 8
-LEFT SHIFT IMMEDIATE--------------------------------LSHI---------[2RI.B]--[7]
-RIGHT SHIFT IMMEDIATE-------------------------------RSHI---------[2RI.B]--[7]
-SET IF EQUAL IMMEDIATE------------------------------SEQI---------[2RI.B]--[9]
-SET IF LESS THAN IMMEDIATE--------------------------SLTI---------[2RI.B]--[9]
-SET IF LESS OR EQUAL IMMEDIATE----------------------SLEI---------[2RI.B]--[9]
-CONDITIONAL LOAD IMMEDIATE--------------------------CLDI---------[2RI.B]--[6] // if(rb != 0) ra = imm; else noop;
-ALIGN-----------------------------------------------ALN----------[2RI.B]--[1] // Ra = signExtend(Rb >> imm, len);
-ALIGN UNSIGNED--------------------------------------ALNU---------[2RI.B]--[1] // Ra = zeroExtend(Rb >> imm, len);
+LOAD IMMEDIATE--------------------------------------LDI----------[RI.A]---[D]
+BIG LOAD IMMEDIATE----------------------------------BLDI---------[RI.A]---[D]    // Ra = Ra << 18 | Imm;
+ADD IMMEDIATE HIGH TO PC----------------------------ADDIHPC------[RI.A]---[D]    // Ra = PC + (Imm << 18);
 
-MERGE-----------------------------------------------MRG----------[3RI.A]--[1] // Ra = (Rb << imm) | (Rc >> (len - imm));
+ADDITION IMMEDIATE----------------------------------ADDI---------[2RI.A]--[A]
+SUBTRACTION IMMEDIATE-------------------------------SUBI---------[2RI.A]--[A]
+MINIMUM IMMEDIATE-----------------------------------MINI---------[2RI.A]--[A]
+MAXIMUM IMMEDIATE-----------------------------------MAXI---------[2RI.A]--[A]
+BITWISE AND IMMEDIATE-------------------------------ANDI---------[2RI.A]--[A]
+BITWISE OR IMMEDIATE--------------------------------ORI----------[2RI.A]--[A]
+BITWISE XOR IMMEDIATE-------------------------------XORI---------[2RI.A]--[A]
+LEFT SHIFT IMMEDIATE--------------------------------LSHI---------[2RI.A]--[A]
+RIGHT SHIFT IMMEDIATE-------------------------------RSHI---------[2RI.A]--[A]
+SET IF EQUAL IMMEDIATE------------------------------SEQI---------[2RI.A]--[A]
+SET IF LESS THAN IMMEDIATE--------------------------SLTI---------[2RI.A]--[A]
+SET IF LESS OR EQUAL IMMEDIATE----------------------SLEI---------[2RI.A]--[A]
+CONDITIONAL LOAD IMMEDIATE--------------------------CLDI---------[2RI.A]--[D]
 
 ///.
-advanced scalar integer: OK
+advanced scalar integer
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+COUNT ZEROS-----------------------------------------CZ-----------[2R.A]---[?]
+COUNT LEADING ZEROS---------------------------------CLZ----------[2R.A]---[?]
+COUNT TRAILING ZEROS--------------------------------CTZ----------[2R.A]---[?]
+COUNT ONES------------------------------------------CO-----------[2R.A]---[?]
+COUNT LEADING ONES----------------------------------CLO----------[2R.A]---[?]
+COUNT TRAILING ONES---------------------------------CTO----------[2R.A]---[?]
 
-SWAP------------------------------------------------SWP----------[2R.A]---[1]
+MULTIPLICATION--------------------------------------MUL----------[3R.A]---[A]
+HIGH MULTIPLICATION---------------------------------HMUL---------[3R.A]---[A]
+DIVISION--------------------------------------------DIV----------[3R.A]---[A]
+REMAINDER-------------------------------------------REM----------[3R.A]---[A]
+LEFT ROTATE-----------------------------------------LRT----------[3R.A]---[A]
+RIGHT ROTATE----------------------------------------RRT----------[3R.A]---[A]
+BIT SWAP--------------------------------------------BSW----------[3R.A]---[A]
+BIT REVERSE-----------------------------------------BRV----------[3R.A]---[A]
+BIT FLIP--------------------------------------------BFL----------[3R.A]---[A]
+CARRYLESS MULTIPLICATION----------------------------CLMUL--------[3R.A]---[A]
 
-MULTIPLICATION--------------------------------------MUL----------[3R.A]---[7]
-HIGH MULTIPLICATION---------------------------------HMUL---------[3R.A]---[7]
-DIVISION--------------------------------------------DIV----------[3R.A]---[7]
-REMAINDER-------------------------------------------REM----------[3R.A]---[7]
-LEFT ROTATE-----------------------------------------LRT----------[3R.A]---[0]
-RIGHT ROTATE----------------------------------------RRT----------[3R.A]---[0]
-BIT SWAP--------------------------------------------BSW----------[3R.A]---[0]
-BIT REVERSE-----------------------------------------BRV----------[3R.A]---[0]
-BIT FLIP--------------------------------------------BFL----------[3R.A]---[0]
-CARRYLESS MULTIPLICATION----------------------------CLMUL--------[3R.A]---[0]
+MULTIPLY ACCUMULATE---------------------------------MAC----------[4R.A]---[H]
+MULTIPLY ACCUMULATE UNSIGNED------------------------MACU---------[4R.A]---[H]
+PERMUTE---------------------------------------------PER----------[4R.A]---[A]
 
-MULTIPLY ACCUMULATE---------------------------------MAC----------[4R.A]---[7]
-BLEND-----------------------------------------------BND----------[4R.A]---[0] // Ra = (Rb << Rc) | Rd;
-PERMUTE---------------------------------------------PER----------[4R.A]---[0]
+MULTIPLICATION IMMEDIATE----------------------------MULI---------[2RI.A]--[A]
+HIGH MULTIPLICATION IMMEDIATE-----------------------HMULI--------[2RI.A]--[A]
+DIVISION IMMEDIATE----------------------------------DIVI---------[2RI.A]--[A]
+REMAINDER IMMEDIATE---------------------------------REMI---------[2RI.A]--[A]
+LEFT ROTATE IMMEDIATE-------------------------------LRTI---------[2RI.A]--[A]
+RIGHT ROTATE IMMEDIATE------------------------------RRTI---------[2RI.A]--[A]
+BIT SWAP IMMEDIATE----------------------------------BSWI---------[2RI.A]--[A]
+BIT REVERSE IMMEDIATE-------------------------------BRVI---------[2RI.A]--[A]
+BIT FLIP IMMEDIATE----------------------------------BFLI---------[2RI.A]--[A]
+CARRYLESS MULTIPLICATION IMMEDIATE------------------CLMULI-------[2RI.A]--[A]
 
-MULTIPLICATION IMMEDIATE----------------------------MULI---------[2RI.B]--[7]
-HIGH MULTIPLICATION IMMEDIATE-----------------------HMULI--------[2RI.B]--[7]
-DIVISION IMMEDIATE----------------------------------DIVI---------[2RI.B]--[7]
-REMAINDER IMMEDIATE---------------------------------REMI---------[2RI.B]--[7]
-LEFT ROTATE IMMEDIATE-------------------------------LRTI---------[2RI.B]--[0]
-RIGHT ROTATE IMMEDIATE------------------------------RRTI---------[2RI.B]--[0]
-BIT SWAP IMMEDIATE----------------------------------BSWI---------[2RI.B]--[0] // 1,2,4,8,16,32 bit granularity
-BIT REVERSE IMMEDIATE-------------------------------BRVI---------[2RI.B]--[0]
-BIT FLIP IMMEDIATE----------------------------------BFLI---------[2RI.B]--[0]
-CARRYLESS MULTIPLICATION IMMEDIATE------------------CLMULI-------[2RI.B]--[0]
-
-MULTIPLY ACCUMULATE IMMEDIATE-----------------------MACI---------[3RI.A]--[7]
-BLEND IMMEDIATE-------------------------------------BNDI---------[3RI.A]--[0] // Ra = (Rb << Imm) | Rc;
-
-COUNT ZEROS-----------------------------------------CZ-----------[2R.A]---[0]
-COUNT LEADING ZEROS---------------------------------CLZ----------[2R.A]---[0]
-COUNT TRAILING ZEROS--------------------------------CTZ----------[2R.A]---[0]
-COUNT ONES------------------------------------------CO-----------[2R.A]---[0]
-COUNT LEADING ONES----------------------------------CLO----------[2R.A]---[0]
-COUNT TRAILING ONES---------------------------------CTO----------[2R.A]---[0]
+MULTIPLY ACCUMULATE IMMEDIATE-----------------------MACI---------[3RI.A]--[H]
+MULTIPLY ACCUMULATE IMMEDIATE UNSIGNED--------------MACIU--------[3RI.A]--[H]
+PERMUTE IMMEDIATE-----------------------------------PERI---------[3RI.A]--[A]
 
 ///.
-multiword: OK
+multiword
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-BIG ADDITION----------------------------------------BADD---------[4R.A]---[7] // Ra = Rb + Rc + Rd; Rd = cout;
-BIG SUBTRACTION-------------------------------------BSUB---------[4R.A]---[7] // Ra = Rb - Rc - Rd; Rd = borrow;
-BIG MULTIPLICATION----------------------------------BMUL---------[4R.A]---[7]
-BIG DIVISION----------------------------------------BDIV---------[4R.A]---[7]
-BIG REMAINDER---------------------------------------BREM---------[4R.A]---[7]
-BIG LEFT SHIFT--------------------------------------BLSH---------[4R.A]---[7]
-BIG RIGHT SHIFT-------------------------------------BRSH---------[4R.A]---[7]
+BIG ADDITION----------------------------------------BADD---------[4R.A]---[A]    // Ra = Rb + Rc + Rd; Rd = cout;
+BIG SUBTRACTION-------------------------------------BSUB---------[4R.A]---[A]    // Ra = Rb - Rc - Rd; Rd = borrow;
+BIG MULTIPLICATION----------------------------------BMUL---------[4R.A]---[A]
+BIG DIVISION----------------------------------------BDIV---------[4R.A]---[A]
+BIG REMAINDER---------------------------------------BREM---------[4R.A]---[A]
+BIG LEFT SHIFT--------------------------------------BLSH---------[4R.A]---[A]
+BIG RIGHT SHIFT-------------------------------------BRSH---------[4R.A]---[A]
 
 ///.
-basic scalar fp: OK
+basic scalar fp
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+CAST FP. TO INTEGER---------------------------------CFI----------[2R.A]---[B]
+CAST FP. TO INTEGER TRUNCATED-----------------------CFIT---------[2R.A]---[B]
+CAST INTEGER TO FP.---------------------------------CIF----------[2R.A]---[B]
+CAST FP. TO FP1.------------------------------------CFF----------[2R.A]---[B]
+CAST FP. TO FP2.------------------------------------CFF----------[2R.A]---[B]
+CAST FP. TO FP4.------------------------------------CFF----------[2R.A]---[B]
+CAST FP. TO FP8.------------------------------------CFF----------[2R.A]---[B]
 
-CAST FP. TO INTEGER---------------------------------CFI----------[2R.A]---[1] // Currently active rounding mode applies.
-CAST FP. TO INTEGER TRUNCATED-----------------------CFIT---------[2R.A]---[1] // Same as CIF but always truncates.
-CAST INTEGER TO FP.---------------------------------CIF----------[2R.A]---[1]
-CAST FP. TO FP.-------------------------------------CFF----------[2R.A]---[1] // Currently active rounding mode applies.
-FP. ABSOLUTE VALUE----------------------------------FABS---------[2R.A]---[1]
-FP. INVERSE-----------------------------------------FINV---------[2R.A]---[1]
+FP. ADDITION----------------------------------------FADD---------[3R.A]---[B]
+FP. SUBTRACTION-------------------------------------FSUB---------[3R.A]---[B]
+FP. MULTIPLICATION----------------------------------FMUL---------[3R.A]---[B]
+FP. DIVISION----------------------------------------FDIV---------[3R.A]---[B]
+FP. MINIMUM-----------------------------------------FMIN---------[3R.A]---[B]
+FP. MAXIMUM-----------------------------------------FMAX---------[3R.A]---[B]
+FP. SET IF LESS THAN--------------------------------FSLT---------[3R.A]---[B]
+FP. SET IF LESS OR EQUAL----------------------------FSLE---------[3R.A]---[B]
+FP. SET IF GREATER THAN-----------------------------FSGT---------[3R.A]---[B]
+FP. SET IF GREATER OR EQUAL-------------------------FSGE---------[3R.A]---[B]
 
-FP. ADDITION----------------------------------------FADD---------[3R.A]---[1]
-FP. SUBTRACTION-------------------------------------FSUB---------[3R.A]---[1]
-FP. MULTIPLICATION----------------------------------FMUL---------[3R.A]---[1]
-FP. DIVISION----------------------------------------FDIV---------[3R.A]---[1]
-FP. MINIMUM-----------------------------------------FMIN---------[3R.A]---[1]
-FP. MAXIMUM-----------------------------------------FMAX---------[3R.A]---[1]
-FP. SET IF LESS THAN--------------------------------FSLT---------[3R.A]---[1]
-FP. SET IF LESS OR EQUAL----------------------------FSLE---------[3R.A]---[1]
+FP. MULTIPLY ADD------------------------------------FMADD--------[4R.A]---[B]
+FP. NEGATIVE MULTIPLY ADD---------------------------FNMADD-------[4R.A]---[B]
+FP. MULTIPLY SUBTRACT-------------------------------FMSUB--------[4R.A]---[B]
+FP. NEGATIVE MULTIPLY SUBTRACT----------------------FNMSUB-------[4R.A]---[B]
 
-FP. MULTIPLY ACCUMULATE-----------------------------FMAC---------[4R.A]---[1]
+FP. ADDITION IMMEDIATE------------------------------FADDI--------[2RI.A]--[B]
+FP. SUBTRACTION IMMEDIATE---------------------------FSUBI--------[2RI.A]--[B]
+FP. MULTIPLICATION IMMEDIATE------------------------FMULI--------[2RI.A]--[B]
+FP. DIVISION IMMEDIATE------------------------------FDIVI--------[2RI.A]--[B]
+FP. MINIMUM IMMEDIATE-------------------------------FMINI--------[2RI.A]--[B]
+FP. MAXIMUM IMMEDIATE-------------------------------FMAXI--------[2RI.A]--[B]
+FP. SET IF LESS THAN IMMEDIATE----------------------FSLTI--------[2RI.A]--[B]
+FP. SET IF LESS OR EQUAL IMMEDIATE------------------FSLEI--------[2RI.A]--[B]
+FP. SET IF GREATER THAN IMMEDIATE-------------------FSGTI--------[2RI.A]--[B]
+FP. SET IF GREATER OR EQUAL IMMEDIATE---------------FSGEI--------[2RI.A]--[B]
 
-FP. ADDITION IMMEDIATE------------------------------FADDI--------[2RI.B]--[1]
-FP. SUBTRACTION IMMEDIATE---------------------------FSUBI--------[2RI.B]--[1]
-FP. MULTIPLICATION IMMEDIATE------------------------FMULI--------[2RI.B]--[1]
-FP. DIVISION IMMEDIATE------------------------------FDIVI--------[2RI.B]--[1]
-FP. MINIMUM IMMEDIATE-------------------------------FMINI--------[2RI.B]--[1]
-FP. MAXIMUM IMMEDIATE-------------------------------FMAXI--------[2RI.B]--[1]
-FP. SET IF LESS THAN IMMEDIATE----------------------FSLTI--------[2RI.B]--[1]
-FP. SET IF LESS OR EQUAL IMMEDIATE------------------FSLEI--------[2RI.B]--[1]
-
-FP. MULTIPLY ACCUMULATE IMMEDIATE-------------------FMACI--------[3RI.A]--[1]
-
-///.
-advanced scalar fp: OK
-
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-FP. SQUARE ROOT-------------------------------------FSQRT--------[2R.A]---[1]
-
-FP. POWER-------------------------------------------FPOW---------[3R.A]---[1]
-
-FP. POWER IMMEDIATE---------------------------------FPOWI--------[2RI.B]--[1]
+FP. MULTIPLY ADD IMMEDIATE--------------------------FMADDI-------[3RI.A]--[B]
+FP. NEGATIVE MULTIPLY ADD IMMEDIATE-----------------FNMADDI------[3RI.A]--[B]
+FP. MULTIPLY SUBTRACT IMMEDIATE---------------------FMSUBI-------[3RI.A]--[B]
+FP. NEGATIVE MULTIPLY SUBTRACT IMMEDIATE------------FNMSUBI------[3RI.A]--[B]
 
 ///.
-basic scalar memory: OK
-// Addressing mode: Ra = mem(Rb + imm);
+advanced scalar fp
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-MEMORY LOAD-----------------------------------------MLD----------[2RI.B]--[1]
-MEMORY LOAD UNSIGNED--------------------------------MLDU---------[2RI.B]--[1]
-MEMORY STORE----------------------------------------MST----------[2RI.B]--[1]
+FP. SQUARE ROOT-------------------------------------FSQRT--------[2R.A]---[B]
 
 ///.
-advanced scalar memory: OK
+basic scalar memory
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+MEMORY LOAD-----------------------------------------MLD----------[2RI.A]--[B]
+MEMORY LOAD UNSIGNED--------------------------------MLDU---------[2RI.A]--[B]
+MEMORY STORE----------------------------------------MST----------[2RI.A]--[B]
+
+///.
+advanced scalar memory
 
 // Addressing mode: Ra = mem(--Rb + imm);
-MEMORY LOAD PRE DECREMENT---------------------------MLD_PRD------[2RI.B]--[1]
-MEMORY LOAD UNSIGNED PRE DECREMENT------------------MLDU_PRD-----[2RI.B]--[1]
-MEMORY STORE PRE DECREMENT--------------------------MST_PRD------[2RI.B]--[1]
+MEMORY LOAD PRE DECREMENT---------------------------MLD_PRD------[2RI.A]--[B]
+MEMORY LOAD UNSIGNED PRE DECREMENT------------------MLDU_PRD-----[2RI.A]--[B]
+MEMORY STORE PRE DECREMENT--------------------------MST_PRD------[2RI.A]--[B]
 
 // Addressing mode: Ra = mem(Rb++ + imm);
-MEMORY LOAD POST INCREMENT--------------------------MLD_POI------[2RI.B]--[1]
-MEMORY LOAD UNSIGNED POST INCREMENT-----------------MLDU_POI-----[2RI.B]--[1]
-MEMORY STORE POST INCREMENT-------------------------MST_POI------[2RI.B]--[1]
+MEMORY LOAD POST INCREMENT--------------------------MLD_POI------[2RI.A]--[B]
+MEMORY LOAD UNSIGNED POST INCREMENT-----------------MLDU_POI-----[2RI.A]--[B]
+MEMORY STORE POST INCREMENT-------------------------MST_POI------[2RI.A]--[B]
 
 // Addressing mode: Ra = mem((Rb + imm[0:16]) << imm[17:18])
-MEMORY LOAD SCALED----------------------------------MLDS---------[2RI.A]--[1]
-MEMORY LOAD SCALED UNSIGNED-------------------------MLDSU--------[2RI.A]--[1]
-MEMORY STORE SCALED---------------------------------MSTS---------[2RI.A]--[1]
+MEMORY LOAD SCALED----------------------------------MLDS---------[2RI.B]--[B]
+MEMORY LOAD SCALED UNSIGNED-------------------------MLDSU--------[2RI.B]--[B]
+MEMORY STORE SCALED---------------------------------MSTS---------[2RI.B]--[B]
 
 // Addressing mode: Ra = mem((--Rb + imm[0:16]) << imm[17:18])
-MEMORY LOAD SCALED PRE DECREMENT--------------------MLDS_PRD-----[2RI.A]--[1]
-MEMORY LOAD SCALED UNSIGNED PRE DECREMENT-----------MLDSU_PRD----[2RI.A]--[1]
-MEMORY STORE SCALED PRE DECREMENT-------------------MSTS_PRD-----[2RI.A]--[1]
+MEMORY LOAD SCALED PRE DECREMENT--------------------MLDS_PRD-----[2RI.B]--[B]
+MEMORY LOAD SCALED UNSIGNED PRE DECREMENT-----------MLDSU_PRD----[2RI.B]--[B]
+MEMORY STORE SCALED PRE DECREMENT-------------------MSTS_PRD-----[2RI.B]--[B]
 
 // Addressing mode: Ra = mem((Rb++ + imm[0:16]) << imm[17:18])
-MEMORY LOAD SCALED POST INCREMENT-------------------MLDS_POI-----[2RI.A]--[1]
-MEMORY LOAD SCALED UNSIGNED POST INCREMENT----------MLDSU_POI----[2RI.A]--[1]
-MEMORY STORE SCALED POST INCREMENT------------------MSTS_POI-----[2RI.A]--[1]
+MEMORY LOAD SCALED POST INCREMENT-------------------MLDS_POI-----[2RI.B]--[B]
+MEMORY LOAD SCALED UNSIGNED POST INCREMENT----------MLDSU_POI----[2RI.B]--[B]
+MEMORY STORE SCALED POST INCREMENT------------------MSTS_POI-----[2RI.B]--[B]
 
 ///.
-block memory: OK
+block memory
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-BLOCK LOAD LOWER------------------------------------BLDL---------[RI.A]---[4]
-BLOCK LOAD UPPER------------------------------------BLDP---------[RI.A]---[4]
-BLOCK STORE LOWER-----------------------------------BLDL---------[RI.A]---[4]
-BLOCK STORE UPPER-----------------------------------BLDP---------[RI.A]---[4]
+BLOCK LOAD LOWER------------------------------------BLDL---------[RI.A]---[C]
+BLOCK LOAD UPPER------------------------------------BLDP---------[RI.A]---[C]
+BLOCK STORE LOWER-----------------------------------BLDL---------[RI.A]---[C]
+BLOCK STORE UPPER-----------------------------------BLDP---------[RI.A]---[C]
 
 ///.
-basic integer control flow: OK
+basic integer control flow
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+UNCONDITIONAL JUMP----------------------------------JMP----------[I.A]----[/]
+BIG JUMP AND LINK-----------------------------------BJAL---------[I.A]----[/]
 
-BRANCH IF EQUAL-------------------------------------BEQ----------[2RI.B]--[6]
-BRANCH IF LESS THAN---------------------------------BLT----------[2RI.B]--[6]
-BRANCH IF LESS THAN EQUAL---------------------------BLE----------[2RI.B]--[6]
+UNCONDITIONAL JUMP REGISTER-------------------------JMPR---------[RI.A]---[D]
+JUMP AND LINK---------------------------------------JAL----------[RI.A]---[D]
 
-UNCONDITIONAL JUMP----------------------------------JMP----------[I.A]----[6]
-BIG JUMP AND LINK-----------------------------------BJAL---------[I.A]----[6]
-
-UNCONDITIONAL JUMP REGISTER-------------------------JMPR---------[RI.A]---[6]
-JUMP AND LINK---------------------------------------JAL----------[RI.A]---[6]
+BRANCH IF EQUAL-------------------------------------BEQ----------[2RI.A]--[D]
+BRANCH IF LESS THAN---------------------------------BLT----------[2RI.A]--[D]
+BRANCH IF LESS THAN UNSIGNED------------------------BLTU---------[2RI.A]--[D]
+BRANCH IF LESS THAN EQUAL---------------------------BLE----------[2RI.A]--[D]
+BRANCH IF LESS THAN EQUAL UNSIGNED------------------BLEU---------[2RI.A]--[D]
 
 ///.
-advanced integer control flow: OK
+advanced integer control flow
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-BRANCH IF EQUAL IMMEDIATE---------------------------BEQI---------[RI.A]---[6]
-BRANCH IF LESS THAN IMMEDIATE-----------------------BLTI---------[RI.A]---[6]
-BRANCH IF LESS THAN EQUAL IMMEDIATE-----------------BLEI---------[RI.A]---[6]
+BRANCH IF EQUAL IMMEDIATE---------------------------BEQI---------[RI.A]---[D]
+BRANCH IF LESS THAN IMMEDIATE-----------------------BLTI---------[RI.A]---[D]
+BRANCH IF LESS THAN IMMEDIATE UNSIGNED--------------BLTIU--------[RI.A]---[D]
+BRANCH IF LESS THAN EQUAL IMMEDIATE-----------------BLEI---------[RI.A]---[D]
+BRANCH IF LESS THAN EQUAL IMMEDIATE UNSIGNED--------BLEIU--------[RI.A]---[D]
 
 ///.
 basic floating point control flow: OK
 
 [name]----------------------------------------------[mnemonic]---[format]-[class]
 
-FP. BRANCH IF LESS THAN-----------------------------FBLT---------[2RI.A]--[1]
-FP. BRANCH IF LESS THAN EQUAL-----------------------FBLE---------[2RI.A]--[1]
+FP. BRANCH IF LESS THAN-----------------------------FBLT---------[2RI.B]--[B]
+FP. BRANCH IF LESS THAN EQUAL-----------------------FBLE---------[2RI.B]--[B]
 
 ///.
-advanced floating point control flow: OK
+advanced floating point control flow:
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-FP. BRANCH IF LESS THAN IMMEDIATE-------------------FBLTI--------[RI.A]---[1]
-FP. BRANCH IF LESS THAN EQUAL IMMEDIATE-------------FBLEI--------[RI.A]---[1]
+FP. BRANCH IF LESS THAN IMMEDIATE-------------------FBLTI--------[RI.A]---[B]
+FP. BRANCH IF LESS THAN EQUAL IMMEDIATE-------------FBLEI--------[RI.A]---[B]
 
 ///.
-basic vector integer: OK
-"VECTOR" means vector = vector <operation> vector    (standard operations, with some exceptions...)
-"MIXED" means vector = vector <operation> scalar     (broadcast)
+basic vector integer
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+VECTOR ABSOLUTE VALUE-------------------------------VABS---------[3R.A]---[E]
 
-VECTOR ABSOLUTE VALUE-------------------------------VABS---------[2R.A]---[4]
+VECTOR ADDITION-------------------------------------VADD---------[4R.B]---[A]
+VECTOR SUBTRACTION----------------------------------VSUB---------[4R.B]---[A]
+VECTOR MINIMUM--------------------------------------VMIN---------[4R.B]---[A]
+VECTOR MAXIMUM--------------------------------------VMAX---------[4R.B]---[A]
+VECTOR BITWISE AND----------------------------------VAND---------[4R.B]---[A]
+VECTOR BITWISE OR-----------------------------------VOR----------[4R.B]---[A]
+VECTOR BITWISE XOR----------------------------------VXOR---------[4R.B]---[A]
+VECTOR LEFT SHIFT-----------------------------------VLSH---------[4R.B]---[A]
+VECTOR RIGHT SHIFT----------------------------------VRSH---------[4R.B]---[A]
+VECTOR SET IF EQUAL---------------------------------VSEQ---------[4R.B]---[A]
+VECTOR SET IF LESS THAN-----------------------------VSLT---------[4R.B]---[A]
+VECTOR SET IF LESS OR EQUAL-------------------------VSLE---------[4R.B]---[A]
+VECTOR EXTRACT--------------------------------------VEXTR--------[4R.B]---[B]    // Va[Rb] = Rc; (ignores the current VSH reg)
+VECTOR INJECT---------------------------------------VINJ---------[4R.B]---[B]    // Ra = Vb[Rc]; (ignores the current VSH reg)
 
-VECTOR ADDITION-------------------------------------VADD---------[3R.A]---[4]
-VECTOR ADDITION UNSIGNED----------------------------VADDU--------[3R.A]---[4]
-VECTOR SUBTRACTION----------------------------------VSUB---------[3R.A]---[4]
-VECTOR SUBTRACTION UNSIGNED-------------------------VSUBU--------[3R.A]---[4]
-VECTOR MINIMUM--------------------------------------VMIN---------[3R.A]---[4]
-VECTOR MINIMUM UNSIGNED-----------------------------VMINU--------[3R.A]---[4]
-VECTOR MAXIMUM--------------------------------------VMAX---------[3R.A]---[4]
-VECTOR MAXIMUM UNSIGNED-----------------------------VMAXU--------[3R.A]---[4]
-VECTOR BITWISE AND----------------------------------VAND---------[3R.A]---[4]
-VECTOR BITWISE NAND---------------------------------VNAND--------[3R.A]---[4]
-VECTOR BITWISE OR-----------------------------------VOR----------[3R.A]---[4]
-VECTOR BITWISE NOR----------------------------------VNOR---------[3R.A]---[4]
-VECTOR BITWISE XOR----------------------------------VXOR---------[3R.A]---[4]
-VECTOR BITWISE XNOR---------------------------------VXNOR--------[3R.A]---[4]
-VECTOR BITWISE IMPLY--------------------------------VIMP---------[3R.A]---[4]
-VECTOR BITWISE NIMPLY-------------------------------VNIMP--------[3R.A]---[4]
-VECTOR LEFT SHIFT-----------------------------------VLSH---------[3R.A]---[4]
-VECTOR LEFT SHIFT UNSIGNED--------------------------VLSHU--------[3R.A]---[4]
-VECTOR RIGHT SHIFT----------------------------------VRSH---------[3R.A]---[4]
-VECTOR RIGHT SHIFT UNSIGNED-------------------------VRSHU--------[3R.A]---[4]
-VECTOR SET IF EQUAL---------------------------------VSEQ---------[3R.A]---[4]
-VECTOR SET IF LESS THAN-----------------------------VSLT---------[3R.A]---[4]
-VECTOR SET IF LESS THAN UNSIGNED--------------------VSLTU--------[3R.A]---[4]
-VECTOR SET IF LESS OR EQUAL-------------------------VSLE---------[3R.A]---[4]
-VECTOR SET IF LESS OR EQUAL UNSIGNED----------------VSLEU--------[3R.A]---[4]
-VECTOR CONDITIONAL MOVE-----------------------------VCMOV--------[3R.A]---[4]
-VECTOR EXTRACT--------------------------------------VEXTR--------[3R.A]---[4] // Va[Rb] = Rc;
-VECTOR INJECT---------------------------------------VINJ---------[3R.A]---[4] // Ra = Vb[Rc];
-
-MIXED ADDITION--------------------------------------MADD---------[3R.A]---[4]
-MIXED ADDITION UNSIGNED-----------------------------MADDU--------[3R.A]---[4]
-MIXED SUBTRACTION-----------------------------------MSUB---------[3R.A]---[4]
-MIXED SUBTRACTION UNSIGNED--------------------------MSUBU--------[3R.A]---[4]
-MIXED MINIMUM---------------------------------------MMIN---------[3R.A]---[4]
-MIXED MINIMUM UNSIGNED------------------------------MMINU--------[3R.A]---[4]
-MIXED MAXIMUM---------------------------------------MMAX---------[3R.A]---[4]
-MIXED MAXIMUM UNSIGNED------------------------------MMAXU--------[3R.A]---[4]
-MIXED BITWISE AND-----------------------------------MAND---------[3R.A]---[4]
-MIXED BITWISE NAND----------------------------------MNAND--------[3R.A]---[4]
-MIXED BITWISE OR------------------------------------MOR----------[3R.A]---[4]
-MIXED BITWISE NOR-----------------------------------MNOR---------[3R.A]---[4]
-MIXED BITWISE XOR-----------------------------------MXOR---------[3R.A]---[4]
-MIXED BITWISE XNOR----------------------------------MXNOR--------[3R.A]---[4]
-MIXED BITWISE IMPLY---------------------------------MIMP---------[3R.A]---[4]
-MIXED BITWISE NIMPLY--------------------------------MNIMP--------[3R.A]---[4]
-MIXED LEFT SHIFT------------------------------------MLSH---------[3R.A]---[4]
-MIXED LEFT SHIFT UNSIGNED---------------------------MLSHU--------[3R.A]---[4]
-MIXED RIGHT SHIFT-----------------------------------MRSH---------[3R.A]---[4]
-MIXED RIGHT SHIFT UNSIGNED--------------------------MRSHU--------[3R.A]---[4]
-MIXED SET IF EQUAL----------------------------------MSEQ---------[3R.A]---[4]
-MIXED SET IF LESS THAN------------------------------MSLT---------[3R.A]---[4]
-MIXED SET IF LESS THAN UNSIGNED---------------------MSLTU--------[3R.A]---[4]
-MIXED SET IF LESS OR EQUAL--------------------------MSLE---------[3R.A]---[4]
-MIXED SET IF LESS OR EQUAL UNSIGNED-----------------MSLEU--------[3R.A]---[4]
-MIXED CONDITIONAL MOVE------------------------------MCMOV--------[3R.A]---[4]
-
-VECTOR LOAD IMMEDIATE-------------------------------VLDI---------[RI.A]---[4] // Va = imm (broadcast)
-
-VECTOR ADDITION IMMEDIATE---------------------------VADDI--------[2RI.A]--[4]
-VECTOR ADDITION IMMEDIATE UNSIGNED------------------VADDIU-------[2RI.A]--[4]
-VECTOR SUBTRACTION IMMEDIATE------------------------VSUBI--------[2RI.A]--[4]
-VECTOR SUBTRACTION IMMEDIATE UNSIGNED---------------VSUBIU-------[2RI.A]--[4]
-VECTOR MINIMUM IMMEDIATE----------------------------VMINI--------[2RI.A]--[4]
-VECTOR MINIMUM IMMEDIATE UNSIGNED-------------------VMINIU-------[2RI.A]--[4]
-VECTOR MAXIMUM IMMEDIATE----------------------------VMAXI--------[2RI.A]--[4]
-VECTOR MAXIMUM IMMEDIATE UNSIGNED-------------------VMAXIU-------[2RI.A]--[4]
-VECTOR BITWISE AND IMMEDIATE------------------------VANDI--------[2RI.A]--[4]
-VECTOR BITWISE NAND IMMEDIATE-----------------------VNANID-------[2RI.A]--[4]
-VECTOR BITWISE OR IMMEDIATE-------------------------VORI---------[2RI.A]--[4]
-VECTOR BITWISE NOR IMMEDIATE------------------------VNORI--------[2RI.A]--[4]
-VECTOR BITWISE XOR IMMEDIATE------------------------VXORI--------[2RI.A]--[4]
-VECTOR BITWISE XNOR IMMEDIATE-----------------------VXNORI-------[2RI.A]--[4]
-VECTOR BITWISE IMPLY IMMEDIATE----------------------VIMPI--------[2RI.A]--[4]
-VECTOR BITWISE NIMPLY IMMEDIATE---------------------VNIMPI-------[2RI.A]--[4]
-VECTOR LEFT SHIFT IMMEDIATE-------------------------VLSHI--------[2RI.A]--[4]
-VECTOR LEFT SHIFT IMMEDIATE UNSIGNED----------------VLSHIU-------[2RI.A]--[4]
-VECTOR RIGHT SHIFT IMMEDIATE------------------------VRSHI--------[2RI.A]--[4]
-VECTOR RIGHT SHIFT IMMEDIATE UNSIGNED---------------VRSHIU-------[2RI.A]--[4]
-VECTOR SET IF EQUAL IMMEDIATE-----------------------VSEQI--------[2RI.A]--[4]
-VECTOR SET IF LESS THAN IMMEDIATE-------------------VSLTI--------[2RI.A]--[4]
-VECTOR SET IF LESS THAN IMMEDIATE UNSIGNED----------VSLTIU-------[2RI.A]--[4]
-VECTOR SET IF LESS OR EQUAL IMMEDIATE---------------VSLEI--------[2RI.A]--[4]
-VECTOR SET IF LESS OR EQUAL IMMEDIATE UNSIGNED------VSLEIU-------[2RI.A]--[4]
-VECTOR CONDITIONAL LOAD IMMEDIATE-------------------VCLDI--------[2RI.A]--[4]
-VECTOR EXTRACT IMMEDIATE----------------------------VEXTRI-------[2RI.A]--[4] // Va[imm] = Rc;
-VECTOR INJECT IMMEDIATE-----------------------------VINJI--------[2RI.A]--[4] // Ra = Vb[imm];
-VECTOR ALIGN----------------------------------------VALN---------[2RI.A]--[4] // Va = signExtend(Vb >> imm, len);
-VECTOR ALIGN UNSIGNED-------------------------------VALNU--------[2RI.A]--[4] // Va = zeroExtend(Vb >> imm, len);
-
-VECTOR MERGE----------------------------------------VMRG---------[3RI.A]--[4] // Va = (Vb << imm) | (Vc >> (len - imm));
+VECTOR ADDITION IMMEDIATE---------------------------VADDI--------[3RI.B]--[A]
+VECTOR SUBTRACTION IMMEDIATE------------------------VSUBI--------[3RI.B]--[A]
+VECTOR MINIMUM IMMEDIATE----------------------------VMINI--------[3RI.B]--[A]
+VECTOR MAXIMUM IMMEDIATE----------------------------VMAXI--------[3RI.B]--[A]
+VECTOR BITWISE AND IMMEDIATE------------------------VANDI--------[3RI.B]--[A]
+VECTOR BITWISE OR IMMEDIATE-------------------------VORI---------[3RI.B]--[A]
+VECTOR BITWISE XOR IMMEDIATE------------------------VXORI--------[3RI.B]--[A]
+VECTOR LEFT SHIFT IMMEDIATE-------------------------VLSHI--------[3RI.B]--[A]
+VECTOR RIGHT SHIFT IMMEDIATE------------------------VRSHI--------[3RI.B]--[A]
+VECTOR SET IF EQUAL IMMEDIATE-----------------------VSEQI--------[3RI.B]--[A]
+VECTOR SET IF LESS THAN IMMEDIATE-------------------VSLTI--------[3RI.B]--[A]
+VECTOR SET IF LESS OR EQUAL IMMEDIATE---------------VSLEI--------[3RI.B]--[A]
+VECTOR EXTRACT IMMEDIATE----------------------------VEXTRI-------[3RI.B]--[B]    // Va[imm] = Rc; (ignores the current VSH reg)
+VECTOR INJECT IMMEDIATE-----------------------------VINJI--------[3RI.B]--[B]    // Ra = Vb[imm]; (ignores the current VSH reg)
+VECTOR LOAD IMMEDIATE-------------------------------VLDI---------[3RI.B]--[D]    // Va = imm (broadcast)
 
 ///.
-advanced vector integer: OK
+advanced vector integer
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+VECTOR COUNT ZEROS----------------------------------VCZ----------[3R.A]---[E]
+VECTOR COUNT LEADING ZEROS--------------------------VCLZ---------[3R.A]---[E]
+VECTOR COUNT TRAILING ZEROS-------------------------VCTZ---------[3R.A]---[E]
+VECTOR COUNT ONES-----------------------------------VCO----------[3R.A]---[E]
+VECTOR COUNT LEADING ONES---------------------------VCLO---------[3R.A]---[E]
+VECTOR COUNT TRAILING ONES--------------------------VCTO---------[3R.A]---[E]
 
-VECTOR SWAP-----------------------------------------VSWP---------[2R.A]---[4]
-VECTOR COUNT ZEROS----------------------------------VCZ----------[2R.A]---[4]
-VECTOR COUNT LEADING ZEROS--------------------------VCLZ---------[2R.A]---[4]
-VECTOR COUNT TRAILING ZEROS-------------------------VCTZ---------[2R.A]---[4]
-VECTOR COUNT ONES-----------------------------------VCO----------[2R.A]---[4]
-VECTOR COUNT LEADING ONES---------------------------VCLO---------[2R.A]---[4]
-VECTOR COUNT TRAILING ONES--------------------------VCTO---------[2R.A]---[4]
+VECTOR MULTIPLICATION-------------------------------VMUL---------[4R.B]---[A]
+VECTOR HIGH MULTIPLICATION--------------------------VHMUL--------[4R.B]---[A]
+VECTOR DIVISION-------------------------------------VDIV---------[4R.B]---[A]
+VECTOR REMAINDER------------------------------------VREM---------[4R.B]---[A]
+VECTOR LEFT ROTATE----------------------------------VLRT---------[4R.B]---[A]
+VECTOR RIGHT ROTATE---------------------------------VRRT---------[4R.B]---[A]
+VECTOR BIT SWAP-------------------------------------VBSW---------[4R.B]---[A]
+VECTOR BIT REVERSE----------------------------------VBRV---------[4R.B]---[A]
+VECTOR BIT FLIP-------------------------------------VBFL---------[4R.B]---[A]
+VECTOR CARRYLESS MULTIPLICATION---------------------VCMUL--------[4R.B]---[A]
+VECTOR MULTIPLY ACCUMULATE--------------------------VMAC---------[4R.B]---[H]
+VECTOR MULTIPLY ACCUMULATE UNSIGNED-----------------VMACU--------[4R.B]---[H]
+VECTOR PERMUTE--------------------------------------VPER---------[4R.B]---[A]
 
-VECTOR MULTIPLICATION-------------------------------VMUL---------[3R.A]---[4]
-VECTOR MULTIPLICATION UNSIGNED----------------------VMULU--------[3R.A]---[4]
-VECTOR HIGH MULTIPLICATION--------------------------VHMUL--------[3R.A]---[4]
-VECTOR HIGH MULTIPLICATION UNSIGNED-----------------VHMULU-------[3R.A]---[4]
-VECTOR DIVISION-------------------------------------VDIV---------[3R.A]---[4]
-VECTOR DIVISION UNSIGNED----------------------------VDIVU--------[3R.A]---[4]
-VECTOR REMAINDER------------------------------------VREM---------[3R.A]---[4]
-VECTOR REMAINDER UNSIGNED---------------------------VREMU--------[3R.A]---[4]
-VECTOR LEFT ROTATE----------------------------------VLRT---------[3R.A]---[4]
-VECTOR RIGHT ROTATE---------------------------------VRRT---------[3R.A]---[4]
-VECTOR BIT SWAP-------------------------------------VBSW---------[3R.A]---[4]
-VECTOR BIT REVERSE----------------------------------VBRV---------[3R.A]---[4]
-VECTOR BIT FLIP-------------------------------------VBFL---------[3R.A]---[4]
-VECTOR CARRYLESS MULTIPLICATION---------------------VCMUL--------[3R.A]---[4]
+VECTOR MULTIPLICATION IMMEDIATE---------------------VMULI--------[3RI.B]--[A]
+VECTOR HIGH MULTIPLICATION IMMEDIATE----------------VHMULI-------[3RI.B]--[A]
+VECTOR DIVISION IMMEDIATE---------------------------VDIVI--------[3RI.B]--[A]
+VECTOR REMAINDER IMMEDIATE--------------------------VREMI--------[3RI.B]--[A]
+VECTOR LEFT ROTATE IMMEDIATE------------------------VLRTI--------[3RI.B]--[A]
+VECTOR RIGHT ROTATE IMMEDIATE-----------------------VRRTI--------[3RI.B]--[A]
+VECTOR BIT SWAP IMMEDIATE---------------------------VBSWI--------[3RI.B]--[A]
+VECTOR BIT REVERSE IMMEDIATE------------------------VBRVI--------[3RI.B]--[A]
+VECTOR BIT FLIP IMMEDIATE---------------------------VBFLI--------[3RI.B]--[A]
+VECTOR CARRYLESS MULTIPLICATION IMMEDIATE-----------VCMULI-------[3RI.B]--[A]
+VECTOR MULTIPLY ACCUMULATE IMMEDIATE----------------VMACI--------[4R.B]---[H]
+VECTOR MULTIPLY ACCUMULATE IMMEDIATE UNSIGNED-------VMACIU-------[4R.B]---[H]
+VECTOR PERMUTE IMMEDIATE----------------------------VPERI--------[3RI.B]--[A]
+VECTOR PACK UNPACK----------------------------------VPCKUPCK-----[3RI.B]--[A]    // Changes size but maintains number of elements.
 
-MIXED MULTIPLICATION--------------------------------MMUL---------[3R.A]---[4]
-MIXED MULTIPLICATION UNSIGNED-----------------------MMULU--------[3R.A]---[4]
-MIXED HIGH MULTIPLICATION---------------------------MHMUL--------[3R.A]---[4]
-MIXED HIGH MULTIPLICATION UNSIGNED------------------MHMULU-------[3R.A]---[4]
-MIXED DIVISION--------------------------------------MDIV---------[3R.A]---[4]
-MIXED DIVISION UNSIGNED-----------------------------MDIVU--------[3R.A]---[4]
-MIXED REMAINDER-------------------------------------MREM---------[3R.A]---[4]
-MIXED REMAINDER UNSIGNED----------------------------MREMU--------[3R.A]---[4]
-MIXED LEFT ROTATE-----------------------------------MLRT---------[3R.A]---[4]
-MIXED RIGHT ROTATE----------------------------------MRRT---------[3R.A]---[4]
-MIXED BIT SWAP--------------------------------------MBSW---------[3R.A]---[4]
-MIXED BIT REVERSE-----------------------------------MBRV---------[3R.A]---[4]
-MIXED BIT FLIP--------------------------------------MBFL---------[3R.A]---[4]
-MIXED CARRYLESS MULTIPLICATION----------------------MCMUL--------[3R.A]---[4]
-
-VECTOR MULTIPLY ACCUMULATE--------------------------VMAC---------[4R.A]---[4]
-VECTOR MULTIPLY ACCUMULATE UNSIGNED-----------------VMACU--------[4R.A]---[4]
-VECTOR BLEND----------------------------------------VBND---------[4R.A]---[4] // Va = (Vb << Vc) | Vd;
-VECTOR PERMUTE--------------------------------------VPER---------[4R.A]---[4]
-
-MIXED MULTIPLY ACCUMULATE---------------------------MMAC---------[4R.A]---[4]
-MIXED MULTIPLY ACCUMULATE UNSIGNED------------------MMACU--------[4R.A]---[4]
-MIXED BLEND-----------------------------------------MBND---------[4R.A]---[4] // Va = (Vb << Vc) | Rd;
-
-VECTOR MULTIPLICATION IMMEDIATE---------------------VMULI--------[2RI.A]--[4]
-VECTOR MULTIPLICATION IMMEDIATE UNSIGNED------------VMULIU-------[2RI.A]--[4]
-VECTOR HIGH MULTIPLICATION IMMEDIATE----------------VHMULI-------[2RI.A]--[4]
-VECTOR HIGH MULTIPLICATION IMMEDIATE UNSIGNED-------VHMULIU------[2RI.A]--[4]
-VECTOR DIVISION IMMEDIATE---------------------------VDIVI--------[2RI.A]--[4]
-VECTOR DIVISION IMMEDIATE UNSIGNED------------------VDIVIU-------[2RI.A]--[4]
-VECTOR REMAINDER IMMEDIATE--------------------------VREMI--------[2RI.A]--[4]
-VECTOR REMAINDER IMMEDIATE UNSIGNED-----------------VREMIU-------[2RI.A]--[4]
-VECTOR LEFT ROTATE IMMEDIATE------------------------VLRTI--------[2RI.A]--[4]
-VECTOR RIGHT ROTATE IMMEDIATE-----------------------VRRTI--------[2RI.A]--[4]
-VECTOR BIT SWAP IMMEDIATE---------------------------VBSWI--------[2RI.A]--[4]
-VECTOR BIT REVERSE IMMEDIATE------------------------VBRVI--------[2RI.A]--[4]
-VECTOR BIT FLIP IMMEDIATE---------------------------VBFLI--------[2RI.A]--[4]
-VECTOR CARRYLESS MULTIPLICATION IMMEDIATE-----------VCMULI-------[2RI.A]--[4]
-
-pack:
-    00aa00bb00cc00dd00ee00ff00gg00hh
-    aabbccddeeffgghh0000000000000000
-unpack: opposite
-
-VECTOR PACK-----------------------------------------VPCK---------[2RI.A]--[4]
-VECTOR UNPACK---------------------------------------VUPCK--------[2RI.A]--[4]
-
-VECTOR MULTIPLY ACCUMULATE IMMEDIATE----------------VMACI--------[3RI.A]--[4]
-VECTOR MULTIPLY ACCUMULATE IMMEDIATE UNSIGNED-------VMACIU-------[3RI.A]--[4]
-VECTOR BLEND IMMEDIATE------------------------------VBNDI--------[3RI.A]--[4] // Va = (Vb << Imm) | Vd;
-
-MIXED MULTIPLY ACCUMULATE IMMEDIATE-----------------MMACI--------[3RI.A]--[4]
-MIXED MULTIPLY ACCUMULATE IMMEDIATE UNSIGNED--------MMACIU-------[3RI.A]--[4]
-MIXED BLEND IMMEDIATE-------------------------------MBNDI--------[3RI.A]--[4] // Va = (Vb << Imm) | Rd;
+pack unpack: aaaabbbbccccdddd <-> 000000000000abcd
 
 ///.
-vector reductions: OK
+vector reductions
 "REDUCED" means scalar = operation(vector)
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-REDUCED ADDITION------------------------------------RADD---------[2R.A]---[4]
-REDUCED ADDITION UNSIGNED---------------------------RADDU--------[2R.A]---[4]
-REDUCED SUBTRACTION---------------------------------RSUB---------[2R.A]---[4]
-REDUCED SUBTRACTION UNSIGNED------------------------RSUBU--------[2R.A]---[4]
-REDUCED MINIMUM-------------------------------------RMIN---------[2R.A]---[4]
-REDUCED MINIMUM UNSIGNED----------------------------RMINU--------[2R.A]---[4]
-REDUCED MAXIMUM-------------------------------------RMAX---------[2R.A]---[4]
-REDUCED MAXIMUM UNSIGNED----------------------------RMAXU--------[2R.A]---[4]
-REDUCED BITWISE AND---------------------------------RAND---------[2R.A]---[4]
-REDUCED BITWISE NAND--------------------------------RNAND--------[2R.A]---[4]
-REDUCED BITWISE OR----------------------------------ROR----------[2R.A]---[4]
-REDUCED BITWISE NOR---------------------------------RNOR---------[2R.A]---[4]
-REDUCED BITWISE XOR---------------------------------RXOR---------[2R.A]---[4]
-REDUCED BITWISE XNOR--------------------------------RXNOR--------[2R.A]---[4]
-REDUCED BITWISE IMPLY-------------------------------RIMP---------[2R.A]---[4]
-REDUCED BITWISE NIMPLY------------------------------RNIMP--------[2R.A]---[4]
+REDUCED ADDITION------------------------------------RADD---------[3R.A]---[A]
+REDUCED SUBTRACTION---------------------------------RSUB---------[3R.A]---[A]
+REDUCED MINIMUM-------------------------------------RMIN---------[3R.A]---[A]
+REDUCED MAXIMUM-------------------------------------RMAX---------[3R.A]---[A]
+REDUCED BITWISE AND---------------------------------RAND---------[3R.A]---[A]
+REDUCED BITWISE OR----------------------------------ROR----------[3R.A]---[A]
+REDUCED BITWISE XOR---------------------------------RXOR---------[3R.A]---[A]
 
 ///.
-basic vector floating point: 
+basic vector floating point
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+VECTOR CAST FP. TO INTEGER--------------------------VCFI---------[3R.A]---[E]    // Preserves the shape.
+VECTOR CAST FP. TO INTEGER TRUNCATED----------------VCFIT--------[3R.A]---[E]    // Preserves the shape.
+VECTOR CAST INTEGER TO FP.--------------------------VCIF---------[3R.A]---[E]    // Preserves the shape.
+CAST FP. TO FP. 1-----------------------------------VCFF1--------[3R.A]---[E]    // Doesn't preserve the shape.
+CAST FP. TO FP. 2-----------------------------------VCFF2--------[3R.A]---[E]    // Doesn't preserve the shape.
+CAST FP. TO FP. 4-----------------------------------VCFF4--------[3R.A]---[E]    // Doesn't preserve the shape.
+CAST FP. TO FP. 8-----------------------------------VCFF8--------[3R.A]---[E]    // Doesn't preserve the shape.
 
-VECTOR CAST FP. TO INTEGER--------------------------VCFI---------[2R.A]---[4] // Preserves the shape (uses current rounding mode).
-VECTOR CAST FP. TO INTEGER TRUNCATED----------------VCFIT--------[2R.A]---[4] // Same as VCFI but always truncates.
-VECTOR CAST INTEGER TO FP.--------------------------VCIF---------[2R.A]---[4] // Preserves the shape.
-CAST FP. TO FP. 1-----------------------------------VCFF1--------[2R.A]---[4] // Doesn't preserve the shape.
-CAST FP. TO FP. 2-----------------------------------VCFF2--------[2R.A]---[4] // Doesn't preserve the shape.
-CAST FP. TO FP. 4-----------------------------------VCFF4--------[2R.A]---[4] // Doesn't preserve the shape.
-CAST FP. TO FP. 8-----------------------------------VCFF8--------[2R.A]---[4] // Doesn't preserve the shape.
-VECTOR FP. ABSOLUTE VALUE---------------------------VFABS--------[2R.A]---[4]
-VECTOR FP. INVERSE----------------------------------VFINV--------[2R.A]---[4]
+VECTOR FP. ADDITION---------------------------------VFADD--------[4R.B]---[/]
+VECTOR FP. SUBTRACTION------------------------------VFSUB--------[4R.B]---[/]
+VECTOR FP. MULTIPLICATION---------------------------VFMUL--------[4R.B]---[/]
+VECTOR FP. DIVISION---------------------------------VFDIV--------[4R.B]---[/]
+VECTOR FP. MINIMUM----------------------------------VFMIN--------[4R.B]---[/]
+VECTOR FP. MAXIMUM----------------------------------VFMAX--------[4R.B]---[/]
+VECTOR FP. SET IF LESS THAN-------------------------VFSLT--------[4R.B]---[A]
+VECTOR FP. SET IF LESS OR EQUAL---------------------VFSLE--------[4R.B]---[A]
+VECTOR FP. MULTIPLY ACCUMULATE----------------------VFMAC--------[4R.B]---[H]
 
-VECTOR FP. ADDITION---------------------------------VFADD--------[3R.A]---[4]
-VECTOR FP. SUBTRACTION------------------------------VFSUB--------[3R.A]---[4]
-VECTOR FP. MULTIPLICATION---------------------------VFMUL--------[3R.A]---[4]
-VECTOR FP. DIVISION---------------------------------VFDIV--------[3R.A]---[4]
-VECTOR FP. MINIMUM----------------------------------VFMIN--------[3R.A]---[4]
-VECTOR FP. MAXIMUM----------------------------------VFMAX--------[3R.A]---[4]
-VECTOR FP. SET IF LESS THAN-------------------------VFSLT--------[3R.A]---[4]
-VECTOR FP. SET IF LESS OR EQUAL---------------------VFSLE--------[3R.A]---[4]
-
-MIXED FP. ADDITION----------------------------------MFADD--------[3R.A]---[4]
-MIXED FP. SUBTRACTION-------------------------------MFSUB--------[3R.A]---[4]
-MIXED FP. MULTIPLICATION----------------------------MFMUL--------[3R.A]---[4]
-MIXED FP. DIVISION----------------------------------MFDIV--------[3R.A]---[4]
-MIXED FP. MINIMUM-----------------------------------MFMIN--------[3R.A]---[4]
-MIXED FP. MAXIMUM-----------------------------------MFMAX--------[3R.A]---[4]
-MIXED FP. SET IF LESS THAN--------------------------MFSLT--------[3R.A]---[4]
-MIXED FP. SET IF LESS OR EQUAL----------------------MFSLE--------[3R.A]---[4]
-
-VECTOR FP. MULTIPLY ACCUMULATE----------------------VFMAC--------[4R.A]---[4]
-MIXED FP. MULTIPLY ACCUMULATE-----------------------XFMAC--------[4R.A]---[4]
-
-VECTOR FP. ADDITION IMMEDIATE-----------------------VFADDI-------[2RI.A]--[4]
-VECTOR FP. SUBTRACTION IMMEDIATE--------------------VFSUBI-------[2RI.A]--[4]
-VECTOR FP. MULTIPLICATION IMMEDIATE-----------------VFMULI-------[2RI.A]--[4]
-VECTOR FP. DIVISION IMMEDIATE-----------------------VFDIVI-------[2RI.A]--[4]
-VECTOR FP. MINIMUM IMMEDIATE------------------------VFMINI-------[2RI.A]--[4]
-VECTOR FP. MAXIMUM IMMEDIATE------------------------VFMAXI-------[2RI.A]--[4]
-VECTOR FP. SET IF LESS THAN IMMEDIATE---------------VFSLTI-------[2RI.A]--[4]
-VECTOR FP. SET IF LESS OR EQUAL IMMEDIATE-----------VFSLEI-------[2RI.A]--[4]
-
-VECTOR FP. MULTIPLY ACCUMULATE IMMEDIATE------------VFMACI-------[3RI.A]--[4]
-MIXED FP. MULTIPLY ACCUMULATE IMMEDIATE-------------XFMACI-------[3RI.A]--[4]
+VECTOR FP. ADDITION IMMEDIATE-----------------------VFADDI-------[3RI.B]--[/]
+VECTOR FP. SUBTRACTION IMMEDIATE--------------------VFSUBI-------[3RI.B]--[/]
+VECTOR FP. MULTIPLICATION IMMEDIATE-----------------VFMULI-------[3RI.B]--[/]
+VECTOR FP. DIVISION IMMEDIATE-----------------------VFDIVI-------[3RI.B]--[/]
+VECTOR FP. MINIMUM IMMEDIATE------------------------VFMINI-------[3RI.B]--[/]
+VECTOR FP. MAXIMUM IMMEDIATE------------------------VFMAXI-------[3RI.B]--[/]
+VECTOR FP. SET IF LESS THAN IMMEDIATE---------------VFSLTI-------[3RI.B]--[A]
+VECTOR FP. SET IF LESS OR EQUAL IMMEDIATE-----------VFSLEI-------[3RI.B]--[A]
+VECTOR FP. MULTIPLY ACCUMULATE IMMEDIATE------------VFMACI-------[3RI.B]--[H]
 
 ///.
-advanced vector floating point: OK
+advanced vector floating point
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-VECTOR FP. SQUARE ROOT------------------------------VSQRT--------[2R.A]---[4]
-
-VECTOR FP. POWER------------------------------------VFPOW--------[3R.A]---[4]
-MIXED FP. POWER-------------------------------------MFPOW--------[3R.A]---[4]
-
-VECTOR FP. POWER IMMEDIATE--------------------------VFPOWI-------[2RI.A]--[4]
+VECTOR FP. SQUARE ROOT------------------------------VSQRT--------[3R.A]---[E]
 
 ///.
-vector floating point reductions: OK
-"REDUCED" means scalar = operation(vector)
+vector floating point reductions
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-REDUCED FP. ADDITION--------------------------------RFADD--------[2R.A]---[4]
-REDUCED FP. SUBTRACTION-----------------------------RFSUB--------[2R.A]---[4]
-REDUCED FP. MULTIPLICATION--------------------------RFMUL--------[2R.A]---[4]
-REDUCED FP. DIVISION--------------------------------RFDIV--------[2R.A]---[4]
-REDUCED FP. MINIMUM---------------------------------RFMIN--------[2R.A]---[4]
-REDUCED FP. MAXIMUM---------------------------------RFMAX--------[2R.A]---[4]
+REDUCED FP. ADDITION--------------------------------RFADD--------[3R.A]---[E]
+REDUCED FP. SUBTRACTION-----------------------------RFSUB--------[3R.A]---[E]
+REDUCED FP. MULTIPLICATION--------------------------RFMUL--------[3R.A]---[E]
+REDUCED FP. DIVISION--------------------------------RFDIV--------[3R.A]---[E]
+REDUCED FP. MINIMUM---------------------------------RFMIN--------[3R.A]---[E]
+REDUCED FP. MAXIMUM---------------------------------RFMAX--------[3R.A]---[E]
 
 ///.
-basic vector memory: OK
+basic vector memory
 // Addressing mode: Va = mem(Rb + stride(imm));
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-VECTOR MEMORY LOAD----------------------------------VMLD---------[2RI.A]--[4]
-VECTOR MEMORY STORE---------------------------------VMST---------[2RI.A]--[4]
+VECTOR MEMORY LOAD----------------------------------VMLD---------[3RI.B]--[D]
+VECTOR MEMORY STORE---------------------------------VMST---------[3RI.B]--[D]
 
 ///.
-advanced vector memory: OK
+advanced vector memory
 // Addressing mode: Va_i = mem(Rb + Vc_i);
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-VECTOR GATHER---------------------------------------VGTR---------[3R.A]---[4]
-VECTOR SCATTER--------------------------------------VSCR---------[3R.A]---[4]
+VECTOR GATHER---------------------------------------VGTR---------[4R.B]---[/]
+VECTOR SCATTER--------------------------------------VSCR---------[4R.B]---[/]
 
 ///.
-vector masking & configuration: OK
+vector configuration
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-LOAD MASK-------------------------------------------LDMSK--------[2R.A]---[4]
-STORE MASK------------------------------------------STMSK--------[2R.A]---[4]
-BITWISE AND ON MASK---------------------------------ANDMSK-------[2R.A]---[4]
-BITWISE NAND ON MASK--------------------------------NANDMSK------[2R.A]---[4]
-BITWISE OR ON MASK----------------------------------ORMSK--------[2R.A]---[4]
-BITWISE NOR ON MASK---------------------------------NORMSK-------[2R.A]---[4]
-BITWISE XOR ON MASK---------------------------------XORMSK-------[2R.A]---[4]
-BITWISE XNOR ON MASK--------------------------------XNORMSK------[2R.A]---[4]
-BITWISE IMPLY ON MASK-------------------------------IMPMSK-------[2R.A]---[4]
-BITWISE NIMPLY ON MASK------------------------------NIMPMSK------[2R.A]---[4]
-LOAD VECTOR CONFIGURATION---------------------------LDVCNF-------[2R.A]---[0]
-STORE VECTOR CONFIGURATION--------------------------STVCNF-------[2R.A]---[0]
+LOAD VECTOR CONFIGURATION---------------------------LDVCNF-------[2R.A]---[/]
+STORE VECTOR CONFIGURATION--------------------------STVCNF-------[2R.A]---[/]
 
 ///.
-compressed basic integer:
+compressed basic integer
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-COMPRESSED ADDITION---------------------------------CADD---------[2R.C]---[/]
-COMPRESSED SUBTRACTION------------------------------CSUB---------[2R.C]---[/]
-COMPRESSED MOVE-------------------------------------CMOV---------[2R.C]---[/]
-COMPRESSED BITWISE AND------------------------------CAND---------[2R.C]---[/]
-
-COMPRESSED BITWISE OR-------------------------------COR----------[2R.B]---[/]
-COMPRESSED BITWISE XOR------------------------------CXOR---------[2R.B]---[/]
-COMPRESSED LEFT SHIFT-------------------------------CLSH---------[2R.B]---[/]
-COMPRESSED RIGHT SHIFT------------------------------CRSH---------[2R.B]---[/]
-COMPRESSED SET IF EQUAL ZERO------------------------CSEQZ--------[2R.B]---[/]
-COMPRESSED SET IF LESS THAN ZERO--------------------CSLTZ--------[2R.B]---[/]
-COMPRESSED SET IF LESS OR EQUAL THAN ZERO-----------CSLEZ--------[2R.B]---[/]
-COMPRESSED SWAP-------------------------------------CSWP---------[2R.B]---[/]
+COMPRESSED ADDITION---------------------------------CADD---------[2R.B]---[G]
+COMPRESSED SUBTRACTION------------------------------CSUB---------[2R.B]---[G]
+COMPRESSED MOVE-------------------------------------CMOV---------[2R.B]---[G]
+COMPRESSED BITWISE AND------------------------------CAND---------[2R.B]---[G]
+COMPRESSED LEFT SHIFT-------------------------------CLSH---------[2R.B]---[G]
+COMPRESSED RIGHT SHIFT------------------------------CRSH---------[2R.B]---[G]
 
 COMPRESSED ADDITION IMMEDIATE-----------------------CADDI--------[RI.B]---[/]
-COMPRESSED SUBTRACTION IMMEDIATE--------------------CSUBI--------[RI.B]---[/]
 COMPRESSED BITWISE AND IMMEDIATE--------------------CANDI--------[RI.B]---[/]
-COMPRESSED BITWISE OR IMMEDIATE---------------------CORI---------[RI.B]---[/]
-COMPRESSED BITWISE XOR IMMEDIATE--------------------CXORI--------[RI.B]---[/]
 COMPRESSED LEFT SHIFT IMMEDIATE---------------------CLSHI--------[RI.B]---[/]
 COMPRESSED RIGHT SHIFT IMMEDIATE--------------------CRSHI--------[RI.B]---[/]
-...
-
-COMPRESSED LOAD IMMEDIATE---------------------------CLDI---------[RI.C]---[/]
+COMPRESSED LOAD IMMEDIATE---------------------------CLDI---------[RI.B]---[/]
 
 ///.
-compressed basic fp: OK
+compressed data
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+COMPRESSED MEMORY LOAD------------------------------CMLD---------[2R.B]---[B]
+COMPRESSED MEMORY STORE-----------------------------CMST---------[2R.B]---[B]
 
-COMPRESSED FP. ADDITION-----------------------------CFADD--------[2R.D]---[1]
-COMPRESSED FP. SUBTRACTION--------------------------CFSUB--------[2R.D]---[1]
-COMPRESSED FP. MULTIPLICATION-----------------------CFMUL--------[2R.D]---[1]
-COMPRESSED FP. DIVISION-----------------------------CFDIV--------[2R.D]---[1]
-COMPRESSED FP. INVERSE------------------------------CFINV--------[2R.D]---[1]
-
-COMPRESSED CAST FP. TO INTEGER----------------------CCFI---------[2R.D]---[1] // Always truncates.
-COMPRESSED CAST INTEGER TO FP.----------------------CCIF---------[2R.D]---[1]
-COMPRESSED CAST FP. TO FP.--------------------------CCFF---------[2R.D]---[1]
+COMPRESSED LOAD INT OFFSET--------------------------CLIO---------[2RI.C]--[/]
+COMPRESSED STORE INT OFFSET-------------------------CSIO---------[2RI.C]--[/]
+COMPRESSED LOAD WORD OFFSET-------------------------CLWO---------[2RI.C]--[/]
+COMPRESSED STORE WORD OFFSET------------------------CSWO---------[2RI.C]--[/]
 
 ///.
-compressed data: OK
+compressed flow
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-COMPRESSED MEMORY LOAD BYTE-------------------------CMLDB--------[2R.B]---[/]
-COMPRESSED MEMORY STORE BYTE------------------------CMSTB--------[2R.B]---[/]
-COMPRESSED MEMORY LOAD SHORT------------------------CMLDS--------[2R.B]---[/]
-COMPRESSED MEMORY STORE SHORT-----------------------CMSTS--------[2R.B]---[/]
-COMPRESSED MEMORY LOAD INT--------------------------CMLDI--------[2R.B]---[/]
-COMPRESSED MEMORY STORE INT-------------------------CMSTI--------[2R.B]---[/]
-COMPRESSED MEMORY LOAD WORD-------------------------CMLDW--------[2R.B]---[/]
-COMPRESSED MEMORY STORE WORD------------------------CMSTW--------[2R.B]---[/]
-
-COMPRESSED LOAD INT OFFSET--------------------------CLIO---------[2RI.D]--[/]
-COMPRESSED STORE INT OFFSET-------------------------CSIO---------[2RI.D]--[/]
-COMPRESSED LOAD WORD OFFSET-------------------------CLWO---------[2RI.D]--[/]
-COMPRESSED STORE WORD OFFSET------------------------CSWO---------[2RI.D]--[/]
-
-///.
-compressed integer flow: OK
-
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-COMPRESSED BRANCH IF EQUAL TO ZERO------------------CBEQZ--------[RI.C]---[/]
-COMPRESSED BRANCH IF LESS THAN ZERO-----------------CBLTZ--------[RI.C]---[/]
-COMPRESSED BRANCH IF LESS OR EQUAL TO ZERO----------CBLEZ--------[RI.C]---[/]
-COMPRESSED JUMP AND LINK OFFSET---------------------CJALO--------[RI.C]---[/]
-COMPRESSED JUMP OFFSET------------------------------CJMPO--------[RI.C]---[/]
+COMPRESSED BRANCH IF EQUAL TO ZERO------------------CBEQZ--------[RI.B]---[/]
+COMPRESSED BRANCH IF LESS THAN ZERO-----------------CBLTZ--------[RI.B]---[/]
+COMPRESSED BRANCH IF LESS OR EQUAL TO ZERO----------CBLEZ--------[RI.B]---[/]
+COMPRESSED JUMP AND LINK OFFSET---------------------CJALO--------[RI.B]---[/]
+COMPRESSED JUMP OFFSET------------------------------CJMPO--------[RI.B]---[/]
 
 COMPRESSED JUMP AND LINK----------------------------CJAL---------[I.B]----[/]
 COMPRESSED JUMP-------------------------------------CJMP---------[I.B]----[/]
 
 ///.
-basic system: OK
+basic system
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+NO OPERATION----------------------------------------NOP----------[2R.A]---[/]    // Regs aren't used.
+HALT EXECUTION--------------------------------------HLT----------[2R.A]---[/] *  // PWR = Ra; halt; (Rb isn't used)
+SYSTEM INFORMATION----------------------------------SYSINFO------[2R.A]---[B]
 
-NO OPERATION----------------------------------------NOP----------[2R.A]---[0]   // Regs aren't used.
-HALT EXECUTION--------------------------------------HLT----------[2R.A]---[0] * // PWR = Ra; halt; (Rb isn't used)
-SYSTEM INFORMATION----------------------------------SYSINFO------[2R.A]---[1]
+SYSTEM INFORMATION IMMEDIATE------------------------SYSINFI------[RI.A]---[B]
 
-SYSTEM INFORMATION IMMEDIATE------------------------SYSINFI------[RI.A]---[1]
-
-CACHE OPERATION-------------------------------------CACOP--------[2RI.A]--[0] * // INCI fault if no caches are implemented.
+CACHE OPERATION-------------------------------------CACOP--------[2RI.B]--[/] *  // INCI fault if no caches are implemented.
 
 ///.
-eventing: OK
+eventing
 
-EVENT RETURN----------------------------------------ERET---------[2R.A]---[0] * // Perform eret; Ra = Rb;   (machine -> machine)
-
-///.
-user mode: OK
-
-USER EVENT RETURN-----------------------------------UERET--------[2R.A]---[0] // same ^^^                   (user -> user)
-USER RETURN-----------------------------------------URET---------[2R.A]---[0] * // same ^^^                 (machine -> user)
-
-USER CACHE OPERATION--------------------------------UCACOP-------[2RI.A]--[0]   // INCI fault if no caches are implemented.
+EVENT RETURN----------------------------------------ERET---------[2R.A]---[/] *  // Perform eret; Ra = Rb; (machine -> machine)
 
 ///.
-advanced system: OK
+user mode
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+USER EVENT RETURN-----------------------------------UERET--------[2R.A]---[/]    // Perform eret; Ra = Rb; (user -> user)
+USER RETURN-----------------------------------------URET---------[2R.A]---[/] *  // Perform eret; Ra = Rb;(machine -> user)
 
-SYSTEM CALL-----------------------------------------SYSCL--------[2R.A]---[0] * // Ra = call ID, Rb not used.
-
-SYSTEM CALL IMMEDIATE-------------------------------SYSCLI-------[RI.A]---[0] * // Imm = call ID, Ra not used.
-WAIT FOR INTERRUPT----------------------------------WINT---------[RI.A]---[0] * // Ra = timeout, Rb = int to wait for.
-DUMP FILE-------------------------------------------DMP----------[RI.A]---[0] *
-RESTORE FILE----------------------------------------RST----------[RI.A]---[0] *
-
-MEMORY MANAGEMENT UNIT OPERATION--------------------MMUOP--------[2RI.A]--[0] * // INCI fault if no MMU is implemented.
+USER CACHE OPERATION--------------------------------UCACOP-------[2RI.B]--[/]    // INCI fault if no caches are implemented.
 
 ///.
-helper registers: OK
+advanced system
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+SYSTEM CALL-----------------------------------------SYSCL--------[2R.A]---[/] *  // Ra = call ID, Rb not used.
 
-LOAD HELPER REGISTER--------------------------------LDHR---------[2R.A]---[1]
-STORE HELPER REGISTER-------------------------------STHR---------[2R.A]---[1]
-LOAD HELPER REGISTER MODE---------------------------LDHRM--------[2R.A]---[0]
-STORE HELPER REGISTER MODE--------------------------STHRM--------[2R.A]---[0]
+SYSTEM CALL IMMEDIATE-------------------------------SYSCLI-------[RI.A]---[/] *  // Imm = call ID, Ra not used.
+WAIT FOR INTERRUPT----------------------------------WINT---------[RI.A]---[/] *  // Ra = timeout, Rb = int to wait for.
+DUMP FILE-------------------------------------------DMP----------[RI.A]---[/] *
+RESTORE FILE----------------------------------------RST----------[RI.A]---[/] *
 
-LOAD HELPER REGISTER IMMEDIATE----------------------LDHRI--------[RI.A]---[0]
-LOAD HELPER REGISTER MODE IMMEDIATE-----------------LTHRMI-------[RI.A]---[0]
-
-///.
-performance counters: OK
-
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-LOAD COUNTER REGISTER-------------------------------LDCR---------[2R.A]---[1]
-STORE COUNTER REGISTER------------------------------STCR---------[2R.A]---[1]
-LOAD COUNTER REGISTER MODE--------------------------LDCRM--------[2R.A]---[0]
-STORE COUNTER REGISTER MODE-------------------------STCRM--------[2R.A]---[0]
-
-LOAD COUNTER REGISTER IMMEDIATE---------------------LDCRI--------[RI.A]---[0]
-LOAD COUNTER REGISTER MODE IMMEDIATE----------------LTCRMI-------[RI.A]---[0]
+MEMORY MANAGEMENT UNIT OPERATION--------------------MMUOP--------[2RI.B]--[/] *  // INCI fault if no MMU is implemented.
 
 ///.
-fencing: OK
+helper registers
 
-// The registers are not used in all cases.
+LOAD HELPER REGISTER--------------------------------LDHR---------[2R.A]---[B]
+STORE HELPER REGISTER-------------------------------STHR---------[2R.A]---[B]
+LOAD HELPER REGISTER MODE---------------------------LDHRM--------[2R.A]---[/]
+STORE HELPER REGISTER MODE--------------------------STHRM--------[2R.A]---[/]
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-FENCE LOADS-----------------------------------------FNCL---------[2R.A]---[0]
-FENCE STORES----------------------------------------FNCS---------[2R.A]---[0]
-FENCE MEMORY----------------------------------------FNCM---------[2R.A]---[0] // Combination of FNCL and FNCS.
-FENCE FETCH-----------------------------------------FNCF---------[2R.A]---[0]
-
-///.
-basic atomic memory: OK
-
-[name]----------------------------------------------[mnemonic]---[format]-[class]
-
-COMPARE AND SWAP------------------------------------CAS----------[3R.A]---[1]
+LOAD HELPER REGISTER IMMEDIATE----------------------LDHRI--------[RI.A]---[D]
+LOAD HELPER REGISTER MODE IMMEDIATE-----------------LTHRMI-------[RI.A]---[/]
 
 ///.
-advanced atomic memory: OK
+performance counters
 
-[name]----------------------------------------------[mnemonic]---[format]-[class]
+LOAD COUNTER REGISTER-------------------------------LDCR---------[2R.A]---[B]
+STORE COUNTER REGISTER------------------------------STCR---------[2R.A]---[B]
+LOAD COUNTER REGISTER MODE--------------------------LDCRM--------[2R.A]---[/]
+STORE COUNTER REGISTER MODE-------------------------STCRM--------[2R.A]---[/]
 
-ATOMIC ADD------------------------------------------AADD---------[3R.A]---[1] // Always signed.
-ATOMIC SUB------------------------------------------ASUB---------[3R.A]---[1] // Always signed.
-ATOMIC AND------------------------------------------AAND---------[3R.A]---[1]
-ATOMIC OR-------------------------------------------AOR----------[3R.A]---[1]
-ATOMIC XOR------------------------------------------AXOR---------[3R.A]---[1]
-
-VESRIONED COMPARE AND SWAP--------------------------VECAS--------[4R.A]---[1]
-
-ATOMIC ADD IMMEDIATE--------------------------------AADDI--------[2RI.A]--[1] // Always signed.
-ATOMIC SUB IMMEDIATE--------------------------------ASUBI--------[2RI.A]--[1] // Always signed.
-ATOMIC AND IMMEDIATE--------------------------------AANDI--------[2RI.A]--[1]
-ATOMIC OR IMMEDIATE---------------------------------AORI---------[2RI.A]--[1]
-ATOMIC XOR IMMEDIATE--------------------------------AXORI--------[2RI.A]--[1]
+LOAD COUNTER REGISTER IMMEDIATE---------------------LDCRI--------[RI.A]---[D]
+LOAD COUNTER REGISTER MODE IMMEDIATE----------------LTCRMI-------[RI.A]---[/]
 
 ///.
-transactional memory: OK
+fencing
 
-[name]----------------------------------------------------[mnemonic]---[format]-[class]
+FENCE-----------------------------------------------FNC----------[2R.A]---[F]    // The registers are not used.
 
-TRANSACTION BEGIN-----------------------------------------TBEG---------[2R.A]---[0] // Ra = PC + Rb;
-TRANSACTION COMMIT----------------------------------------TCOM---------[2R.A]---[0] // Ra = status code of failure, Rb not used.
-TRANSACTION CHECK-----------------------------------------TCHK---------[2R.A]---[0] // Ra = status code of failure, Rb not used.
-TRANSACTION ABORT-----------------------------------------TABT---------[2R.A]---[0] // Regs not used.
-TRANSACTION ABORT ALL-------------------------------------TABTA--------[2R.A]---[0] // Regs not used.
+///.
+basic atomic memory
+
+COMPARE AND SWAP------------------------------------CAS----------[3R.A]---[B]
+
+///.
+advanced atomic memory
+
+ATOMIC ADD------------------------------------------AADD---------[3R.A]---[B]    // Always signed.
+ATOMIC SUB------------------------------------------ASUB---------[3R.A]---[B]    // Always signed.
+ATOMIC AND------------------------------------------AAND---------[3R.A]---[B]
+ATOMIC OR-------------------------------------------AOR----------[3R.A]---[B]
+
+VESRIONED COMPARE AND SWAP--------------------------VECAS--------[4R.A]---[B]
+
+ATOMIC ADD IMMEDIATE--------------------------------AADDI--------[2RI.B]--[B]    // Always signed.
+ATOMIC SUB IMMEDIATE--------------------------------ASUBI--------[2RI.B]--[B]    // Always signed.
+ATOMIC AND IMMEDIATE--------------------------------AANDI--------[2RI.B]--[B]
+ATOMIC OR IMMEDIATE---------------------------------AORI---------[2RI.B]--[B]
+
+///.
+transactional memory
+
+TRANSACTION BEGIN-----------------------------------TBEG---------[2R.A]---[/]    // Ra = PC + Rb;
+TRANSACTION COMMIT----------------------------------TCOM---------[2R.A]---[/]    // Ra = status code of failure, Rb not used.
+TRANSACTION CHECK-----------------------------------TCHK---------[2R.A]---[/]    // Ra = status code of failure, Rb not used.
+TRANSACTION ABORT-----------------------------------TABT---------[2R.A]---[/]    // Regs not used.
+TRANSACTION ABORT ALL-------------------------------TABTA--------[2R.A]---[/]    // Regs not used.
+
+///.
+compressed section
 
 ///
