@@ -868,25 +868,28 @@
 
         [Instruction formats],
 
-        [FabRISC organizes the instructions in 15 different formats with lengths of 2, 4 and 6 bytes and opcode lengths ranging from 4 to 20 bits. Formats that specify the "md" field are also subdivided into "classes" at the instruction level. This is because the _md_ field acts as an extra modifier, such as, extra immediate bits, data type selector, small shift amount and more.],
+        [FabRISC organizes the instructions in 14 different formats with lengths of 2, 4 and 6 bytes and opcode lengths ranging from 4 to 20 bits. Formats that specify the "md" field are also subdivided into "classes" at the instruction level. This is because the _md_ field acts as an extra modifier, such as, extra immediate bits, data type selector  and more.],
 
         [The following is the complete list of all the formats:],
 
         page(flipped: true, text(size: 10pt,
-        
+
             [#align(center, tablex(
 
-                columns: (auto,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,auto),
+                columns: (auto,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr),
+
                 align: center + horizon,
                 fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
-                [*Name*],[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26],[27],[28],[29],[30],[31],[32...47],
+                [*Name*],[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26],[27],[28],[29],[30],[31],[32],[33],[34],[35],[36],[37],[38],[39],[40],[41],[42],[43],[44],[45],[46],[47],
 
-                //|OPCODE(17)|MD(02)|RA(05)|RB(05)|IM(19)|
-                [2RI-A], colspanx(4)[op \ 0...3],colspanx(5)[ra \ 0...4],colspanx(13)[op \ 4...16],colspanx(3)[im \ 18...16],colspanx(5)[rb \ 0...4],colspanx(2)[md \ 1...0],colspanx(1)[im \ 0...15],
+                [2RI-B], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(11)[op \ 14...4], colspanx(5)[im \ 18...16], colspanx(2)[md \ 1...0], colspanx(16)[im \ 15...0],
 
-                // |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|IM(16)|
-                [3RI-A], colspanx(4)[op \ 0...3],colspanx(5)[ra \ 0...4],colspanx(11)[op \ 4...14],colspanx(5)[rc \ 0...4],colspanx(5)[rb \ 0...4],colspanx(2)[md \ 1...0],colspanx(1)[im \ 0...15]
+                [3RI-A], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(11)[op \ 14...4], colspanx(5)[rc \ 4...0], colspanx(2)[md \ 1...0], colspanx(16)[im \ 15...0],
+
+                [4R-B], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(6)[op \ 9...4], colspanx(5)[rd \ 4...0], colspanx(5)[rc \ 4...0], colspanx(2)[md \ 1...0], colspanx(2)[vm \ 1...0], colspanx(10)[op \ 19...10], colspanx(4)[vm \ 5...2],
+
+                [3RI-B], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(11)[op \ 14...4], colspanx(5)[rc \ 4...0], colspanx(2)[md \ 1...0], colspanx(2)[vm \ 1...0], colspanx(14)[im \ 13...0]
             ))
 
             #align(center, tablex(
@@ -897,23 +900,17 @@
 
                 [*Name*],[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15],[16],[17],[18],[19],[20],[21],[22],[23],[24],[25],[26],[27],[28],[29],[30],[31],
 
-                // |OPCODE(20)|MD(02)|RA(05)|RB(05)|
-                [2R-A], colspanx(4)[op \ 0...3],colspanx(5)[ra \ 0...4],colspanx(16)[op \ 4...19],colspanx(5)[rb \ 0...4],colspanx(2)[md \ 1...0],
+                [2R-A], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(16)[op \ 19...4], colspanx(2)[md \ 1...0],
 
-                // |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|
-                [3R-A], colspanx(4)[op \ 0...3],colspanx(5)[ra \ 0...4],colspanx(11)[op \ 4...14],colspanx(5)[rc \ 0...4],colspanx(5)[rb \ 0...4],colspanx(2)[md \ 1...0],
+                [3R-A], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(11)[op \ 14...4], colspanx(5)[rc \ 4...0], colspanx(2)[md \ 1...0],
 
-                // |OPCODE(10)|MD(02)|RA(05)|RB(05)|RC(05)|RD(05)|
-                [4R-A], colspanx(4)[op \ 0...3],colspanx(5)[ra \ 0...4],colspanx(6)[op \ 4...9],colspanx(5)[rd \ 0...4],colspanx(5)[rc \ 0...4],colspanx(5)[rb \ 0...4],colspanx(2)[md \ 1...0],
+                [4R-A], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(6)[op \ 9...4], colspanx(5)[rd \ 4...0], colspanx(5)[rc \ 4...0], colspanx(2)[md \ 1...0],
 
-                // |OPCODE(09)|MD(02)|RA(05)|IM(16)|
-                [RI-A], colspanx(4)[op \ 0...3],colspanx(5)[ra \ 0...4],colspanx(5)[op \ 4...8],colspanx(11)[im \ 10...0],colspanx(5)[im \ 15...11],colspanx(2)[md \ 1...0],
+                [I-A], colspanx(4)[op \ 3...0], colspanx(5)[im \ 23...19], colspanx(5)[ra \ 15...11], colspanx(4)[op \ 7...4], colspanx(1)[im \ 18], colspanx(11)[im \ 10...0], colspanx(2)[im \ 17...16],
 
-                // |OPCODE(08)|MD(02)|RA(05)|RB(05)|IM(12)|
-                [2RI-B], colspanx(4)[op \ 0...3],colspanx(5)[ra \ 0...4],colspanx(4)[op \ 4...7],colspanx(12)[im \ 11...0],colspanx(5)[rb \ 0...4],colspanx(2)[md \ 1...0],
+                [RI-A], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[ra \ 15...11], colspanx(5)[op \ 8...4], colspanx(11)[im \ 10...0], colspanx(2)[md \ 1...0],
 
-                // |OPCODE(08)|IM(24)|
-                [I-A], colspanx(4)[op \ 0...3],colspanx(5)[im \ 23...19],colspanx(4)[op \ 4...7],colspanx(1)[im \ 18],colspanx(11)[im \ 10...0],colspanx(5)[im \ 15...11],colspanx(2)[im \ 17...16],
+                [2RI-A], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(4)[op \ 7...4], colspanx(12)[im \ 11...0], colspanx(2)[md \ 1...0]
             ))
         ])),
 
@@ -921,60 +918,68 @@
 
             #align(center, tablex(
 
-                columns: (auto,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,),
+                columns: (auto,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr,1fr),
                 align: center + horizon,
                 fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
                 [*Name*],[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10],[11],[12],[13],[14],[15],
 
-                // |OPCODE(10)|RA(03)|RB(03)|
-                [2R-B], colspanx(4)[op \ 0...3],colspanx(3)[ra \ 0...2],colspanx(2)[rb \ 0...1],colspanx(6)[op \ 4...9],colspanx(1)[rb \ 2],
+                [2R-B], colspanx(4)[op \ 3...0], colspanx(2)[md \ 1...0], colspanx(3)[ra \ 2...0], colspanx(2)[op \ 5...4], colspanx(3)[rb \ 2...0], colspanx(2)[op \ 7...6],
 
-                // |OPCODE(06)|RA(05)|RB(05)|
-                [2R-C], colspanx(4)[op \ 0...3],colspanx(5)[ra \ 0...4],colspanx(2)[op \ 4...5],colspanx(5)[rb \ 0...4],
+                [I-B], colspanx(4)[op \ 3...0], colspanx(2)[im \ 3...2], colspanx(3)[im \ 9...7], colspanx(2)[op \ 5...4], colspanx(3)[im \ 6...4], colspanx(2)[im \ 1...0],
 
-                // |OPCODE(08)|MD(02)|RA(03)|RB(03)|
-                [2R-D], colspanx(4)[op \ 0...3],colspanx(3)[ra \ 0...2],colspanx(2)[md \ 0...1],colspanx(4)[op \ 4...7],colspanx(3)[rb \ 0...2],
+                [RI-B], colspanx(4)[op \ 3...0], colspanx(2)[im \ 3...2], colspanx(3)[ra \ 2...0], colspanx(1)[op \ 4], colspanx(1)[im \ 7], colspanx(3)[im \ 6...4], colspanx(2)[im \ 1...0],
 
-                // |OPCODE(06)|IM(10)|
-                [I-B], colspanx(4)[op \ 0...3],colspanx(3)[im \ 9...7],colspanx(2)[im \ 1...0],colspanx(2)[op \ 4...5],colspanx(5)[im \ 6...2],
-
-                // |OPCODE(08)|RA(03)|IM(05)|
-                [RI-B], colspanx(4)[op \ 0...3],colspanx(3)[ra \ 0...2],colspanx(2)[im \ 1...0],colspanx(4)[op \ 4...7],colspanx(3)[im \ 4...2],
-
-                // |OPCODE(05)|RA(03)|IM(08)|
-                [RI-C], colspanx(4)[op \ 0...3],colspanx(3)[ra \ 0...2],colspanx(2)[im \ 1...0],colspanx(1)[op \ 4],colspanx(6)[im \ 7...2],
-
-                // |OPCODE(04)|RA(03)|RB(03)|IM(06)|
-                [2RI-D], colspanx(4)[op \ 0...3],colspanx(3)[ra \ 0...2],colspanx(2)[im \ 1...0],colspanx(4)[im \ 5...2],colspanx(3)[rb \ 0...2]
+                [2RI-C], colspanx(4)[op \ 3...0], colspanx(2)[im \ 3...2], colspanx(3)[ra \ 2...0], colspanx(2)[im \ 5...4], colspanx(3)[rb \ 2...0], colspanx(2)[im \ 1...0]
             ))
         ])),
 
-        [Formats _2RI-A_, _3RI-A_, _2R-A_, _3R-A_, _4R-A_, _RI-A_, _2RI-B_ and _2R-D_ are affected by the modifier field _md_. The following are the possible classes:],
+        [Formats that include the "md" field can be, depending on the specific instruction, one of the following classes. Instructions are allowed to only utilize some modes of the chosen class if desired.],
 
         align(center, table(
 
-            columns: (1fr, 3fr),
+            columns: (1fr, 3fr, 3fr),
             inset: 8pt,
-            align: (x, y) => (left + horizon, left + horizon).at(x),
+            align: (x, y) => (left + horizon, left + horizon, left + horizon).at(x),
             stroke: 0.75pt,
             fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
 
-            [#align(center, [*Class*])], [#align(center, [*Description*])],
+            [#align(center, [*Class*])], [#align(center, [*Labels*])], [#align(center, [*Description*])],
 
-            [], [Nothing. The _md_ field is ignored.],
-            [.L1, .L2, \ .L4, .L8], [Data type size.],
-            [.M0, .M1, \ .M2, .M3], [Vector mask selector. Mask 0 is the "0 mask", that is, a read-only mask that never masks any lane.],
-            [.SGPRB, \ .VGPRB, \ .HLPRB, \ .PERFCB], [File selector.],
-            [.I00, .I01, \ .I10, .I11], [Extra immediate bits. The specified bits are always the most significant.],
-            [.U, .S, -, -], [Simple sign modes: Unsigned and signed.],
-            [.NI, IN, -, -], [Simple bitwise invert modes: No invert and invert.],
-            [.U, .S, .UI, SI], [Bitwise inversion and sign modes: Unsigned, signed, unsigned with inversion and signed with inversion.]
+            [-], [-], [Nothing. The _md_ field is ignored.],
+
+            [Class A], [.U, .S, \ .UI, .SI], [Four combinations of: unsigned, signed, unsigned with inverted output, signed with inverted output.],
+
+            [Class B], [.L1, .L2, \ .L4, .L8], [Data type size in bytes.],
+            [Class C], [.SGPRB, \ .VGPRB, \ .HLPRB, \ .PERFCB], [Register file selector.],
+            [Class D], [-], [Extra immediate bits (always most significant).],
+            [Class E], [-, .MSK, \ .IMSK, -], [Vector mask modes: unmasked, maksed, inverted mask.],
+            [Class F], [.LD, .ST, \ .LS, .F], [Fence types: loads, stores, loads & stores, fetch.],
+            [Class G], [.B0, .B1, \ .B2, .B3], [Register bank specifier (only for compressed formats).],
+
+            [Class H], [.MA, .NMA, \ .MS, .NMS], [Multiply-Accumulate modes: multiply-add, negative multiply-add, multiply-subtract, negative multiply-subtract.],
+        )),
+
+        [Vector instruction formats: 4R-B, 3RI-B include an additional modifier:],
+
+        align(center, table(
+
+            columns: (1fr, 3fr, 3fr),
+            inset: 8pt,
+            align: (x, y) => (left + horizon, left + horizon, left + horizon).at(x),
+            stroke: 0.75pt,
+            fill: (_, y) => if(calc.rem(y, 2) == 0) { rgb("#eaeaea") },
+
+            [#align(center, [*Modifier*])], [#align(center, [*Labels*])], [#align(center, [*Description*])],
+
+            [vm(6)], [VV, VS, MVV, \ MVS, IMVV, IMVS], [Vector modes and masking combinations: vector-vector, vector-scalar, masked vector-vector, masked vector-scalar, inverted mask vector-vector, inverted mask vector-scalar],
+
+            [vm(2)], [-, .MSK, \ .IMSK, -], [Same effect as the Class E modifier.],
         )),
 
         comment([
 
-            FabRISC is provides 15 different variable length instruction formats of 2, 4 and 6 bytes in length. I chose this path because variable length encoding, if done right, can increase the code density by more than 25%, which can mean an effective increase in instruction cache capacity by that amount. The downside of this is the more complex hardware required to fetch and decode the instructions since they can now span across multiple cache lines and, potentially, multiple OS pages.
+            FabRISC is provides 14 different variable length instruction formats of 2, 4 and 6 bytes in length. I chose this path because variable length encoding, if done right, can increase the code density by more than 25%, which can mean an effective increase in instruction cache capacity by that amount. The downside of this is the more complex hardware required to fetch and decode the instructions since they can now span across multiple cache lines and multiple OS pages.
 
             I felt that three sizes would be sweet spot: 4 byte as the "standard" length, 2 byte as the compressed variant of the standard and the 6 byte as an extended, more niche length for larger and more complex formats. Anything else would either feel like something was missing or there was too much. With this configuration the ISA can enjoy the code density gains, while also being relatively easy to fetch and decode compared to other solutions like x86.
 

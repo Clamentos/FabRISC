@@ -101,7 +101,7 @@ Instruction classes:
 
             00   (a * b) + c
             01 - (a * b) + c
-            10   (a * b) + c
+            10   (a * b) - c
             11 - (a * b) - c
 
 ///
