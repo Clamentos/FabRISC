@@ -910,16 +910,14 @@
 
             [-], [-], [Nothing. The _md_ field is ignored.],
 
-            [Class A], [`.U`, `.S`, \ `.UI`, `.SI`], [Four combinations of: unsigned, signed, unsigned with inverted output, signed with inverted output.],
-
+            [Class A], [instruction specific], [Function specifier: instruction specific.],
             [Class B], [`.L1`, `.L2`, \ `.L4`, `.L8`], [Data type size in bytes.],
             [Class C], [`.SGPRB`, \ `.VGPRB`, \ `.HLPRB`, \ `.PERFCB`], [Register file selector.],
             [Class D], [-], [Extra immediate bits (always most significant).],
-            [Class E], [-, `.MSK`, \ `.IMSK`, -], [Vector mask modes: unmasked, maksed, inverted mask.],
-            [Class F], [`.LD`, `.ST`, \ `.LS`, `.F`], [Fence types: loads, stores, loads & stores, fetch.],
-            [Class G], [`.B0`, `.B1`, \ `.B2`, `.B3`], [Register bank specifier (currently only for compressed formats).],
+            [Class E], [`UMSK`, `.MSK`, \ `.IMSK`, -], [Vector mask modes: unmasked, masked, inverted mask.],
+            [Class F], [`.B0`, `.B1`, \ `.B2`, `.B3`], [Register bank specifier (currently only for compressed formats).],
 
-            [Class H], [`.MA`, `.NMA`, \ `.MS`, `.NMS`], [Multiply-Accumulate modes: multiply-add, negative multiply-add, multiply-subtract, negative multiply-subtract.],
+            [Class G], [`.MA`, `.NMA`, \ `.MS`, `.NMS`], [Multiply-Accumulate modes: multiply-add, negative multiply-add, multiply-subtract, negative multiply-subtract.],
         )),
 
         [Vector instruction formats: `4R-B`, `3RI-B` include an additional modifier:],
@@ -933,7 +931,7 @@
 
             [vm(6)], [`.VV`, `.VS`, `.MVV`, \ `.MVS`, `.IMVV`, `.IMVS`], [Vector modes and masking combinations: vector-vector, vector-scalar, masked vector-vector, masked vector-scalar, inverted mask vector-vector, inverted mask vector-scalar],
 
-            [vm(2)], [-, `.MSK`, \ `.IMSK`, -], [Same effect as the Class E modifier.],
+            [vm(2)], [`UMSK`, `.MSK`, \ `.IMSK`, -], [Same effect as the Class E modifier.],
         )),
 
         comment([

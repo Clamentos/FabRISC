@@ -22,21 +22,21 @@
 
             [#middle([*Index*])], [#middle([*Short name*])], [#middle([*Full name*])],
 
-            [  0], [`CISB`  ], [Computational-Integer-Scalar-Basic.],
-            [  1], [`CISA`  ], [Computational-Integer-Scalar-Advanced.],
-            [  2], [`CISM`  ], [Computational-Integer-Scalar-Multiword.],
-            [  3], [`CIVB`  ], [Computational-Integer-Vector-Basic.],
-            [  4], [`CIVA`  ], [Computational-Integer-Vector-Advanced.],
-            [  5], [`CIVR`  ], [Computational-Integer-Vector-Reductions.],
-            [  6], [`CIC`   ], [Computational-Integer-Compressed.],
-            [  7], [`CFSB`  ], [Computational-FP-Scalar-Basic.],
-            [  8], [`CFSA`  ], [Computational-FP-Scalar-Advanced.],
-            [  9], [`CFVB`  ], [Computational-FP-Vector-Basic.],
-            [ 10], [`CFVA`  ], [Computational-FP-Vector-Advanced.],
-            [ 11], [`CFVR`  ], [Computational-FP-Vector-Reductions.],
+            [  0], [`CISB`  ], [Computational-Integer-Scalar-Basic.],      // -
+            [  1], [`CISA`  ], [Computational-Integer-Scalar-Advanced.],   //
+            [  2], [`CISM`  ], [Computational-Integer-Scalar-Multiword.],  //
+            [  3], [`CIVB`  ], [Computational-Integer-Vector-Basic.],      //
+            [  4], [`CIVA`  ], [Computational-Integer-Vector-Advanced.],   //
+            [  5], [`CIVR`  ], [Computational-Integer-Vector-Reductions.], //
+            [  6], [`CIC`   ], [Computational-Integer-Compressed.],        //
+            [  7], [`CFSB`  ], [Computational-FP-Scalar-Basic.],           //
+            [  8], [`CFSA`  ], [Computational-FP-Scalar-Advanced.],        //
+            [  9], [`CFVB`  ], [Computational-FP-Vector-Basic.],           //
+            [ 10], [`CFVA`  ], [Computational-FP-Vector-Advanced.],        //
+            [ 11], [`CFVR`  ], [Computational-FP-Vector-Reductions.],      //
 
-            [ 12], [`DSB`   ], [Data-Scalar-Basic.],
-            [ 13], [`DSA`   ], [Data-Scalar-Advanced.],
+            [ 12], [`DSB`   ], [Data-Scalar-Basic.],                       //
+            [ 13], [`DSA`   ], [Data-Scalar-Advanced.],                    
             [ 14], [`DVB`   ], [Data-Vector-Basic.],
             [ 15], [`DVA`   ], [Data-Vector-Advanced.],
             [ 16], [`DAB`   ], [Data-Atomic-Basic.],
