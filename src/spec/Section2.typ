@@ -13,7 +13,7 @@
 
         [Module List],
 
-        [Features and capabilities are packaged in modules which can be composed of instructions or other requirements such as registers, events, operating modes, etc... There are no mandatory modules in this specification in order to maximize flexibility, however, once a particular extension is chosen, the hardware must provide all the features and abstractions of said extension. The requirements for each and every module will be extensively explained in the upcoming sections when required. The following is a simple table of all the existing base modules:],
+        [Features and capabilities are packaged in modules which can be composed of instructions or other requirements such as registers, events, operating modes, etc... There are no mandatory modules in this specification in order to maximize flexibility, however, once a particular module is chosen, the hardware must provide all the features and abstractions of said module. The requirements for each and every module will be extensively explained in the upcoming sections when needed. The following is a simple table of all the existing base modules:],
 
         tableWrapper([Module list.], table(
 
@@ -36,46 +36,46 @@
             [ 11], [`CFVR`  ], [Computational-FP-Vector-Reductions.],      //
 
             [ 12], [`DSB`   ], [Data-Scalar-Basic.],                       //
-            [ 13], [`DSA`   ], [Data-Scalar-Advanced.],                    
-            [ 14], [`DVB`   ], [Data-Vector-Basic.],
-            [ 15], [`DVA`   ], [Data-Vector-Advanced.],
-            [ 16], [`DAB`   ], [Data-Atomic-Basic.],
-            [ 17], [`DAA`   ], [Data-Atomic-Advanced.],
-            [ 18], [`DB`    ], [Data-Block.],
-            [ 19], [`DC`    ], [Data-Compressed.],
+            [ 13], [`DSA`   ], [Data-Scalar-Advanced.],                    //
+            [ 14], [`DVB`   ], [Data-Vector-Basic.],                       //
+            [ 15], [`DVA`   ], [Data-Vector-Advanced.],                    //
+            [ 16], [`DAB`   ], [Data-Atomic-Basic.],                       //
+            [ 17], [`DAA`   ], [Data-Atomic-Advanced.],                    //
+            [ 18], [`DB`    ], [Data-Block.],                              //
+            [ 19], [`DC`    ], [Data-Compressed.],                         //
 
-            [ 20], [`FIB`   ], [Flow-Integer-Basic.],
-            [ 21], [`FIA`   ], [Flow-Integer-Advanced.],
-            [ 22], [`FIC`   ], [Flow-Integer-Compressed.],
-            [ 23], [`FFB`   ], [Flow-FP-Basic.],
-            [ 24], [`FFA`   ], [Flow-FP-Advanced.],
+            [ 20], [`FIB`   ], [Flow-Integer-Basic.],                      //
+            [ 21], [`FIA`   ], [Flow-Integer-Advanced.],                   //
+            [ 22], [`FIC`   ], [Flow-Integer-Compressed.],                 //
+            [ 23], [`FFB`   ], [Flow-FP-Basic.],                           //
+            [ 24], [`FFA`   ], [Flow-FP-Advanced.],                        //
             [ 25], [`FV`    ], [Flow-Vector.],
 
-            [ 26], [`SB`    ], [System-Basic.],
-            [ 27], [`SA`    ], [System-Advanced.],
+            [ 26], [`SB`    ], [System-Basic.],                            //
+            [ 27], [`SA`    ], [System-Advanced.],                         //
 
-            [ 28], [`VC`    ], [Vector-Configuration],
+            [ 28], [`VC`    ], [Vector-Configuration],                     //
             [ 29], [`FRMD`  ], [FP-Rounding-Modes],
 
-            [ 30], [`HLPR`  ], [Helper-Registers.],
-            [ 31], [`PERFC` ], [Performance-Counters.],
-            [ 32], [`FNC`   ], [Fencing.],
+            [ 30], [`HLPR`  ], [Helper-Registers.],                        //
+            [ 31], [`PERFC` ], [Performance-Counters.],                    //
+            [ 32], [`FNC`   ], [Fencing.],                                 //
 
-            [ 33], [`TM`    ], [Transactional-Memory.],
+            [ 33], [`TM`    ], [Transactional-Memory.],                    //
             [ 34], [`EXC`   ], [Exceptions.],
             [ 35], [`IOINT` ], [IO-Interrupts.],
             [ 36], [`IPCINT`], [IPC-Interrupts.],
-            [ 37], [`USER`  ], [User-Mode.],
+            [ 37], [`USER`  ], [User-Mode.],                               //
             [ 38], [`DALIGN`], [Data-Alignment.],
-            [ 39], [`CTXR`  ], [Context-Reducer],
+            [ 39], [`CTXR`  ], [Context-Reducing],                         //
 
-            [ 40], [-], [Reserved for future use.],
-            [...], [...   ], [...],
-            [ 55], [-], [Reserved for future use.],
+            [ 40], [-       ], [Reserved for future use.],
+            [...], [...     ], [...                     ],
+            [ 55], [-       ], [Reserved for future use.],
 
-            [ 56], [-], [Reserved for custom extension.],
-            [...], [...   ], [...],
-            [ 63], [-], [Reserved for custom extension.]
+            [ 56], [-       ], [Reserved for custom extension.],
+            [...], [...     ], [...                           ],
+            [ 63], [-       ], [Reserved for custom extension.]
 
         )),
 
@@ -87,7 +87,7 @@
 
         [Implementation Specific Parameters],
 
-        [FabRISC defines some implementation specific microarchitectural parameters to clear potential capability related issues in both the documentation, the running software, as well as making the ISA more general, flexible and extensible. These parameters, along with other information, must be physically stored internally in the shape of read-only registers so that programs can gather information about various characteristics of the system via dedicated operations such as the `SYSINFO` instruction. Depending on which modules are implemented, some of these parameters can be ignored and set to a default value. Some parameters are presented here as they are fundamental and mandatory, while others are declared in the following sections when appropriate. This is not an exhaustive list:],
+        [FabRISC defines some implementation specific microarchitectural parameters to clear potential capability related issues in both the documentation, the running software, as well as making the ISA more general, flexible and extensible. These parameters, along with other information, must be physically stored in the shape of read-only registers so that programs can gather information about various characteristics of the system via dedicated operations such as the `SYSINFO` instruction. Depending on which modules are implemented, some of these parameters can be ignored and set to a default value. Some parameters are presented here as they are fundamental and mandatory, while others are declared in the following sections when appropriate. This is not an exhaustive list:],
 
         list(tight: false,
 

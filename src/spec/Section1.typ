@@ -16,9 +16,9 @@
 
         Commentary in this document will formatted in this way and communication will be more colloquial. If the reader is only interested in the specification, these sections can be skipped without hindering the understanding too much.
 
-        This project tries to be more of a hobby learning experience rather than a new super serious industry standard, plus the architecture borrows many existing concepts from the most popular and iconic ISAs like: x86, RISC-V, MIPS, ARM and OpenRISC. Don't expect this project to be as good or polished as the commercial ones, however, i wanted to design something that goes beyond simple toy architectures used for teaching and demonstrations. I chose to target FPGAs as the primary platform for two main reasons: firstly is that ASICs are out of the question for the vast majority of people because of cost, time and required expertise. Secondly is that using discrete components, all though fun and interesting, makes little sense from a sanity, practicality and scalability points of view given the complexity of this project. Software simulators, such as Logisim-evolution #monospace(link("https://github.com/logisim-evolution/logisim-evolution")) or Digital #monospace(link("https://github.com/hneemann/Digital")) can be good alternative platforms for simpler implementations without having to spend a dime.
+        This project tries to be more of a hobby learning experience rather than a new super serious industry standard, plus the architecture borrows many existing concepts from the most popular and iconic ISAs like: x86, RISC-V, MIPS, ARM and OpenRISC. Don't expect this project to be as good or polished as the commercial ones, however, i wanted to design something that goes beyond simple toy architectures used for teaching and demonstrations. I chose to target FPGAs as the primary platform for two main reasons: firstly is that ASICs are infeasible for the vast majority of people because of cost, time and required expertise. Secondly is that using discrete components, all though fun and interesting, makes little sense from a sanity, practicality and scalability points of view given the complexity of this project. Software simulators, such as Logisim-evolution #monospace(link("https://github.com/logisim-evolution/logisim-evolution")) or Digital #monospace(link("https://github.com/hneemann/Digital")) can be good alternative platforms for simpler implementations without having to spend a dime.
 
-        The core ideas here are the use of variable length encodings of 4 and 6 byte instruction sizes along with shorter "compressed" ones to increase code density. The goal behind these is to use the long 6 byte format for instructions containing larger immediate values, while the 2 and 4 byte formats for instructions with smaller ones or registers only. The trade off of this is increased ISA capabilities and code density at the expense of misalignment and variable length encodings which can complicate the hardware implementation a bit. This ISA, all though not a "pure" RISC design with simple fixed length instructions and few addressing modes, resembles that philosophy for the most part skewing away from it in some areas, such as, being able to load, store, move and swap multiple registers with a single instruction, more complex addressing modes, floating point transcendental operations and variable length encodings.
+        The core ideas of this architecture are the use of variable length encodings of 4 and 6 byte instruction sizes along with shorter "compressed" ones to increase code density. The goal behind these is to use the long 6 byte format for instructions containing larger immediate values, while the 2 and 4 byte formats for instructions with smaller ones or registers only. The trade off of this is increased ISA capabilities and code density at the expense of misalignment and variable length encodings which can complicate the hardware implementation a bit. This ISA, all though not a "pure" RISC design with simple fixed length instructions and few addressing modes, resembles that philosophy for the most part skewing away from it in some areas, such as, being able to load, store, move and swap multiple registers with a single instruction, more complex addressing modes, floating point transcendental operations and variable length encodings.
 
         I chose the name "FabRISC" because i wanted to encapsulate the main characteristics and target device of this instruction set. The pronunciation should vaguely remind of the word "fabric" which is a reference on the fact that the main component of an FPGA is the "LUT fabric", that is, a network of many interconnected logic cells.
     ]),
@@ -79,16 +79,17 @@
             [Page], [Is used to refer to a logical partition of the main system memory.],
             [Promotion], [Is used to refer to the transition from a lower privilege mode to a higher privilege one.],
 
+            [MMIO (Memory-Mapped-IO)], [Is used to refer to the implementation of IO (input-output) via memory mapping, that is, mapping the state of external devices to memory addresses.],
+
+            [Privileged \ Privilege Level], [Is used to refer to a system resource that needs "elevated" permissions in order to be accessed.],
+
             [Transparent], [Is used to refer to something that is, mostly, invisible to the programmer and handled automatically by the underlying hardware.],
 
             [Trap], [Is used to refer to the transition from a state of normal execution to the launch of an event handler after receiving an event.],
 
             [Unaligned, \ Misaligned], [Are used to refer to any memory item that is not naturally aligned, that is, the address of the item modulo its size, is not equal to zero.]
 
-            // MMIO
             // DMA
-            // privilege / privilege level
-
         ))
     )
 )

@@ -74,7 +74,7 @@
 
         [Floating Point Types],
 
-        [Floating point data types are encoded with a modified IEEE-754 standard. The custom format includes all the previously mentioned sizes with the following bit patterns:],
+        [Floating point data types are encoded with a modified IEEE-754 standard. The custom format includes all the previously mentioned sizes plus two more with the following bit patterns:],
 
         pagebreak(),
         tableWrapper([Floating point formats.], table(
@@ -84,17 +84,17 @@
 
             [#middle([*Size*])], [#middle([*Mantissa*])], [#middle([*Exponent*])], [#middle([*Sign*])],
 
-            [8 bits], [7...3], [2...1], [0],
-            [12 bits], [11...4], [3...1], [0],
-            [14 bits], [13...5], [4...1], [0],
-            [16 bits], [15...6], [5...1], [0],
-            [32 bits], [31...9], [8...1], [0],
+            [8 bits ], [7...3  ], [2...1 ], [0],
+            [12 bits], [11...4 ], [3...1 ], [0],
+            [14 bits], [13...5 ], [4...1 ], [0],
+            [16 bits], [15...6 ], [5...1 ], [0],
+            [32 bits], [31...9 ], [8...1 ], [0],
             [64 bits], [63...12], [11...1], [0]
         )),
 
-        [The proposed encodings are similar in shape and meaning to the IEEE-754 standard, with the main difference being the placement of the sign and exponent, which are located at the beginning instead of the end of the number.],
+        [The proposed encodings are similar in shape and meaning to the IEEE-754 standard, with the main difference being the placement of the sign and exponent, which are located at the beginning instead of the end of the number. This is done to ease bit manipulation with instructions that use immediate values.],
 
-        [Floating point types are manipulated via FP instructions. Edge cases such as overflows, underflows can happen in the specific situations dictated by the IEEE-754 standard and can raise exceptions. The following is the list of edge cases for the floating point data types:],
+        [Floating point types are manipulated via floating point (FP) instructions. Edge cases such as overflows, underflows can happen in the specific situations dictated by the IEEE-754 standard and can raise exceptions. The following is the list of edge cases for the floating point data types:],
 
         tableWrapper([Floating point edge cases.], table(
 
@@ -108,7 +108,7 @@
             [Underflow], [This situation arises when the value of the result is too small to fit in the desired data type. The result of the operation must be set to negative infinity in this case by convention.]
         )),
 
-        [`NaN` values are represented as the IEEE-754 standard dictates without any other modification to their behavior. Performing any arithmetic operation with a signalling `NaN` must be considered an illegal operation and the number must be subsequently transformed into a quiet `NaN`.],
+        [`NaN` values are represented as the IEEE-754 standard dictates. Performing any arithmetic operation with a signalling `NaN` must be considered an illegal operation and the number must be subsequently transformed into a quiet `NaN` before trapping.],
 
         [Quiet `NaN` values simply propagate through the various operations as dictated by the IEEE-754 standard. In both signalling and quiet cases, the least significant three bits of the mantissa is the payload and encodes the reason. The `NaN` payloads must be ORed when they interact regardless of the operation performed since the result will always result in an `NaN`. The following is the list of payload bits:],
 
@@ -131,7 +131,7 @@
 
         [Arithmetic Flags],
 
-        [The `EXC` module, presented in the previous section, is concerned about triggering exception events when arithmetic edge cases occur. The situations described in the tables above are translated into a series of "ephemeral" flags that are not stored in any kind of flag register and are activated when the corresponding edge case arises, which in turn, will trigger the associated exception. It is important to note that these flags have to be implemented if either the `EXC` or `HLPR` modules are implemented, if not, this section can be skipped. The following table shows the proposed list of flags:],
+        [The `EXC` module, presented in the previous section, is concerned about triggering exception events when arithmetic edge cases occur. The situations described in the tables above are translated into a series of "ephemeral" flags that are not stored in any kind of register and are activated when the corresponding edge case arises, which in turn, will trigger the associated exception. It is important to note that these flags have to be implemented if either the `EXC` or `HLPR` (or both) modules are implemented, if not, this section can be skipped. The following table shows the proposed list of flags:],
 
         tableWrapper([Arithmetic flags.], table(
 
@@ -167,11 +167,11 @@
 
         The low level data types are, more or less, the usual ones. Addresses can be interpreted as both signed and unsigned values, though pointer arithmetic is not something that should be heavily relied on because some operations are often deemed "illegal" such as multiplication, division, modulo and bitwise logic in many programming languages. Even if the addresses are always considered signed, the boundary on 64 bit systems can be considered a non issue since the address space is so huge that everything could fit into one of the two partitions. Systems with smaller `WLEN` might encounter some difficulties but some amount of pointer arithmetic can still be done without too much hassle. FabRISC, fortunately, includes unsigned operations and comparisons in the basic modules, which makes this argument moot.
 
-        I chose to use the little-endian format since it can simplify accesses to portions of a variable without needing to change the address. For example a 64 bit memory location with the content of: `5E 00 00 00 00 00 00 00` can be red at the same address as an 8 bit value: `5E`, 16 bit value: `5E 00`, 32 bit value: `5E 00 00 00` or 64 bit value: `5E 00 00 00 00 00 00 00` which are all the same value. Endianness is mostly a useless debate as the advantages or disadvantages that each type has is often just a tiny rounding error in the grand scheme of things. The reason for this decision is that i simply found the aforementioned property to be interesting to have.
+        I chose to use the little-endian format since it can potentially, slightly simplify accesses to portions of a variable without needing to change the address. For example a 64 bit memory location with the content of: `5E 00 00 00 00 00 00 00` can be red at the same address as an 8 bit value: `5E`, 16 bit value: `5E 00`, 32 bit value: `5E 00 00 00` or 64 bit value: `5E 00 00 00 00 00 00 00` which are all the same value. Endianness is mostly a useless debate though, as the advantages or disadvantages that each type has is often just a tiny rounding error in the grand scheme of things. The reason for this decision is that i simply found the aforementioned property to be interesting to have.
 
-        The proposed flags might seem weird and unnecessary, however they allow the detection of arithmetic edge cases in a very granular manner. Many ISAs don't have any way of easily detecting overflows and, when present, they either provide instructions that trap or a flag register. In both cases the system will only allow the programmer to check if an overflow occurred at the word length only. FabRISC, not only provides the ability to check at all the standard lengths, but it also distinguishes overflows into two categories depending on the direction. This is useful to provide to the programmer a greater control and insight of the underlying system, as well as, enabling better emulation of CPUs with smaller word lengths.
+        The proposed flags might seem weird and unnecessary, however they allow the detection of arithmetic edge cases in a very granular manner. Many ISAs don't have any way of easily detecting overflows and, when present, they either provide instructions that trap or a flag register. In both cases the system will only allow the programmer to check if an overflow occurred at the word length only. FabRISC, not only provides the ability to check at all the standard lengths, but it also distinguishes overflows into two categories depending on the direction. This is useful to provide to the programmer a greater control and insight of the underlying system, as well as, potentially enabling better emulation of CPUs with smaller word lengths.
 
-        Floating point is mostly similar to the IEEE-754 standard but with some rearrangements. The motivation behind the reordering of the sections is mainly to enable better bit manipulation. Thanks to this, the most "important" bits (sign and exponent) of the number can be easily reached with many of the bitwise immediate instructions. The IEEE-754 standard doesn't define the behavior of the so called "NaN payload" when two `NaN` values interact. I chose to dictate that the least significant 3 bits as a cause vector for the `NaN` generation, this way, the payloads can be ORed and this information can then be used to understand potential issues in the code.
+        Floating point is mostly similar to the IEEE-754 standard but with some rearrangements. The motivation behind the reordering of the sections is mainly to enable better bit manipulation. Thanks to this, the most "important" bits (sign and exponent) of the number can be easily reached with many of the bitwise immediate instructions. The IEEE-754 standard doesn't define the behavior of the so called "NaN payload" when two `NaN` values interact. I chose to dictate that the least significant 3 bits as a cause vector for the `NaN` generation, this way, the payloads can be OR-ed and this information can then be used to understand potential issues in the code.
     ])
 )
 

@@ -362,7 +362,8 @@
             [`VMACI`], [], [4R.B], [`G`], [*Vector Multiply Accumulate Immediate*],
             [`VMACIU`], [], [4R.B], [`G`], [*Vector Multiply Accumulate Immediate Unsigned*],
             [`VPERI`], [], [3RI.B], [`A`], [*Vector Permute Immediate*],
-            [`VPCKUPCK`], [], [3RI.B], [`A`], [*Vector Pack Unpack*]
+            [`VPCKUPCK`], [], [3RI.B], [`A`], [*Vector Pack Unpack*] // Changes size but maintains number of elements.
+            // pack unpack: aaaabbbbccccdddd <-> 000000000000abcd
         ))
     )
 
@@ -412,11 +413,11 @@
             [`CAND`], [], [2R.B], [`F`], [*Compressed Bitwise AND*: ],
             [`CLSH`], [], [2R.B], [`F`], [*Compressed Left Shift*: ],
             [`CRSH`], [], [2R.B], [`F`], [*Compressed Right Shift*: ],
-            [`CADDI`], [], [RI.B], [-], [*Compressed Addition Immediate*: ],
-            [`CANDI`], [], [RI.B], [-], [*Compressed Bitwise AND Immediate*: ],
-            [`CLSHI`], [], [RI.B], [-], [*Compressed Left Shift Immediate*: ],
-            [`CRSHI`], [], [RI.B], [-], [*Compressed Right Shift Immediate*: ],
-            [`CLDI`], [], [RI.B], [-], [*Compressed Load Immediate*: ]
+            [`CADDI`], [], [RI.B], [`-`], [*Compressed Addition Immediate*: ],
+            [`CANDI`], [], [RI.B], [`-`], [*Compressed Bitwise AND Immediate*: ],
+            [`CLSHI`], [], [RI.B], [`-`], [*Compressed Left Shift Immediate*: ],
+            [`CRSHI`], [], [RI.B], [`-`], [*Compressed Right Shift Immediate*: ],
+            [`CLDI`], [], [RI.B], [`-`], [*Compressed Load Immediate*: ]
         ))
     )
 
@@ -506,31 +507,31 @@
 
             [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
 
-            [`VCFI`], [], [3R.A], [`?`], [*Vector Cast FP. To Integer*],
-            [`VCFIT`], [], [3R.A], [`?`], [*Vector Cast FP. To Integer Truncated*],
-            [`VCIF`], [], [3R.A], [`?`], [*Vector Cast Integer To FP.*],
-            [`VCFF1`], [], [3R.A], [`?`], [*Vector Cast FP. To FP. 1*],
-            [`VCFF2`], [], [3R.A], [`?`], [*Vector Cast FP. To FP. 2*],
-            [`VCFF4`], [], [3R.A], [`?`], [*Vector Cast FP. To FP. 4*],
-            [`VCFF8`], [], [3R.A], [`?`], [*Vector Cast FP. To FP. 8*],
-            [`VFADD`], [], [4R.B], [`?`], [*Vector FP. Addition*],
-            [`VFSUB`], [], [4R.B], [`?`], [*Vector FP. Subtraction*],
-            [`VFMUL`], [], [4R.B], [`?`], [*Vector FP. Multiplication*],
-            [`VFDIV`], [], [4R.B], [`?`], [*Vector FP. Division*],
-            [`VFMIN`], [], [4R.B], [`?`], [*Vector FP. Minimum*],
-            [`VFMAX`], [], [4R.B], [`?`], [*Vector FP. Maximum*],
-            [`VFSLT`], [], [4R.B], [`?`], [*Vector FP. Set If Less Than*],
-            [`VFSLE`], [], [4R.B], [`?`], [*Vector FP. Set If Less Or Equal*],
-            [`VFMAC`], [], [4R.B], [`?`], [*Vector FP. Multiply Accumulate*],
-            [`VFADDI`], [], [3RI.B], [`?`], [*Vector FP. Addition Immediate*],
-            [`VFSUBI`], [], [3RI.B], [`?`], [*Vector FP. Subtraction Immediate*],
-            [`VFMULI`], [], [3RI.B], [`?`], [*Vector FP. Multiplication Immediate*],
-            [`VFDIVI`], [], [3RI.B], [`?`], [*Vector FP. Division Immediate*],
-            [`VFMINI`], [], [3RI.B], [`?`], [*Vector FP. Minimum Immediate*],
-            [`VFMAXI`], [], [3RI.B], [`?`], [*Vector FP. Maximum Immediate*],
-            [`VFSLTI`], [], [3RI.B], [`?`], [*Vector FP. Set If Less Than Immediate*],
-            [`VFSLEI`], [], [3RI.B], [`?`], [*Vector FP. Set If Less Or Equal Immediate*],
-            [`VFMACI`], [], [3RI.B], [`?`], [*Vector FP. Multiply Accumulate Immediate*]
+            [`VCFI`], [], [3R.A], [`?`], [*Vector Cast FP. To Integer*], // E
+            [`VCFIT`], [], [3R.A], [`?`], [*Vector Cast FP. To Integer Truncated*], // E
+            [`VCIF`], [], [3R.A], [`?`], [*Vector Cast Integer To FP.*], // E
+            [`VCFF1`], [], [3R.A], [`?`], [*Vector Cast FP. To FP. 1*], // E
+            [`VCFF2`], [], [3R.A], [`?`], [*Vector Cast FP. To FP. 2*], // E
+            [`VCFF4`], [], [3R.A], [`?`], [*Vector Cast FP. To FP. 4*], // E
+            [`VCFF8`], [], [3R.A], [`?`], [*Vector Cast FP. To FP. 8*], // E
+            [`VFADD`], [], [4R.B], [`?`], [*Vector FP. Addition*], // /
+            [`VFSUB`], [], [4R.B], [`?`], [*Vector FP. Subtraction*], // /
+            [`VFMUL`], [], [4R.B], [`?`], [*Vector FP. Multiplication*], // /
+            [`VFDIV`], [], [4R.B], [`?`], [*Vector FP. Division*], // /
+            [`VFMIN`], [], [4R.B], [`?`], [*Vector FP. Minimum*], // /
+            [`VFMAX`], [], [4R.B], [`?`], [*Vector FP. Maximum*], // /
+            [`VFSLT`], [], [4R.B], [`?`], [*Vector FP. Set If Less Than*], // A
+            [`VFSLE`], [], [4R.B], [`?`], [*Vector FP. Set If Less Or Equal*], // A
+            [`VFMAC`], [], [4R.B], [`?`], [*Vector FP. Multiply Accumulate*], // H
+            [`VFADDI`], [], [3RI.B], [`?`], [*Vector FP. Addition Immediate*], // /
+            [`VFSUBI`], [], [3RI.B], [`?`], [*Vector FP. Subtraction Immediate*], // /
+            [`VFMULI`], [], [3RI.B], [`?`], [*Vector FP. Multiplication Immediate*], // /
+            [`VFDIVI`], [], [3RI.B], [`?`], [*Vector FP. Division Immediate*], // /
+            [`VFMINI`], [], [3RI.B], [`?`], [*Vector FP. Minimum Immediate*], // /
+            [`VFMAXI`], [], [3RI.B], [`?`], [*Vector FP. Maximum Immediate*], // /
+            [`VFSLTI`], [], [3RI.B], [`?`], [*Vector FP. Set If Less Than Immediate*], // A
+            [`VFSLEI`], [], [3RI.B], [`?`], [*Vector FP. Set If Less Or Equal Immediate*], // A
+            [`VFMACI`], [], [3RI.B], [`?`], [*Vector FP. Multiply Accumulate Immediate*] // H
         ))
     )
 
@@ -580,7 +581,7 @@
     #subSection(
 
         [Data Scalar Basic (`DSB`)],
-        [This module provides basic scalar memory transfer operations. The `SGPRB` is mandatory for this module],
+        [This module provides basic scalar memory transfer operations. The `SGPRB` is mandatory for this module.],
 
         pagebreak(),
         tableWrapper([DSB Instructions.], table(
@@ -593,6 +594,493 @@
             [`MLD`], [], [2RI.A], [`B`], [*Memory Load*],
             [`MLDU`], [], [2RI.A], [`B`], [*Memory Load Unsigned*],
             [`MST`], [], [2RI.A], [`B`], [*Memory Store*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Data Scalar Advanced (`DSA`)],
+        [This module provides advanced scalar memory transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([DSA Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`MLD_PD`], [], [2RI.A], [`B`], [*Memory Load Pre Decrement*],
+            [`MLDU_PD`], [], [2RI.A], [`B`], [*Memory Load Unsigned Pre Decrement*],
+            [`MST_PD`], [], [2RI.A], [`B`], [*Memory Load Pre Decrement*],
+
+            [`MLD_PI`], [], [2RI.A], [`B`], [*Memory Load Post Increment*],
+            [`MLDU_PI`], [], [2RI.A], [`B`], [*Memory Load Unsigned Post Increment*],
+            [`MST_PI`], [], [2RI.A], [`B`], [*Memory Load Post Increment*],
+
+            [`IMLD`], [], [3RI.A], [`B`], [*Indexed Memory Load*],
+            [`IMLDU`], [], [3RI.A], [`B`], [*Indexed Memory Load Unsigned*],
+            [`IMST`], [], [3RI.A], [`B`], [*Indexed Memory Store*],
+
+            [`SMLD`], [], [3RI.A], [`B`], [*Scaled Memory Load*],
+            [`SMLDU`], [], [3RI.A], [`B`], [*Scaled Memory Load Unsigned*],
+            [`SMST`], [], [3RI.A], [`B`], [*Scaled Memory Store*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Data Vector Basic (`DVB`)],
+        [This module provides basic vector memory transfer operations. The `VGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([DVB Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`VMLD`], [], [3RI.B], [`D`], [*Vector Memory Load*],
+            [`VMST`], [], [3RI.B], [`D`], [*Vector Memory Store*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Data Vector Advanced (`DVA`)],
+        [This module provides advanced vector memory transfer operations. The `VGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([DVA Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`VGAT`], [], [4R.B], [`-`], [*Vector Gather*],
+            [`VSCA`], [], [4R.B], [`-`], [*Vector Scatter*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Data Atomic Basic (`DAB`)],
+        [This module provides basic atomic scalar memory transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([DAB Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+            [`CAS`], [], [3R.A], [`B`], [*Compare And Swap*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Data Atomic Advanced (`DAA`)],
+        [This module provides advanced atomic scalar memory transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([DAA Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`AADD`], [], [3R.A], [`B`], [*Atomic Add*],
+            [`ASUB`], [], [3R.A], [`B`], [*Atomic Sub*],
+            [`AAND`], [], [3R.A], [`B`], [*Atomic And*],
+            [`AOR`], [], [3R.A], [`B`], [*Atomic Or*],
+
+            [`VECAS`], [], [4R.A], [`B`], [*Versioned COMPARE And Swap*],
+
+            [`AADDI`], [], [2RI.B], [`B`], [*Atomic Add Immediate*],
+            [`ASUBI`], [], [2RI.B], [`B`], [*Atomic Sub Immediate*],
+            [`AANDI`], [], [2RI.B], [`B`], [*Atomic And Immediate*],
+            [`AORI`], [], [2RI.B], [`B`], [*Atomic Or Immediate*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Data Block (`DB`)],
+        [This module provides scalar block-memory transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([DB Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`BLDL`], [], [RI.A], [`C`], [*Block Load Lower*],
+            [`BLDP`], [], [RI.A], [`C`], [*Block Load Upper*],
+            [`BLDL`], [], [RI.A], [`C`], [*Block Store Lower*],
+            [`BLDP`], [], [RI.A], [`C`], [*Block Store Upper*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Data Compressed (`DC`)],
+        [This module provides compressed scalar memory transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([DC Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`CMLD`], [], [2R.B], [`B`], [*Compressed Memory Load*],
+            [`CMST`], [], [2R.B], [`B`], [*Compressed Memory Store*],
+
+            [`CMLID`], [], [2RI.C], [`-`], [*Compressed Memory Load Int Displacement*],
+            [`CMSID`], [], [2RI.C], [`-`], [*Compressed Memory Store Int Displacement*],
+            [`CMLWD`], [], [2RI.C], [`-`], [*Compressed Memory Load Word Displacement*],
+            [`CMSWD`], [], [2RI.C], [`-`], [*Compressed Memory Store Word Displacement*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Flow Integer Basic (`FIB`)],
+        [This module provides basic scalar control transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([FIB Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`JMP`], [], [I.A], [`-`], [*Unconditional Jump*],
+            [`BJAL`], [], [I.A], [`-`], [*Big Jump And Link*],
+
+            [`JMPR`], [], [RI.A], [`D`], [*Unconditional Jump Register*],
+            [`JAL`], [], [RI.A], [`D`], [*Jump And Link*],
+
+            [`BEQ`], [], [2RI.A], [`D`], [*Branch If Equal*],
+            [`BLT`], [], [2RI.A], [`D`], [*Branch If Less Than*],
+            [`BLTU`], [], [2RI.A], [`D`], [*Branch If Less Than Unsigned*],
+            [`BLE`], [], [2RI.A], [`D`], [*Branch If Less Than Equal*],
+            [`BLEU`], [], [2RI.A], [`D`], [*Branch If Less Than Equal Unsigned*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Flow Integer Advanced (`FIA`)],
+        [This module provides advanced scalar control transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([FIA Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`BEQI`], [], [RI.A], [`D`], [*Branch If Equal Immediate*],
+            [`BLTI`], [], [RI.A], [`D`], [*Branch If Less Than Immediate*],
+            [`BLTIU`], [], [RI.A], [`D`], [*Branch If Less Than Immediate Unsigned*],
+            [`BLEI`], [], [RI.A], [`D`], [*Branch If Less Than Equal Immediate*],
+            [`BLEIU`], [], [RI.A], [`D`], [*Branch If Less Than Equal Immediate Unsigned*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Flow Integer Compressed (`FIC`)],
+        [This module provides compressed scalar control transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([FIC Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`CBEQZ`], [], [RI.B], [`-`], [*Compressed Branch If Equal To Zero*],
+            [`CBLTZ`], [], [RI.B], [`-`], [*Compressed Branch If Less Than ZERO*],
+            [`CBLEZ`], [], [RI.B], [`-`], [*Compressed Branch If Less OR Equal To Zero*],
+
+            [`CJALO`], [], [RI.B], [`-`], [*Compressed Jump And Link Offset*],
+            [`CJMPO`], [], [RI.B], [`-`], [*Compressed Jump Offset*],
+
+            [`CJAL`], [], [I.B], [`-`], [*Compressed Jump And Link*],
+            [`CJMP`], [], [I.B], [`-`], [*Compressed Jump*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Flow FP Basic (`FFB`)],
+        [This module provides floating point scalar control transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([FFB Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`FBLT`], [], [2RI.B], [`B`], [*FP. Branch If Less Than*],
+            [`FBLE`], [], [2RI.B], [`B`], [*FP. Branch If Less Than Or Equal*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Flow FP Advanced (`FFA`)],
+        [This module provides advanced point scalar control transfer operations. The `SGPRB` is mandatory for this module.],
+
+        pagebreak(),
+        tableWrapper([FFA Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`FBLTI`], [], [RI.A], [`B`], [*FP. Branch If Less Than Immediate*],
+            [`FBLEI`], [], [RI.A], [`B`], [*FP. Branch If Less Than Or Equal Immediate*]
+        ))
+    )
+
+    ///.
+    // TODO: vector control flow (masking)
+    // that is, move the masks to and from the SGPRB
+
+    ///.
+    #subSection(
+
+        [System Basic (`SB`)],
+        [This module provides basic system operations.],
+
+        pagebreak(),
+        tableWrapper([SB Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`NOP`], [], [2R.A], [`-`], [*No Operation*], // Regs aren't used.
+            [`HLT`], [], [2R.A], [`-`], [*Halt Execution*], // PWR = Ra; halt; (Rb isn't used) {PRIVILEGED}
+            [`SYSINFO`], [], [2R.A], [`B`], [*System Information*],
+            [`CACOP`], [], [2RI.B], [`-`], [*Cache Operation*] // INCI fault if no caches are implemented. {PRIVILEGED}
+            // ability to load / store: %event% registers
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [System Advanced (`SA`)],
+        [This module provides advanced system operations.],
+
+        pagebreak(),
+        tableWrapper([SA Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`SYSCL`], [], [2R.A], [`-`], [*System Call*], // Ra = call ID, Rb not used. {PRIVILEGED}
+            [`SYSCLI`], [], [RI.A], [`-`], [*System Call Immediate*], // Imm = call ID, Ra not used. {PRIVILEGED}
+            [`WINT`], [], [RI.A], [`-`], [*Wait For Interrupt*], // Ra = timeout, Rb = int to wait for. {PRIVILEGED}
+            [`MMUOP`], [], [RI.A], [`-`], [*Memory Management Unit Operation*] // INCI fault if no MMU is implemented. {PRIVILEGED}
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Vector Configuration (`VC`)],
+        [This module provides vector configuration operations.],
+
+        pagebreak(),
+        tableWrapper([VC Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`LDVCNF`], [], [2R.A], [`-`], [*Load Vector Configuration*],
+            [`STVCNF`], [], [2R.A], [`-`], [*Store Vector Configuration*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Helper Registers (`HR`)],
+        [This module provides helper register operations.],
+
+        pagebreak(),
+        tableWrapper([HR Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`LDHR`], [], [2R.A], [`B`], [*Load Helper Register*],
+            [`STHR`], [], [2R.A], [`B`], [*Store Helper Register*],
+            [`LDHRM`], [], [2R.A], [`-`], [*Load Helper Register Mode*],
+            [`STHRM`], [], [2R.A], [`-`], [*Store Helper Register Mode*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Performance Counters (`PC`)],
+        [This module provides performance counters operations.],
+
+        pagebreak(),
+        tableWrapper([PC Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`LDCR`], [], [2R.A], [`B`], [*Load Counter Register*],
+            [`STCR`], [], [2R.A], [`B`], [*Store Counter Register*],
+            [`LDCRM`], [], [2R.A], [`-`], [*Load Counter Register Mode*],
+            [`STCRM`], [], [2R.A], [`-`], [*Store Counter Register Mode*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Fencing (`FNC`)],
+        [This module provides fencing memory semantic operations.],
+
+        pagebreak(),
+        tableWrapper([PC Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            // same opcode, just with func. modifier
+
+            [`FNCL`], [], [2R.A], [`A`], [*Fence Loads*],
+            [`FNCS`], [], [2R.A], [`A`], [*Fence Stores*],
+            [`FNCLS`], [], [2R.A], [`A`], [*Fence Loads And Stores*],
+            [`FNCI`], [], [2R.A], [`A`], [*Fence Instructions*]
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Transactional Memory (`TM`)],
+        [This module provides transactional memory semantic operations.],
+
+        pagebreak(),
+        tableWrapper([TM Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`TBEG`], [], [2R.A], [`-`], [*Transaction Begin*],
+            [`TCOM`], [], [2R.A], [`-`], [*Transaction Commit*],
+            [`TCHK`], [], [2R.A], [`-`], [*Transaction Check*],
+            [`TABT`], [], [2R.A], [`-`], [*Transaction Abort*],
+            [`TABTA`], [], [2R.A], [`-`], [*Transaction Abort All*]
+
+            // TLEV Transaction Level
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Eventing (`EVT`)],
+        [This module provides machine-mode event return operations.],
+
+        pagebreak(),
+        tableWrapper([EVT Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+            [`ERET`], [], [2R.A], [`-`], [*Event Return*], // Perform eret; Ra = Rb; (machine -> machine) {PRIVILEGED}
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [User Mode (`USER`)],
+        [This module provides user-mode event return and user-mode system operations.],
+
+        pagebreak(),
+        tableWrapper([USER Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`UERET`], [], [2R.A], [`-`], [*User Event Return*], // Perform eret; Ra = Rb; (user -> user)
+            [`URET`], [], [2R.A], [`-`], [*User Return*], // Perform eret; Ra = Rb;(machine -> user) {PRIVILEGED}
+            [`UCACOP`], [], [2RI.B], [`-`], [*User Cache Operation*] // INCI fault if no caches are implemented.
+            // manipulate PID TID HPID TPTR WDT
+        ))
+    )
+
+    ///.
+    #subSection(
+
+        [Context Reducing (`CR`)],
+        [This module provides automatic register file dumping and restoring operations.],
+
+        pagebreak(),
+        tableWrapper([TM Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto),
+            align: (x, y) => (left + horizon, center + horizon, center + horizon, center + horizon, left + horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
+
+            [`DMP`], [], [RI.A], [`-`], [*Dump File*], // {PRIVILEGED}
+            [`RST`], [], [RI.A], [`-`], [*Restore File*] // {PRIVILEGED}
+            // manipulate the %usage% regs
         ))
     )
 

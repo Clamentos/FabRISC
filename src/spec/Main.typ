@@ -22,7 +22,7 @@
 #align(center, text(12pt)[Document version 1.2.0])
 #linebreak()
 #align(center, text(16pt)[Enrico Gatto Monticone])
-#align(center, text(14pt)[25/08/2024])
+#align(center, text(14pt)[26/10/2024])
 #linebreak()
 
 #align(left + bottom, text(12pt)[

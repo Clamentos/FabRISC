@@ -6,7 +6,7 @@
 
     [Input-Output],
 
-    [This section is dedicated to the specification that FabRISC uses for communicating with external devices as well as other cores and hardware threads if present. The architecture defines IO mappings, potential DMA behavior and, in the next sections, OS support and inter-process communication schemes will be discussed.],
+    [This section is dedicated to the specification that FabRISC uses for communicating with external devices as well as other cores and hardware threads if present. The architecture defines IO mappings, potential DMA behavior and, in the next sections, OS support and basic inter-process communication schemes will be discussed.],
 
     ///.
     subSection(
@@ -47,9 +47,9 @@
 
         comment([
 
-            I decided to go with memory mapped IO because of its flexibility and simplicity compared to port based solutions. The IO region can be considered plain memory by the processor internally, which allows for advanced and fancy operations that use locks, barriers, fences and transactions to be done by multiple threads to the same device. Caching this region is not recommended because it can yield potential inconsistencies and unnecessary additional complexities to the cache coherence hardware.
+            I decided to go with memory mapped IO because of its flexibility and simplicity compared to port based solutions. The IO region can be considered plain memory by the processor internally, which allows for advanced and fancy operations that use locks, barriers, fences and transactions to be done by multiple threads to the same device. Caching this region is not recommended (all though possible) because it can yield potential inconsistencies and unnecessary additional complexities to the cache coherence hardware.
 
-            The idea here is to provide general purpose IO system that can be easily implemented on any microarchitecture. The MMIO proposed is basically as simple as it gets and it should be good enough for most low to mid-speed transfers.
+            The idea here is to provide general purpose IO system that can be easily implemented on pretty much any microarchitecture. The MMIO proposed is basically as simple as it gets and it should be good enough for most low to mid-speed transfers.
 
             The hardware designers can choose from a variety of different sizes for the MMIO space, ranging from the minuscule 8 bytes suitable for tiny toy-like 8 bit implementations, all the way to 1 terabytes suitable for more advanced machines that also implement a full blown operating system.
         ])
@@ -60,15 +60,15 @@
 
         [Direct Memory Access],
 
-        [FabRISC provides the ability for IO devices to access any region of the main system memory directly without passing through the processor. A dedicated centralized controller serving as arbiter may be utilized to achieve this, but the hardware designers are free to choose any another alternative if considered appropriate. If this method of communication is chosen to be used, cache coherence must be ensured between the processor and the IO devices too. Some possible options can be, as discussed earlier:],
+        [FabRISC provides the ability for IO devices to access any region of the main system memory directly without passing through the CPU. A dedicated centralized controller serving as arbiter may be utilized to achieve this, but the hardware designers are free to choose any another alternative considered appropriate. If this method of communication is chosen to be used, cache coherence must be ensured between the processor and the IO devices too. Some possible options can be, as discussed earlier:],
 
         list(tight: false,
 
-            [*Non cacheable memory region:* _With this configuration coherence isn't a problem because no caching is performed by the CPU and the IO device in question. The region is fixed and must reside outside of the MMIO address space but within the regular memory space. All DMA accesses must be made to that region._],
+            [*Non cacheable memory region:* _With this configuration coherence isn't a problem because no caching is performed by the CPU and the IO device in question. The region is fixed and must reside above the MMIO address space but within the regular memory space. All DMA accesses must be made to that region._],
 
             [*Software IO coherence:* _With this configuration the CPU and the device are required to flush or invalidate the cache explicitly with no extra hardware complexity, however, this option requires the exposure of the underlying organization to the programmer thus shifting a low level concern upwards._],
 
-            [*Hardware IO coherence:* _With this configuration, both the CPU and the IO device, will monitor each other's accesses via a common bus or a directory system while proper actions are automatically taken according to a common coherence protocol which can be the already existing one in the processor._]
+            [*Hardware IO coherence:* _With this configuration, both the CPU and the IO device, will monitor each other's accesses via a common bus or a directory system while proper actions are automatically taken according to a common coherence protocol which can be the already existing one in the CPU, or an "ad-hoc" one._]
         ),
 
         [The DMA protocol or scheme implemented by the hardware designer must also take consistency into account since regular memory operations to different addresses are allowed to be done out-of-order. This means that fencing instructions must retain their effect from the point of view of the hart and IO devices. The IO devices must ultimately provide similar fencing features as well and behave as if they were any other hart.],

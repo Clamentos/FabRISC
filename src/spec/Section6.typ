@@ -31,7 +31,7 @@
 
             [`PERFCB`], [*Performance Counters Bank*: \ This bank is composed of `CRFS` number of registers which can be used for performance diagnostic, timers and counters. These registers are all $"CLEN" + 8$ bits wide, not privileged, private for each hart and are only needed when the system implements the `PERFC` module.],
 
-            [`SPRB`], [*Special Purpose Register Bank*: \ This bank is composed of various special purpose registers used to keep track of the system status and operation. The number of these registers as well as their width can vary depending on which modules are chosen plus some are privileged, while others are not.]
+            [`SPRB`], [*Special Purpose Register Bank*: \ This bank is composed of various special purpose registers used to keep track of the system status and operation. The number of these registers as well as their width can vary depending on which modules are chosen. Privileges are defined for each individual register later in this section.]
         )),
 
         [FabRISC provides the *Scalar Register File Size* (`SRFS`) 2 bit ISA parameter, to indicate the number of registers of the scalar file. Depending on the value of this parameter, the calling convention will differ slightly. The possible values are listed in the following table:],
@@ -43,7 +43,7 @@
 
             [#middle([*Code*])], [#middle([*Value*])],
 
-            [00], [8 entries.],
+            [00], [8 entries. ],
             [01], [16 entries.],
             [10], [32 entries.],
             [11], [Reserved for future uses.]
@@ -58,7 +58,7 @@
 
             [#middle([*Code*])], [#middle([*Value*])],
 
-            [00], [8 entries.],
+            [00], [8 entries. ],
             [01], [16 entries.],
             [10], [32 entries.],
             [11], [Reserved for future uses.]
@@ -92,7 +92,7 @@
 
             [#middle([*Code*])], [#middle([*Value*])],
 
-            [00], [8 entries.],
+            [00], [8 entries. ],
             [01], [16 entries.],
             [10], [32 entries.],
             [11], [Reserved for future uses.]
@@ -107,7 +107,7 @@
 
             [#middle([*Code*])], [#middle([*Value*])],
 
-            [00], [8 entries.],
+            [00], [8 entries. ],
             [01], [16 entries.],
             [10], [32 entries.],
             [11], [Reserved for future uses.]
@@ -115,11 +115,11 @@
 
         comment([
 
-            Five banks of several registers might seem overkill, but thanks to FabRISC flexibility the hardware designers can choose only what they desire and how much. The `SGPRB` and `VGPRB` are standard across many ISAs and are the classic scalar general purpose and vector files. I decided to not split integer and floating point further into separate files because i wanted to allow easy bit fiddling on floating point data without having to move back and forth between files, as well as for simplicity and lower amount state. This can increase the register pressure in some situations but the ISA provides instructions that allow efficient data packing and unpacking, thus reclaiming some, if not all, of the pressure. Another issue could potentially be a higher number of structural hazards as both integer and floating point instructions will read and write to the same bank.
+            Five banks of several registers might seem overkill, but thanks to FabRISC flexibility the hardware designers can choose only what they desire and how much. The `SGPRB` and `VGPRB` are standard across many ISAs and are the classic scalar general purpose and vector files. I decided to not split integer and floating point further into separate files because i wanted to allow easy bit manipulation on floating point data without having to move back and forth between files, as well as for simplicity and lower amount state. This can increase the register pressure in some situations but the ISA provides instructions that allow efficient data packing and unpacking, thus reclaiming some of the pressure. Another issue could potentially be a higher number of structural hazards as both integer and floating point instructions will read and write to the same bank.
 
-            The `HLPRB` and `PERFCB` are a "nice to have" features for more advanced systems allowing a very granular amount of control over arithmetic edge cases, memory boundary checking, debugging, as well as performance monitoring. Performance counters are a standard feature among modern high performance processors because they are essential in determine what causes stalls and bottlenecks, thus allowing for proper software profiling. It is not recommended to perform register renaming on these registers as they are mostly a "set and forget" kind of resources. Instructions that modify these banks should behave in a similar manner to fences.
+            The `HLPRB` and `PERFCB` are a "nice to have" features for more advanced systems allowing a very granular amount of control over arithmetic edge cases, memory boundary checking, debugging, as well as performance monitoring. Performance counters are a standard feature among modern high performance processors because they are essential in determine what causes stalls and bottlenecks, thus allowing for proper software profiling at the lowest possible level. It is not recommended to perform register renaming on these registers as they are mostly a "set and forget" kind of resources. Instructions that modify these banks should have fence-like semantics.
 
-            The `SPRB` mainly holds privileged registers and flag bits that dictate the behavior of the system while it's running. This bank also holds several registers that are essential for events and other modules to work, as well as privileged resources. It is not recommended to perform register renaming on these registers since they will be modified less often. Instructions that modify these banks should behave in a similar manner to fences.
+            The `SPRB` mainly holds privileged registers and flag bits that dictate the behavior of the system while it's running. This bank also holds several registers that are essential for events and other modules to work, as well as privileged resources. It is not recommended to perform register renaming on these registers since they will be modified less often. Instructions that modify this bank should have fence-like semantics.
 
             This ISA also allows quite large vector widths to accommodate more exotic and special microarchitectures as well as byte-level granularity. The size must be at least twice the `WLEN` up to a maximum of 8 times, except for 32 and 64 bit architectures which stops at 512 bits. This is quite large even for vector heavy specialist machines. Vector execution is also possible at low `WLEN` of 8 and 16 bits but it probably won't be the best idea because of the limited word length. I expect an `MXVL` of 128 to 256 bits to be the most used for general purpose microarchitectures such as CPUs because it gives a good boost in performance for data-independent code, without hindering other aspects of the system such as power consumption, chip area, frequency or resource usage in FPGAs too much. 512 bits will probably be the practical limit as even real commercial CPUs make tradeoffs between width and frequency. For an out-of-order machine the reservation stations and the reorder buffer would already be quite sizeable at 512 bits, however, it's always possible to decouple the two pipelines in order to minimize power and resource usage if a wide `MXVL` is desired.
         ])
@@ -171,30 +171,30 @@
             [`S1`], [`S1`], [`S1` ],
             [`SP`], [`SP`], [`SP` ],
             [`RA`], [`RA`], [`RA` ],
-            [ -], [`P4`], [`P4` ],
-            [ -], [`P5`], [`P5` ],
-            [ -], [`S2`], [`S2` ],
-            [ -], [`S3`], [`S3` ],
-            [ -], [`S4`], [`S4` ],
-            [ -], [`N0`], [`N0` ],
-            [ -], [`N1`], [`N1` ],
-            [ -], [`FP`], [`FP` ],
-            [ -], [ -], [`P6` ],
-            [ -], [ -], [`P7` ],
-            [ -], [ -], [`S5` ],
-            [ -], [ -], [`S6` ],
-            [ -], [ -], [`S7` ],
-            [ -], [ -], [`S8` ],
-            [ -], [ -], [`S9` ],
-            [ -], [ -], [`S10`],
-            [ -], [ -], [`S11`],
-            [ -], [ -], [`S12`],
-            [ -], [ -], [`S13`],
-            [ -], [ -], [`S14`],
-            [ -], [ -], [`S15`],
-            [ -], [ -], [`N2` ],
-            [ -], [ -], [`N3` ],
-            [ -], [ -], [`GP` ]
+            [ -  ], [`P4`], [`P4` ],
+            [ -  ], [`P5`], [`P5` ],
+            [ -  ], [`S2`], [`S2` ],
+            [ -  ], [`S3`], [`S3` ],
+            [ -  ], [`S4`], [`S4` ],
+            [ -  ], [`N0`], [`N0` ],
+            [ -  ], [`N1`], [`N1` ],
+            [ -  ], [`FP`], [`FP` ],
+            [ -  ], [ -  ], [`P6` ],
+            [ -  ], [ -  ], [`P7` ],
+            [ -  ], [ -  ], [`S5` ],
+            [ -  ], [ -  ], [`S6` ],
+            [ -  ], [ -  ], [`S7` ],
+            [ -  ], [ -  ], [`S8` ],
+            [ -  ], [ -  ], [`S9` ],
+            [ -  ], [ -  ], [`S10`],
+            [ -  ], [ -  ], [`S11`],
+            [ -  ], [ -  ], [`S12`],
+            [ -  ], [ -  ], [`S13`],
+            [ -  ], [ -  ], [`S14`],
+            [ -  ], [ -  ], [`S15`],
+            [ -  ], [ -  ], [`N2` ],
+            [ -  ], [ -  ], [`N3` ],
+            [ -  ], [ -  ], [`GP` ]
         )),
 
         [Vector registers are all considered volatile, which means that the caller-save scheme must be utilized since it's assumed that their value won't be retained across function calls. Special instructions are also provided to move these registers, or part of them, to and from the `SGPRB`.],
@@ -233,15 +233,15 @@
 
             [  5], [*Trigger on read or write or execute address*: \ This mode will cause the corresponding helper register to generate the `RWET` exception as soon as the hart tries to read, write data or fetch the instruction at the specified address.],
 
-            [  6], [*Trigger on read range*: \ This mode will cause the corresponding helper register to generate the `RDT` exception as soon as the hart tries to read data outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the register immediately after the specified one and its mode will be set to 255.],
+            [  6], [*Trigger on read range*: \ This mode will cause the corresponding helper register to generate the `RDT` exception as soon as the hart tries to read data outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the helper register immediately after the specified one and its mode will be set to 255.],
 
-            [  7], [*Trigger on write range*: \ This mode will cause the corresponding helper register to generate the `WRT` exception as soon as the hart tries to write data outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the register immediately after the specified one and its mode will be set to 255.],
+            [  7], [*Trigger on write range*: \ This mode will cause the corresponding helper register to generate the `WRT` exception as soon as the hart tries to write data outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the helper register immediately after the specified one and its mode will be set to 255.],
 
-            [  8], [*Trigger on execute range*: \ This mode will cause the corresponding helper register to generate the `EXT` exception as soon as the hart tries to fetch an instruction outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the register immediately after the specified one and its mode will be set to 255.],
+            [  8], [*Trigger on execute range*: \ This mode will cause the corresponding helper register to generate the `EXT` exception as soon as the hart tries to fetch an instruction outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the helper register immediately after the specified one and its mode will be set to 255.],
 
-            [  9], [*Trigger on read or write range*: \ This mode will cause the corresponding helper register to generate the `RWT` exception as soon as the hart tries to read or write data outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the register immediately after the specified one and its mode will be set to 255.],
+            [  9], [*Trigger on read or write range*: \ This mode will cause the corresponding helper register to generate the `RWT` exception as soon as the hart tries to read or write data outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the helper register immediately after the specified one and its mode will be set to 255.],
 
-            [ 10], [*Trigger on read or write or execute range*: \ This mode will cause the corresponding helper register to generate the `RWET` exception as soon as the hart tries to read, write data or fetch an instruction outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the register immediately after the specified one and its mode will be set to 255.],
+            [ 10], [*Trigger on read or write or execute range*: \ This mode will cause the corresponding helper register to generate the `RWET` exception as soon as the hart tries to read, write data or fetch an instruction outside the specified range. If this mode is selected, the value of the specified register will be considered the starting address of the range. The terminating address of the range will be held in the helper register immediately after the specified one and its mode will be set to 255.],
 
             [ 11], [*Trigger on COVR1 flag*: \ This mode will cause the corresponding helper register to generate the `COVR1T` exception as soon as the `COVR1` flag is raised at the instruction address held in the current register.],
 
@@ -288,7 +288,7 @@
 
         [If multiple same events are triggered in the same cycle, then they must be queued to avoid loss of information. The ordering convention, in case multiple events are generated for the same instruction address, gives the $"HLPR"_0$ the highest priority and $"HLPR"_n$ the lowest.],
 
-        [It is important to note that the `COVRnT`, `CUNDT`, `OVFLnT` and `UNFLnT` events must overwrite the `COVRE`, `CUNDE`, `OVFLE`, `UNFLE` and `DIV0E` arithmetic exceptions of the `EXC` module if present, where $n = 1/8 dot 2^"WLEN"$.],
+        [It is important to note that the `COVRnT`, `CUNDT`, `OVFLnT` and `UNFLnT` events must overwrite the `COVRE`, `CUNDE`, `OVFLE`, `UNFLE` and `DIV0E` arithmetic exceptions of the `EXC` module if present, where $n = 1/8 dot 2^"WLEN"$. This means that the listed events take precedence and suppress the standard arithmetic exceptions when both are triggered.],
 
         comment([
 
@@ -297,6 +297,8 @@
             Another situation is debugging: by placing the desired breakpoints in the desired spots of the program, exceptions can be triggered and handled to perform things like memory / state dumping, or any other action that might help the programmer understand what is going on in the system. All of this can be achieved with near zero performance penalty and interference with the actual code.
 
             One final application can be in handling unavoidable arithmetic edge cases without performance penalties, enabling safer arithmetic as well as aiding arbitrary precision data types.
+
+            Additionally, these registers can also be used as an extra `SGPRB`.
         ])
     ),
 
@@ -305,7 +307,7 @@
 
         [Performance Counters Bank],
 
-        [This bank houses the performance counters which, as mentioned earlier, can be used for performance diagnostic, timers and counters. These registers are all `CLEN` bits wide and their operating mode can be programmed via an extra 8 bits attached to each of them. The `PERFC` module requires the implementation of this bank, some special instructions and some exception events. It is important to note that if a counter reaches its maximum value, it will silently overflow. These registers are considered "global" and are not scoped, that is, they are visible to any process at any time regardless of the privilege, however, they are hart private. The operating modes are the following:],
+        [This bank houses the performance counters which, as mentioned earlier, can be used for performance diagnostic, timers and counters. These registers are all `CLEN` bits wide and their operating mode can be programmed via an extra 8 bits attached to each of them. The `PERFC` module requires the implementation of this bank and some special instructions. It is important to note that if a counter reaches its maximum value, it will silently overflow. These registers are considered "global" and are not scoped, that is, they are visible to any process at any time regardless of the privilege, however, they are hart private. The operating modes are the following:],
 
         pagebreak(),
         tableWrapper([Performance counter modes.], table(
@@ -315,8 +317,9 @@
 
             [#middle([*Code*])], [#middle([*Description*])],
 
-            [  0], [*Disabled*: \ This mode doesn't do anything.],
-            [  1], [*Instruction counter*: \ This mode is a simple instruction counter that increments with each retired instruction.],
+            [  0], [*Disabled*: \ This mode doesn't do anything. Performance counters that are in this mode can still be red and written and utilized at any moment with a caller-save scheme, which simply means, that they are considered volatile.],
+
+            [  1], [*Instruction counter*: \ This mode is a simple instruction counter that increments with each executed instruction.],
 
             [  2], [*Memory load counter*: \ This mode is a simple instruction counter that increments with each executed memory load instruction.],
 
@@ -328,11 +331,17 @@
 
             [  6], [*Stalled cycles counter*: \ This mode is a simple counter that increments with each clock cycle in which the cpu was stalled.],
 
-            [  7], [*Time counter*: \ This mode is a simple timer that counts the passed units of time (configurable via the `CNTU` bits in the Special Purpose register).],
+            [  7], [*Time counter*: \ This mode is a simple timer that counts thread-time seconds.],
 
-            [  8], [*Clock counter*: \ This mode is a simple clock cycle counter. Eight codes are reserved and each subsequent code will divide the frequency by 10 before triggering the counter.],
+            [  8], [*Time counter*: \ This mode is a simple timer that counts thread-time milliseconds. The `ILLI` fault must be thrown if the system is not capable of ticking counters with speeds of 1KHz.],
 
-            [ 16], [Reserved for future uses.],
+            [  9], [*Time counter*: \ This mode is a simple timer that counts thread-time microseconds. The `ILLI` fault must be thrown if the system is not capable of ticking counters with speeds of 1MHz.],
+
+            [ 10], [*Time counter*: \ This mode is a simple timer that counts thread-time nanoseconds. The `ILLI` fault must be thrown if the system is not capable of ticking counters with speeds of 1GHz.],
+
+            [ 11], [*Clock counter*: \ This mode is a simple clock cycle counter. Sixteen codes are reserved and each subsequent code will divide the frequency of the previous mode by two before triggering the counter.],
+
+            [ 27], [Reserved for future uses.],
             [...], [...],
             [127], [Reserved for future uses.],
 
@@ -350,7 +359,7 @@
 
             [#middle([*Code*])], [#middle([*Value*])],
 
-            [00], [8 bits.],
+            [00], [8 bits. ],
             [01], [16 bits.],
             [10], [32 bits.],
             [11], [64 bits.]
@@ -369,7 +378,7 @@
 
         [Special Purpose Bank],
 
-        [In this subsection the special purpose registers are discussed. Some of these registers are unprivileged, that is, accessible to any process at any time regardless of the privilege, while others are machine mode only and the `ILLI` (Illegal Instruction) fault must be triggered if an access is performed in user mode to those resources. These registers are also hart private. The special purpose registers are the following:],
+        [In this subsection the special purpose registers are discussed. Some of these registers are unprivileged, that is, accessible to any process at any time regardless of the privilege, while others are machine mode only and the `ILLI` fault must be triggered if an access is performed in user mode to those resources. These registers are also hart private. The special purpose registers are the following:],
 
         pagebreak(),
         tableWrapper([`SPRB` layout.], table(
@@ -381,14 +390,14 @@
 
             [`PC`], [`WLEN`], [*Program Counter*: \ This register points to the currently executing instruction. This register is not privileged and is always mandatory.],
 
-            [`SR`], [32 bits], [*Status Register*: \ This register holds several flags that keep track of the current status of the processor. This register is semi-privileged and is always mandatory. Depending on which modules are implemented, only certain bits must be present while the others can be ignored and set to zero as a default. The precise bit layout will be discussed in the next section.],
+            [`SR`], [32 bits], [*Status Register*: \ This register holds several flags that keep track of the current status of the processor. This register is semi-privileged and is always mandatory. Depending on which modules are implemented, only certain bits must be present while the others can be ignored and set to zero as a default. The precise bit layout and privileges will be discussed in the next section.],
 
             [`VSH`], [8 bits], [*Vector Shape*: \ This register specifies the current vector configuration and is divided into two parts: the most significant two bits specify the size of the singular element, while the remaining least significant bits specify the number of active elements. Illegal configurations must generate the `ILLI` fault. This register is not privileged and is only needed when the system implements the `VC` module, otherwise the default vector shape must always dictate the maximum number of `WLEN` sized elements.],
 
             [`VM1`], [$1/8 "MXVL"$], [*Vector Mask 1*: \ This register is the vector mask number 1. Each bit maps to a byte in the vector register bank. This register is not privileged and is only needed when the system implements the `VF` module.],
 
             [`VM2`], [$1/8 "MXVL"$], [*Vector Mask 2*: \ This register is the vector mask number 2. Each bit maps to a byte in the vector register bank. This register is not privileged and is only needed when the system implements the `VF` module.],
-            
+
             [`VM3`], [$1/8 "MXVL"$], [*Vector Mask 3*: \ This register is the vector mask number 3. Each bit maps to a byte in the vector register bank. This register is not privileged and is only needed when the system implements the `VF` module.],
 
             [`UEPC`], [`WLEN`], [*User Event PC*: \ This register holds the `PC` of the last instruction before the user event handler, which can then be used to return back from it. This register has the same privilege as the `PC` and is needed if the system implements the `USER` module.],
@@ -401,9 +410,9 @@
 
             [`UEHP`], [`WLEN`], [*User Event Handler Pointer*: \ This register holds the address of the user event handler. The handler must always be one for all events. A switch statement with the help of the event id can then be used to jump to the specific handler. This register is not privileged and is only needed when the system implements the `USER` module.],
 
-            [`UET0`], [`WLEN`], [*User Event Temporary 0*: \ This register can be used as a temporary register during event handling, often for saving and restoring the various banks. This register is not privileged and is only needed when the system implements the `USER` module.],
+            [`UET0`], [`WLEN`], [*User Event Temporary 0*: \ This register can be used as a temporary general purpose register during event handling, often for saving and restoring the various banks. This register is not privileged and is only needed when the system implements the `USER` module.],
 
-            [`UET1`], [`WLEN`], [*User Event Temporary 1*: \ This register can be used as a temporary register during event handling, often for saving and restoring the various banks. This register is not privileged and is only needed when the system implements the `USER` module.],
+            [`UET1`], [`WLEN`], [*User Event Temporary 1*: \ This register can be used as a temporary general purpose register during event handling, often for saving and restoring the various banks. This register is not privileged and is only needed when the system implements the `USER` module.],
 
             [`MEPC`], [`WLEN`], [*Machine Event PC*: \ This register holds the `PC` of the last instruction before the machine event handler, which can then be used to return back from it. This register is privileged and is only needed when the system implements one or more of the following modules: `EXC`, `IOINT`, `IPCINT`, `USER`.],
 
@@ -438,17 +447,19 @@
             [`TPTR`], [`WLEN`], [*Thread Pointer*: \ This register holds the pointer to the currently running software thread. This register is privileged and is only needed when the system implements the `USER` module.],
 
             [`WDT`], [32 bit], [*Watchdog Timer*: \ This register is a counter that periodically count down and triggers the `TQE` event when it reaches zero. This register is privileged and is only needed when the system implements the `USER` module.]
+
+            // 2 free remaining
         )),
-    
-        [FabRISC dictates the implementation of some mandatory fault events, such as: `MISI`, `INCI`, `ILLI` and others which require the presence of the machine event special purpose registers. Such registers are, however, not necessary if the system implements the said faults by simply halting the machine. This relaxes the constraint on simple implementations that don't support events.],
+
+        [FabRISC dictates the implementation of some mandatory fault events, such as: `MISI`, `INCI`, `ILLI` and others which require the presence of the machine event special purpose registers. Such registers are, however, not necessary if the system implements the said faults by simply halting the machine. This relaxes the constraint on simple implementations that don't support events or don't want to handle them.],
 
         comment([
 
             This bank houses a variety of registers used to alter and change the behavior of the system while it operates. Many of the modules will require the presence of some special purpose registers in order to function such as vector extensions, transaction module, helper registers, performance counters and others.
 
-            The registers prefixed with "User Event" or "Machine Event" hold the so called "critical state" of the hart, that is, state that is particularly delicate for event handling in privileged implementations. Access to privileged resources in user mode is forbidden and blocked in order to protect the operating system from exploits, as well as ensuring that the ISA remains classically virtualizable.
+            The registers prefixed with "User Event" or "Machine Event" hold the so called "critical state" of the hart, that is, state that is particularly delicate for event handling in privileged and non privileged implementations. Access to privileged resources in user mode is forbidden and blocked in order to protect the operating system from exploits, as well as ensuring that the ISA remains classically virtualizable.
 
-            Special "usage" registers are also provided if the `CTXR` module is implemented which allow to reduce the average number of registers that must be saved and restored during context switches. This is achieved by setting the corresponding bit to one whenever a register in the covered banks is written. This can then be used by special instructions to only write to memory the registers with the corresponding usage bit to one.
+            Special "usage" registers are also provided if the `CTXR` module is implemented which allow to reduce the average number of registers that must be saved and restored during context switches. This is achieved by setting the corresponding bit to one whenever a register in the covered banks is written. This can then be used by special instructions to only write to / read from memory the registers with the corresponding usage bit to one.
 
             Hardware designers are free to perform renaming of these registers if they so wish. Alternatively, a write to any special register must hold fence-like semantics, that is, the hart must hold execution of all subsequent instructions until the write is complete. This allows any modification to this bank to be visible by the rest of the system.
         ])
@@ -459,7 +470,7 @@
 
         [Status Register Bit Layout],
 
-        [In this section the Status Register bit layout is discussed. The `SR` contains several flags and status bits of different privilege levels. The bits that the system must implement depend on which modules are chosen. The possible bits are explained in the following table:],
+        [In this section the Status Register bit layout is discussed. The `SR` contains several flags and status bits of different privilege levels and the bits that the system must implement depend on which modules are chosen. It is important to note that when some bits are not needed and or are fixed values, any write operation to those bits should be silently discarded and should not produce any visible architectural and microarchitectural changes. The possible bits are explained in the following table:],
 
         tableWrapper([`SR` bit layout.], table(
 
@@ -468,61 +479,72 @@
 
             [#middle([*Short*])], [#middle([*Size*])], [#middle([*Description*])],
 
-            [`RMD`], [2 bits], [*FP Rounding Mode*: \ Dictates the current floating point rounding mode. These bits are not privileged, only needed when the system implements the `FRMD` module and, if not present, the default rounding mode must always be _round to nearest even_. The possible mode are:
+            [`RMD`], [3 bits], [*FP Rounding Mode*: \ Dictates the current floating point rounding mode. `RMD` is not privileged, only needed when the system implements the `FRMD` module and, if not present, the default mode must always be _round to nearest even_. The possible modes are IEEE-754 compliant and are:
 
                 #enum(tight: false,
 
                     [_Round to nearest even._],
+                    [_Round to nearest away from zero._],
                     [_Round towards zero._],
                     [_Round towards negative infinity._],
                     [_Round towards positive infinity._],
+                    [_Reserved for future use._],
+                    [_Reserved for future use._],
+                    [_Reserved for future use._]
                 )
             ],
 
-            [`TND`], [8 bits], [*Transaction Nesting Depth*: \ Holds the current transaction nesting depth. A value of zero indicates that the hart is not in transactional mode. These bits are not privileged and only needed when the system implements the `TM` module.],
+            [`CMD`], [1 bit], [*Consistency Mode*: \ Dictates the current memory consistency model: zero for relaxed and one for sequential. `CMD` is not privileged and is only needed when the system implements the `FNC` module, otherwise the default must always be _sequential consistency_.],
 
-            [`CMD`], [1 bit], [*Consistency Mode*: \ Dictates the current memory consistency model: zero for relaxed and one for sequential. This bit is not privileged, only needed when the system implements the `FNC` module and, if not present, the default consistency model must always be _sequential consistency._],
-
-            [`GEE`], [1 bit], [*Global Arithmetic Exceptions Enable*: \ Enables or disables immediate trap on any arithmetic exception. If this bit is one, then any arithmetic flag will trap the hart. If this bit is zero, the hart will not be trapped unconditionally, but the flags must still be generated if the `HLPR` module is implemented. This bit is not privileged and only needed when the `EXC` module is implemented.],
-
-            [`HLPRE`], [4 bits], [*HLPR Enable*: \ Enables or disables portions the `HLPRB` and each bit affects 8 registers at a time. These bits are not privileged and only needed when the system implements the `HLPR` module.],
-
-            [`PERFCE`], [1 bit], [*PERFC Enable*: \ Enables or disables the `PERFCB`. This bit is not privileged and only needed when the system implements the `PERFC` module.],
-
-            [`CNTU`], [2 bit], [*PERFC Time Unit*: \ Dictates the time unit of the `PERFC` when they are in _time counter_ mode. This bit is not privileged and only needed when the system implements the `PERFC` module. The possible modes are:
+            [`GEE`], [2 bit], [*Global Arithmetic Exceptions Enable*: \ Enables or disables immediate traps on arithmetic exceptions.  The arithmetic flags must always be generated if the `HLPR` module is implemented, regardless of the value of these bits. `GEE` is not privileged and is only needed when the `EXC` module is implemented, otherwise the default value must always be _all disabled_. The enable modes are:
 
                 #enum(tight: false,
 
-                    [_Seconds._],
-                    [_Milliseconds._],
-                    [_Microseconds._],
-                    [_Nanoseconds._]
+                    [_All disabled._],
+                    [_Enable integer arithmetic exceptions._],
+                    [_Enable FP arithmetic exceptions._],
+                    [_Enable integer and FP arithmetic exceptions._],
                 )
             ],
 
-            [`IM`], [2 bits], [*Interrupt Mask*: \ Masks the interrupts: the first bit masks _IO-interrupts_ and the second masks _IPC-interrupts_. This bit is privileged and only needed when the system implements the `IOINT`, `IPCINT` or both.],
+            [`HLPRE`], [4 bits], [*HLPR Enable*: \ Enables or disables portions the `HLPRB` in chunks of eight registers. `HLPRE` is not privileged and only needed when the system implements the `HLPR` module, otherwise the default value must always be zero.],
 
-            [`PMOD`], [1 bit], [*Privilege Mode*: \ Dictates the current hart privilege level: zero for machine mode and one for user mode. This bit is privileged and only needed when the system implements the `USER` module and, if not implemented, must always be set to _machine mode_.],
+            [`PERFCE`], [1 bit], [*PERFC Enable*: \ Enables or disables the `PERFCB`. `PERFCE` is not privileged and only needed when the system implements the `PERFC` module, otherwise the default value must always be zero.],
 
-            [`WDTE`], [1 bit], [*Watchdog Timer Enable*: \ Enables or disables the `WDT` register. This bit is privileged and only needed when the system implements the `USER` module.],
+            [`IM`], [4 bits], [*Interrupt Mask*: \ Masks the interrupts: the first two bits mask _IO-interrupts_ and the last two bits mask _IPC-interrupts_. Each bit masks chunks of 16 interrupts. `IM` is privileged and only needed when the system implements the `IOINT`, `IPCINT` or both, otherwise the default value must always be zero.],
 
-            [`PWRS`], [4 bit], [*Power State*: \ Holds the current hart power state. The actual possible values are implementation specific and left to the hardware designers to define. These bits are privileged and only needed when the system implements the `SA` module.],
+            [`PMOD`], [2 bits], [*Privilege Mode*: \ Dictates the current hart privilege level. `PMOD` is privileged and only needed when the system implements the `USER` module, otherwise the default value must always be zero. The possible modes are:
 
-            [`HLTS`], [3 bit], [*Halt State*: \ Holds the current hart halting state. These bits are privileged and always mandatory. The possible states are:
+                #enum(tight: false,
+
+                    [_Machine mode._],
+                    [_User mode._],
+                    [_Reserved for future use._],
+                    [_Reserved for future use._]
+                )
+            ],
+
+            [`WDTE`], [1 bit], [*Watchdog Timer Enable*: \ Enables or disables the `WDT` register. `WDTE` is privileged and only needed when the system implements the `USER` module, otherwise the default value must always be zero.],
+
+            [`PWRS`], [4 bit], [*Power State*: \ Holds the current hart power state. The actual possible values are implementation specific and left to the hardware designers to define. `PWRS` is privileged and only needed when the system implements the `SA` module, otherwise the default value must always be zero.],
+
+            [`HLTS`], [3 bit], [*Halt State*: \ Holds the current hart halting state. `HLTS` is privileged, always mandatory and can only be changed via the `HLT`, `WINT` instructions or via interrupts. The possible states are:
 
                 #enum(tight: false,
 
                     [_Not halted._],
                     [_Explicit halt: the halt was caused by the HLT instruction._],
+                    [_Waiting for interrupt._],
                     [_Double event halt: the halt was caused by the "double event" situation._],
-                    [_Too many events halt: the halt was caused by the filling of the synchronous event queues._]
+                    [_Too many events halt: the halt was caused by the filling of the synchronous event queues._],
+                    [_Reserved for future use._],
+                    [_Reserved for future use._],
+                    [_Reserved for future use._]
                 )
             ]
 
-            // 2 bits left
-        )),
-
-        [It is important to note that when some bits are not needed and or are fixed values, any write operation to those bits should be silently discarded and should not produce any visible architectural and microarchitectural changes.]
+            // 7 bits left
+        ))
     ),
 
     ///.
@@ -581,91 +603,93 @@
             [  48], [`IOINT_31`], [`IOINT`], [1], [31], [IO-Interrupt], [*IO-Interrupt 31*: \ Generic IO interrupt. This event doesn't carry any extra information.],
 
             // IPCINT module
-            [  49], [`IPCINT_0`], [`IPCINT`], [2], [1], [IPC-Interrupt], [*IPC-Interrupt 0*: \ Generic IPC interrupt. This event doesn't carry any extra information.],
+            [  49], [`AWAKE`], [`IPCINT`], [2], [0], [IPC-Interrupt], [*Awake*: \ Causes the receiving hart to resume execution regardless of the halting state. This event cannot be masked and doesn't carry any extra information.],
+
+            [  50], [`IPCINT_0`], [`IPCINT`], [2], [1], [IPC-Interrupt], [*IPC-Interrupt 0*: \ Generic IPC interrupt. This event doesn't carry any extra information.],
 
             [ ...], [...], [...], [...], [...], [...], [...],
 
-            [  80], [`IPCINT_31`], [`IPCINT`], [2], [32], [IPC-Interrupt], [*IPC-Interrupt 31*: \ Generic IPC interrupt. This event doesn't carry any extra information.],
+            [  81], [`IPCINT_31`], [`IPCINT`], [2], [32], [IPC-Interrupt], [*IPC-Interrupt 31*: \ Generic IPC interrupt. This event doesn't carry any extra information.],
 
             // DALIGN module
-            [  81], [`MISD`], [`DALIGN`], [0], [Program order], [Fault], [*Misaligned Data*: \ Triggered when the hart accesses unaligned data. This event doesn't carry any extra information.],
+            [  82], [`MISD`], [`DALIGN`], [0], [Program order], [Fault], [*Misaligned Data*: \ Triggered when the hart accesses unaligned data. This event doesn't carry any extra information.],
 
             // USER module
-            [  82], [`PFLT`], [`USER`], [0], [Program order], [Fault], [*Page Fault*: \ Triggered when the addressed page could not be found in memory. The `MED` register must be populated with the faulting address.],
+            [  83], [`PFLT`], [`USER`], [0], [Program order], [Fault], [*Page Fault*: \ Triggered when the addressed page could not be found in memory. The `MED` register must be populated with the faulting address.],
 
-            [  83], [`ILLA`], [`USER`], [0], [Program order], [Fault], [*Illegal Address*: \ Triggered when the user accesses "illegal" address, that is, an address that is not accessible in user mode. The `MED` register must be populated with the faulting address.],
+            [  84], [`ILLA`], [`USER`], [0], [Program order], [Fault], [*Illegal Address*: \ Triggered when the user accesses "illegal" address, that is, an address that is not accessible in user mode. The `MED` register must be populated with the faulting address.],
 
-            [  84], [`SYSC`], [`USER`], [0], [Program order], [Fault], [*System Call*: \ Triggered by the system call instruction explicitly.],
+            [  85], [`SYSC`], [`USER`], [0], [Program order], [Fault], [*System Call*: \ Triggered by the system call instruction explicitly.],
 
-            [  85], [`TQE` ], [`USER`], [1], [0], [IPC-Interrupt], [*Time Quantum Expired*: \ Triggered by the internal watchdog timer. This event doesn't carry any extra information.],
+            [  86], [`TQE` ], [`USER`], [1], [0], [IPC-Interrupt], [*Time Quantum Expired*: \ Triggered by the internal watchdog timer. This event doesn't carry any extra information.],
 
-            [  86], [-],   [-],   [-],   [-],   [-],   [Reserved for future uses.],
+            [  87], [-],   [-],   [-],   [-],   [-],   [Reserved for future uses.],
             [ ...], [...], [...], [...], [...], [...], [...],
-            [  97], [-],   [-],   [-],   [-],   [-],   [Reserved for future uses.],
+            [  98], [-],   [-],   [-],   [-],   [-],   [Reserved for future uses.],
 
             // EXC module
-            [  98], [`COVRE`], [`EXC`], [3], [Program order], [Exception], [*Carry Over Exception*: \ This event is triggered by the `COVRn` flag, where  \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
+            [  99], [`COVRE`], [`EXC`], [3], [Program order], [Exception], [*Carry Over Exception*: \ This event is triggered by the `COVRn` flag, where  \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
 
-            [  99], [`CUNDE`], [`EXC`], [3], [Program order], [Exception], [*Carry Under Exception*: \ This event is triggered by the `CUND` flag. This event doesn't carry any extra information.],
+            [ 100], [`CUNDE`], [`EXC`], [3], [Program order], [Exception], [*Carry Under Exception*: \ This event is triggered by the `CUND` flag. This event doesn't carry any extra information.],
 
-            [ 100], [`OVFLE`], [`EXC`], [3], [Program order], [Exception], [*Overflow Exception*: \ This event is triggered by the `OVFLn` flag, where \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
+            [ 101], [`OVFLE`], [`EXC`], [3], [Program order], [Exception], [*Overflow Exception*: \ This event is triggered by the `OVFLn` flag, where \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
 
-            [ 101], [`UNFLE`], [`EXC`], [3], [Program order], [Exception], [*Underflow Exception*: \ This event is triggered by the `UNFLn` flag, where \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
+            [ 102], [`UNFLE`], [`EXC`], [3], [Program order], [Exception], [*Underflow Exception*: \ This event is triggered by the `UNFLn` flag, where \ $n = 1/8 dot 2^"WLEN"$. This event doesn't carry any extra information.],
 
-            [ 102], [`DIV0E`], [`EXC`], [3], [Program order], [Exception], [*Division By Zero Exception*: \ This event is triggered by the `DIV0` flag. This event doesn't carry any extra information.],
+            [ 103], [`DIV0E`], [`EXC`], [3], [Program order], [Exception], [*Division By Zero Exception*: \ This event is triggered by the `DIV0` flag. This event doesn't carry any extra information.],
 
-            [ 103], [`INVOPE`], [`EXC`], [3], [Program order], [Exception], [*Invalid Operation Exception*: \ This event is triggered by the `INVOP` flag. This event doesn't carry any extra information.],
+            [ 104], [`INVOPE`], [`EXC`], [3], [Program order], [Exception], [*Invalid Operation Exception*: \ This event is triggered by the `INVOP` flag. This event doesn't carry any extra information.],
 
-            [ 104], [-], [`EXC`], [3], [Program order], [Exception], [Reserved for future uses.],
+            [ 105], [-], [`EXC`], [3], [Program order], [Exception], [Reserved for future uses.],
             [ ...], [...], [...], [...], [...], [...], [...],
-            [ 113], [-], [`EXC`], [3], [Program order], [Exception], [Reserved for future uses.],
+            [ 114], [-], [`EXC`], [3], [Program order], [Exception], [Reserved for future uses.],
 
             // HLPR module
-            [ 114], [`RDT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Read Trigger*: \ Event for mode 1 and 6 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 115], [`RDT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Read Trigger*: \ Event for mode 1 and 6 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 115], [`WRT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Write Trigger*: \ Event for mode 2 and 7 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 116], [`WRT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Write Trigger*: \ Event for mode 2 and 7 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 116], [`EXT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Execute Trigger*: \ Event for mode 3 and 8 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 117], [`EXT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Execute Trigger*: \ Event for mode 3 and 8 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 117], [`RWT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Read-Write Trigger*: \ Event for mode 4 and 9 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 118], [`RWT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Read-Write Trigger*: \ Event for mode 4 and 9 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 118], [`RWET`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Read-Write-Execute Trigger*: \ Event for mode 5 and 10 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 119], [`RWET`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Read-Write-Execute Trigger*: \ Event for mode 5 and 10 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 119], [`COVR1T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Over 1 Trigger*: \ Event for mode 11 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 120], [`COVR1T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Over 1 Trigger*: \ Event for mode 11 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 120], [`COVR2T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Over 2 Trigger*: \ Event for mode 12 of the helper registers. The causing instruction and the address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 121], [`COVR2T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Over 2 Trigger*: \ Event for mode 12 of the helper registers. The causing instruction and the address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 121], [`COVR4T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Over 4 Trigger*: \ Event for mode 13 of the helper registers. The causing instruction and the address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 122], [`COVR4T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Over 4 Trigger*: \ Event for mode 13 of the helper registers. The causing instruction and the address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 122], [`COVR8T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Over 8 Trigger*: \ Event for mode 14 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 123], [`COVR8T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Over 8 Trigger*: \ Event for mode 14 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 123], [`CUNDT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Under Trigger*: \ Event for mode 15 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 124], [`CUNDT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Carry Under Trigger*: \ Event for mode 15 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 124], [`OVFL1T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Overflow 1 Trigger*: \ Event for mode 16 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 125], [`OVFL1T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Overflow 1 Trigger*: \ Event for mode 16 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 125], [`OVFL2T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Overflow 2 Trigger*: \ Event for mode 17 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 126], [`OVFL2T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Overflow 2 Trigger*: \ Event for mode 17 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 126], [`OVFL4T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Overflow 4 Trigger*: \ Event for mode 18 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 127], [`OVFL4T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Overflow 4 Trigger*: \ Event for mode 18 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 127], [`OVFL8T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Overflow 8 Trigger*: \ Event for mode 19 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 128], [`OVFL8T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Overflow 8 Trigger*: \ Event for mode 19 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 128], [`UNFL1T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Underflow 1 Trigger*: \ Event for mode 20 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 129], [`UNFL1T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Underflow 1 Trigger*: \ Event for mode 20 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 129], [`UNFL2T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Underflow 2 Trigger*: \ Event for mode 21 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 130], [`UNFL2T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Underflow 2 Trigger*: \ Event for mode 21 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 130], [`UNFL4T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Underflow 4 Trigger*: \ Event for mode 22 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 131], [`UNFL4T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Underflow 4 Trigger*: \ Event for mode 22 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 131], [`UNFL8T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Underflow 8 Trigger*: \ Event for mode 23 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 132], [`UNFL8T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Underflow 8 Trigger*: \ Event for mode 23 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 132], [`DIV0T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Division by Zero Trigger*: \ Event for mode 24 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 133], [`DIV0T`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Division by Zero Trigger*: \ Event for mode 24 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 133], [`INVOPT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Invalid Operation Trigger*: \ Event for mode 25 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
+            [ 134], [`INVOPT`], [`HLPR`], [3], [See subsection 6.3], [Exception], [*Invalid Operation Trigger*: \ Event for mode 25 of the helper registers. The address of the causing register must be written into the `MEC` / `UEC` special purpose register as additional information.],
 
-            [ 134], [-], [`HLPR`], [3], [See subsection 6.3], [Exception], [Reserved for future uses.],
+            [ 135], [-], [`HLPR`], [3], [See subsection 6.3], [Exception], [Reserved for future uses.],
             [ ...], [...], [...], [...], [...], [...], [...],
-            [ 369], [-], [`HLPR`], [3], [See subsection 6.3], [Exception], [Reserved for future uses.],
+            [ 370], [-], [`HLPR`], [3], [See subsection 6.3], [Exception], [Reserved for future uses.],
 
-            [ 370], [-], [-], [-], [-], [-], [Left as implementation specific.],
+            [ 371], [-], [-], [-], [-], [-], [Left as implementation specific.],
             [ ...], [...], [...], [...], [...], [...], [...],
             [ 512], [-], [-], [-], [-], [-], [Left as implementation specific.]
         ))),
@@ -687,7 +711,7 @@
                     [_`PERFCE` to 0 if present._],
                     [_`PMOD` to 1._],
                     [_`WDTE` to 0._],
-                    [_`IM` to 3 if present._]
+                    [_`IM` to 15 if present._]
                 )
             ],
 
@@ -803,18 +827,17 @@
             [  16], [  16], [`VRFS`    ], [Private], [See section 6 for more information.],
             [  17], [  17], [`HRFS`    ], [Private], [See section 6 for more information.],
             [  18], [  18], [`CRFS`    ], [Private], [See section 6 for more information.],
-            [  19], [  19], [`LLSCS`   ], [Private], [See section 4 for more information.],
 
-            [  20], [  27], [`CPUID`   ], [Global ], [Unique CPU identifier.],
-            [  28], [  35], [`CPUVID`  ], [Global ], [Unique CPU vendor identifier.],
-            [  36], [ 163], [`CPUNAME` ], [Global ], [CPU name.],
-            [ 164], [ 165], [`NCORES`  ], [Global ], [Number of physical CPU cores.],
-            [ 166], [ 167], [`NTHREADS`], [Global ], [Number of logical CPU cores per physical core (hardware threads or harts).],
-            [ 168], [ 168], [`IOS`     ], [Global ], [See section 5 for more information.],
-            [ 169], [ 169], [`DMAMOD`  ], [Global ], [See section 5 for more information.],
-            [ 170], [ 170], [`DMAS`    ], [Global ], [See section 5 for more information.],
+            [  19], [  26], [`CPUID`   ], [Global ], [Unique CPU identifier.],
+            [  27], [  34], [`CPUVID`  ], [Global ], [Unique CPU vendor identifier.],
+            [  35], [ 162], [`CPUNAME` ], [Global ], [CPU name.],
+            [ 163], [ 164], [`NCORES`  ], [Global ], [Number of physical CPU cores.],
+            [ 165], [ 166], [`NTHREADS`], [Global ], [Number of logical CPU cores per physical core (hardware threads or harts).],
+            [ 167], [ 167], [`IOS`     ], [Global ], [See section 5 for more information.],
+            [ 168], [ 168], [`DMAMOD`  ], [Global ], [See section 5 for more information.],
+            [ 169], [ 169], [`DMAS`    ], [Global ], [See section 5 for more information.],
 
-            [ 171], [ 255], [-], [-], [Reserved for future uses.],
+            [ 170], [ 255], [-], [-], [Reserved for future uses.],
             [ 256], [1023], [-], [-], [Left as implementation specific.],
         )),
 
