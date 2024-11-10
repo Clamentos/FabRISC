@@ -23,7 +23,7 @@
             [#middle([*Index*])], [#middle([*Short name*])], [#middle([*Full name*])],
 
             [  0], [`CISB`  ], [Computational-Integer-Scalar-Basic.],      // -
-            [  1], [`CISA`  ], [Computational-Integer-Scalar-Advanced.],   //
+            [  1], [`CISA`  ], [Computational-Integer-Scalar-Advanced.],   // -
             [  2], [`CISM`  ], [Computational-Integer-Scalar-Multiword.],  //
             [  3], [`CIVB`  ], [Computational-Integer-Vector-Basic.],      //
             [  4], [`CIVA`  ], [Computational-Integer-Vector-Advanced.],   //
@@ -49,27 +49,28 @@
             [ 22], [`FIC`   ], [Flow-Integer-Compressed.],                 //
             [ 23], [`FFB`   ], [Flow-FP-Basic.],                           //
             [ 24], [`FFA`   ], [Flow-FP-Advanced.],                        //
-            [ 25], [`FV`    ], [Flow-Vector.],
+            [ 25], [`FIV`   ], [Flow-Integer-Vector.],                     //
+            [ 26], [`FFV`   ], [Flow-FP-Vector.],                          //
 
-            [ 26], [`SB`    ], [System-Basic.],                            //
-            [ 27], [`SA`    ], [System-Advanced.],                         //
+            [ 27], [`SB`    ], [System-Basic.],                            //
+            [ 28], [`SA`    ], [System-Advanced.],                         //
 
-            [ 28], [`VC`    ], [Vector-Configuration],                     //
-            [ 29], [`FRMD`  ], [FP-Rounding-Modes],
+            [ 29], [`VC`    ], [Vector-Configuration],                     // add new instr. to do "sign extend" from old shape to new
+            [ 30], [`FRMD`  ], [FP-Rounding-Modes],                        //
 
-            [ 30], [`HLPR`  ], [Helper-Registers.],                        //
-            [ 31], [`PERFC` ], [Performance-Counters.],                    //
-            [ 32], [`FNC`   ], [Fencing.],                                 //
+            [ 31], [`HLPR`  ], [Helper-Registers.],                        //
+            [ 32], [`PERFC` ], [Performance-Counters.],                    //
+            [ 33], [`FNC`   ], [Fencing.],                                 //
 
-            [ 33], [`TM`    ], [Transactional-Memory.],                    //
-            [ 34], [`EXC`   ], [Exceptions.],
-            [ 35], [`IOINT` ], [IO-Interrupts.],
-            [ 36], [`IPCINT`], [IPC-Interrupts.],
-            [ 37], [`USER`  ], [User-Mode.],                               //
-            [ 38], [`DALIGN`], [Data-Alignment.],
-            [ 39], [`CTXR`  ], [Context-Reducing],                         //
+            [ 34], [`TM`    ], [Transactional-Memory.],                    //
+            [ 35], [`EXC`   ], [Exceptions.],
+            [ 36], [`IOINT` ], [IO-Interrupts.],
+            [ 37], [`IPCINT`], [IPC-Interrupts.],
+            [ 38], [`USER`  ], [User-Mode.],                               //
+            [ 39], [`DALIGN`], [Data-Alignment.],
+            [ 40], [`CTXR`  ], [Context-Reducing],                         //
 
-            [ 40], [-       ], [Reserved for future use.],
+            [ 41], [-       ], [Reserved for future use.],
             [...], [...     ], [...                     ],
             [ 55], [-       ], [Reserved for future use.],
 

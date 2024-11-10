@@ -394,12 +394,6 @@
 
             [`VSH`], [8 bits], [*Vector Shape*: \ This register specifies the current vector configuration and is divided into two parts: the most significant two bits specify the size of the singular element, while the remaining least significant bits specify the number of active elements. Illegal configurations must generate the `ILLI` fault. This register is not privileged and is only needed when the system implements the `VC` module, otherwise the default vector shape must always dictate the maximum number of `WLEN` sized elements.],
 
-            [`VM1`], [$1/8 "MXVL"$], [*Vector Mask 1*: \ This register is the vector mask number 1. Each bit maps to a byte in the vector register bank. This register is not privileged and is only needed when the system implements the `VF` module.],
-
-            [`VM2`], [$1/8 "MXVL"$], [*Vector Mask 2*: \ This register is the vector mask number 2. Each bit maps to a byte in the vector register bank. This register is not privileged and is only needed when the system implements the `VF` module.],
-
-            [`VM3`], [$1/8 "MXVL"$], [*Vector Mask 3*: \ This register is the vector mask number 3. Each bit maps to a byte in the vector register bank. This register is not privileged and is only needed when the system implements the `VF` module.],
-
             [`UEPC`], [`WLEN`], [*User Event PC*: \ This register holds the `PC` of the last instruction before the user event handler, which can then be used to return back from it. This register has the same privilege as the `PC` and is needed if the system implements the `USER` module.],
 
             [`UESR`], [32 bits], [*User Event Status Register*: \ This register holds the latest `SR` just before the user event handler, which can then be used to restore the `SR` when returning from it. This register has the same privilege as the `SR` and is only needed when the system implements the `USER` module.],
@@ -448,7 +442,7 @@
 
             [`WDT`], [32 bit], [*Watchdog Timer*: \ This register is a counter that periodically count down and triggers the `TQE` event when it reaches zero. This register is privileged and is only needed when the system implements the `USER` module.]
 
-            // 2 free remaining
+            // 5 free remaining
         )),
 
         [FabRISC dictates the implementation of some mandatory fault events, such as: `MISI`, `INCI`, `ILLI` and others which require the presence of the machine event special purpose registers. Such registers are, however, not necessary if the system implements the said faults by simply halting the machine. This relaxes the constraint on simple implementations that don't support events or don't want to handle them.],
@@ -934,10 +928,10 @@
             [-], [-], [Nothing. The _md_ field is ignored.],
 
             [Class A], [instruction specific], [Function specifier: instruction specific.],
-            [Class B], [`.L1`, `.L2`, \ `.L4`, `.L8`], [Data type size in bytes.],
+            [Class B], [`.L1`, `.L2`, \ `.L4`, `.LM `], [Data type size in bytes. `.LM` is used to signify the maximum `WLEN`.],
             [Class C], [`.SGPRB`, \ `.VGPRB`, \ `.HLPRB`, \ `.PERFCB`], [Register file selector.],
             [Class D], [-], [Extra immediate bits (always most significant).],
-            [Class E], [`UMSK`, `.MSK`, \ `.IMSK`, -], [Vector mask modes: unmasked, masked, inverted mask.],
+            [Class E], [`.UMSK`, `.MSK`, \ `.IMSK`, -], [Vector mask modes: unmasked, masked, inverted mask.],
             [Class F], [`.B0`, `.B1`, \ `.B2`, `.B3`], [Register bank specifier (currently only for compressed formats).],
 
             [Class G], [`.MA`, `.NMA`, \ `.MS`, `.NMS`], [Multiply-Accumulate modes: multiply-add, negative multiply-add, multiply-subtract, negative multiply-subtract.],
@@ -952,9 +946,21 @@
 
             [#middle([*Modifier*])], [#middle([*Labels*])], [#middle([*Description*])],
 
-            [vm(6)], [`.VV`, `.VS`, `.MVV`, \ `.MVS`, `.IMVV`, `.IMVS`], [Vector modes and masking combinations: vector-vector, vector-scalar, masked vector-vector, masked vector-scalar, inverted mask vector-vector, inverted mask vector-scalar],
+            [vm(6)], [`.VV`, `.VS`, `.MVV`, \ `.MVS`, `.IMVV`, `.IMVS`], [Vector modes and masking combinations:
 
-            [vm(2)], [`UMSK`, `.MSK`, \ `.IMSK`, -], [Same effect as the Class E modifier.],
+                #list(tight: true,
+
+                    [vector-vector],
+                    [vector-scalar],
+                    [masked vector-vector],
+                    [masked vector-scalar],
+                    [inverted mask vector-vector],
+                    [inverted mask vector-scalar],
+                )
+
+            In all cases the sources and destinations are always the vector registers, unless explicitly stated otherwise.],
+
+            [vm(2)], [`.UMSK`, `.MSK`, \ `.IMSK`, -], [Same effect as the Class E modifier.],
         )),
 
         comment([
