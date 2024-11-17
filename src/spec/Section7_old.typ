@@ -929,10 +929,10 @@
 
             [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Description*])],
 
-            [`SYSCL`], [], [2R.A], [`-`], [*System Call*], // Ra = call ID, Rb not used. {PRIVILEGED}
-            [`SYSCLI`], [], [RI.A], [`-`], [*System Call Immediate*], // Imm = call ID, Ra not used. {PRIVILEGED}
-            [`WINT`], [], [RI.A], [`-`], [*Wait For Interrupt*], // Ra = timeout, Rb = int to wait for. {PRIVILEGED}
-            [`MMUOP`], [], [RI.A], [`-`], [*Memory Management Unit Operation*] // INCI fault if no MMU is implemented. {PRIVILEGED}
+            [`SYSCL`], [], [2R.A], [`-`], [*System Call*], // Ra = call ID, Rb not used. {PRIVILEGED} put in USER
+            [`SYSCLI`], [], [RI.A], [`-`], [*System Call Immediate*], // Imm = call ID, Ra not used. {PRIVILEGED} put in USER
+            [`WINT`], [], [RI.A], [`-`], [*Wait For Interrupt*], // Ra = timeout, Rb = int to wait for. {PRIVILEGED} on when IOINT / IPCINT are implemented
+            [`MMUOP`], [], [RI.A], [`-`], [*Memory Management Unit Operation*] // INCI fault if no MMU is implemented. {PRIVILEGED} put in USER
         ))
     )
 

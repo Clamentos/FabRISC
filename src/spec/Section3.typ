@@ -70,13 +70,13 @@
     ),
 
     ///.
+    pagebreak(),
     subSection(
 
         [Floating Point Types],
 
         [Floating point data types are encoded with a modified IEEE-754 standard. The custom format includes all the previously mentioned sizes plus two more with the following bit patterns:],
 
-        pagebreak(),
         tableWrapper([Floating point formats.], table(
 
             columns: (auto, auto, auto, auto),
@@ -112,7 +112,6 @@
 
         [Quiet `NaN` values simply propagate through the various operations as dictated by the IEEE-754 standard. In both signalling and quiet cases, the least significant three bits of the mantissa is the payload and encodes the reason. The `NaN` payloads must be ORed when they interact regardless of the operation performed since the result will always result in an `NaN`. The following is the list of payload bits:],
 
-        pagebreak(),
         tableWrapper([`NaN` payload vector.], table(
 
             columns: (auto, auto),
@@ -135,31 +134,43 @@
 
         tableWrapper([Arithmetic flags.], table(
 
-            columns: (auto, auto),
+            columns: (auto, auto, auto, 45%),
             align: left + horizon,
 
-            [#middle([*Name*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*EXC present*])], [#middle([*HLPR present*])], [#middle([*Description*])],
 
-            [`COVR1`], [*Carry Over 1 Flag*: \ Activated if a carry over occurred on the 1st byte. ($"WLEN" = 0, 1, 2, 3$).],
-            [`COVR2`], [*Carry Over 2 Flag*: \ Activated if a carry over occurred on the 2nd byte. ($"WLEN" = 1, 2, 3$).],
-            [`COVR4`], [*Carry Over 4 Flag*: \ Activated if a carry over occurred on the 4th byte. ($"WLEN" = 2, 3$).],
-            [`COVR8`], [*Carry Over 8 Flag*: \ Activated if a carry over occurred on the 8th byte. ($"WLEN" = 3$).],
+            [`COVR1`], [Required if \ `WLEN = 0`], [Required if \ `WLEN >= 0`], [*Carry Over 1 Flag*: \ Activated if a carry over occurred on the 1st byte.],
 
-            [`CUND` ], [*Carry Under Flag*: \ Activated if a carry under occurred ($"WLEN" = 0, 1, 2, 3$).],
+            [`COVR2`], [Required if \ `WLEN = 1`], [Required if \ `WLEN >= 1`], [*Carry Over 2 Flag*: \ Activated if a carry over occurred on the 2nd byte.],
 
-            [`OVFL1`], [*Overflow 1 Flag*: \ Activated if an overflow occurred on the 1st byte. ($"WLEN" = 0, 1, 2, 3$).],
-            [`OVFL2`], [*Overflow 2 Flag*: \ Activated if an overflow occurred on the 2nd byte. ($"WLEN" = 1, 2, 3$).],
-            [`OVFL4`], [*Overflow 4 Flag*: \ Activated if an overflow occurred on the 4th byte. ($"WLEN" = 2, 3$).],
-            [`OVFL8`], [*Overflow 8 Flag*: \ Activated if an overflow occurred on the 8th byte. ($"WLEN" = 3$).],
+            [`COVR4`], [Required if \ `WLEN = 2`], [Required if \ `WLEN >= 2`], [*Carry Over 4 Flag*: \ Activated if a carry over occurred on the 4th byte.],
 
-            [`UNFL1`], [*Underflow 1 Flag*: \ Activated if an underflow occurred on the 1st byte. ($"WLEN" = 0, 1, 2, 3$).],
-            [`UNFL2`], [*Underflow 2 Flag*: \ Activated if an underflow occurred on the 2nd byte. ($"WLEN" = 1, 2, 3$).],
-            [`UNFL4`], [*Underflow 4 Flag*: \ Activated if an underflow occurred on the 4th byte. ($"WLEN" = 2, 3$).],
-            [`UNFL8`], [*Underflow 8 Flag*: \ Activated if an underflow occurred on the 8th byte. ($"WLEN" = 3$).],
+            [`COVR8`], [Required if \ `WLEN = 3`], [Required if \ `WLEN = 3`], [*Carry Over 8 Flag*: \ Activated if a carry over occurred on the 8th byte.],
 
-            [`DIV0` ], [*Division by Zero Flag*: \ Activated if a division by zero occurred.],
-            [`INVOP`], [*Invalid Operation*: \ Activated if an invalid operation occurred.]
-        ))
+            [`CUND` ], [Always required], [Always required], [*Carry Under Flag*: \ Activated if a carry under occurred.],
+
+            [`OVFL1`], [Required if \ `WLEN = 0`], [Required if \ `WLEN >= 0`], [*Overflow 1 Flag*: \ Activated if an overflow occurred on the 1st byte.],
+
+            [`OVFL2`], [Required if \ `WLEN = 1`], [Required if \ `WLEN >= 1`], [*Overflow 2 Flag*: \ Activated if an overflow occurred on the 2nd byte.],
+
+            [`OVFL4`], [Required if \ `WLEN = 2`], [Required if \ `WLEN >= 2`], [*Overflow 4 Flag*: \ Activated if an overflow occurred on the 4th byte.],
+
+            [`OVFL8`], [Required if \ `WLEN = 3`], [Required if \ `WLEN = 3`], [*Overflow 8 Flag*: \ Activated if an overflow occurred on the 8th byte.],
+
+            [`UNFL1`], [Required if \ `WLEN = 0`], [Required if \ `WLEN >= 0`],[*Underflow 1 Flag*: \ Activated if an underflow occurred on the 1st byte.],
+
+            [`UNFL2`], [Required if \ `WLEN = 1`], [Required if \ `WLEN >= 1`],[*Underflow 2 Flag*: \ Activated if an underflow occurred on the 2nd byte.],
+
+            [`UNFL4`], [Required if \ `WLEN = 2`], [Required if \ `WLEN >= 2`],[*Underflow 4 Flag*: \ Activated if an underflow occurred on the 4th byte.],
+
+            [`UNFL8`], [Required if \ `WLEN = 3`], [Required if \ `WLEN = 3`],[*Underflow 8 Flag*: \ Activated if an underflow occurred on the 8th byte.],
+
+            [`DIV0` ], [Required if divisions can be performed], [Required if divisions can be performed], [*Division by Zero Flag*: \ Activated if a division by zero occurred.],
+
+            [`INVOP`], [Always Required], [Always Required], [*Invalid Operation*: \ Activated if an invalid operation occurred.]
+        )),
+
+        [For flags that appear at specific boundaries, such as: `COVRn`, `OVFLn`, `UNFLn` the `EXC` must trap the hart only on "terminal" flags, that is, when `n = 2 ^ WLEN`.]
     ),
 
     ///.

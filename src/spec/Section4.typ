@@ -26,6 +26,7 @@
     ),
 
     ///.
+    pagebreak(),
     subSection(
 
         [Memory Addressing Modes],
@@ -117,7 +118,6 @@
 
             [The `TM` module, as mentioned earlier, also includes _abort-codes_ that can be used by the programmer to take appropriate actions in case the transaction was aborted. The proposed codes are listed in the following table:],
 
-            pagebreak(),
             tableWrapper([Transaction abort codes.], table(
 
                 columns: (auto, auto, auto),
@@ -125,16 +125,16 @@
 
                 [#middle([*Code*])], [#middle([*Mnemonic*])], [#middle([*Description*])],
 
-                [0], [`XABT`], [Explicit abort. The transaction was explicitly aborted by the `TABT` or `TABTA` instruction.],
-                [1], [`EABT`], [Event abort. The transaction was aborted due to a triggered event: Interrupt, fault or exception.],
+                [0], [`XABT`], [*Explicit abort*: \ The transaction was explicitly aborted by the `TABT` or `TABTA` instruction.],
+                [1], [`EABT`], [*Event abort*: \ The transaction was aborted due to a triggered event: Interrupt, fault or exception.],
 
-                [2], [`CABT`], [Conflict abort. The transaction was aborted due to a collision with another thread, that is, both wrote to the same memory location but the other thread committed earlier.],
+                [2], [`CABT`], [*Conflict abort*: \ The transaction was aborted due to a collision with another thread, that is, both wrote to the same memory location but the other thread committed earlier.],
 
-                [3], [`RABT`], [Replacement abort. The transaction was aborted due to a cache line replacement that held a previously fetched transactional variable.],
+                [3], [`RABT`], [*Replacement abort*: \ The transaction was aborted due to a cache line replacement that held a previously fetched transactional variable.],
 
-                [4], [`UABT`], [Depth underflow abort. The transaction was aborted because a `TCOM`, `TABT`, `TABTA` or a failing `TCHK` instruction attempted to execute at a depth of 0.],
+                [4], [`UABT`], [*Depth underflow abort*: \ The transaction was aborted because a `TCOM`, `TABT`, `TABTA` or a failing `TCHK` instruction attempted to execute at a depth of 0.],
 
-                [5], [`OABT`], [Depth Overflow abort. The transaction was aborted due to an exceeded nesting depth.]
+                [5], [`OABT`], [*Depth Overflow abort*: \ The transaction was aborted due to an exceeded nesting depth.]
             ))
         ),
 
@@ -181,9 +181,16 @@
 
             [#middle([*Name*])], [#middle([*Description*])],
 
-            [`FNCL`], [*Fence Loads*: \ This instruction forbids the hart to reorder any load instruction across the fence.],
-            [`FNCS`], [*Fence Stores*: \ This instruction forbids the hart to reorder any store instruction across the fence.],
-            [`FNCLS`], [*Fence Loads and Stores*: \ This instruction forbids the hart to reorder any load or store instruction across the fence.],
+            [`FNCL`], [*Fence Loads*: \ This instruction forbids the hart to reorder any memory load instruction across the fence.],
+            [`FNCS`], [*Fence Stores*: \ This instruction forbids the hart to reorder any memory store instruction across the fence.],
+
+            [`FNCLS`], [*Fence Loads and Stores*: \ This instruction forbids the hart to reorder any memory load or store instruction across the fence.],
+
+            [`FNCIOL`], [*Fence IO Loads*: \ This instruction forbids the hart to reorder any IO load instruction across the fence.],
+            [`FNCIOS`], [*Fence IO Stores*: \ This instruction forbids the hart to reorder any IO store instruction across the fence.],
+
+            [`FNCIOLS`], [*Fence IO Loads and Stores*: \ This instruction forbids the hart to reorder any IO load or store instruction across the fence.],
+
             [`FNCI`], [*Fence Instructions*: \ This instruction signals that a modification of the instruction cache happened.]
         )),
 

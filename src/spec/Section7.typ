@@ -48,7 +48,7 @@
 
             [`LSH`], [], [3R.A], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Left Shift*: Performs `ra = rb << rc`. This instruction class specifies: `00` (`.S`) as _signed_ mode and `01` (`.U`) as _unsigned_ mode.],
 
-            [`RSH`], [], [3R.A], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `CUND` in `.U` mode], [*Right Shift*: Performs `ra = rb >> rc`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.],
+            [`RSH`], [], [3R.A], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Right Shift*: Performs `ra = rb >> rc`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.],
 
             [`SEQ`], [], [3R.A], [`A`], [-], [*Set If Equal*: Performs `if(rb == rc) ra = 1; else ra = 0`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition.],
 
@@ -82,7 +82,7 @@
 
             [`LSHI`], [], [2RI.A], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Left Shift Immediate*: Performs `ra = rb << imm`. This instruction class specifies: `00` (`.S`) as _signed_ mode and `01` (`.U`) as _unsigned_ mode.],
 
-            [`RSHI`], [], [2RI.A], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `CUND` in `.U` mode], [*Right Shift Immediate*: Performs `ra = rb >> imm`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.],
+            [`RSHI`], [], [2RI.A], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Right Shift Immediate*: Performs `ra = rb >> imm`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.],
 
             [`SEQI`], [], [2RI.A], [`A`], [-], [*Set If Equal Immediate*: Performs `if(rb == EXT(imm)) ra = 1; else ra = 0`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition. The immediate will be sign or zero extended according to the specified mode.],
 
@@ -283,7 +283,7 @@
 
         [Computational Integer Vector Basic (`CIVB`)],
 
-        [This module provides integer vector instructions to perform basic arithmetic and logical operations with registers or immediate values in a data-parallel manner. The `SGPRB` and `VGPRB` are mandatory for this module.],
+        [This module provides integer vector instructions to perform basic arithmetic and logical operations with registers or immediate values in a data-parallel manner. The `VGPRB` is mandatory for this module.],
 
         tableWrapper([CIVB Instructions.], table(
 
@@ -312,7 +312,7 @@
 
             [`VLSH`], [], [4R.B], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Vector Left Shift*: Performs `va = MASK(vc << vd, vb)`. This instruction class specifies: `00` (`.S`) as _signed_ mode and `01` (`.U`) as _unsigned_ mode.],
 
-            [`VRSH`], [], [4R.B], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `CUND` in `.U` mode], [*Vector Right Shift*: Performs `va = MASK(vc >> vd, vb)`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.],
+            [`VRSH`], [], [4R.B], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Vector Right Shift*: Performs `va = MASK(vc >> vd, vb)`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.],
 
             [`VLDI`], [], [2RI.B], [`E`], [-], [*Vector Load Immediate*: Performs `va = MASK(SEXT(imm), vb)`. This instruction broadcasts the immediate to all the configured vector elements.],
 
@@ -332,11 +332,11 @@
 
             [`VXORI`], [], [3RI.B], [`A`], [-], [*Vector Bitwise XOR Immediate*: Performs `va = MASK(vc ^ EXT(imm), vb)`. This instruction class specifies: `00` (`-`) and `01` (`.I`) as _inverted_ mode, which simply inverts the result. The immediate will be sign or zero extended according to the specified mode.],
 
-            [`VIMPI`], [], [3RI.B], [`A`], [-], [*Vector Bitwise IMP Immediate*: Performs `va = MASK(!(!rc & EXT(imm)), vb)`. This instruction class specifies: `10` (`-`) and `11` (`.I`) as _inverted_ mode, which simply inverts the result. The immediate will be sign or zero extended according to the specified mode.],
+            [`VIMPI`], [], [3RI.B], [`A`], [-], [*Vector Bitwise IMP Immediate*: Performs `va = MASK(!(!vc & EXT(imm)), vb)`. This instruction class specifies: `10` (`-`) and `11` (`.I`) as _inverted_ mode, which simply inverts the result. The immediate will be sign or zero extended according to the specified mode.],
 
             [`VLSHI`], [], [3RI.B], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Vector Left Shift Immediate*: Performs `va = MASK(vc << imm, vb)`. This instruction class specifies: `00` (`.S`) as _signed_ mode and `01` (`.U`) as _unsigned_ mode.],
 
-            [`VRSHI`], [], [3RI.B], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `CUND` in `.U` mode], [*Vector Right Shift Immediate*: Performs `va = MASK(vc >> imm, vb)`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.]
+            [`VRSHI`], [], [3RI.B], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Vector Right Shift Immediate*: Performs `va = MASK(vc >> imm, vb)`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.]
         ))
 
         // VADD,VSUB: should have same opcode
@@ -355,7 +355,7 @@
 
         [Computational Integer Vector Advanced (`CIVA`)],
 
-        [This module provides integer vector instructions to perform more complex arithmetic and logical operations with registers or immediate values in a data-parallel manner. The `VGPRB` is mandatory for this module.],
+        [This module provides integer vector instructions to perform more complex arithmetic and logical operations with registers or immediate values in a data-parallel manner. The `SGPR` and `VGPRB` are mandatory for this module.],
 
         tableWrapper([CIVA Instructions.], table(
 
@@ -431,9 +431,9 @@
 
             [`VMIX`], [], [4R.B], [`A`], [-], [*Mix*: Performs `va = MIX(vb, vc, vd)`, that is, choses and moves bytes from `vb` and `vc` according to the select and index bits of `vd`. Must always have a class mode value of `01`.],
 
-            [`VEXTR`], [], [2R.A], [`B`], [-], [*Vector Extract*: Performs: `ra = vb[imm]` ignoring any vector shape configuration. The element and size are dictated by `imm` and the class mode respectively.],
+            [`VEXTR`], [], [2R.A], [`B`], [-], [*Vector Extract*: Performs `ra = vb[imm]` ignoring any vector shape configuration. The element and size are dictated by `imm` and the class mode respectively.],
 
-            [`VINJ`], [], [2R.A], [`B`], [-], [*Vector Inject*: Performs: `va[imm] = rb` ignoring any vector shape configuration. The element and size are dictated by `imm` and the class mode respectively.],
+            [`VINJ`], [], [2R.A], [`B`], [-], [*Vector Inject*: Performs `va[imm] = rb` ignoring any vector shape configuration. The element and size are dictated by `imm` and the class mode respectively.],
 
             [`VMULI`], [], [3RI.B], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Vector Multiplication Immediate*: Performs `va = MASK(vc * EXT(imm), vb)` only keeping the least significant half of the result. This instruction class specifies: `00` (`.S`) as _signed_ mode and `01` (`.U`) as _unsigned_ mode. The immediate will be sign or zero extended according to the specified mode and is always broadcasted to all the vector elements.],
 
@@ -487,7 +487,150 @@
 
             The multiplication part of the operation only considers the least significant half of the result, all of the steps performed are unsigned and the immediate is always zero extended and broadcasted to all the vector elements.],
 
-            [`VPCKUPCK`], [], [2RI.B], [-], [-], [*Vector Pack Unpack*: Performs: `va = PCKUPCK(vb, imm)`, that is, packs or unpacks `vb` with the current vector shape to the one specified in the `imm`. An example of the transformation would be: `000a 000b 000c 000d <=> 000000000000abcd`.]
+            [`VPCKUPCK`], [], [2RI.B], [-], [-], [*Vector Pack Unpack*: Performs `va = PCKUPCK(vb, imm)`, that is, packs or unpacks `vb` with the current vector shape to the one specified in the `imm`. An example of the transformation would be: `000a 000b 000c 000d <=> 000000000000abcd`.]
+        ))
+    ),
+
+    subSection(
+
+        [Computational Integer Vector Reductions (`CIVR`)],
+
+        [This module provides integer vector instructions to perform arithmetic and logical reductions operations on registers values in a data-parallel manner. The `SGPRB` and `VGPRB` are mandatory for this module.],
+
+        tableWrapper([CIVR Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto, auto),
+            align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+
+            [`RADD`], [], [3R.A], [`E`], [`OVFLn`, `UNFLn`], [*Reduced Addition*: Performs `va = SUM(MASK(vc, vb))`, that is, sum all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RADDU`], [], [3R.A], [`E`], [`COVRn`], [*Reduced Addition Unsigned*: Performs `va = SUM(MASK(vc, vb))`, that is, sum all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RSUB`], [], [3R.A], [`E`], [`OVFLn`, `UNFLn`], [*Reduced Subtraction*: Performs `va = SUB(MASK(vc, vb))`, that is, subtract all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RSUBU`], [], [3R.A], [`E`], [`COVRn`], [*Reduced Subtraction Unsigned*: Performs `va = SUB(MASK(vc, vb))`, that is, subtract all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RMIN`], [], [3R.A], [`E`], [-], [*Reduced Minimum*: Performs `va = MIN(MASK(vc, vb))`, that is, find the minimum between all the elements of `vc` together as signed integers, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RMINU`], [], [3R.A], [`E`], [-], [*Reduced Minimum Unsigned*: Performs `va = MIN(MASK(vc, vb))`, that is, find the minimum between all the elements of `vc` together as unsigned integers, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RMAX`], [], [3R.A], [`E`], [-], [*Reduced Maximum*: Performs `va = MAX(MASK(vc, vb))`, that is, find the maximum between all the elements of `vc` together as signed integers, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RMAXU`], [], [3R.A], [`E`], [-], [*Reduced Maximum Unsigned*: Performs `va = MAX(MASK(vc, vb))`, that is, find the maximum between all the elements of `vc` together as unsigned integers, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RAND`], [], [3R.A], [`E`], [-], [*Reduced Bitwise AND*: Performs `va = AND(MASK(vc, vb))`, that is, bitwise AND all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RNAND`], [], [3R.A], [`E`], [-], [*Reduced Bitwise NAND*: Performs `va = NAND(MASK(vc, vb))`, that is, bitwise NAND all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`ROR`], [], [3R.A], [`E`], [-], [*Reduced Bitwise OR*: Performs `va = OR(MASK(vc, vb))`, that is, bitwise OR all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RNOR`], [], [3R.A], [`E`], [-], [*Reduced Bitwise NOR*: Performs `va = NOR(MASK(vc, vb))`, that is, bitwise NOR all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RXOR`], [], [3R.A], [`E`], [-], [*Reduced Bitwise XOR*: Performs `va = XOR(MASK(vc, vb))`, that is, bitwise XOR all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RXNOR`], [], [3R.A], [`E`], [-], [*Reduced Bitwise XNOR*: Performs `va = XNOR(MASK(vc, vb))`, that is, bitwise XNOR all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RIMP`], [], [3R.A], [`E`], [-], [*Reduced Bitwise IMP*: Performs `va = IMP(MASK(vc, vb))`, that is, bitwise IMP all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
+
+            [`RNIMP`], [], [3R.A], [`E`], [-], [*Reduced Bitwise NIMP*: Performs `va = NIMP(MASK(vc, vb))`, that is, bitwise NIMP all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.]
+        ))
+    ),
+
+    subSection(
+
+        [Computational Integer Compressed (`CIC`)],
+
+        [This module provides integer compressed instructions to perform arithmetic and logical operations on registers and immediate values with a smaller code footprint. The `SGPRB` is mandatory for this module.],
+
+        tableWrapper([CIC Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto, auto),
+            align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+
+            [`CADD`], [], [2R.B], [`F`], [`OVFLn`, `UNFLn`], [*Compressed Addition*: Performs `ra = ra + rc`. The operands are always considered signed.],
+
+            [`CSUB`], [], [2R.B], [`F`], [`OVFLn`, `UNFLn`], [*Compressed Subtraction*: Performs `ra = ra - rc`. The operands are always considered signed.],
+
+            [`CMOV`], [], [2R.B], [`F`], [-], [*Compressed Move*: Performs `ra = rb`.],
+            [`CAND`], [], [2R.B], [`F`], [-], [*Compressed Bitwise AND*: Performs `ra = ra & rb`.],
+
+            [`CLSH`], [], [2R.B], [`F`], [`OVFLn`, `UNFLn`], [*Compressed Left Shift*: Performs `ra = ra << rb`. The operands are always considered signed.],
+
+            [`CRSH`], [], [2R.B], [`F`], [`OVFLn`, `UNFLn`, `CUND`], [*Compressed Right Shift*: Performs `ra = ra >> rb`. The operands are always considered signed.],
+
+            [`CADDI`], [], [RI.B], [-], [`OVFLn`, `UNFLn`], [*Compressed Addition Immediate*: Performs `ra = ra + SEXT(imm)`. The operands are always considered signed.],
+
+            [`CANDI`], [], [RI.B], [-], [-], [*Compressed Bitwise AND Immediate*: Performs `ra = ra & SEXT(imm)`.],
+
+            [`CLSHI`], [], [RI.B], [-], [`OVFLn`, `UNFLn`], [*Compressed Left Shift Immediate*: Performs `ra = ra << imm`. The operands are always considered signed.],
+
+            [`CRSHI`], [], [RI.B], [-], [`OVFLn`, `UNFLn`, `CUND`], [*Compressed Right Shift Immediate*: Performs `ra = ra >> imm`. The operands are always considered signed.],
+
+            [`CLDI`], [], [RI.B], [-], [-], [*Compressed Load Immediate*: Performs `ra = SEXT(imm)`.]
+        ))
+    ),
+
+    subSection(
+
+        [Computational FP Scalar Basic (`CFSB`)],
+
+        [This module provides floating point instructions to perform arithmetic operations on registers and immediate values. The `SGPRB` is mandatory for this module.],
+
+        tableWrapper([CFSB Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto, auto),
+            align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
+
+            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+
+            [`CFI`], [], [2R.A], [`B`], [-], [*Cast FP To Integer*: Performs `ra = FP_TO_INT(rb)`, that is, convert `rb` to the closest integer dictated by the rounding mode and place the result in `ra`. The length modifier is applied to all operands.],
+
+            [`CFIT`], [], [2R.A], [`B`], [-], [*Cast FP To Integer Truncated*: Performs `ra = TRUNC(rb)`, that is, truncate `rb` and place the result in `ra`. The length modifier is applied to all operands.],
+
+            [`CIF`], [], [2R.A], [`B`], [-], [*Cast Integer To FP*: Perform `ra = INT_TO_FP(rb)`, that is, convert `rb` into floating point notation and place the result into `ra`. The length modifier is applied to all operands.],
+
+            [`CFF1`], [], [2R.A], [`B`], [???], [*Cast FP To FP1*: Perform `ra = CAST(rb)`, that is, cast `rb` to a one byte sized floating point number and place the result in `ra`. The length modifier is applied on `rb`.],
+
+            [`CFF2`], [], [2R.A], [`B`], [???], [*Cast FP To FP2*: Perform `ra = CAST(rb)`, that is, cast `rb` to a two byte sized floating point number and place the result in `ra`. The length modifier is applied on `rb`.],
+
+            [`CFF4`], [], [2R.A], [`B`], [???], [*Cast FP To FP4*: Perform `ra = CAST(rb)`, that is, cast `rb` to a four byte sized floating point number and place the result in `ra`. The length modifier is applied on `rb`.],
+
+            [`CFF8`], [], [2R.A], [`B`], [???], [*Cast FP To FP8*: Perform `ra = CAST(rb)`, that is, cast `rb` to a eight byte sized floating point number and place the result in `ra`. The length modifier is applied on `rb`.],
+
+            [`FADD`], [], [3R.A], [`B`], [???], [*FP Addition*: Perform `ra = rb + rc`. The length modifier is applied to all operands.],
+
+            [`FSUB`], [], [3R.A], [`B`], [???], [*FP Subtraction*: Perform `ra = rb - rc`. The length modifier is applied to all operands.],
+
+            [`FMUL`], [], [3R.A], [`B`], [???], [*FP Multiplication*: Perform `ra = rb * rc`. The length modifier is applied to all operands.],
+
+            [`FDIV`], [], [3R.A], [`B`], [???], [*FP Division*: Perform `ra = rb / rc`. The length modifier is applied to all operands.],
+
+            [`FMIN`], [], [3R.A], [`B`], [???], [*FP Minimum*: Perform `ra = MIN(rb, rc)`. The length modifier is applied to all operands.],
+
+            [`FMAX`], [], [3R.A], [`B`], [???], [*FP Maximum*: Perform `ra = MAX(rb, rc)`. The length modifier is applied to all operands.],
+
+            [`FSLT`], [], [3R.A], [`B`], [], [*FP Set If Less Than*],
+            [`FSLE`], [], [3R.A], [`B`], [], [*FP Set If Less Or Equal*],
+            [`FMADD`], [], [4R.A], [`B`], [], [*FP Multiply Add*],
+            [`FNMADD`], [], [4R.A], [`B`], [], [*FP Negative Multiply Add*],
+            [`FMSUB`], [], [4R.A], [`B`], [], [*FP Multiply Subtract*],
+            [`FNMSUB`], [], [4R.A], [`B`], [], [*FP Negative Multiply Subtract*],
+            [`FADDI`], [], [2RI.A], [`B`], [], [*FP Addition Immediate*],
+            [`FSUBI`], [], [2RI.A], [`B`], [], [*FP Subtraction Immediate*],
+            [`FMULI`], [], [2RI.A], [`B`], [], [*FP Multiplication Immediate*],
+            [`FDIVI`], [], [2RI.A], [`B`], [], [*FP Division Immediate*],
+            [`FMINI`], [], [2RI.A], [`B`], [], [*FP Minimum Immediate*],
+            [`FMAXI`], [], [2RI.A], [`B`], [], [*FP Maximum Immediate*],
+            [`FSLTI`], [], [2RI.A], [`B`], [], [*FP Set If Less Than Immediate*],
+            [`FSLEI`], [], [2RI.A], [`B`], [], [*FP Set If Less Or Equal Immediate*],
+            [`FMADDI`], [], [3RI.A], [`B`], [], [*FP Multiply Add Immediate*],
+            [`FNMADDI`], [], [3RI.A], [`B`], [], [*FP Negative Multiply Add Immediate*],
+            [`FMSUBI`], [], [3RI.A], [`B`], [], [*FP Multiply Subtract Immediate*],
+            [`FNMSUBI`], [], [3RI.A], [`B`], [], [*FP Negative Multiply Subtract Immediate*]
         ))
     )
 ))

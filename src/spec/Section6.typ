@@ -126,6 +126,7 @@
     ),
 
     ///.
+    pagebreak(),
     subSection(
 
         [Register ABI],
@@ -171,30 +172,30 @@
             [`S1`], [`S1`], [`S1` ],
             [`SP`], [`SP`], [`SP` ],
             [`RA`], [`RA`], [`RA` ],
-            [ -  ], [`P4`], [`P4` ],
-            [ -  ], [`P5`], [`P5` ],
-            [ -  ], [`S2`], [`S2` ],
-            [ -  ], [`S3`], [`S3` ],
-            [ -  ], [`S4`], [`S4` ],
-            [ -  ], [`N0`], [`N0` ],
-            [ -  ], [`N1`], [`N1` ],
-            [ -  ], [`FP`], [`FP` ],
-            [ -  ], [ -  ], [`P6` ],
-            [ -  ], [ -  ], [`P7` ],
-            [ -  ], [ -  ], [`S5` ],
-            [ -  ], [ -  ], [`S6` ],
-            [ -  ], [ -  ], [`S7` ],
-            [ -  ], [ -  ], [`S8` ],
-            [ -  ], [ -  ], [`S9` ],
-            [ -  ], [ -  ], [`S10`],
-            [ -  ], [ -  ], [`S11`],
-            [ -  ], [ -  ], [`S12`],
-            [ -  ], [ -  ], [`S13`],
-            [ -  ], [ -  ], [`S14`],
-            [ -  ], [ -  ], [`S15`],
-            [ -  ], [ -  ], [`N2` ],
-            [ -  ], [ -  ], [`N3` ],
-            [ -  ], [ -  ], [`GP` ]
+            [-], [`P4`], [`P4` ],
+            [-], [`P5`], [`P5` ],
+            [-], [`S2`], [`S2` ],
+            [-], [`S3`], [`S3` ],
+            [-], [`S4`], [`S4` ],
+            [-], [`N0`], [`N0` ],
+            [-], [`N1`], [`N1` ],
+            [-], [`FP`], [`FP` ],
+            [-], [-], [`P6` ],
+            [-], [-], [`P7` ],
+            [-], [-], [`S5` ],
+            [-], [-], [`S6` ],
+            [-], [-], [`S7` ],
+            [-], [-], [`S8` ],
+            [-], [-], [`S9` ],
+            [-], [-], [`S10`],
+            [-], [-], [`S11`],
+            [-], [-], [`S12`],
+            [-], [-], [`S13`],
+            [-], [-], [`S14`],
+            [-], [-], [`S15`],
+            [-], [-], [`N2` ],
+            [-], [-], [`N3` ],
+            [-], [-], [`GP` ]
         )),
 
         [Vector registers are all considered volatile, which means that the caller-save scheme must be utilized since it's assumed that their value won't be retained across function calls. Special instructions are also provided to move these registers, or part of them, to and from the `SGPRB`.],
@@ -303,13 +304,13 @@
     ),
 
     ///.
+    pagebreak(),
     subSection(
 
         [Performance Counters Bank],
 
         [This bank houses the performance counters which, as mentioned earlier, can be used for performance diagnostic, timers and counters. These registers are all `CLEN` bits wide and their operating mode can be programmed via an extra 8 bits attached to each of them. The `PERFC` module requires the implementation of this bank and some special instructions. It is important to note that if a counter reaches its maximum value, it will silently overflow. These registers are considered "global" and are not scoped, that is, they are visible to any process at any time regardless of the privilege, however, they are hart private. The operating modes are the following:],
 
-        pagebreak(),
         tableWrapper([Performance counter modes.], table(
 
             columns: (auto, auto),
@@ -380,7 +381,6 @@
 
         [In this subsection the special purpose registers are discussed. Some of these registers are unprivileged, that is, accessible to any process at any time regardless of the privilege, while others are machine mode only and the `ILLI` fault must be triggered if an access is performed in user mode to those resources. These registers are also hart private. The special purpose registers are the following:],
 
-        pagebreak(),
         tableWrapper([`SPRB` layout.], table(
 
             columns: (auto, auto, auto),
@@ -460,6 +460,7 @@
     ),
 
     ///.
+    pagebreak(),
     subSection(
 
         [Status Register Bit Layout],
@@ -542,6 +543,7 @@
     ),
 
     ///.
+    pagebreak(),
     subSection(
 
         [Events],
@@ -690,7 +692,7 @@
 
         [When the hart is trapped by an event, the handling procedure must be performed in order to successfully process the event. Such procedure is left to the programmer to define, however, the steps needed to reach the code must be implemented in hardware. Depending if the event is promoting or not, as well as the currently active privilege, the appropriate "launching sequence" must be performed. The following ordered steps define the "privileged" launching sequence and must be executed in a single cycle:],
 
-        enum(tight: false,
+        enum(tight: true,
 
             [_Cancel all in-flight instructions._],
             [_Write the current value of the `PC` into the `MEPC` special purpose register._],
@@ -698,7 +700,7 @@
 
             [_Set the following bits of the `SR` to the following values ignoring privilege restrictions:_
 
-                #list(tight: false,
+                #list(tight: true,
 
                     [_`GEE` to 0 if present._],
                     [_`HLPRE` to 0 if present._],
@@ -716,7 +718,7 @@
 
         [The following ordered steps define the "unprivileged" launching sequence and must be executed in a single cycle:],
 
-        enum(tight: false,
+        enum(tight: true,
 
             [_Cancel all in-flight instructions._],
             [_Write the current value of the `PC` into the `UEPC` special purpose register._],
@@ -724,7 +726,7 @@
 
             [_Set the following bits of the `SR` to the following values:_
 
-                #list(tight: false,
+                #list(tight: true,
 
                     [_`GEE` to 0 if present._],
                     [_`HLPRE` to 0 if present._],
@@ -741,7 +743,7 @@
 
         [Returning from an event handler requires executing the appropriate dedicated return instruction: `ERET`, `UERET` or `URET`. Such instructions will undo the associated sequences described above by performing the same step in reverse order. The following ordered steps define the "privileged" returning sequence initiated by the `ERET` instruction which must be executed in a single cycle:],
 
-        enum(tight: false,
+        enum(tight: true,
 
             [_Write the value of the `MESR` special purpose register into the `SR`._],
             [_Write the value of the `MEPC` special purpose register into the `PC`._]
@@ -749,7 +751,7 @@
 
         [The following ordered steps define the "unprivileged" returning sequence initiated by the `UERET` instruction which must be executed in a single cycle:],
 
-        enum(tight: false,
+        enum(tight: true,
 
             [_Write the value of the `UESR` special purpose register into the `SR`. Any changes to any privileged bit must be ignored._],
             [_Write the value of the `UEPC` special purpose register into the `PC`._]
@@ -757,13 +759,13 @@
 
         [The following ordered steps define the "user" returning sequence initiated by the `URET` instruction. This special case performs a "demotion" of the hart, that is, the privilege is changed from machine to user. Similarly to all other sequences, this must be executed in a single cycle as well:],
 
-        enum(tight: false,
+        enum(tight: true,
 
             [_Write the value of the `UESR` special purpose register into the `SR`._],
 
             [_Set the following bits of the `SR` to the following values:_
 
-                #list(tight: false,
+                #list(tight: true,
 
                     [_`PMOD` to 0._],
                     [_`WDTE` to 1._],
@@ -798,6 +800,7 @@
     ),
 
     ///.
+    pagebreak(),
     subSection(
 
         [Configuration Segment],
