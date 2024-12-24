@@ -13,7 +13,7 @@
 
         [Memory Mapped IO],
 
-        [FabRISC reserves a portion of the high memory address space to _Memory Mapped IO_. This region, which size depends on the `IOS` parameter of the system, is not cached and byte addressable in little-endian order. If a hart wants to transfer data to an IO device it can simply execute a memory operation to this region without further complications. The IO devices must map all of its IO related registers and state to this region in order to be accessible. Multiple channels or buses can potentially be employed to reduce the latency in case other transfers are already taking place as well as increasing the bandwidth. The area starts at address `0xFFF`...`F` and grows upwards based on the `IOS` parameter.],
+        [FabRISC reserves a portion of the high memory address space to _Memory Mapped IO_. This region, which size depends on the `IOS` parameter of the system, is not cached (not considered part of memory space) and byte addressable in little-endian order. If a hart wants to transfer data to an IO device it can simply execute a memory operation to this region without further complications. The IO devices must map all of its IO related registers and state to this region in order to be accessible. Multiple channels or buses can potentially be employed to reduce the latency in case other transfers are already taking place as well as increasing the bandwidth. The area starts at address `0xFFF`...`F` and grows upwards based on the `IOS` parameter.],
 
         [FabRISC provides the *Input Output size* (`IOS`) 4 bit ISA parameter, to indicate the size of the memory mapped IO region in bytes. The possible values are listed in the table below:],
 
@@ -47,7 +47,7 @@
 
         comment([
 
-            I decided to go with memory mapped IO because of its flexibility and simplicity compared to port based solutions. The IO region can be considered plain memory by the processor internally, which allows for advanced and fancy operations that use locks, barriers, fences and transactions to be done by multiple threads to the same device. Caching this region is not recommended (all though possible) because it can yield potential inconsistencies and unnecessary additional complexities to the cache coherence hardware.
+            I decided to go with memory mapped IO because of its flexibility and simplicity compared to port based solutions. The IO region can be considered plain memory by the processor internally, which allows for advanced and fancy operations that use locks, barriers, fences and transactions to be done by multiple threads to the same device. The IO space should not be cached since it is considered a separate address space from the memory one. 
 
             The idea here is to provide general purpose IO system that can be easily implemented on pretty much any microarchitecture. The MMIO proposed is basically as simple as it gets and it should be good enough for most low to mid-speed transfers.
 
@@ -64,9 +64,9 @@
 
         list(tight: false,
 
-            [*Non cacheable memory region:* _With this configuration coherence isn't a problem because no caching is performed by the CPU and the IO device in question. The region is fixed and must reside above the MMIO address space but within the regular memory space. All DMA accesses must be made to that region._],
+            [*Non cacheable memory region:* _With this configuration coherence isn't a problem because no caching is performed by the CPU and the IO device in question. The region is fixed and must reside above the MMIO address space but within the regular memory space. All DMA accesses must be made to that region otherwise they are considered undefined behaviour._],
 
-            [*Software IO coherence:* _With this configuration the CPU and the device are required to flush or invalidate the cache explicitly with no extra hardware complexity, however, this option requires the exposure of the underlying organization to the programmer thus shifting a low level concern upwards._],
+            [*Software IO coherence:* _With this configuration the CPU and the device are required to flush or invalidate the cache explicitly with no extra hardware complexity. This option requires the exposure of the underlying organization to the programmer thus shifting a low level concern upwards._],
 
             [*Hardware IO coherence:* _With this configuration, both the CPU and the IO device, will monitor each other's accesses via a common bus or a directory system while proper actions are automatically taken according to a common coherence protocol which can be the already existing one in the CPU, or an "ad-hoc" one._]
         ),

@@ -1,6 +1,6 @@
 ///
 #import "Macros.typ": *
-#import "@preview/tablex:0.0.5": tablex, colspanx, rowspanx
+#import "@preview/tablex:0.0.9": tablex, colspanx, rowspanx
 
 ///
 #section(
@@ -436,13 +436,11 @@
 
             [`TID`], [32 bit], [*Thread ID*: \ This register holds the id of the currently running process thread. This register is privileged and is only needed when the system implements the `USER` module.],
 
-            [`HPID`], [32 bit], [*Hypervisor PID*: \ This register holds the id of the supervisor associated to the currently running process. This register is privileged and is only needed when the system implements the `USER` module.],
-
             [`TPTR`], [`WLEN`], [*Thread Pointer*: \ This register holds the pointer to the currently running software thread. This register is privileged and is only needed when the system implements the `USER` module.],
 
             [`WDT`], [32 bit], [*Watchdog Timer*: \ This register is a counter that periodically count down and triggers the `TQE` event when it reaches zero. This register is privileged and is only needed when the system implements the `USER` module.]
 
-            // 5 free remaining
+            // 6 free slots remaining
         )),
 
         [FabRISC dictates the implementation of some mandatory fault events, such as: `MISI`, `INCI`, `ILLI` and others which require the presence of the machine event special purpose registers. Such registers are, however, not necessary if the system implements the said faults by simply halting the machine. This relaxes the constraint on simple implementations that don't support events or don't want to handle them.],
@@ -937,7 +935,7 @@
             [Class E], [`.UMSK`, `.MSK`, \ `.IMSK`, -], [Vector mask modes: unmasked, masked, inverted mask.],
             [Class F], [`.B0`, `.B1`, \ `.B2`, `.B3`], [Register bank specifier (currently only for compressed formats).],
 
-            [Class G], [`.MA`, `.NMA`, \ `.MS`, `.NMS`], [Multiply-Accumulate modes: multiply-add, negative multiply-add, multiply-subtract, negative multiply-subtract.],
+            [Class G], [`.MA`, `.NMA`, \ `.MS`, `.NMS`], [Multiply-Accumulate modes: multiply-add, negative multiply-add, multiply-subtract, negative multiply-subtract.]
         )),
 
         [Vector instruction formats: `4R-B`, `3RI-B` include an additional modifier:],

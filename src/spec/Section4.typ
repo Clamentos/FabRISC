@@ -6,14 +6,14 @@
 
     [Memory],
 
-    [This section is dedicated to present the memory model used by FabRISC including data alignment, addressing modes, synchronization, consistency, as well as possible cache coherence considerations and reminders.],
+    [This section is dedicated to present the memory model used by FabRISC including data alignment, addressing modes, synchronization, consistency, as well as possible cache coherence considerations.],
 
     ///.
     subSection(
 
         [Data Alignment],
 
-        [FabRISC, overall, treats the main memory and the MMIO regions as collections of byte addressable locations in little-endian order with a range of $2^"WLEN"$ addresses in total. The specification leaves to the hardware designers the choice of supporting aligned or unaligned memory accesses or both for data. If aligned is decided to be the only supported scheme, the hart must generate the `MISD` (Misaligned Data) fault every time the constraint is violated. When it comes to instructions, it is mandatory to align the code at the 16 bit boundary which is the greatest common denominator between the instruction lengths. If the hardware detects that the program counter isn't aligned for any reason, the `MISI` (Misaligned Instruction) fault must be generated. Detecting `PC` misalignment simply amounts to checking if the last bit is equal to zero, otherwise the fault is generated. Because instructions are aligned at the 2-byte boundary, the branch offsets can be shifted by one to the left, thus, doubling the range in terms of bytes.],
+        [FabRISC, overall, treats the main system memory and the MMIO regions as collections of byte addressable locations in little-endian order with a range of $2^"WLEN"$ addresses in total. The specification leaves to the hardware designers the choice of supporting aligned, unaligned memory accesses or both for data. If aligned is decided to be the only supported scheme, the hart must generate the `MISD` (Misaligned Data) fault every time the constraint is violated. When it comes to instructions, it is mandatory to align the code at the 16 bit boundary which is the greatest common denominator between the instruction lengths. If the hardware detects that the program counter isn't aligned for any reason, the `MISI` (Misaligned Instruction) fault must be generated. Detecting `PC` misalignment simply amounts to checking if the last bit is equal to zero, otherwise the fault is generated. Because instructions are aligned at the 2-byte boundary, the branch offsets can be shifted by one to the left, thus, doubling the range in terms of bytes.],
 
         [The `DALIGN` module must be implemented if the hardware doesn't support misaligned data accesses. The module provides the architecture with the aforementioned `MISD` fault and it can be implemented in unprivileged microarchitectures as well like any other event. Compatibility between two microarchitectures that differ in data alignment capabilities, can be solved by simulating unaligned memory accesses in software as an event handler for the `MISD` fault. This would render the code interchangeable between the two systems at the cost of performance.],
 
@@ -51,7 +51,7 @@
 
                 #list(tight: false, marker: [--],
 
-                    [*Vector immediate displaced:* $"mem"_i ["reg" + "stride"("imm")] <-> "vreg"_i$ _The address is composed of a single scalar register used as the base pointer. The constant specifies the stride of the access._],
+                    [*Vector immediate displaced:* $"mem"_i ["reg" + "stride"("imm")] <-> "vreg"_i$ _The address is composed of a single scalar register used as the base pointer. The constant specifies the stride of the access, which is simply how many bytes to skip between each element._],
 
                     [*Vector indexed (gather / scatter):* $"mem"_i ["reg" + "vreg"_i] <-> "vreg"_i$ _The address is composed of the sum between the base pointer register and the $i^"th"$ index of the specified vector register._]
                 )
@@ -62,7 +62,7 @@
 
             Good addressing modes can help improve code density and performance since they can be directly implemented in hardware reducing the overhead. The modes that i decided to support are handy for a variety of data structures, especially sequential ones such as stacks and arrays thanks to the auto-update features. Vector modes include the common strided, as well as gather and scatter which are particularly useful for accessing sparse matrices.
 
-            Thanks to the modular nature of FabRISC, it's not required to implement the complex modes at all, only the immediate displaced can suffice as it's the simplest and, by far, the most commonly used in programs and also the "standard" addressing mode for RISC-oriented architectures.
+            Thanks to the modular nature of FabRISC, it's not required to implement the complex modes at all, only the immediate displaced can suffice as it's the simplest and, by far, the most commonly used in programs and also the "standard" addressing mode for many RISC-oriented architectures.
         ])
     ),
 
@@ -79,16 +79,14 @@
 
                 #list(tight: false, marker: [--],
 
-                    [*Compare And Swap:* _(`CAS`) is a simple atomic instruction that atomically swaps the memory location `X` with register value `Y` if `X` is equal to the register value `Z`._],
-
-                    [*Versioned Compare And Swap:* _(`VCAS`) is an complex atomic instruction that atomically swaps the memory location `X` with register value `Y` if `X` is equal to the register value `Z` while also taking into account `X` and `Y` version counters. The version is an 8-byte value physically next to the actual variable. `VCAS` will not swap if `X` and `Y` counters are different. If the swap is successful, both counters are incremented._]
+                    [*Compare And Swap:* _(`CAS`) is a simple atomic instruction that atomically swaps the memory location `X` with register value `Y` if `X` is equal to the register value `Z`._]
                 )
             ],
 
             [*Read-modify-write instructions:* _These instructions provide several atomic read-modify-write operations on single variables, such as atomic addition that can generally scale better than using CAS-based algorithms when implementing lock-free datastructures (see section 7 for more information)._]
         ),
 
-        [The test-and-set and read-modify-write family of instructions, in order to be atomic, must perform all of their operations in the same memory "request". This ensures that no other hart or device has access to the memory, potentially changing the target variable in the middle of the operation. This may be achieved by directly arbitrating the bus or with the help of the cache coherence protocol or both and such implementations should be transparent to the ISA.],
+        [The test-and-set and read-modify-write family of instructions, in order to be atomic, must perform all of their operations in the same memory "request". This ensures that no other hart or device has access to the memory, potentially changing the target variable in the middle of the operation. This may be achieved by directly arbitrating the bus or with the help of the cache coherence protocol or both depending on the underlying microarchitecture.],
 
         subSubSection(
 
@@ -96,6 +94,7 @@
 
             [FabRISC also provides optional instructions, via the `TM` module, to support basic hardware transactional memory that can be employed instead of the above seen solutions to exploit parallelism in a more "optimistic" manner. Multiple transactions can proceed in parallel as long as no conflict is detected by the hardware. when such situations occur the offended transaction must be aborted, that is, it must discard all the changes and restore the architectural state immediately before the start of the transaction itself. If a transaction detects no conflict it is allowed to commit the changes and the performed operations can be considered atomic. Transactions can be nested inside each other up to a depth of 255, beyond this, further transactions must be all aborted before event starting. For convention and simplicity, if an event that causes the context to be changed or traps the hart, all of its ongoing transactions must be aborted. One important consideration is that FabRISC approach to transactional memory is "liberal", which requires a transaction to fully reach the commit point before resulting in either a positive or negative outcome. In order to fail transactions earlier and to allow for a quicker retry, it's possible to perform a checkpoint on the progress via a dedicated instruction. The following are the proposed transactional memory instructions:],
 
+            pagebreak(),
             tableWrapper([Transactional instructions.], table(
 
                 columns: (auto, auto),
@@ -116,6 +115,7 @@
                 [`TLEV`], [*Transaction Level*: \ Returns the current transaction nesting level count. If no transaction is active a zero is returned.]
             )),
 
+            pagebreak(),
             [The `TM` module, as mentioned earlier, also includes _abort-codes_ that can be used by the programmer to take appropriate actions in case the transaction was aborted. The proposed codes are listed in the following table:],
 
             tableWrapper([Transaction abort codes.], table(
@@ -140,13 +140,13 @@
 
         comment([
 
-            Memory synchronization is extremely important in order to make shared memory communication even work at all. The problem arises when a pool of data is shared among different processes or threads that compete for resources and concurrent access to this pool might result in erroneous behavior and must, therefore, be arbitrated. This zone is called "critical section" and special atomic primitives can be used to achieve this protection. Many different instruction families can be chosen such as "test-and-set", "read-modify-write" and others. I decided to provide in the ISA the compare-and-swap instruction as it's very popular and is a classic. It has the useful property of guaranteeing that at least one thread will successfully execute the operation. It doesn't obviously protect from deadlocks or livelocks as they are a symptom of erroneous code. `CAS` also suffers from the "ABA" problem since it detects changes by looking at the data only. The solution to this is to use `VCAS`, which is a more sophisticated version of the former, taking into account a version counter that is incremented at each successful execution.
+            Memory synchronization is extremely important in order to make shared memory communication even work at all. The problem arises when a pool of data is shared among different processes or threads that compete for resources and concurrent access to this pool might result in erroneous behavior and must, therefore, be arbitrated. This zone is called "critical section" and special atomic primitives can be used to achieve this protection. Many different instruction families can be chosen such as "test-and-set", "read-modify-write" and others. I decided to provide in the ISA the compare-and-swap instruction as it's very popular and is a classic. It has the useful property of guaranteeing that at least one thread will successfully execute the operation. It doesn't obviously protect from deadlocks or livelocks as they are a symptom of erroneous code and also suffers from the "ABA" problem since it detects changes by looking at the data only.
 
             Another valid option would be to use the `LL` & `SC` pair commonly found in many RISC ISAs. I decided not to go this route since the pair, even though it doesn't suffer from the ABA problem, it doesn't guarantee forward progress unless additional restrictions are placed (see "constrained" / "unconstrained" `LL` & `SC` sequences in RISC-V).
 
             FabRISC also provides a small set of simple read-modify-write type operations, which can ease the implementation of lock-free datastructures and algorithms allowing for better scaling when thread contention is high.
 
-            Lastly i decided to also provide basic hardware transactional memory support because, in some situations, it can yield great performance compared to "pessimistic" solutions without losing atomicity. This is completely optional and up to the hardware designers to implement or not simply because it can complicate the design by a fair bit, especially the caching and coherence subsystem. Transactional memory seems to be promising in improving performance and ease of implementation when it comes to shared memory programs, but debates are still ongoing to decide which exact way of implementing is best. I chose to go with a very liberal approach that aborts only at commit or during a checkpoint, as opposed to aborting as soon as a failure is detected via exceptions. This is simpler to implement in both the specification (i tried and there were so many edge cases, i ended up scrapping it) and the hardware and can provide a higher transaction completion percentage at the expense of a higher retry latency.
+            Lastly i decided to also provide basic hardware transactional memory support because, in some situations, it can yield great performance compared to "pessimistic" solutions without losing atomicity. This is, naturally, completely optional and up to the hardware designers to implement or not simply because it can complicate the design by a fair bit, especially the caching and coherence subsystem. Transactional memory seems to be promising in improving performance and ease of implementation when it comes to shared memory programs, but debates are still ongoing to decide which exact way of implementing is best. I chose to go with a very liberal approach that aborts only at commit or during a checkpoint, as opposed to aborting as soon as a failure is detected via exceptions or events. This is simpler to implement in both the specification (i tried and there were so many edge cases, i ended up scrapping it) and the hardware and can provide a higher transaction completion percentage at the expense of a higher retry latency.
         ])
     ),
 
@@ -155,7 +155,7 @@
 
         [Coherence],
 
-        [FabRISC leaves to the hardware designers the choice of which coherence protocol to implement. On multicore systems cache coherence must be ensured by choosing a coherence protocol and making sure that all harts agree on the current sequence of accesses to the same memory location. That can be guaranteed by serializing the operations via the use of a shared bus or via a distributed directory system. After this, _write-update_ or _write-invalidate_ protocol can be employed. Software coherence can also be a potential option but it will rely on the programmer to explicitly flush or invalidate the cache of each core separately. Nevertheless, FabRISC provides via the `SB` instruction module, implementation dependent instructions, such as `CACOP`, that can be sent to the cache subsystem directly to manipulate its state and operation. If the processor makes use of a separate instruction cache, potential complications can arise for self modifying code which can be solved by employing any of the above mentioned options for instruction caches as well.],
+        [FabRISC leaves to the hardware designers the choice of which coherence protocol to implement. On multicore systems cache coherence must be ensured by choosing a coherence protocol and making sure that all harts agree on the current sequence of accesses to the same memory location. That can be guaranteed by serializing the operations via the use of a shared bus or via a distributed directory system. After this, _write-update_ or _write-invalidate_ protocol can be employed. Software coherence can also be a potential option but it will rely on the programmer to explicitly flush or invalidate the cache of each core separately. Nevertheless, FabRISC provides via the `SYS` instruction module, implementation dependent instructions, such as `CACOP`, that can be sent to the cache subsystem directly to manipulate its state and operation. If the processor makes use of a separate instruction cache, potential complications can arise for self modifying code which can be solved by employing any of the above mentioned options for instruction caches as well.],
 
         comment([
 
@@ -181,20 +181,20 @@
 
             [#middle([*Name*])], [#middle([*Description*])],
 
-            [`FNCL`], [*Fence Loads*: \ This instruction forbids the hart to reorder any memory load instruction across the fence.],
-            [`FNCS`], [*Fence Stores*: \ This instruction forbids the hart to reorder any memory store instruction across the fence.],
+            [`FNCL`], [*Fence Loads*: \ This instruction forbids the hart from reordering any memory load instruction across the fence.],
 
-            [`FNCLS`], [*Fence Loads and Stores*: \ This instruction forbids the hart to reorder any memory load or store instruction across the fence.],
+            [`FNCS`], [*Fence Stores*: \ This instruction forbids the hart from reordering any memory store instruction across the fence.],
 
-            [`FNCIOL`], [*Fence IO Loads*: \ This instruction forbids the hart to reorder any IO load instruction across the fence.],
-            [`FNCIOS`], [*Fence IO Stores*: \ This instruction forbids the hart to reorder any IO store instruction across the fence.],
+            [`FNCLS`], [*Fence Loads and Stores*: \ This instruction forbids the hart from reordering any memory load or store instruction across the fence.],
 
-            [`FNCIOLS`], [*Fence IO Loads and Stores*: \ This instruction forbids the hart to reorder any IO load or store instruction across the fence.],
+            [`FNCIOL`], [*Fence IO Loads*: \ This instruction forbids the hart from reordering any IO load instruction across the fence.],
 
-            [`FNCI`], [*Fence Instructions*: \ This instruction signals that a modification of the instruction cache happened.]
+            [`FNCIOS`], [*Fence IO Stores*: \ This instruction forbids the hart from reordering any IO store instruction across the fence.],
+
+            [`FNCIOLS`], [*Fence IO Loads and Stores*: \ This instruction forbids the hart from reordering any IO load or store instruction across the fence.]
         )),
 
-        [The fences can be used on any memory type instruction, including the atomic `CAS` and `VCAS` to forbid reordering when acquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache subsystem via the dedicated implementation specific `CACOP` instruction as briefly discussed above. The `FNC` module also requires the ability for the hart to switch between the release consistency and the more stringent sequential consistency model.],
+        [The fences can be used on any memory type instruction, including the atomic `CAS` to forbid reordering when acquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache subsystem via the dedicated implementation specific `CACOP` instruction as briefly discussed in the previous subsection.],
 
         comment([
 

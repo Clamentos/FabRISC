@@ -10,10 +10,10 @@
 
     [FabRISC provides the *Word Length* (`WLEN`) 2 bit ISA parameter, to indicate the natural scalar word length of the processor in bits. The possible values are listed in the table below:],
 
-    tableWrapper([Scalar word lengths], table(
+    tableWrapper([Scalar word lengths.], table(
 
-        columns: (auto, auto),
-        align: (x, y) => (center, left + horizon).at(x),
+        columns: (15%, 20%),
+        align: (x, y) => (left + horizon, left + horizon).at(x),
 
         [#middle([*Code*])], [#middle([*Value*])],
 
@@ -32,8 +32,8 @@
 
         tableWrapper([Integer types.], table(
 
-            columns: (auto, auto),
-            align: (x, y) => (center, left + horizon).at(x),
+            columns: (15%, 20%),
+            align: (x, y) => (left + horizon, left + horizon).at(x),
 
             [#middle([*Type*])], [#middle([*Size*])],
 
@@ -66,7 +66,7 @@
             [Invalid operation], [This situation arises when an operation is deemed invalid or illegal and does not fall in any other of the previous cases, for example: `0/0`.]
         )),
 
-        [Values that serve as pointers can be manipulated as signed 2's complement integers or as unsigned integers, with the latter being preferable when possible. Although the concept of sign doesn't make much sense for addresses, signed arithmetic can still be applied without many problems in these situations. Addition and subtraction will always yield the same exact bit pattern regardless of the interpretation of the operands. Multiplication can still produce the same pattern as well but only if the result is `WLEN` long, which means ignoring the upper `WLEN` bits. The only comparisons that do not depend on sign are equality and inequality because they simply amount to checking if each individual bit of one operand is equal or not to the ones in the other operand. Other comparisons, such as less than or greater than are risky if the object is close to or crosses the sign boundary from `0x7FFFFFFF`...`F` to `0x80000000`...`0`. Using unsigned operations will, of course, cause none of the above mentioned issues.]
+        [Values that serve as pointers can be manipulated as signed 2's complement integers or as unsigned integers, with the latter being preferable when possible. Although the concept of sign doesn't make much sense for addresses, signed arithmetic can still be applied without many problems in these situations. Addition and subtraction will always yield the same exact bit pattern regardless of the interpretation of the operands. The only comparisons that do not depend on sign are equality and inequality because they simply amount to checking if each individual bit of one operand is equal or not to the ones in the other operand. Other comparisons, such as less than or greater than are risky if the object is close to or crosses the sign boundary from `0x7FFFFFFF`...`F` to `0x80000000`...`0`. Using unsigned operations will, of course, cause none of the above mentioned issues.]
     ),
 
     ///.
@@ -79,20 +79,21 @@
 
         tableWrapper([Floating point formats.], table(
 
-            columns: (auto, auto, auto, auto),
+            columns: (18%, 18%, 18%, 18%),
             align: (left + horizon, center + horizon, center + horizon, center + horizon),
 
             [#middle([*Size*])], [#middle([*Mantissa*])], [#middle([*Exponent*])], [#middle([*Sign*])],
 
             [8 bits ], [7...3  ], [2...1 ], [0],
-            [12 bits], [11...4 ], [3...1 ], [0],
-            [14 bits], [13...5 ], [4...1 ], [0],
             [16 bits], [15...6 ], [5...1 ], [0],
+            [21 bits], [20...9 ], [8...1 ], [0],
             [32 bits], [31...9 ], [8...1 ], [0],
             [64 bits], [63...12], [11...1], [0]
         )),
 
         [The proposed encodings are similar in shape and meaning to the IEEE-754 standard, with the main difference being the placement of the sign and exponent, which are located at the beginning instead of the end of the number. This is done to ease bit manipulation with instructions that use immediate values.],
+
+        [The 21 bit variant is only used for immediate constants of some instructions and should always be converted to the specified length before being used.],
 
         [Floating point types are manipulated via floating point (FP) instructions. Edge cases such as overflows, underflows can happen in the specific situations dictated by the IEEE-754 standard and can raise exceptions. The following is the list of edge cases for the floating point data types:],
 
@@ -110,12 +111,12 @@
 
         [`NaN` values are represented as the IEEE-754 standard dictates. Performing any arithmetic operation with a signalling `NaN` must be considered an illegal operation and the number must be subsequently transformed into a quiet `NaN` before trapping.],
 
-        [Quiet `NaN` values simply propagate through the various operations as dictated by the IEEE-754 standard. In both signalling and quiet cases, the least significant three bits of the mantissa is the payload and encodes the reason. The `NaN` payloads must be ORed when they interact regardless of the operation performed since the result will always result in an `NaN`. The following is the list of payload bits:],
+        [Quiet `NaN` values simply propagate through the various operations as dictated by the IEEE-754 standard. In both signalling and quiet cases, the least significant three bits of the mantissa is the payload and encodes the reason. The `NaN` payloads must be OR-ed when they interact regardless of the operation performed since the result will always result in an `NaN`. The following is the list of payload bits:],
 
         tableWrapper([`NaN` payload vector.], table(
 
-            columns: (auto, auto),
-            align: left + horizon,
+            columns: (10%, 40%),
+            align: (x, y) => (left + horizon, left + horizon).at(x),
 
             [#middle([*Bit*])], [#middle([*Description*])],
 
@@ -130,7 +131,7 @@
 
         [Arithmetic Flags],
 
-        [The `EXC` module, presented in the previous section, is concerned about triggering exception events when arithmetic edge cases occur. The situations described in the tables above are translated into a series of "ephemeral" flags that are not stored in any kind of register and are activated when the corresponding edge case arises, which in turn, will trigger the associated exception. It is important to note that these flags have to be implemented if either the `EXC` or `HLPR` (or both) modules are implemented, if not, this section can be skipped. The following table shows the proposed list of flags:],
+        [The `EXC` module, briefly presented in the previous section, is concerned about triggering exception events when arithmetic edge cases occur. The situations described in the tables above are translated into a series of "ephemeral" flags that are not stored in any kind of register and are activated when the corresponding edge case arises, which in turn, will trigger the associated exception. These flags have to be implemented if either the `EXC` or `HLPR` (or both) modules are implemented, if not, this section can be skipped. The following table shows the proposed list of flags:],
 
         tableWrapper([Arithmetic flags.], table(
 
@@ -170,7 +171,7 @@
             [`INVOP`], [Always Required], [Always Required], [*Invalid Operation*: \ Activated if an invalid operation occurred.]
         )),
 
-        [For flags that appear at specific boundaries, such as: `COVRn`, `OVFLn`, `UNFLn` the `EXC` must trap the hart only on "terminal" flags, that is, when `n = 2 ^ WLEN`.]
+        [For flags that appear at specific boundaries, such as: `COVRn`, `OVFLn`, `UNFLn` the `EXC` must trap the hart only on "terminal" flags, that is, when $n = 2 ^ "WLEN"$.]
     ),
 
     ///.
@@ -178,7 +179,7 @@
 
         The low level data types are, more or less, the usual ones. Addresses can be interpreted as both signed and unsigned values, though pointer arithmetic is not something that should be heavily relied on because some operations are often deemed "illegal" such as multiplication, division, modulo and bitwise logic in many programming languages. Even if the addresses are always considered signed, the boundary on 64 bit systems can be considered a non issue since the address space is so huge that everything could fit into one of the two partitions. Systems with smaller `WLEN` might encounter some difficulties but some amount of pointer arithmetic can still be done without too much hassle. FabRISC, fortunately, includes unsigned operations and comparisons in the basic modules, which makes this argument moot.
 
-        I chose to use the little-endian format since it can potentially, slightly simplify accesses to portions of a variable without needing to change the address. For example a 64 bit memory location with the content of: `5E 00 00 00 00 00 00 00` can be red at the same address as an 8 bit value: `5E`, 16 bit value: `5E 00`, 32 bit value: `5E 00 00 00` or 64 bit value: `5E 00 00 00 00 00 00 00` which are all the same value. Endianness is mostly a useless debate though, as the advantages or disadvantages that each type has is often just a tiny rounding error in the grand scheme of things. The reason for this decision is that i simply found the aforementioned property to be interesting to have.
+        I chose to use the little-endian format since it can potentially, slightly simplify accesses to portions of a variable without needing to change the address. For example a 64 bit memory location with the content of: `5E 00 00 00 00 00 00 00` can be red at the same address as an 8 bit value: `5E`, 16 bit value: `5E 00`, 32 bit value: `5E 00 00 00` or 64 bit value: `5E 00 00 00 00 00 00 00` which are all the same value. Endianness is mostly a useless debate though, as the advantages or disadvantages that each type has are often just a tiny rounding error in the grand scheme of things.
 
         The proposed flags might seem weird and unnecessary, however they allow the detection of arithmetic edge cases in a very granular manner. Many ISAs don't have any way of easily detecting overflows and, when present, they either provide instructions that trap or a flag register. In both cases the system will only allow the programmer to check if an overflow occurred at the word length only. FabRISC, not only provides the ability to check at all the standard lengths, but it also distinguishes overflows into two categories depending on the direction. This is useful to provide to the programmer a greater control and insight of the underlying system, as well as, potentially enabling better emulation of CPUs with smaller word lengths.
 
