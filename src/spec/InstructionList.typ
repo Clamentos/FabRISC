@@ -4,7 +4,7 @@
 ///
 #page(flipped: true, section(
 
-    [Instruction List (WORK IN PROGRESS) ],
+    [Instruction List (WORK IN PROGRESS)],
 
     [This section is dedicated to provide the full and extensive list of all the proposed instructions in the ISA divided into their corresponding module.],
 
@@ -1261,7 +1261,9 @@
             [`FNCLS`], [], [2R.A], [`A`], [-], [*Fence Loads And Stores*: See section 4. The operands are not used and must always have a class mode value of `10`],
 
             [`FNCIOL`], [], [2R.A], [`A`], [-], [*Fence IO Loads*: See section 4. The operands are not used and must always have a class mode value of `00`],
+
             [`FNCIOS`], [], [2R.A], [`A`], [-], [*Fence IO Stores*: See section 4. The operands are not used and must always have a class mode value of `01`],
+
             [`FNCIOLS`], [], [2R.A], [`A`], [-], [*Fence IO Loads and Stores*: See section 4. The operands are not used and must always have a class mode value of `10`],
 
             [`FNCI`], [], [2R.A], [`A`], [-], [*Fence Instructions*: See section 4. The operands are not used and must always have a class mode value of `00`],
@@ -1284,17 +1286,17 @@
 
             [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
-            [`TBEG`], [], [2R.A], [`-`], [-], [*Transaction Begin*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `00`.],
+            [`TBEG`], [], [2R.A], [`A`], [-], [*Transaction Begin*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `00`.],
 
-            [`TCOM`], [], [2R.A], [`-`], [-], [*Transaction Commit*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `01`.],
+            [`TCOM`], [], [2R.A], [`A`], [-], [*Transaction Commit*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `01`.],
 
-            [`TCHK`], [], [2R.A], [`-`], [-], [*Transaction Check*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `10`.],
+            [`TCHK`], [], [2R.A], [`A`], [-], [*Transaction Check*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `10`.],
 
-            [`TABT`], [], [2R.A], [`-`], [-], [*Transaction Abort*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `11`.],
+            [`TABT`], [], [2R.A], [`A`], [-], [*Transaction Abort*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `11`.],
 
-            [`TABTA`], [], [2R.A], [`-`], [-], [*Transaction Abort All*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `00`.],
+            [`TABTA`], [], [2R.A], [`A`], [-], [*Transaction Abort All*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `00`.],
 
-            [`TLEV`], [], [2R.A], [`-`], [-], [*Transaction Level*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `01`.]
+            [`TLEV`], [], [2R.A], [`A`], [-], [*Transaction Level*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `01`.]
         ))
     ),
 
@@ -1310,17 +1312,17 @@
 
             [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
-            [`WINT`], [], [RI.A], [`A`], [-], [*Wait For Interrupt*: Causes the executing hart to halt and wait for interrupt. The `ra` specifies the timeout and `rb` specifies the id of the interrupt (IO or IPC) to wait for. This instruction class specifies: `.C` (`00`) as _cycles_ mode, `.N` (`01`) as _nanoseconds_ mode, `.U` (`10`) as _microseconds_ mode and `.M` (`11`) as _milliseconds_. This instruction is privileged.],
-
-            [`ERET`], [], [2R.A], [`A`], [-], [*Event Return*: Performs the privileged event returning sequence, see section 6. This instruction is privileged and must always have a class mode of `00`.],
-
             [`LDMER`], [], [2R.A], [`D`], [-], [*Load Machine Event Register*: Performs `ra = MER`, where `MER` is one of the special purpose registers prefixed with "machine event". The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
 
             [`STMER`], [], [2R.A], [`D`], [-], [*Store Machine Event Register*: Performs `MER = ra`, where `MER` is one of the special purpose registers prefixed with "machine event". The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
 
             [`LDIMSK`], [], [2R.A], [`A`], [-], [*Load Interrupt Mask*: Performs `ra = IMSK`, where `IMSK` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `00`. This instruction is privileged.],
 
-            [`STIMSK`], [], [2R.A], [`A`], [-], [*Store Interrupt Mask*: Performs `IMSK = ra`, where `IMSK` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `01`. This instruction is privileged.]
+            [`STIMSK`], [], [2R.A], [`A`], [-], [*Store Interrupt Mask*: Performs `IMSK = ra`, where `IMSK` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `01`. This instruction is privileged.],
+
+            [`ERET`], [], [2R.A], [`A`], [-], [*Event Return*: Performs the privileged event returning sequence, see section 6. This instruction is privileged and must always have a class mode of `10`.],
+
+            [`WINT`], [], [RI.A], [`A`], [-], [*Wait For Interrupt*: Causes the executing hart to halt and wait for interrupt. The `ra` specifies the timeout and `rb` specifies the id of the interrupt (IO or IPC) to wait for. This instruction class specifies: `.C` (`00`) as _cycles_ mode, `.N` (`01`) as _nanoseconds_ mode, `.U` (`10`) as _microseconds_ mode and `.M` (`11`) as _milliseconds_. This instruction is privileged.]
         ))
     ),
 
@@ -1337,15 +1339,11 @@
 
             [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
-            [`MMUOP`], [], [RI.A], [`A`], [-], [*Memory Management Unit Operation*: Implementation-specific privileged instruction designed to allow direct manipulation of the memory management unit. If no MMU is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.],
-
             [`SYSCL`], [], [2R.A], [`A`], [-], [*System Call*: Perform `SYSCL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `00`.],
 
             [`UERET`], [], [2R.A], [`A`], [-], [*User Event Return*: Performs the unprivileged event returning sequence, see section 6. Must always have a class mode of `01`.],
 
             [`URET`], [], [2R.A], [`A`], [-], [*User Return*: Performs the user event returning sequence, see section 6. This instruction is privileged and must always have a class mode of `10`.],
-
-            [`UCACOP`], [], [2RI.B], [`A`], [-], [*User Cache Operation*: Implementation-specific instruction designed to allow direct manipulation of the cache. If no caching is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.],
 
             [`LDUER`], [], [2R.A], [`D`], [-], [*Load User Event Register*: Performs `ra = UER`, where `UER` is one of the special purpose registers prefixed with "user event". The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
 
@@ -1373,25 +1371,11 @@
 
             [`LDWDTS`], [], [2R.A], [`A`], [-], [*Load Watchdog Timer Status*: Performs `ra = WDTE`, where `WDTE` is a section of the `SR` register. Must always have a class mode of `00`.],
 
-            [`STWDTS`], [], [2R.A], [`A`], [-], [*Store Watchdog Timer Status*: Performs `EWDT = ra`, where `WDTE` is a section of the `SR` register. Must always have a class mode of `01`.]
-        ))
-    ),
+            [`STWDTS`], [], [2R.A], [`A`], [-], [*Store Watchdog Timer Status*: Performs `EWDT = ra`, where `WDTE` is a section of the `SR` register. Must always have a class mode of `01`.],
 
-    subSection(
+            [`MMUOP`], [], [RI.A], [`A`], [-], [*Memory Management Unit Operation*: Implementation-specific privileged instruction designed to allow direct manipulation of the memory management unit. If no MMU is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.],
 
-        [Context Reducing (`CR`)],
-        [This module provides automatic register file dumping and restoring operations.],
-
-        tableWrapper([CR Instructions.], table(
-
-            columns: (auto, auto, auto, auto, auto, auto),
-            align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
-
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
-
-            [`DMP`], [], [2R.A], [`C`], [-], [*Dump File*: Performs `MEM[]`], // {PRIVILEGED}
-            [`RST`], [], [2R.A], [`C`], [-], [*Restore File*] // {PRIVILEGED}
-            // TODO: manipulate the %usage% regs
+            [`UCACOP`], [], [2RI.B], [`A`], [-], [*User Cache Operation*: Implementation-specific instruction designed to allow direct manipulation of the cache. If no caching is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.]
         ))
     ),
 

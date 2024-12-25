@@ -78,14 +78,12 @@
             [ 34], [`SYS`   ], [*System*: \ Provides system operations, such as system information, cache manipulation and halting.],
             [ 35], [`USER`  ], [*User-Mode*: \ Provides the user privilege mode.],
 
-            [ 36], [`CTXR`  ], [*Context-Reducing*: \ Provides operations to reduce the necessary register saving and restoring during context switches.],
+            [ 36], [`EXC`   ], [*Exceptions*: \ Provides arithmetic exceptions.],
+            [ 37], [`IOINT` ], [*IO-Interrupts*: \ Provides IO interrupts.],
+            [ 38], [`IPCINT`], [*IPC-Interrupts*: \ Provides inter-processor interrupts.],
+            [ 39], [`DALIGN`], [*Data-Alignment*: \ Provides the unaligned data fault.],
 
-            [ 37], [`EXC`   ], [*Exceptions*: \ Provides arithmetic exceptions.],
-            [ 38], [`IOINT` ], [*IO-Interrupts*: \ Provides IO interrupts.],
-            [ 39], [`IPCINT`], [*IPC-Interrupts*: \ Provides inter-processor interrupts.],
-            [ 40], [`DALIGN`], [*Data-Alignment*: \ Provides the unaligned data fault.],
-
-            [ 41], [-],   [Reserved for future use.],
+            [ 40], [-],   [Reserved for future use.],
             [...], [...], [...],
             [ 55], [-],   [Reserved for future use.],
 

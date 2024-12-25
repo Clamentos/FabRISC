@@ -425,14 +425,6 @@
 
             [`PFPA`], [`WLEN`], [*Page Fault Physical Address*: \ This register holds the page table physical address of the currently running process. This register is privileged and is only needed when the system implements the `USER` module.],
 
-            [`SGPRBU`], [`SRFS`], [*SGPRB Usage*: \ This register keeps track of which registers of the `SGPRB` have been written by associating each bit to the corresponding register in the `SGPRB`, thus helping to reduce the amount of state that needs to be saved and restored during context switches. This register is privileged and is only needed when the system implements the `USER` and `CTXR` modules],
-
-            [`VGPRBU`], [`VRFS`], [*VGPRB Usage*: \ This register keeps track of which registers of the `VGPRB` have been written by associating each bit to the corresponding register in the `VGPRB`, thus helping to reduce the amount of state that needs to be saved and restored during context switches. This register is privileged and is only needed when the system implements the `USER` and `CTXR` modules and the `VGPRB` is present.],
-
-            [`HLPRBU`], [`HRFS`], [*HLPRB Usage*: \ This register keeps track of which registers of the `HLPRB` have been written by associating each bit to the corresponding register in the `HLPRB`, thus helping to reduce the amount of state that needs to be saved and restored during context switches. This register is privileged and is only needed when the system implements the `USER` and `CTXR` modules and the `HLPRB` is present.],
-
-            [`PERFCBU`], [`CRFS`], [*PERFCB Usage*: \ This register keeps track of which registers of the `PERFCB` have been written by associating each bit to the corresponding register in the `PERFCB`, thus helping to reduce the amount of state that needs to be saved and restored during context switches. This register is privileged and is only needed when the system implements the `USER` and `CTXR` modules and the `PERFCB` is present.],
-
             [`PID`], [32 bit], [*Process ID*: \ This register holds the id of the currently running process. This register is privileged and is only needed when the system implements the `USER` module.],
 
             [`TID`], [32 bit], [*Thread ID*: \ This register holds the id of the currently running process thread. This register is privileged and is only needed when the system implements the `USER` module.],
@@ -441,7 +433,7 @@
 
             [`WDT`], [32 bit], [*Watchdog Timer*: \ This register is a counter that periodically count down and triggers the `TQE` event when it reaches zero. This register is privileged and is only needed when the system implements the `USER` module.]
 
-            // 6 free slots remaining
+            // 10 free slots remaining
         )),
 
         [FabRISC dictates the implementation of some mandatory fault events, such as: `MISI`, `INCI`, `ILLI` and others which require the presence of the machine event special purpose registers. Such registers are, however, not necessary if the system implements the said faults by simply halting the machine. This relaxes the constraint on simple implementations that don't support events or don't want to handle them.],
@@ -451,8 +443,6 @@
             This bank houses a variety of registers used to alter and change the behavior of the system while it operates. Many of the modules will require the presence of some special purpose registers in order to function such as vector extensions, transaction module, helper registers, performance counters and others.
 
             The registers prefixed with "User Event" or "Machine Event" hold the so called "critical state" of the hart, that is, state that is particularly delicate for event handling in privileged and non privileged implementations. Access to privileged resources in user mode is forbidden and blocked in order to protect the operating system from exploits, as well as ensuring that the ISA remains classically virtualizable.
-
-            Special "usage" registers are also provided if the `CTXR` module is implemented which allow to reduce the average number of registers that must be saved and restored during context switches. This is achieved by setting the corresponding bit to one whenever a register in the covered banks is written. This can then be used by special instructions to only write to / read from memory the registers with the corresponding usage bit to one.
 
             Hardware designers are free to perform renaming of these registers if they so wish. Alternatively, a write to any special register must hold fence-like semantics, that is, the hart must hold execution of all subsequent instructions until the write is complete. This allows any modification to this bank to be visible by the rest of the system.
         ])
