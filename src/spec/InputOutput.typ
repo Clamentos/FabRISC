@@ -118,6 +118,21 @@
             [1111], [$2^40$ bytes for 64 bit systems ($"WLEN" = 3$).],
         )),
 
+        [The final layout of the address space might resemble the graphic below. The "DMA Region" is part of the "Memory Region" more or less strictly depending on which DMA Mode is chosen.],
+
+        align(center, grid(
+
+            columns: (90pt, 150pt),
+            rows: (150pt, 100pt, 80pt),
+            gutter: 0pt,
+
+            grid.cell(rowspan: 1, [`0x000000...0`]),
+            rect(width: 100%, height: 100%, inset: 8pt)[#align(left, [Memory Region.])],
+            grid.cell(rowspan: 2, [#align(bottom, [`0xFFFFFF...F`])]),
+            rect(width:100%, height: 100%, inset: 8pt, fill: rgb("#eaeaea"), stroke: 1pt)[#align(left, [DMA Region (`DMAS`) bytes, only when `DMAMOD = 1`. Not cacheable.])],
+            rect(width:100%, height: 100%, inset: 8pt, fill: rgb("#dadada"), stroke: 1pt)[#align(left, [MMIO Region (`IOS`) bytes. Outside of main system memory.])]
+        )),
+
         comment([
 
             For more bandwidth demanding devices, such as external accelerators, DMA can be used to transfer data at very high speeds in the order of several Gb/s without interfering with the CPU. This scheme however, is more complex than plain MMIO because of the often required special arbiter that handles and grants the requests.

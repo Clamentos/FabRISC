@@ -47,6 +47,12 @@
 }
 
 ///..
+#let textWrap(..body) = {
+
+    for text in body.pos() { par(text) }
+}
+
+///..
 #let monospace(text) = {
 
     $mono(text)$

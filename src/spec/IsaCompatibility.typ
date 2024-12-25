@@ -6,7 +6,7 @@
 
     [ISA Compatibility],
 
-    [This section is dedicated to provide an overview of the modular capabilities of the FabRISC ISA. The list of modules and some implementation specific parameters will be presented shortly.],
+    [This section is dedicated to provide an overview of the modular capabilities and structure of the FabRISC ISA. The list of modules and some implementation specific parameters will be presented shortly.],
 
     ///.
     subSection(
@@ -112,7 +112,7 @@
 
         comment([
 
-            I consider this modular approach to be a wise idea because it allows the hardware designers to only implement what they really need with high degree of granularity and little extra. The fact that there is no explicit mandatory subset of the ISA may seem odd, but can help with specialized systems, as well as to greatly simplify the specification. With this, it becomes perfectly possible to create, for example, a floating-point only processor with very few integer instructions to alleviate overheads and extra complexities. This decision, however, makes silly and nonsensical things possible such as having no flow transfer or no memory operations. The ISA, in the end, kind of relies on the common sense of the hardware designers when it comes to realizing sensible microarchitectures.
+            I consider this modular approach to be a wise idea because it allows the hardware designers to only implement what they really need with high degree of granularity and little extra. Another advantage is that it's easier to add and remove pieces from the specification in a cleaner way. The fact that there is no explicit mandatory subset of the ISA may seem odd, but can help with specialized systems, as well as to greatly simplify the specification. With this, it becomes perfectly possible to create, for example, a floating-point only processor with very few integer instructions to alleviate overheads and extra complexities. This decision, however, makes silly and nonsensical things possible such as having no flow transfer or no memory operations. The ISA, in the end, kind of relies on the common sense of the hardware designers when it comes to realizing sensible microarchitectures.
 
             The miscellaneous modules also contain the `USER` module, which is responsible for giving the ISA different privilege levels by restricting access to some resources and functionalities. FabRISC currently only supports a maximum of two privilege levels: "user mode" and "machine mode".
 

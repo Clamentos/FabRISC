@@ -2,9 +2,9 @@
 #import "Macros.typ": *
 
 ///
-#page(flipped: true, section(
+#section(
 
-    [Instruction List (WORK IN PROGRESS)],
+    [Instruction List],
 
     [This section is dedicated to provide the full and extensive list of all the proposed instructions in the ISA divided into their corresponding module.],
 
@@ -12,7 +12,10 @@
 
     [As mentioned in previous sections, since some instructions can generate flags, they are not stored in any sort of flag register and they can be ignored unless the `EXC`, `HLPR` or both modules are implemented.],
 
-    [Unused bits, designated with "-" or "x", must have a value of zero by default for convention.],
+    [Unused bits, designated with "-" or "x", must have a value of zero by default for convention.]
+)
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -25,7 +28,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`ABS`], [], [2R.A], [-], [-], [*Absolute Value*: Performs `ra = (rb < 0) ? (~rb + 1) : (rb)`.],
 
@@ -93,8 +96,11 @@
 
             [`CLDI`], [], [2RI.A], [`A`], [-], [*Conditional Load Immediate*: Performs `ra = check(rb) ? (EXT(imm)) : (ra)`. This instruction class specifies: `00` (`.EZ`) as _equal to zero_ mode, `01` (`.NZ`) _not equal to zero_ mode, `10` (`.LTZ`) _less than zero_ mode and `11` (`.LTZU`) _less than zero unsigned_ mode and the immediate will be sign or zero extended according to the specified mode.]
         ))
-    ),
+    )
+))
 
+#page(flipped: true, textWrap(
+    
     subSection(
 
         [Computational Integer Scalar Advanced (`CISA`)],
@@ -106,7 +112,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`CZ`], [], [2R.A], [`A`], [-], [*Count Zeros*: Performs `ra = CZ(rb)`, that is, the total number of zero bits in `rb`. Must always have a class mode value of `00`.],
 
@@ -226,7 +232,10 @@
 
             The multiplication part of the operation only considers the least significant `WLEN` bits, all of the steps performed are unsigned and the immediate is always zero extended.],
         ))
-    ),
+    )
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -239,7 +248,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`BADD`], [], [4.RA], [`A`], [-], [*Big Addition*: Performs `ra = rb + rc + rd; rd = carry_out`. Must always have a class mode value of `00`.],
 
@@ -250,6 +259,9 @@
             [`BRSH`], [], [4.RA], [`A`], [-], [*Big Right Shift*: Performs `ra = rb >> rc (rd); rd = shifted_out`. This instruction shifts in bits from `rd` instead of zeros. Must always have a class mode value of `01`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -262,7 +274,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`VABS`], [], [3R.A], [`E`], [-], [*Vector Absolute Value*: Performs `va = MASK((vc < 0) ? (~vc + 1) : (vc), vb)`.],
 
@@ -311,6 +323,9 @@
             [`VRSHI`], [], [3RI.B], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Vector Right Shift Immediate*: Performs `va = MASK(vc >> imm, vb)` filling the most significant bits with either zeros or the sign depending on the mode. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -323,7 +338,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],          
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],          
 
             [`VCZ`], [], [3R.A], [`E`], [-], [*Vector Count Zeros*: Performs `va = MASK(CZ(vc), vb)`, that is, the total number of zero bits in `vc`.],
 
@@ -445,6 +460,9 @@
             The multiplication part of the operation only considers the least significant half of the result, all of the steps performed are unsigned and the immediate is always zero extended and broadcasted to all the vector elements.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -457,7 +475,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`RADD`], [], [3R.A], [`E`], [`OVFLn`, `UNFLn`], [*Reduced Addition*: Performs `va = SUM(MASK(vc, vb))`, that is, sum all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
 
@@ -492,6 +510,9 @@
             [`RNIMP`], [], [3R.A], [`E`], [-], [*Reduced Bitwise NIMP*: Performs `va = NIMP(MASK(vc, vb))`, that is, bitwise NIMP all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -504,7 +525,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`CADD`], [], [2R.B], [`F`], [`OVFLn`, `UNFLn`], [*Compressed Addition*: Performs `ra = ra + rc`. The operands are always considered signed.],
 
@@ -528,6 +549,9 @@
             [`CLDI`], [], [RI.B], [-], [-], [*Compressed Load Immediate*: Performs `ra = SEXT(imm)`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -540,7 +564,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`CFI`], [], [2R.A], [`B`], [`OVFLn`, `UNFLn`, `INVOP`], [*Cast FP To Integer*: Performs `ra = FP_TO_INT(rb)`, that is, convert `rb` to the closest integer dictated by the rounding mode and place the result in `ra`. The length modifier is applied to all operands.],
 
@@ -613,6 +637,9 @@
             [`FNMSUBI`], [], [3RI.A], [`B`], [`OVFLn`, `UNFLn`,`INVOP`], [*FP Negative Multiply Subtract Immediate*: Performs `ra = (-rb) - (rc * imm)` with only one rounding step. The length modifier is applied to all operands.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -625,11 +652,14 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`FSQRT`], [], [2R.A], [`B`], [`UNFLn`, `INVOP`], [*FP Square Root*: Performs `ra = SQRT(rb)`. The length modifier is applied to all operands.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -642,7 +672,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`VCFI`], [], [3R.A], [`E`], [`OVFLn`, `UNFLn`, `INVOP`], [*Vector Cast FP To Integer*: Performs `va = MASK(FP_TO_INT(vc), vb)`, that is, convert `vc` to the closest integer dictated by the rounding mode and place the result in `va`.],
 
@@ -706,6 +736,9 @@
             The immediate is always broadcasted to all the vector elements.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -718,11 +751,14 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`VSQRT`], [], [3R.A], [`E`], [`UNFLn`, `INVOP`], [*Vector FP Square Root*: Performs `va = SQRT(vb)`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -735,7 +771,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`RFADD`], [], [3R.A], [`E`], [`OVFLn`, `UNFLn`, `INVOP`], [*Reduced FP Addition*: Performs `va = SUM(MASK(vc, vb))`, that is, sum all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.],
 
@@ -750,6 +786,9 @@
             [`RFMAX`], [], [3R.A], [`E`], [`INVOP`], [*Reduced FP Maximum*: Performs `va = MAX(MASK(vc, vb))`, that is, find the maximum between all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -761,7 +800,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`MLD`], [], [2RI.A], [`B`], [-], [*Memory Load*: Performs `ra = SEXT(MEM[rb + SEXT(imm)])`. The length modifier is applied to all operands.],
 
@@ -770,6 +809,9 @@
             [`MST`], [], [2RI.A], [`B`], [-], [*Memory Store*: Performs `MEM[rb + SEXT(imm)] = ra`. The length modifier is applied to all operands.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -781,7 +823,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`MLD_PD`], [], [2RI.A], [`B`], [-], [*Memory Load Pre Decrement*: Performs `ra = SEXT(MEM[(--rb) + SEXT(imm)])`. The length modifier is applied to all operands.],
 
@@ -808,6 +850,9 @@
             [`SMST`], [], [3RI.A], [`B`], [-], [*Scaled Memory Store*: Performs `MEM[rb << imm] = ra`. The length modifier is applied to all operands.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -819,12 +864,15 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`VMLD`], [], [2RI.B], [`D`], [-], [*Vector Memory Load*: Performs `va = MEM_i[rb + STRIDE(imm)]`.],
             [`VMST`], [], [2RI.B], [`D`], [-], [*Vector Memory Store*: Performs `MEM_i[rb + STRIDE(imm)] = va`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -836,12 +884,15 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
-            [`VGAT`], [], [3R.A], [-], [*Vector Gather*: Performs `va = MEM_i[rb + vc_i]`.],
-            [`VSCA`], [], [3R.A], [-], [*Vector Scatter*: Performs `MEM_i[rb + vc_i] = va`.]
+            [`VGAT`], [], [3R.A], [-], [-], [*Vector Gather*: Performs `va = MEM_i[rb + vc_i]`.],
+            [`VSCA`], [], [3R.A], [-], [-], [*Vector Scatter*: Performs `MEM_i[rb + vc_i] = va`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -853,11 +904,14 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`CAS`], [], [4R.A], [`B`], [-], [*Compare And Swap*: Performs `if(MEM[rb] != rc) then {ra = 0} else {MEM[rb] = rd; ra = 1}`, that is, write into the memory location pointed by `rb` the value in `rd` if and only if such location is equal to `rc`. The outcome of this instruction is written into `ra`. The length modifier is applied to all operands.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -869,7 +923,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`AADD`], [], [3R.A], [`B`], [-], [*Atomic Add*: Performs: `MEM[rb] += ra` atomically. The length modifier is applied to all operands.],
 
@@ -888,6 +942,9 @@
             [`AORI`], [], [2RI.B], [`B`], [-], [*Atomic Or Immediate*: Performs: `MEM[rb] |= SEXT(imm)` atomically. The length modifier is applied to all operands.]
         )),
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -899,7 +956,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`BLDL`], [], [RI.A], [`C`], [-], [*Block Load Lower*: Performs `ra_l16 = MASK(MEM[rb], imm)`, that is, load the first 16 registers from the memory location pointed by `rb` ignoring when `imm` has a 0 bit for that specific position.],
 
@@ -910,6 +967,9 @@
             [`BLDP`], [], [RI.A], [`C`], [-], [*Block Store Upper*: Performs `MEM[rb] = MASK(ra_h16, imm)`, that is, store the last 16 registers into the memory location pointed by `rb` ignoring when `imm` has a 0 bit for that specific position.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -921,7 +981,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`CMLD`], [], [2R.B], [`B`], [-], [*Compressed Memory Load*: Performs `ra = MEM[rb]`. The length modifier is applied to all operands.],
 
@@ -933,6 +993,9 @@
             [`CMSWD`], [], [2RI.C], [-], [-],[*Compressed Memory Store Word Displacement*: Performs `MEM[rb + SEXT(imm)] = ra`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -944,7 +1007,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`JMP`], [], [I.A], [-], [-], [*Unconditional Jump*: Performs `PC = PC + SEXT(imm << 1)`.],
             [`BJAL`], [], [I.A], [-], [-], [*Big Jump And Link*: Performs `S0 = PC; PC = PC + SEXT(imm << 1)`.],
@@ -963,6 +1026,9 @@
             [`BLEU`], [], [2RI.A], [`D`], [-], [*Branch If Less Than Equal Unsigned*: Performs `if(ra <= rb) then {PC = PC + SEXT(imm << 1)} else {noop}`. `ra` and `rb` are considered unsigned.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -974,7 +1040,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`BEQI`], [], [RI.A], [`D`], [-], [*Branch If Equal Immediate*: Performs `if(ra == SEXT(imm[3:0])) then {PC = PC + SEXT(imm[17:4] << 1)} else {noop}`.],
 
@@ -987,6 +1053,9 @@
             [`BLEIU`], [], [RI.A], [`D`], [-], [*Branch If Less Than Equal Immediate Unsigned*: Performs `if(ra <= EXT(imm[3:0])) then {PC = PC + SEXT(imm[17:4] << 1)} else {noop}`. `ra` is considered unsigned.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -999,7 +1068,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`CBEQZ`], [], [RI.B], [-], [-], [*Compressed Branch If Equal To Zero*: Performs `if(ra == 0) then {PC = PC + SEXT(imm << 1)} else {noop}`.],
 
@@ -1016,6 +1085,9 @@
             [`CBLE`], [], [2RI.C], [-], [-], [*Compressed Branch If Less Or Equal Than*: Performs `if(ra <= rb) then {PC = PC + SEXT(imm << 1)} else {noop}`.],
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1028,13 +1100,16 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`FBLT`], [], [2RI.B], [`B`], [`INVOP`], [*FP Branch If Less Than*: Performs `if(ra < rb) then {PC = PC + SEXT(imm << 1)} else {noop}`. The length modifier is applied to all operands.],
 
             [`FBLE`], [], [2RI.B], [`B`], [`INVOP`], [*FP Branch If Less Than Or Equal*: Performs `if(ra <= rb) then {PC = PC + SEXT(imm << 1)} else {noop}`. The length modifier is applied to all operands.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1047,13 +1122,16 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`FBLTI`], [], [RI.A], [`B`], [`INVOP`], [*FP Branch If Less Than Immediate*: Performs `if(ra < LOOKUP(imm[3:0])) then {PC = PC + SEXT(imm[17:4] << 1)} else {noop}`, where `LOOKUP` is the above mentioned lookup table. The length modifier is applied to `ra`.],
 
             [`FBLEI`], [], [RI.A], [`B`], [`INVOP`], [*FP Branch If Less Than Or Equal Immediate*: Performs `if(ra <= LOOKUP(imm[3:0])) then {PC = PC + SEXT(imm[17:4] << 1)} else {noop}`, where `LOOKUP` is the above mentioned lookup table. The length modifier is applied to `ra`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1065,13 +1143,16 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`VEXTR`], [], [2R.A], [`B`], [-], [*Vector Extract*: Performs `ra = vb[imm]` ignoring any vector shape configuration. The element and size are dictated by `imm` and the class mode respectively. The length modifier is applied to all operands.],
 
             [`VINJ`], [], [2R.A], [`B`], [-], [*Vector Inject*: Performs `va[imm] = rb` ignoring any vector shape configuration. The element and size are dictated by `imm` and the class mode respectively. The length modifier is applied to all operands.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1083,7 +1164,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`VSEQ`], [], [4R.B], [`A`], [-], [*Vector Set If Equal*: Performs `va = MASK((vc == vd) ? 1 : 0, vb)`. This instruction class specifies: `10` (`-`) as _default_ mode and `11` (`.I`) as _inverted_ mode, which simply inverts the checking condition.],
 
@@ -1098,6 +1179,9 @@
             [`VSLEI`], [], [3RI.B], [`A`], [-], [*Vector Set If Less Or Equal Immediate*: Performs `va = MASK((vc <= EXT(imm)) ? 1 : 0, vb)`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition and the immediate will be sign or zero extended according to the specified mode.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1109,7 +1193,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`VFSLT`], [], [4R.B], [`A`], [-], [*Vector FP Set If Less Than*: Performs `va = MASK((vc < vd) ? 1 : 0, vb)`. Must always have a class mode value of `00`.],
 
@@ -1128,6 +1212,9 @@
             [`VFSGEI`], [], [3RI.B], [`A`], [-], [*Vector FP Set If Greater Or Equal Immediate*:  Performs `va = MASK((vc >= imm) ? 1 : 0, vb)`. Must always have a class mode value of `11`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1139,7 +1226,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`NOP`], [], [2R.A], [`A`], [-], [*No Operation*: Performs nothing. The operands are not used and ust always have a class mode value of `00`.],
 
@@ -1150,6 +1237,9 @@
             [`CACOP`], [], [2RI.B], [`A`], [-], [*Cache Operation*: Implementation-specific privileged instruction designed to allow direct manipulation of the cache. If no caching is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1161,7 +1251,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`LDVSHP`], [], [2R.A], [`A`], [-], [*Load Vector Shape*: Performs: `VSH = ra`. The second operand is not used and must always have a class mode value of `00`.],
 
@@ -1170,6 +1260,9 @@
             [`VPCKUPCK`], [], [2RI.B], [`A`], [-], [*Vector Pack Unpack*: Performs `va = PCKUPCK(vb, imm)`, that is, packs or unpacks `vb` with the current vector shape to the one specified in the `imm`. An example of the transformation would be: `000a 000b 000c 000d <=> 000000000000abcd`. Must always have a class mode value of `00`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1182,13 +1275,16 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`LDRMD`], [], [2R.A], [`A`], [-], [*Load Rounding Mode*: Performs `RMD = ra`, where `RMD` is a section of the `SR`. The second operand is not used and must always have a class mode value of `00`.],
 
             [`STRMD`], [], [2R.A], [`A`], [-], [*Store Rounding Mode*: Performs `ra = RMD`, where `RMD` is a section of the `SR`. The second operand is not used and must always have a class mode value of `01`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1201,7 +1297,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`LDHR`], [], [2R.A], [`B`], [-], [*Load Helper Register*: Performs `HLPR = ra`. The second operand is not used.],
             [`STHR`], [], [2R.A], [`B`], [-], [*Store Helper Register*: Performs `ra = HLPR`. The second operand is not used.],
@@ -1215,6 +1311,9 @@
             [`STHLPRE`], [], [2R.A], [`A`], [-], [*Store HLPRE Status*: Performs `HLPRE = ra`, where `HLPRE` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `11`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1227,7 +1326,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`LDCR`], [], [2R.A], [`B`], [-], [*Load Counter Register*: Performs `PERFC = ra`. The second operand is not used.],
             [`STCR`], [], [2R.A], [`B`], [-], [*Store Counter Register*: Performs `ra = PERFC`. The second operand is not used.],
@@ -1241,6 +1340,9 @@
             [`STPERFCE`], [], [2R.A], [`A`], [-], [*Store PERFCE Status*: Performs `PERFCE = ra`, where `PERFCE` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `11`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1252,7 +1354,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`FNCL`], [], [2R.A], [`A`], [-], [*Fence Loads*: See section 4. The operands are not used and must always have a class mode value of `00`],
 
@@ -1273,6 +1375,9 @@
             [`STCMD`], [], [2R.A], [`A`], [-], [*Store Consistency Mode*: Performs `CMD = ra`, where `CMD` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `01`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1284,7 +1389,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`TBEG`], [], [2R.A], [`A`], [-], [*Transaction Begin*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `00`.],
 
@@ -1299,6 +1404,9 @@
             [`TLEV`], [], [2R.A], [`A`], [-], [*Transaction Level*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `01`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1310,7 +1418,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`LDMER`], [], [2R.A], [`D`], [-], [*Load Machine Event Register*: Performs `ra = MER`, where `MER` is one of the special purpose registers prefixed with "machine event". The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
 
@@ -1325,6 +1433,9 @@
             [`WINT`], [], [RI.A], [`A`], [-], [*Wait For Interrupt*: Causes the executing hart to halt and wait for interrupt. The `ra` specifies the timeout and `rb` specifies the id of the interrupt (IO or IPC) to wait for. This instruction class specifies: `.C` (`00`) as _cycles_ mode, `.N` (`01`) as _nanoseconds_ mode, `.U` (`10`) as _microseconds_ mode and `.M` (`11`) as _milliseconds_. This instruction is privileged.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1337,7 +1448,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`SYSCL`], [], [2R.A], [`A`], [-], [*System Call*: Perform `SYSCL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `00`.],
 
@@ -1378,6 +1489,9 @@
             [`UCACOP`], [], [2RI.B], [`A`], [-], [*User Cache Operation*: Implementation-specific instruction designed to allow direct manipulation of the cache. If no caching is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.]
         ))
     ),
+))
+
+#page(flipped: true, textWrap(
 
     subSection(
 
@@ -1390,7 +1504,7 @@
             columns: (auto, auto, auto, auto, auto, auto),
             align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
 
-            [#middle([*Mnemonic*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
             [`LDGEE`], [], [2R.A], [`A`], [-], [*Load Global Exception Enable*: Performs `ra = GEE`, where `GEE` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `00`. This instruction is privileged.],
 
