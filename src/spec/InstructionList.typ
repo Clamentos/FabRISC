@@ -37,7 +37,7 @@
 
             [`MIN`], [], [3R.A], [`A`], [-], [*Minimum*: Performs `ra = (rb < rc) ? (rb) : (rc)`. This instruction class specifies: `00` (`.S`) as _signed_ mode and `01` (`.U`) as _unsigned_ mode.],
 
-            [`MAX`], [], [3R.A], [`A`], [-], [*Maximum*: Performs `ra = (rb < rc) ? (rb) : (rc)`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.],
+            [`MAX`], [], [3R.A], [`A`], [-], [*Maximum*: Performs `ra = (rb > rc) ? (rb) : (rc)`. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.],
 
             [`AND`], [], [3R.A], [`A`], [-], [*Bitwise AND*: Performs `ra = rb & rc`. This instruction class specifies: `00` (`-`) as _default_ mode and `01` (`.I`) as _inverted_ mode, which simply inverts the result.],
 
@@ -55,7 +55,7 @@
 
             [`SLT`], [], [3R.A], [`A`], [-], [*Set If Less Than*: Performs `ra = (rb < rc) ? 1 : 0`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition.],
 
-            [`SLE`], [], [3R.A], [`A`], [-], [*Set If Less Than Or Equal*: Performs `ra = (rb <= rc) ? 1 : 0`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition.],
+            [`SLE`], [], [3R.A], [`A`], [-], [*Set If Less Than Or Equal To*: Performs `ra = (rb <= rc) ? 1 : 0`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition.],
 
             [`CMV`], [], [3R.A], [`A`], [-], [*Conditional Move*: Performs `ra = check(rb) ? (rb) : (ra)`. This instruction class specifies: `00` (`.EZ`) as _equal to zero_ mode, `01` (`.NZ`) _not equal to zero_ mode, `10` (`.LTZ`) _less than zero_ mode and `11` (`.LTZU`) _less than zero unsigned_ mode for the checking condition.],
 
@@ -89,7 +89,7 @@
 
             [`SLTI`], [], [2RI.A], [`A`], [-], [*Set If Less Than Immediate*: Performs `ra = (rb < EXT(imm)) ? 1 : 0`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition and the immediate will be sign or zero extended according to the specified mode.],
 
-            [`SLEI`], [], [2RI.A], [`A`], [-], [*Set If Less Than Or Equal Immediate*: Performs `ra = (rb <= EXT(imm)) ? 1 : 0`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition and the immediate will be sign or zero extended according to the specified mode.],
+            [`SLEI`], [], [2RI.A], [`A`], [-], [*Set If Less Than Or Equal To Immediate*: Performs `ra = (rb <= EXT(imm)) ? 1 : 0`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition and the immediate will be sign or zero extended according to the specified mode.],
 
             [`CLDI`], [], [2RI.A], [`A`], [-], [*Conditional Load Immediate*: Performs `ra = check(rb) ? (EXT(imm)) : (ra)`. This instruction class specifies: `00` (`.EZ`) as _equal to zero_ mode, `01` (`.NZ`) _not equal to zero_ mode, `10` (`.LTZ`) _less than zero_ mode and `11` (`.LTZU`) _less than zero unsigned_ mode and the immediate will be sign or zero extended according to the specified mode.]
         ))
@@ -1339,13 +1339,13 @@
 
             [`MMUOP`], [], [RI.A], [`A`], [-], [*Memory Management Unit Operation*: Implementation-specific privileged instruction designed to allow direct manipulation of the memory management unit. If no MMU is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.],
 
-            [`SYSCL`], [], [2R.A], [`A`], [-], [*System Call*: Perform `SYSCL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `01`.],
+            [`SYSCL`], [], [2R.A], [`A`], [-], [*System Call*: Perform `SYSCL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `00`.],
 
-            [`UERET`], [], [2R.A], [`A`], [-], [*User Event Return*: Performs the unprivileged event returning sequence, see section 6. Must always have a class mode of `10`.],
+            [`UERET`], [], [2R.A], [`A`], [-], [*User Event Return*: Performs the unprivileged event returning sequence, see section 6. Must always have a class mode of `01`.],
 
-            [`URET`], [], [2R.A], [`A`], [-], [*User Return*: Performs the user event returning sequence, see section 6. This instruction is privileged and must always have a class mode of `11`.],
+            [`URET`], [], [2R.A], [`A`], [-], [*User Return*: Performs the user event returning sequence, see section 6. This instruction is privileged and must always have a class mode of `10`.],
 
-            [`UCACOP`], [], [2RI.B], [`A`], [-], [*User Cache Operation*: Implementation-specific instruction designed to allow direct manipulation of the cache. If no caching is implemented this instruction must throw the `INCI` fault. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
+            [`UCACOP`], [], [2RI.B], [`A`], [-], [*User Cache Operation*: Implementation-specific instruction designed to allow direct manipulation of the cache. If no caching is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.],
 
             [`LDUER`], [], [2R.A], [`D`], [-], [*Load User Event Register*: Performs `ra = UER`, where `UER` is one of the special purpose registers prefixed with "user event". The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
 
@@ -1369,9 +1369,11 @@
 
             [`LDWDT`], [], [2R.A], [`D`], [-], [*Load Watchdog Timer*: Performs `ra = WDT`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
 
-            [`STWDT`], [], [2R.A], [`D`], [-], [*Store Watchdog Timer*: Performs `WDT = ra`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.]
+            [`STWDT`], [], [2R.A], [`D`], [-], [*Store Watchdog Timer*: Performs `WDT = ra`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
 
-            // TODO: enable / disable WDT
+            [`LDWDTS`], [], [2R.A], [`A`], [-], [*Load Watchdog Timer Status*: Performs `ra = WDTE`, where `WDTE` is a section of the `SR` register. Must always have a class mode of `00`.],
+
+            [`STWDTS`], [], [2R.A], [`A`], [-], [*Store Watchdog Timer Status*: Performs `EWDT = ra`, where `WDTE` is a section of the `SR` register. Must always have a class mode of `01`.]
         ))
     ),
 

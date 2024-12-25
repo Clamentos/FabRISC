@@ -26,7 +26,7 @@
 #linebreak()
 
 #align(center, text(16pt)[Enrico Gatto Monticone])
-#align(center, text(14pt)[18/12/2024])
+#align(center, text(14pt)[25/12/2024])
 
 #linebreak()
 
@@ -57,13 +57,15 @@
 ///
 // Actual content.
 
-#include "Section1.typ"
-#include "Section2.typ"
-#include "Section3.typ"
-#include "Section4.typ"
-#include "Section5.typ"
-#include "Section6.typ"
-#include "Section7.typ"
-#include "Section8.typ"
+#include "Introduction.typ"
+#include "IsaCompatibility.typ"
+#include "LowLevelDataTypes.typ"
+#include "Memory.typ"
+#include "InputOutput.typ"
+#include "RegisterFileOrganization.typ"
+#include "Events.typ"
+#include "InstructionFormats.typ"
+#include "InstructionList.typ"
+#include "License.typ"
 
 ///
