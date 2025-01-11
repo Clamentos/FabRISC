@@ -26,7 +26,7 @@
 #linebreak()
 
 #align(center, text(16pt)[Enrico Gatto Monticone])
-#align(center, text(14pt)[25/12/2024])
+#align(center, text(14pt)[11/01/2025])
 
 #linebreak()
 
@@ -60,9 +60,9 @@
 #include "Introduction.typ"
 #include "IsaCompatibility.typ"
 #include "LowLevelDataTypes.typ"
+#include "RegisterFileOrganization.typ"
 #include "Memory.typ"
 #include "InputOutput.typ"
-#include "RegisterFileOrganization.typ"
 #include "Events.typ"
 #include "InstructionFormats.typ"
 #include "InstructionList.typ"

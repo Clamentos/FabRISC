@@ -64,7 +64,7 @@
 
         list(tight: false,
 
-            [*Non cacheable memory region:* _With this configuration coherence isn't a problem because no caching is performed by the CPU and the IO device in question. The region is fixed and must reside above the MMIO address space but within the regular memory space. All DMA accesses must be made to that region otherwise they are considered undefined behaviour._],
+            [*Non cacheable memory region:* _With this configuration coherence isn't a problem because no caching is performed by the CPU and the IO device in question. The region is fixed and must reside above the MMIO address space but within the regular memory space. All DMA accesses must be made to that region otherwise they are considered undefined behavior._],
 
             [*Software IO coherence:* _With this configuration the CPU and the device are required to flush or invalidate the cache explicitly with no extra hardware complexity. This option requires the exposure of the underlying organization to the programmer thus shifting a low level concern upwards._],
 

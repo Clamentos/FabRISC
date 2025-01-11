@@ -258,7 +258,7 @@
 
             [`BRSH`], [], [4.RA], [`A`], [-], [*Big Right Shift*: Performs `ra = rb >> rc (rd); rd = shifted_out`. This instruction shifts in bits from `rd` instead of zeros. Must always have a class mode value of `01`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -322,7 +322,7 @@
 
             [`VRSHI`], [], [3RI.B], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Vector Right Shift Immediate*: Performs `va = MASK(vc >> imm, vb)` filling the most significant bits with either zeros or the sign depending on the mode. This instruction class specifies: `10` (`.S`) as _signed_ mode and `11` (`.U`) as _unsigned_ mode.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -459,7 +459,7 @@
 
             The multiplication part of the operation only considers the least significant half of the result, all of the steps performed are unsigned and the immediate is always zero extended and broadcasted to all the vector elements.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -509,7 +509,7 @@
 
             [`RNIMP`], [], [3R.A], [`E`], [-], [*Reduced Bitwise NIMP*: Performs `va = NIMP(MASK(vc, vb))`, that is, bitwise NIMP all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -548,7 +548,7 @@
 
             [`CLDI`], [], [RI.B], [-], [-], [*Compressed Load Immediate*: Performs `ra = SEXT(imm)`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -636,7 +636,7 @@
 
             [`FNMSUBI`], [], [3RI.A], [`B`], [`OVFLn`, `UNFLn`,`INVOP`], [*FP Negative Multiply Subtract Immediate*: Performs `ra = (-rb) - (rc * imm)` with only one rounding step. The length modifier is applied to all operands.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -656,7 +656,7 @@
 
             [`FSQRT`], [], [2R.A], [`B`], [`UNFLn`, `INVOP`], [*FP Square Root*: Performs `ra = SQRT(rb)`. The length modifier is applied to all operands.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -735,7 +735,7 @@
 
             The immediate is always broadcasted to all the vector elements.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -755,7 +755,7 @@
 
             [`VSQRT`], [], [3R.A], [`E`], [`UNFLn`, `INVOP`], [*Vector FP Square Root*: Performs `va = SQRT(vb)`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -785,7 +785,7 @@
 
             [`RFMAX`], [], [3R.A], [`E`], [`INVOP`], [*Reduced FP Maximum*: Performs `va = MAX(MASK(vc, vb))`, that is, find the maximum between all the elements of `vc` together, considering only the ones that are not masked by `vb` and place the scalar result in `va`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -808,7 +808,7 @@
 
             [`MST`], [], [2RI.A], [`B`], [-], [*Memory Store*: Performs `MEM[rb + SEXT(imm)] = ra`. The length modifier is applied to all operands.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -849,7 +849,7 @@
 
             [`SMST`], [], [3RI.A], [`B`], [-], [*Scaled Memory Store*: Performs `MEM[rb << imm] = ra`. The length modifier is applied to all operands.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -869,7 +869,7 @@
             [`VMLD`], [], [2RI.B], [`D`], [-], [*Vector Memory Load*: Performs `va = MEM_i[rb + STRIDE(imm)]`.],
             [`VMST`], [], [2RI.B], [`D`], [-], [*Vector Memory Store*: Performs `MEM_i[rb + STRIDE(imm)] = va`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -889,7 +889,7 @@
             [`VGAT`], [], [3R.A], [-], [-], [*Vector Gather*: Performs `va = MEM_i[rb + vc_i]`.],
             [`VSCA`], [], [3R.A], [-], [-], [*Vector Scatter*: Performs `MEM_i[rb + vc_i] = va`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -908,7 +908,7 @@
 
             [`CAS`], [], [4R.A], [`B`], [-], [*Compare And Swap*: Performs `if(MEM[rb] != rc) then {ra = 0} else {MEM[rb] = rd; ra = 1}`, that is, write into the memory location pointed by `rb` the value in `rd` if and only if such location is equal to `rc`. The outcome of this instruction is written into `ra`. The length modifier is applied to all operands.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -940,8 +940,8 @@
             [`AANDI`], [], [2RI.B], [`B`], [-], [*Atomic And Immediate*: Performs: `MEM[rb] &= SEXT(imm)` atomically. The length modifier is applied to all operands.],
 
             [`AORI`], [], [2RI.B], [`B`], [-], [*Atomic Or Immediate*: Performs: `MEM[rb] |= SEXT(imm)` atomically. The length modifier is applied to all operands.]
-        )),
-    ),
+        ))
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -966,7 +966,7 @@
 
             [`BLDP`], [], [RI.A], [`C`], [-], [*Block Store Upper*: Performs `MEM[rb] = MASK(ra_h16, imm)`, that is, store the last 16 registers into the memory location pointed by `rb` ignoring when `imm` has a 0 bit for that specific position.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -992,7 +992,7 @@
             [`CMLWD`], [], [2RI.C], [-], [-],[*Compressed Memory Load Word Displacement*: Performs `ra = MEM[rb + SEXT(imm)]`.],
             [`CMSWD`], [], [2RI.C], [-], [-],[*Compressed Memory Store Word Displacement*: Performs `MEM[rb + SEXT(imm)] = ra`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1025,7 +1025,7 @@
 
             [`BLEU`], [], [2RI.A], [`D`], [-], [*Branch If Less Than Equal Unsigned*: Performs `if(ra <= rb) then {PC = PC + SEXT(imm << 1)} else {noop}`. `ra` and `rb` are considered unsigned.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1052,7 +1052,7 @@
 
             [`BLEIU`], [], [RI.A], [`D`], [-], [*Branch If Less Than Equal Immediate Unsigned*: Performs `if(ra <= EXT(imm[3:0])) then {PC = PC + SEXT(imm[17:4] << 1)} else {noop}`. `ra` is considered unsigned.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1084,7 +1084,7 @@
 
             [`CBLE`], [], [2RI.C], [-], [-], [*Compressed Branch If Less Or Equal Than*: Performs `if(ra <= rb) then {PC = PC + SEXT(imm << 1)} else {noop}`.],
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1106,7 +1106,7 @@
 
             [`FBLE`], [], [2RI.B], [`B`], [`INVOP`], [*FP Branch If Less Than Or Equal*: Performs `if(ra <= rb) then {PC = PC + SEXT(imm << 1)} else {noop}`. The length modifier is applied to all operands.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1128,7 +1128,7 @@
 
             [`FBLEI`], [], [RI.A], [`B`], [`INVOP`], [*FP Branch If Less Than Or Equal Immediate*: Performs `if(ra <= LOOKUP(imm[3:0])) then {PC = PC + SEXT(imm[17:4] << 1)} else {noop}`, where `LOOKUP` is the above mentioned lookup table. The length modifier is applied to `ra`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1149,7 +1149,7 @@
 
             [`VINJ`], [], [2R.A], [`B`], [-], [*Vector Inject*: Performs `va[imm] = rb` ignoring any vector shape configuration. The element and size are dictated by `imm` and the class mode respectively. The length modifier is applied to all operands.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1178,7 +1178,7 @@
 
             [`VSLEI`], [], [3RI.B], [`A`], [-], [*Vector Set If Less Or Equal Immediate*: Performs `va = MASK((vc <= EXT(imm)) ? 1 : 0, vb)`. This instruction class specifies: `00` (`.S`) as _signed_ mode, `01` (`.U`) as _unsigned_ mode, `10` (`.IS`) as _inverted signed_ mode and `11` (`.IU`) as _inverted unsigned_ mode. The last two modes simply invert the checking condition and the immediate will be sign or zero extended according to the specified mode.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1211,7 +1211,7 @@
 
             [`VFSGEI`], [], [3RI.B], [`A`], [-], [*Vector FP Set If Greater Or Equal Immediate*:  Performs `va = MASK((vc >= imm) ? 1 : 0, vb)`. Must always have a class mode value of `11`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1234,9 +1234,12 @@
 
             [`SYSINFO`], [], [2R.A], [`B`], [-], [*System Information*: Performs `ra = CFG_SEG[rb + SEXT(imm)]`, where `CFG_SEG` is the configuration segment.],
 
+            [`LDSR`], [], [2R.A], [`D`], [-], [*Load Status Register*: Performs `SR = ra`. This instruction is privileged.],
+            [`STSR`], [], [2R.A], [`D`], [-], [*Store Status Register*: Performs `ra = SR`. This instruction is privileged.],
+
             [`CACOP`], [], [2RI.B], [`A`], [-], [*Cache Operation*: Implementation-specific privileged instruction designed to allow direct manipulation of the cache. If no caching is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1259,7 +1262,7 @@
 
             [`VPCKUPCK`], [], [2RI.B], [`A`], [-], [*Vector Pack Unpack*: Performs `va = PCKUPCK(vb, imm)`, that is, packs or unpacks `vb` with the current vector shape to the one specified in the `imm`. An example of the transformation would be: `000a 000b 000c 000d <=> 000000000000abcd`. Must always have a class mode value of `00`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1281,7 +1284,7 @@
 
             [`STRMD`], [], [2R.A], [`A`], [-], [*Store Rounding Mode*: Performs `ra = RMD`, where `RMD` is a section of the `SR`. The second operand is not used and must always have a class mode value of `01`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1310,7 +1313,7 @@
 
             [`STHLPRE`], [], [2R.A], [`A`], [-], [*Store HLPRE Status*: Performs `HLPRE = ra`, where `HLPRE` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `11`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1339,7 +1342,7 @@
 
             [`STPERFCE`], [], [2R.A], [`A`], [-], [*Store PERFCE Status*: Performs `PERFCE = ra`, where `PERFCE` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `11`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1368,13 +1371,11 @@
 
             [`FNCIOLS`], [], [2R.A], [`A`], [-], [*Fence IO Loads and Stores*: See section 4. The operands are not used and must always have a class mode value of `10`],
 
-            [`FNCI`], [], [2R.A], [`A`], [-], [*Fence Instructions*: See section 4. The operands are not used and must always have a class mode value of `00`],
-
             [`LDCMD`], [], [2R.A], [`A`], [-], [*Load Consistency Mode*: Performs `ra = CMD`, where `CMD` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `00`.],
 
             [`STCMD`], [], [2R.A], [`A`], [-], [*Store Consistency Mode*: Performs `CMD = ra`, where `CMD` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `01`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1402,8 +1403,22 @@
             [`TABTA`], [], [2R.A], [`A`], [-], [*Transaction Abort All*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `00`.],
 
             [`TLEV`], [], [2R.A], [`A`], [-], [*Transaction Level*: See section 4. The outcome is written into `ra` and the second operand is not used. Must aways have a class mode of `01`.]
+
+            /*
+                [`TBEG`], [*Transaction Begin*: \ Causes the hart that executed this instruction to start monitoring accesses by other harts as well as incrementing the nesting counter by one, thus starting a transaction. If the nesting counter was zero prior to executing this instruction, the hart must enter into transactional mode. This instruction will write the outcome status of its execution in the specified destination register.],
+
+                [`TCOM`], [*Transaction Commit*: \ Causes the hart that executed this instruction to stop monitoring accesses by other harts and commit the changes as well as decrementing the nesting counter by one. If the nesting counter is zero after the execution of this instruction, the hart must exit from transactional mode. This instruction will write the outcome status of its execution in the specified destination register. All of the updates to memory, if any, can be considered atomic and permanent after the successful completion of this instruction.],
+
+                [`TABT`], [*Transaction Abort*: \ Causes the hart that executed this instruction to stop monitoring accesses by other harts, rollback all changes, decrement the nesting counter by one and write, to the specified destination register, the value of the `XABT` abort code. This instruction behaves in a similar manner to a failing `TCOM`. It is important to note that this instruction will, naturally, only abort the innermost active transaction.],
+
+                [`TABTA`], [*Transaction Abort All*: \ Causes the hart that executed this instruction to stop monitoring accesses by other harts, discard all changes, reset the nesting counter to zero and write, to the specified destination register, the value of the `XABT` abort code. This instruction behaves in a similar manner to a failing `TCOM`. It is important to note that this instruction will abort all currently active transactions.],
+
+                [`TCHK`], [*Transaction Check*: \ Causes the hart that executed this instruction to check if it's necessary to abort the current transaction. If the check fails, this instruction will behave exactly the same as a failing `TCOM`. If the check passes, this instruction will not affect the architectural state, that is, it will behave like a no-operation.],
+
+                [`TLEV`], [*Transaction Level*: \ Returns the current transaction nesting level count. If no transaction is active a zero is returned.]
+            */
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1431,8 +1446,10 @@
             [`ERET`], [], [2R.A], [`A`], [-], [*Event Return*: Performs the privileged event returning sequence, see section 6. This instruction is privileged and must always have a class mode of `10`.],
 
             [`WINT`], [], [RI.A], [`A`], [-], [*Wait For Interrupt*: Causes the executing hart to halt and wait for interrupt. The `ra` specifies the timeout and `rb` specifies the id of the interrupt (IO or IPC) to wait for. This instruction class specifies: `.C` (`00`) as _cycles_ mode, `.N` (`01`) as _nanoseconds_ mode, `.U` (`10`) as _microseconds_ mode and `.M` (`11`) as _milliseconds_. This instruction is privileged.]
+
+            // TODO: instruction to fire an IPC interrupt !
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1450,35 +1467,15 @@
 
             [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
-            [`SYSCL`], [], [2R.A], [`A`], [-], [*System Call*: Perform `SYSCL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `00`.],
+            [`SYSCL`], [], [2R.A], [`A`], [-], [*System Call*: Performs `SYSCL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `00`.],
 
             [`UERET`], [], [2R.A], [`A`], [-], [*User Event Return*: Performs the unprivileged event returning sequence, see section 6. Must always have a class mode of `01`.],
 
             [`URET`], [], [2R.A], [`A`], [-], [*User Return*: Performs the user event returning sequence, see section 6. This instruction is privileged and must always have a class mode of `10`.],
 
-            [`LDUER`], [], [2R.A], [`D`], [-], [*Load User Event Register*: Performs `ra = UER`, where `UER` is one of the special purpose registers prefixed with "user event". The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
+            [`LDSPR`], [], [2R.A], [`D`], [-], [*Load Special Purpose Register*: Performs `SPR = ra`, where `SPR` is one of the following registers from the `SPRB`: `UEPC`, `UESR`, `UEC`, `UED`, `UEHP`, `UET0`, `UET1`, `PFPA`, `PID`, `TID`, `TPTR`, `WDT` in the presented order starting from `0`. This instruction privilege level is inherited from the selected `SPR`.],
 
-            [`STUER`], [], [2R.A], [`D`], [-], [*Store User Event Register*: Performs `UER = ra`, where `UER` is one of the special purpose registers prefixed with "user event". The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`LDPID`], [], [2R.A], [`D`], [-], [*Load Process ID*: Performs `ra = PID`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`STPID`], [], [2R.A], [`D`], [-], [*Store Process ID*: Performs `PID = ra`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`LDTID`], [], [2R.A], [`D`], [-], [*Load Thread ID*: Performs `ra = TID`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`STTID`], [], [2R.A], [`D`], [-], [*Store Thread ID*: Performs `TID = ra`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`LDTPTR`], [], [2R.A], [`D`], [-], [*Load Thread Pointer*: Performs `ra = TPTR`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`STTPTR`], [], [2R.A], [`D`], [-], [*Store Thread Pointer*: Performs `TPTR = ra`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`LDPFPA`], [], [2R.A], [`D`], [-], [*Load Page Fault Physical Address*: Performs `ra = PFPA`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`STPFPA`], [], [2R.A], [`D`], [-], [*Store Page Fault Physical Address*: Performs `PFPA = ra`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`LDWDT`], [], [2R.A], [`D`], [-], [*Load Watchdog Timer*: Performs `ra = WDT`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
-
-            [`STWDT`], [], [2R.A], [`D`], [-], [*Store Watchdog Timer*: Performs `WDT = ra`. The class modifier specifies two immediate bits that indicate which quarter of the register to operate on.],
+            [`STSPR`], [], [2R.A], [`D`], [-], [*Store Special Purpose Register*: Performs `ra = SPR`, where `SPR` is one of the following registers from the `SPRB`: `UEPC`, `UESR`, `UEC`, `UED`, `UEHP`, `UET0`, `UET1`, `PFPA`, `PID`, `TID`, `TPTR`, `WDT` in the presented order starting from `0`. This instruction privilege level is inherited from the selected `SPR`.],
 
             [`LDWDTS`], [], [2R.A], [`A`], [-], [*Load Watchdog Timer Status*: Performs `ra = WDTE`, where `WDTE` is a section of the `SR` register. Must always have a class mode of `00`.],
 
@@ -1488,7 +1485,7 @@
 
             [`UCACOP`], [], [2RI.B], [`A`], [-], [*User Cache Operation*: Implementation-specific instruction designed to allow direct manipulation of the cache. If no caching is implemented this instruction must throw the `INCI` fault. Must always have a class mode value of `00`.]
         ))
-    ),
+    )
 ))
 
 #page(flipped: true, textWrap(
@@ -1509,6 +1506,28 @@
             [`LDGEE`], [], [2R.A], [`A`], [-], [*Load Global Exception Enable*: Performs `ra = GEE`, where `GEE` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `00`. This instruction is privileged.],
 
             [`STGEE`], [], [2R.A], [`A`], [-], [*Store Global Exception Enable*: Performs `GEE = ra`, where `GEE` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `01`. This instruction is privileged.]
+        ))
+    )
+))
+
+#page(flipped: true, textWrap(
+
+    subSection(
+
+        [Power (`PWR`)],
+
+        [This module provides power state manipulation operations. The `SGPRB` and `SPRB` are mandatory for this module.],
+
+        tableWrapper([EXC Instructions.], table(
+
+            columns: (auto, auto, auto, auto, auto, auto),
+            align: (x, y) => (left+horizon, center+horizon, center+horizon, center+horizon, left+horizon, left+horizon).at(x),
+
+            [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
+
+            [`LDPWRS`], [], [2R.A], [`A`], [-], [*Load Power State*: Performs `ra = PWRS`, where `PWRS` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `00`. This instruction is privileged.],
+
+            [`STPWRS`], [], [2R.A], [`A`], [-], [*Store Power State*: Performs `PWRS = ra`, where `PWRS` is a section of the `SR` register. The second operand is not used and must always have a class mode value of `01`. This instruction is privileged.]
         ))
     )
 ))

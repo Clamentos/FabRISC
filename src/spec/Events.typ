@@ -32,6 +32,8 @@
 
     [The following is a list of all events that are supported by the specification:],
 
+    // TODO: // [FabRISC dictates the implementation of some mandatory events, such as: `MISI`, `INCI`, `ILLI` mentioned earlier in the document, and others which require the presence of the machine event special purpose registers. Such registers are, however, not necessary if the system implements the said faults by simply halting the machine. This relaxes the constraint on simple implementations that don't support events or don't want to handle them.], explain better
+
     page(flipped: true, tableWrapper([Event list.], table(
 
         columns: (auto, auto, auto, auto, auto, auto, auto),
