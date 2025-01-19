@@ -3,8 +3,6 @@
 #import "@preview/tablex:0.0.9": tablex, colspanx, rowspanx
 
 ///
-
-
     // TODO: 3RI.B with 16 bit immediate
     #page(flipped: true, text(size: 10pt,
 
@@ -30,8 +28,7 @@
 
                 [`4R-B`], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(6)[op \ 9...4], colspanx(5)[rd \ 4...0], colspanx(5)[rc \ 4...0], colspanx(2)[md \ 1...0], colspanx(2)[vm \ 1...0], colspanx(10)[op \ 19...10], colspanx(4)[vm \ 5...2],
 
-                [`3RI-B`], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(11)[op \ 14...4], colspanx(5)[rc \ 4...0], colspanx(2)[md \ 1...0], colspanx(2)[vm \ 1...0], colspanx(14)[im \ 13...0]
-
+                [`3RI-B`], colspanx(4)[op \ 3...0], colspanx(5)[ra \ 4...0], colspanx(5)[rb \ 4...0], colspanx(9)[op \ 12...4], colspanx(2)[im \ 15...14], colspanx(5)[rc \ 4...0], colspanx(2)[md \ 1...0], colspanx(2)[vm \ 1...0], colspanx(14)[im \ 13...0]
             )
         )
 

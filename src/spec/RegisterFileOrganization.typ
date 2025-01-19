@@ -488,11 +488,13 @@
                 )
             ],
 
+            [-], [2 bits], [Reserved for future use.],
+
+            [`IM`], [4 bits], [*Interrupt Mask*: \ Masks the interrupts: the first two bits mask IO-interrupts and the last two bits mask IPC-interrupts, where each bit masks chunks of 16 interrupts at a time. `IM` is privileged and only needed when the system implements the `IOINT`, `IPCINT` or both, otherwise the default value must always be zero.],
+
             [`HLPRE`], [4 bits], [*HLPR Enable*: \ Enables or disables portions the `HLPRB` in chunks of eight registers at a time. `HLPRE` is not privileged and only needed when the system implements the `HLPR` module, otherwise the default value must always be zero.],
 
             [`PERFCE`], [1 bit], [*PERFC Enable*: \ Enables or disables the `PERFCB`. `PERFCE` is not privileged and only needed when the system implements the `PERFC` module, otherwise the default value must always be zero.],
-
-            [`IM`], [4 bits], [*Interrupt Mask*: \ Masks the interrupts: the first two bits mask IO-interrupts and the last two bits mask IPC-interrupts, where each bit masks chunks of 16 interrupts at a time. `IM` is privileged and only needed when the system implements the `IOINT`, `IPCINT` or both, otherwise the default value must always be zero.],
 
             [`PMOD`], [2 bits], [*Privilege Mode*: \ Dictates the current hart privilege level. `PMOD` is privileged and only needed when the system implements the `USER` module, otherwise the default value must always be zero. The possible modes are:
 
@@ -522,9 +524,9 @@
                     [_Reserved for future use._],
                     [_Reserved for future use._]
                 )
-            ]
+            ],
 
-            // 7 bits left
+            [-], [5 bits], [Reserved for future use.],
         ))
     ),
 

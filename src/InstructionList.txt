@@ -1,18 +1,18 @@
 ///
 name    format                                                     allocated   current      cost(singular)  cost(total) length
 
-[2R.A]  |OPCODE(20)|MD(02)|RA(05)|RB(05)|--------------------------{ 64}-------{ 33 }-------{    1}---------{    64}     4 B
+[2R.A]  |OPCODE(20)|MD(02)|RA(05)|RB(05)|--------------------------{ 64}-------{ 40 }-------{    1}---------{    64}     4 B
 [3R.A]  |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|-------------------{128}-------{ 66 }-------{   32}---------{  4094}     4 B
-[4R.A]  |OPCODE(10)|MD(02)|RA(05)|RB(05)|RC(05)|RD(05)|------------{ 16}-------{  8 }-------{ 1024}---------{ 16384}     4 B
+[4R.A]  |OPCODE(10)|MD(02)|RA(05)|RB(05)|RC(05)|RD(05)|------------{ 16}-------{ 11 }-------{ 1024}---------{ 16384}     4 B
 
 [I.A]   |OPCODE(08)|IM(24)|----------------------------------------{  2}-------{  2 }-------{ 4096}---------{  8192}     4 B
 [RI.A]  |OPCODE(09)|MD(02)|RA(05)|IM(16)|--------------------------{ 32}-------{ 18 }-------{ 2048}---------{ 65536}     4 B
-[2RI.A] |OPCODE(08)|MD(02)|RA(05)|RB(05)|IM(12)|-------------------{ 32}-------{ 27 }-------{ 4096}---------{131072}     4 B
-[2RI.B] |OPCODE(15)|MD(02)|RA(05)|RB(05)|IM(21)|-------------------{ 32}-------{ 22 }-------{   32}---------{  1024}     6 B
+[2RI.A] |OPCODE(08)|MD(02)|RA(05)|RB(05)|IM(12)|-------------------{ 32}-------{ 29 }-------{ 4096}---------{131072}     4 B
+[2RI.B] |OPCODE(15)|MD(02)|RA(05)|RB(05)|IM(21)|-------------------{ 32}-------{ 19 }-------{   32}---------{  1024}     6 B
 [3RI.A] |OPCODE(15)|MD(02)|RA(05)|RB(05)|RC(05)|IM(16)|------------{ 16}-------{ 12 }-------{   32}---------{   512}     6 B
 
-[4R.B]  |OPCODE(20)|MD(02)|VMD(06)|RA(05)|RB(05)|RC(05)|RD(05)|----{ 32}-------{ 22 }-------{    1}---------{    32}     6 B
-[3RI.B] |OPCODE(13)|MD(02)|VMD(02)|RA(05)|RB(05)|RC(05)|IM(16)|----{ 32}-------{ 21 }-------{  128}---------{  4096}     6 B
+[4R.B]  |OPCODE(20)|MD(02)|VMD(06)|RA(05)|RB(05)|RC(05)|RD(05)|----{ 32}-------{ 18 }-------{    1}---------{    32}     6 B
+[3RI.B] |OPCODE(13)|MD(02)|VMD(02)|RA(05)|RB(05)|RC(05)|IM(16)|----{ 32}-------{ 20 }-------{  128}---------{  4096}     6 B
 
 [2R.B]  |OPCODE(08)|MD(02)|RA(03)|RB(03)|--------------------------{  8}-------{  8 }-------{ 4096}---------{ 32768}     2 B
 [I.B]   |OPCODE(06)|IM(10)|----------------------------------------{  2}-------{  2 }-------{16384}---------{ 32768}     2 B
@@ -22,220 +22,273 @@ name    format                                                     allocated   c
 unmapped encoding space: 31136
 
 ///
-opcode distribution:
+opcode ranges:
 
-    [2RI.C]         00xx                    4       1101100xx
+    format          range                       count   normalized ROM address
 
-    [RI.B]          01xxx                   8       110010xxx
-    [RI.B]          100xx                   4       1101101xx
+    [2RI.C]         00xx                        4       1100000xx
+    [2RI.C]         0100                        1       110011100
 
-    [I.B]           10100x                  2       11011110x
+    [RI.B]          0101x                       2       11001010x
+    [RI.B]          011xx                       4       1100001xx
+    [RI.B]          100xx                       4       1100010xx
+    [RI.B]          1010x                       2       11001011x
 
-    [2R.B]          10101xxx                8       110011xxx
-    [2RI.A]         1011xxxx                16      10100xxxx
-    [2RI.A]         110xxxxx                32      1000xxxxx
-    [I.A]           1110000x                2       11011111x
+    [I.B]           10110x                      2       11001100x
 
-    [RI.A]          1110001xx               4       1101110xx
-    [RI.A]          111001xxx               8       110100xxx
-    [RI.A]          11101xxxx               16      10101xxxx
-    [RI.A]          1111000xx               2       11100000x
+    [2R.B]          10111xxx                    8       101100xxx
+    [2RI.A]         110xxxxx                   32       0100xxxxx
+    [I.A]           1110000x                    2       11001101x
 
-    [4R.A]          1111001xxx              8       110101xxx
-    [4R.A]          111101xxxx              16      10110xxxx
+    [RI.A]          1110001xx                   4       1100011xx
+    [RI.A]          111001xxx                   8       101101xxx
+    [RI.A]          11101xxxx                  16       10010xxxx
+    [RI.A]          1111000xx                   4       1100100xx
 
-    [2RI.B]         1111100000xxxxx         32      1001xxxxx
-    [3RI.A]         11111000010xxxx         16      10111xxxx
-    [3R.A]          11111000011xxxx         16      11000xxxx
-    [3R.A]          111110001xxxxxx         64      000xxxxxx
-    [3RI.B]         111110010xxxxxx         64      001xxxxxx
+    [4R.A]          1111001xxx                  8       101110xxx
+    [4R.A]          1111010xxx                  8       101111xxx
 
-    [2R.A]          11111001100000xxxxxx    64      010xxxxxx
-    [4R.B]          11111001100001xxxxxx    64      011xxxxxx
+    [3RI.B]         11110110xxxxx              32       0101xxxxx
+
+    [2RI.B]         1111011100xxxxx            32       0110xxxxx
+    [3RI.A]         11110111010xxxx            16       10011xxxx
+    [3R.A]          11110111011xxxx            16       10100xxxx
+    [3R.A]          111101111xxxxxx            64       000xxxxxx
+    [3R.A]          1111100000xxxxx            32       0111xxxxx
+    [3R.A]          11111000010xxxx            16       10101xxxx
+
+    [2R.A]          11111000011000xxxxxx       64       001xxxxxx
+    [4R.B]          111110000110010xxxxx       32       1000xxxxx
 
 ///
 CISB:
 
-    2R.A    2
-    3R.A    9
-    RI.A    3
-    2RI.A   9
+    2R.A: 2
+    3R.A: 8
+    RI.A: 3
+    2RI.A: 11
 
 CISA:
 
-    2R.A    2
-    3R.A    5
-    4R.A    3
-    2RI.A   4
-    3RI.A   2
+    2R.A: 2
+    3R.A: 4
+    4R.A: 3
+    2RI.A: 4
+    3RI.A: 2
 
 CISM:
 
-    4.RA    2
+    4R.A: 3
 
 CIVB:
 
-    3R.A    1
-    4R.B    5
-    2RI.B   2
-    3RI.B   5
+    3R.A: 1
+    4R.B: 5
+    2RI.B: 2
+    3RI.B: 7
 
 CIVA:
 
-    3R.A    6
-    4R.B    7
-    3RI.B   6
+    3R.A: 2
+    4R.B: 6
+    3RI.B: 6
 
 CIVR:
 
-    3R.A    16
+    3R.A: 16
 
 CIC:
 
-    2R.B    6
-    RI.B    5
+    2R.B: 6
+    RI.B: 5
 
 CFSB:
 
-    2R.A    7
-    3R.A    10
-    4R.A    4
-    2RI.B   10
-    3RI.A   4
+    2R.A: 7
+    3R.A: 10
+    4R.A: 4
+    2RI.B: 10
+    3RI.A: 4
 
 CFSA:
 
-    2R.A    1
+    2R.A: 1
 
 CFVB:
 
-    3R.A    7
-    4R.B    3
-    3RI.B   3
+    3R.A: 7
+    4R.B: 3
+    3RI.B: 3
 
 CFVA:
 
-    3R.A    1
+    3R.A: 1
 
 CFVR:
 
-    3R.A    6
+    3R.A: 6
 
 DSB:
 
-    2RI.A   3
+    2RI.A: 3
 
 DSA:
 
-    2RI.A   6
-    3RI.A   6
+    2RI.A: 6
+    3RI.A: 6
 
 DVB:
 
-    2RI.B   2
+    2RI.B: 2
 
 DVA:
 
-    3R.A    2
+    3R.A: 2
 
 DAB:
 
-    4R.A    1
+    4R.A: 1
 
 DAA:
 
-    3R.A    4
-    2RI.B   4
+    3R.A: 6
 
 DB:
 
-    RI.A    4
+    RI.A: 4
 
 DC:
 
-    2R.B    2
-    2RI.C   4
+    2R.B: 2
+    2RI.C: 4
 
 FIB:
 
-    I.A     2
-    RI.A    2
-    2RI.A   5
+    I.A: 2
+    RI.A: 2
+    2RI.A: 5
 
 FIA:
 
-    RI.A    5
+    RI.A: 5
 
 FIC:
 
-    RI.B    5
-    I.B     2
+    RI.B: 5
+    I.B: 2
+    2RI.C: 1
 
 FFB:
 
-    2RI.B   2
+    2RI.B: 2
 
 FFA:
 
-    RI.A    2
+    RI.A: 2
 
 VM:
 
-    2R.A    2
+    2R.A: 2
 
 FIV:
 
-    4R.B    3
-    3RI.B   3
+    4R.B: 3
+    3RI.B: 3
 
 FFV:
 
-    4R.B    4
-    3RI.B   4
+    4R.B: 1
+    3RI.B: 1
 
 SYS:
 
-    2R.A    2
-    2RI.B   1
+    2R.A: 4
+    2RI.B: 1
 
 VC:
 
-    2R.A    1
-    2RI.B   1
+    2R.A: 1
+    2RI.B: 1
 
 FRMD:
 
-    2R.A    1
+    2R.A: 1
 
 HR:
 
-    2R.A    3
+    2R.A: 3
 
 PC:
 
-    2R.A    3
+    2R.A: 3
 
 FNC:
 
-    2R.A    4
+    2R.A: 3
 
 TM:
 
-    2R.A    2
+    2R.A: 2
 
 EVT:
 
-    RI.A    1
-    2R.A    3
+    2R.A: 3
+    RI.A: 1
 
 USER:
 
-    RI.A    1
-    2R.A    14
-    2RI.B   1
+    2R.A: 4
+    RI.A: 1
+    2RI.B: 1
 
 EXC:
 
-    2R.A    1
+    2R.A: 1
+
+PWR:
+
+    2R.A: 1
+
+///
+SCALAR:
+
+int signed addition:      00
+int unsigned addition:    01
+int signed subtraction:   10
+int unsigned subtraction: 11
+
+int signed minimum:       00
+int unsigned minimum:     01
+int signed maximum:       10
+int unsigned maximum:     11
+
+and:  00        -
+nand: 01        -
+or:   10
+nor:  11
+xor:  00
+xnor: 01
+imp:  10
+nimp: 11
+
+signed left shift:    00
+unsigned left shift:  01
+signed right shift:   10
+unsigned right shift: 11
+
+int set if eq: 00
+int set if ne: 01
+
+int set if lt signed:    00
+int set if lt unsigned:  01
+int set if !lt signed:   10
+int set if !lt unsigned: 11
+
+int set if le signed:    00
+int set if le unsigned:  01
+int set if !le signed:   10
+int set if !le unsigned: 11
+
+conditional move
 
 ///

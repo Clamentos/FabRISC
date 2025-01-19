@@ -103,16 +103,16 @@
 
                 [#middle([*Code*])], [#middle([*Mnemonic*])], [#middle([*Description*])],
 
-                [   0], [`XABT`], [*Explicit Abort*: \ The transaction was explicitly aborted by the `TABT` or `TABTA` instruction.],
-                [   1], [`EABT`], [*Event Abort*: \ The transaction was aborted due to the triggering of an event.],
+                [   1], [`XABT`], [*Explicit Abort*: \ The transaction was explicitly aborted by the `TABT` or `TABTA` instruction.],
+                [   2], [`EABT`], [*Event Abort*: \ The transaction was aborted due to the triggering of an event.],
 
-                [   2], [`CABT`], [*Conflict Abort*: \ The transaction was aborted due to a collision with another transaction, that is, both wrote to the same memory location but the other committed earlier.],
+                [   3], [`CABT`], [*Conflict Abort*: \ The transaction was aborted due to a collision with another transaction, that is, both wrote to the same memory location but the other committed earlier.],
 
-                [   3], [`UABT`], [*Depth underflow Abort*: \ The transaction was aborted because a `TCOM`, `TABT`, `TABTA` or a failing `TCHK` instruction attempted to execute at a depth of zero.],
+                [   4], [`UABT`], [*Depth underflow Abort*: \ The transaction was aborted because a `TCOM`, `TABT`, `TABTA` or a failing `TCHK` instruction attempted to execute at a depth of zero.],
 
-                [   4], [`OABT`], [*Depth Overflow Abort*: \ The transaction was aborted due to an exceeded nesting depth.],
+                [   5], [`OABT`], [*Depth Overflow Abort*: \ The transaction was aborted due to an exceeded nesting depth.],
 
-                [   5], [-],   [Reserved for future use.],
+                [   6], [-],   [Reserved for future use.],
                 [... ], [...], [...],
                 [ 127], [-],   [Reserved for future use.],
 
