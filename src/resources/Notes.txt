@@ -250,45 +250,7 @@ PWR:
     2R.A: 1
 
 ///
-SCALAR:
-
-int signed addition:      00
-int unsigned addition:    01
-int signed subtraction:   10
-int unsigned subtraction: 11
-
-int signed minimum:       00
-int unsigned minimum:     01
-int signed maximum:       10
-int unsigned maximum:     11
-
-and:  00        -
-nand: 01        -
-or:   10
-nor:  11
-xor:  00
-xnor: 01
-imp:  10
-nimp: 11
-
-signed left shift:    00
-unsigned left shift:  01
-signed right shift:   10
-unsigned right shift: 11
-
-int set if eq: 00
-int set if ne: 01
-
-int set if lt signed:    00
-int set if lt unsigned:  01
-int set if !lt signed:   10
-int set if !lt unsigned: 11
-
-int set if le signed:    00
-int set if le unsigned:  01
-int set if !le signed:   10
-int set if !le unsigned: 11
-
-conditional move
+                                |id3(8)|id2(8)|free(6)|instr_len(2)|id1(8)|         event cause 32 bit version
+    |id7(8)|id6(8)|id5(8)|id4(8)|id3(8)|id2(8)|free(6)|instr_len(2)|id1(8)|         event cause 64 bit version
 
 ///

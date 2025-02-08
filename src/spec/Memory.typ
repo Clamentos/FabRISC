@@ -47,7 +47,7 @@
                 )
             ],
 
-            [*Vector addressing modes:* _These modes can access multiple elements at a time. The number of elements accessed is dictated by the vector configuration that is currently active. The elements are all the same type, either integer or floating point of 8, 16, 32 or 64 bits:_
+            [*Vector addressing modes:* _These modes can access multiple elements at a time. The number of elements accessed is dictated by the currently active vector configuration. The elements are all the same type, either integer or floating point of 8, 16, 32 or 64 bits:_
 
                 #list(tight: false, marker: [--],
 
@@ -71,7 +71,7 @@
 
         [Synchronization],
 
-        [FabRISC provides dedicated atomic instructions via the `DAB` and `DAA` instruction modules to achieve proper synchronization in order to protect critical sections and to avoid data races in threads that share memory with each other. The proposed instructions behave atomically and can be used to implement atomic test-and-set and read-modify-write operations for locks, semaphores and barriers. It is important to note that if the system can only ever run one software thread at any given moment, then this section can be skipped since the problem can be solved by the operating system, or by software in general. Below is a description of the atomic instructions:],
+        [FabRISC provides dedicated atomic instructions via the `DAB` and `DAA` modules to achieve proper synchronization in order to protect critical sections and to avoid data races in threads that share memory with each other. The proposed instructions behave atomically and can be used to implement atomic test-and-set and read-modify-write operations for locks, semaphores and barriers. It is important to note that if the system can only ever run one software thread at any given moment, then this section can be skipped since the problem can be solved by the operating system, or by software in general. Below is a description of the atomic instructions:],
 
         list(tight: false,
 
@@ -84,35 +84,37 @@
 
         subSubSection(
 
-            // TODO: should roll backs restore ALL registers too? IMO just the memory changes
-
             [Transactional Memory],
 
             [FabRISC also provides optional instructions to support basic hardware transactional memory, via the `TM` module, that can be employed instead of the above seen solutions to exploit parallelism in a more "optimistic" manner.],
 
-            [Multiple transactions can update memory concurrently as long as they don't collide with each other. When such situation occur the offended transaction must be aborted and all of its changes rolled back to the architectural state immediately before the start of the transaction itself. If a transaction detects no collision it is allowed to commit the changes and the performed operations can be considered atomic. Transactions can be nested inside each other up to a depth of 255, beyond this, any further transaction must be aborted.],
+            [Multiple transactions can update memory concurrently as long as they don't collide with each other. When such situation occurs the offended transaction must be aborted and all of its memory changes rolled back to the state immediately before the start of the transaction itself. It is not necessary to restore the state of the register files when rolling back. If a transaction detects no collision it is allowed to commit the changes and the performed operations can be considered atomic. Transactions can be nested inside each other up to a depth of 255, beyond this, any further transaction must be aborted.],
 
-            [For convention and simplicity, if an event that causes the context to be changed or traps the hart, all of its ongoing transactions must be aborted. One important consideration is that FabRISC approach to transactional memory is "liberal", which requires a transaction to fully reach the commit point before resulting in either a positive or negative outcome. In order to fail transactions earlier and to allow for a quicker retry, it's possible to perform a checkpoint on the progress via a dedicated instruction.],
+            [For convention and simplicity, events cause to abort all ongoing transactions of the trapped hart. One important consideration is that FabRISC approach to transactional memory is "liberal", which requires a transaction to fully reach the commit point before resulting in either a positive or negative outcome. In order to fail transactions earlier and to allow for a quicker retry, it's possible to perform a checkpoint on the progress via a dedicated instruction.],
 
-            [The `TM` module also includes _abort-codes_ that are returned by some transactional memory instructions and can be used by the programmer to take appropriate actions in case the transaction was aborted. The proposed codes are listed in the following table:],
+            [The `TM` module also includes abort-codes that are returned by some transactional memory instructions which can be used by the programmer to take appropriate actions in case the transaction was aborted. The proposed codes are listed in the following table:],
 
             tableWrapper([Transaction abort codes.], table(
 
                 columns: (auto, auto, auto),
-                align: (x, y) => (right + horizon, left + horizon, left + horizon).at(x),
+                align: (x, y) => (right + top, left + top, left + top).at(x),
 
                 [#middle([*Code*])], [#middle([*Mnemonic*])], [#middle([*Description*])],
 
                 [   1], [`XABT`], [*Explicit Abort*: \ The transaction was explicitly aborted by the `TABT` or `TABTA` instruction.],
-                [   2], [`EABT`], [*Event Abort*: \ The transaction was aborted due to the triggering of an event.],
+                [   2], [`EABT`], [*Exception Abort*: \ The transaction was aborted due to the triggering of an exception event.],
+                [   3], [`FABT`], [*Fault Abort*: \ The transaction was aborted due to the triggering of a fault event.],
+                [   4], [`IOIABT`], [*IO Interrupt Abort*: \ The transaction was aborted due to the triggering of an IO-interrupt event.],
 
-                [   3], [`CABT`], [*Conflict Abort*: \ The transaction was aborted due to a collision with another transaction, that is, both wrote to the same memory location but the other committed earlier.],
+                [   5], [`IPCIABT`], [*IPC Interrupt Abort*: \ The transaction was aborted due to the triggering of an IPC-interrupt event.],
 
-                [   4], [`UABT`], [*Depth underflow Abort*: \ The transaction was aborted because a `TCOM`, `TABT`, `TABTA` or a failing `TCHK` instruction attempted to execute at a depth of zero.],
+                [   6], [`CABT`], [*Conflict Abort*: \ The transaction was aborted due to a collision with another transaction, that is, both wrote to the same memory location but the other committed earlier.],
 
-                [   5], [`OABT`], [*Depth Overflow Abort*: \ The transaction was aborted due to an exceeded nesting depth.],
+                [   7], [`UABT`], [*Depth underflow Abort*: \ The transaction was aborted because a `TCOM`, `TABT`, `TABTA` or a failing `TCHK` instruction attempted to execute at a depth of zero.],
 
-                [   6], [-],   [Reserved for future use.],
+                [   8], [`OABT`], [*Depth Overflow Abort*: \ The transaction was aborted due to an exceeded nesting depth.],
+
+                [   9], [-],   [Reserved for future use.],
                 [... ], [...], [...],
                 [ 127], [-],   [Reserved for future use.],
 
@@ -124,13 +126,13 @@
 
         comment([
 
-            Memory synchronization is extremely important in order to make shared memory communication even work at all. The problem arises when a pool of data is shared among different processes or threads that compete for resources and concurrent access to this pool might result in erroneous behavior and must be arbitrated. This zone is called "critical section" and special atomic primitives can be used to achieve this protection. Many different instruction families can be chosen such as "test-and-set", "read-modify-write" and others. I decided to provide in the ISA the compare-and-swap instruction as it's very popular and is a classic. It has the useful property of guaranteeing that at least one thread will successfully execute the operation. It doesn't obviously protect from deadlocks or livelocks as they are a symptom of erroneous code and also suffers from the "ABA" problem since it detects changes by looking at the data only.
+            Memory synchronization is extremely important in order to make shared memory communication even work at all. The problem arises when a pool of data is shared among different processes or threads that compete for resources and concurrent access to this pool might result in erroneous behavior and must be arbitrated. This zone is called "critical section" and special atomic primitives can be used to achieve this protection. Many different instruction families can be chosen such as "test-and-set", "read-modify-write" and others. I decided to provide in the ISA the compare-and-swap instruction as it's very popular and is a classic in programming languages and in the computer science literature. It has the useful property of guaranteeing that at least one thread will successfully execute the operation. It doesn't obviously protect from deadlocks or livelocks as they are a symptom of erroneous code and also suffers from the "ABA" problem since it detects changes by looking at the data only.
 
             Another valid option would be to use the `LL` & `SC` pair commonly found in many RISC ISAs. I decided not to go this route since the pair, even though it doesn't suffer from the ABA problem, it doesn't guarantee forward progress unless additional restrictions are placed (see "constrained" / "unconstrained" `LL` & `SC` sequences in RISC-V).
 
             FabRISC also provides a small set of simple read-modify-write type operations, which can ease the implementation of lock-free datastructures and algorithms allowing for better scaling when thread contention is high.
 
-            Lastly i decided to also provide basic hardware transactional memory support because, in some situations, it can yield great performance compared to "pessimistic" solutions without losing atomicity. This is, naturally, completely optional and up to the hardware designers to implement or not simply because it can complicate the design by a fair bit, especially the caching and coherence subsystem. Transactional memory seems to be promising in improving performance and ease of implementation when it comes to shared memory programs, but debates are still ongoing to decide which exact way of implementing is best. I chose to go with a very liberal approach that aborts only at commit or during a checkpoint, as opposed to aborting as soon as a failure is detected via exceptions or events. This is simpler to implement in both the specification (i tried and there were so many edge cases, i ended up scrapping it) and the hardware and can provide a higher transaction completion percentage at the expense of a higher retry latency.
+            Lastly i decided to also provide basic hardware transactional memory support because, in some situations, it can yield great performance compared to "pessimistic" solutions without losing atomicity. This is, naturally, completely optional and up to the hardware designers to implement or not simply because it can complicate the design by a fair bit, especially the caching and coherence subsystem. Transactional memory seems to be promising in improving performance and ease of implementation when it comes to shared memory programs, but debates are still ongoing to decide which exact way of implementing is best. I chose to go with a very basic approach that aborts only at commit or during a checkpoint, as opposed to aborting as soon as a failure is detected via exceptions or events. This is simpler to implement in both the specification (i tried and there were so many edge cases, i ended up scrapping it) and the hardware and can provide a higher transaction completion percentage at the expense of a higher retry latency.
         ])
     ),
 
@@ -139,7 +141,32 @@
 
         [Coherence],
 
+        [FabRISC memory model requires implementations to be coherent, that is, guarantee the following three requirements in order to guarantee shared memory behavior:
+
+            #list(tight: false,
+
+                [_A read `R` from address `X` by hart `H` must return the value written by the most recent write `W` to `X` by `H` if no other hart has written to `X` between `R` and `W`._],
+
+                [_If `H` writes to `X` and hart `H2` reads after a sufficient time, and there are no other writes between, then reads by `H2` from `X` must return the value `H` wrote._],
+
+                [_Writes to the same location are serialized, that is, any two writes `W` and `W2` to `X` must be seen to occur in the same order by all other harts._]
+            )
+        ],
+
         [FabRISC leaves to the hardware designers the choice of which coherence protocol to implement. On multicore systems cache coherence must be ensured by choosing a coherence protocol and making sure that all harts agree on the current sequence of accesses to the same memory location. That is usually done by serializing the operations via the use of a shared bus or via a distributed directory system. After this, write-update or write-invalidate protocol is employed. Software coherence can also be a potential option but it will rely on the programmer to explicitly flush or invalidate the cache of each core separately. Nevertheless, FabRISC provides via the `SYS` instruction module, implementation dependent instructions, such as `CACOP`, that can be sent to the cache subsystem directly to manipulate its state and operation. If the processor makes use of a separate instruction cache, potential complications can arise for self modifying code which can be solved by employing any of the above mentioned options for instruction caches as well.],
+
+        [FabRISC provides the *Coherence Strategy* (`COHS`) 1 bit ISA parameter, to indicate the implemented coherence strategy. If the system can only run one hart at a time or has a single shared cache, then this parameter can be set to `0`. The possible values are listed in the following table:],
+
+        tableWrapper([Coherence strategy.], table(
+
+            columns: (auto, auto),
+            align: (x, y) => (center, left + top).at(x),
+
+            [#middle([*Code*])], [#middle([*Value*])],
+
+            [0], [Hardware coherence.],
+            [1], [Software coherence.\ This option requires the implementation of the `SYS` module.]
+        )),
 
         comment([
 
@@ -156,35 +183,28 @@
 
         [Consistency],
 
-        [FabRISC utilizes a fully relaxed memory consistency model formally known as _release consistency_ that allows all possible orderings in order to give harts the freedom to reorder memory instructions to different addresses in any way they want. For debugging and specific situations the stricter _sequential consistency_ model can be utilized and the hart must be able to switch between the two at any time via the `CMD` bit in the status register. Special instructions, called "fences", are provided by the `FNC` module to let the programmer impose memory ordering restrictions when the relaxed model is in use. If the hart doesn't reorder memory operations this module is not necessary and can be skipped. The proposed fencing instructions are listed in the following table:],
+        [FabRISC utilizes the strict sequential consistency memory model as a standard and default, even when the `FNC` module is implemented. This model requires all memory load and store operations to be performed in program order. Harts are still free to reorder other instructions and even memory ones, as long as it doesn't result in a violation of sequential consistency.],
 
-        tableWrapper([Fencing instructions.], table(
+        [FabRISC offers the option to opt for a relaxed memory consistency model, formally known as release consistency, for systems that implement the `FNC` module. This model allows all possible orderings, thus giving harts the freedom to reorder memory instructions to different addresses. The model defines the following requirements:
 
-            columns: (auto, auto),
-            align: left + horizon,
+            #list(tight: false,
 
-            [#middle([*Name*])], [#middle([*Description*])],
+                [_Before an access to a shared variable is performed, all previous acquire accesses must have been completed by the hart in subject._],
 
-            [`FNCL`], [*Fence Loads*: \ This instruction forbids the hart from reordering any memory load instruction across the fence.],
+                [_Before a release is performed, all previous memory operations by the hart in subject must have completed._],
+                [_The acquire and release accesses must be seen by all other harts in the same order as they were issued._]
+            )
+        ],
 
-            [`FNCS`], [*Fence Stores*: \ This instruction forbids the hart from reordering any memory store instruction across the fence.],
+        [Special instructions, called "fences", are provided by the `FNC` module to let the programmer forbid the reordering of memory and IO load and / or store operations across the fence. Fences can be used on any memory type instruction, including the atomic `CAS` to forbid reordering when acquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made visible by issuing a command to the cache subsystem via the dedicated implementation specific `CACOP` instruction. Instructions that operate on the `HLPRB`, `PERFCB` and `SPRB` must have fence-like behavior, more specifically, they must forbid the reordering of any other instruction across them.],
 
-            [`FNCLS`], [*Fence Loads and Stores*: \ This instruction forbids the hart from reordering any memory load or store instruction across the fence.],
-
-            [`FNCIOL`], [*Fence IO Loads*: \ This instruction forbids the hart from reordering any IO load instruction across the fence.],
-
-            [`FNCIOS`], [*Fence IO Stores*: \ This instruction forbids the hart from reordering any IO store instruction across the fence.],
-
-            [`FNCIOLS`], [*Fence IO Loads and Stores*: \ This instruction forbids the hart from reordering any IO load or store instruction across the fence.]
-        )),
-
-        [The fences can be used on any memory type instruction, including the atomic `CAS` to forbid reordering when acquiring or releasing a lock for critical sections and barriers. Writes to portions of memory where the code is stored can be made effective by issuing a command to the cache subsystem via the dedicated implementation specific `CACOP` instruction as briefly discussed in the previous subsection.],
+        [The `FNC` modules requires the presence of the `CMD` bit in the `SR`, allowing the hart to be switched in either of the two memory consistency models.],
 
         comment([
 
             The memory consistency model i wanted to utilize was a very relaxed one to allow all kinds of performance optimization to take place inside the system. However one has to provide some sort of restrictions, effectively special memory operations, to avoid edge cases that can cause erroneous processing if the hart can execute memory instructions out of order.
 
-            Even with those restrictions debugging could be quite difficult because the program might behave very weirdly, so i decided to include the sequentially consistent model that forbids reordering of any kind of memory instruction.
+            Even with those restrictions debugging could be quite difficult because the program might behave very weirdly, so i decided to also include the sequentially consistent model that forbids reordering of any kind of memory instruction as a fallback via the `CMD` bit.
         ])
     )
 )

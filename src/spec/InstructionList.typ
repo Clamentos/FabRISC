@@ -1374,6 +1374,28 @@
             [`LDCMD`], [`0xF861F`], [2R.A], [`A`], [-], [*Load Consistency Mode*: Performs `ra = CMD`, where `CMD` is the consistency mode bit of the `SR`. The second operand `rb` is not used and must always have a class mode value of `00`.],
 
             [`STCMD`], [`0xF861F`], [2R.A], [`A`], [-], [*Store Consistency Mode*: Performs `CMD = ra`, where `CMD` is the consistency mode bit of the `SR`. The second operand `rb` is not used and must always have a class mode value of `01`.]
+
+            /*
+                tableWrapper([Fencing instructions.], table(
+
+            columns: (auto, auto),
+            align: left + horizon,
+
+            [#middle([*Name*])], [#middle([*Description*])],
+
+            [`FNCL`], [*Fence Loads*: \ This instruction forbids the hart from reordering any memory load instruction across the fence.],
+
+            [`FNCS`], [*Fence Stores*: \ This instruction forbids the hart from reordering any memory store instruction across the fence.],
+
+            [`FNCLS`], [*Fence Loads and Stores*: \ This instruction forbids the hart from reordering any memory load or store instruction across the fence.],
+
+            [`FNCIOL`], [*Fence IO Loads*: \ This instruction forbids the hart from reordering any IO load instruction across the fence.],
+
+            [`FNCIOS`], [*Fence IO Stores*: \ This instruction forbids the hart from reordering any IO store instruction across the fence.],
+
+            [`FNCIOLS`], [*Fence IO Loads and Stores*: \ This instruction forbids the hart from reordering any IO load or store instruction across the fence.]
+        )),
+            */
         ))
     )
 ))
@@ -1431,7 +1453,7 @@
 
             [`ERET`], [`0xF8625`], [2R.A], [`A`], [-], [*Event Return*: Performs the privileged event returning sequence, see section 7. This instruction is privileged and must always have a class mode of `10`. This instruction is privileged.],
 
-            [`SNDINT`], [`0xF8625`], [2R.A], [`A`], [-], [*Send Interrupt*: Performs `ra = IPCINT(rb)`, that is, send an IPC-interrupt with `rb` as the event payload. This instruction is privileged, implementation specific and must always have a class modifier of `11`.],
+            [`SNDINT`], [`0xF8625`], [2R.A], [`A`], [-], [*Send Interrupt*: Performs `ra = IPCINT(rb)`, that is, send an IPC-interrupt with `rb` as the event payload. This instruction writes into `ra` the execution status of the operation. This instruction is privileged, implementation specific and must always have a class modifier of `11`.],
 
             [`WINT`], [`0x1D4`], [RI.A], [`A`], [-], [*Wait For Interrupt*: Causes the executing hart to halt and wait for interrupt. The `ra` specifies the timeout and `rb` specifies the id of the interrupt (IO or IPC) to wait for. This instruction class specifies: `.C` (`00`) as cycles mode, `.N` (`01`) as nanoseconds mode, `.U` (`10`) as microseconds mode and `.M` (`11`) as milliseconds. This instruction is privileged.]
         ))
@@ -1453,6 +1475,7 @@
 
             [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
+            // call id goes into the event data register
             [`SYSCL`], [`0xF8626`], [2R.A], [`A`], [-], [*System Call*: Performs `SYSTEM_CALL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `00`.],
 
             [`UERET`], [`0xF8626`], [2R.A], [`A`], [-], [*User Event Return*: Performs the unprivileged event returning sequence, see section 7. Must always have a class mode of `01`.],

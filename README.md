@@ -8,12 +8,11 @@ FabRISC is an open-source, modular, RISC-like instruction set architecture for 3
 - Scalar and vector capabilities.
 - Atomic and transactional memory support.
 - Privileged architecture with user and machine modes.
-- Classically virtualizable.
 - Performance monitoring counters and more!
 
 ## Compiling from source
 
-This repository simply holds the [Typst](https://github.com/typst/typst) source code to generate the PDF document. The steps to compile are very simple and all is needed is to compile the `Main.typ` file in the `./src/spec` directory and run the following comand:
+This repository simply holds the [Typst](https://github.com/typst/typst) source code to generate the PDF document. The steps to compile are very simple and all is needed is to compile the `Main.typ` file in the `./src/spec` directory and run the following command:
 
 ```sh
 typst compile Main.typ --root ../

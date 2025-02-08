@@ -26,7 +26,7 @@
 #linebreak()
 
 #align(center, text(16pt)[Enrico Gatto Monticone])
-#align(center, text(14pt)[19/01/2025])
+#align(center, text(14pt)[08/02/2025])
 
 #linebreak()
 

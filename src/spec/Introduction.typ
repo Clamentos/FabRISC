@@ -14,11 +14,15 @@
 
     comment([
 
-        Commentary in this document will formatted in this way and communication will be more colloquial. If the reader is only interested in the specification, these sections can be skipped without hindering the understanding too much.
+        Commentary in this document is formatted in this way and communication is more colloquial. If the reader is only interested in the specification, these sections can be skipped without hindering the understanding too much.
 
         This project tries to be more of a hobby learning experience rather than a new super serious industry standard, besides, the architecture borrows many existing concepts from the most popular and iconic ISAs like: x86, RISC-V, MIPS, ARM and OpenRISC. Don't expect this project to be as good or polished as the commercial ones, however, i wanted to design something that goes beyond simple toy architectures used for teaching and demonstrations. I chose to target FPGAs as the primary platform for two main reasons: firstly is that ASICs are infeasible for the vast majority of people because of cost, time and required expertise. Secondly is that using discrete components, all though fun and interesting, makes little sense from a sanity, practicality and scalability points of view given the complexity of this project. Software simulators, such as Logisim-evolution #monospace(link("https://github.com/logisim-evolution/logisim-evolution")) or Digital #monospace(link("https://github.com/hneemann/Digital")), or even emulators, can be good alternative platforms for simpler implementations without having to spend a dime.
 
-        The core ideas of this architecture are the use of variable length encodings of 4 and 6 byte instruction sizes along with shorter "compressed" ones to increase code density. The goal is to use the long 6 byte format for instructions containing larger immediate values or for less common operations, while the 2 and 4 byte formats for the more common instructions with smaller constants or registers only. The trade off is increased ISA capabilities and code density at the expense of misalignment and variable length encodings which can complicate the hardware implementation. This ISA, all though not a "pure" RISC design with simple fixed length instructions and few addressing modes, resembles that philosophy for the most part skewing away from it in some areas where performance can benefit from higher complexity.
+        The core ideas of this architecture are the use of variable length encodings of 4 and 6 byte along with shorter "compressed" ones to increase code density. The goal is to use the long 6 byte format for instructions containing larger immediate values or for less common operations, while the 2 and 4 byte formats for the more common instructions with smaller constants or registers only. The trade off is increased ISA capabilities and code density at the expense of misalignment which can complicate hardware implementations.
+
+        Initially i only wanted to have the 2 and 4 byte sizes but i decided to add the 6 byte one to ease the "pressure", because i couldn't fit all of the features i wanted in the encodings. After several iterations i concluded that this setup is the sweet spot for this architecture: not too many lengths and enough complexity to fit everything.
+
+        This ISA, all though not a "pure" RISC design with simple fixed length instructions and few addressing modes, resembles that philosophy for the most part skewing away from it in some areas where performance can benefit from higher complexity.
 
         I chose the name "FabRISC" because i wanted to encapsulate the main characteristics and target device of this instruction set. The pronunciation should vaguely remind of the word "fabric" which is a reference on the fact that the main component of an FPGA is the "LUT fabric", that is, a network of many interconnected logic cells.
     ]),
@@ -33,11 +37,11 @@
         tableWrapper([Technical term list.], table(
 
             columns: (auto, auto),
-            align: (x, y) => (left + horizon, left + top).at(x),
+            align: (x, y) => (left + top, left + top).at(x),
 
             [#middle([*Term*])], [#middle([*Description*])],
 
-            [Abort, \ Transaction Abort \ Transaction Rollback \ Rollback], [Are used to refer to the act of abruptly stopping an ongoing memory transaction as well as invalidating, rolling back or undoing all of its changes.],
+            [Abort \ Transaction Abort \ Transaction Rollback \ Rollback], [Are used to refer to the act of abruptly stopping an ongoing memory transaction as well as invalidating, rolling back or undoing all of its changes.],
 
             [Architecture], [Is used to refer to the set of abstractions and contracts that the hardware exposes to the software.],
             [Atomic], [Is used to refer to any operation that must, either be completely executed, or not at all.],
@@ -61,19 +65,17 @@
 
             [Fence], [Is used to refer to particular instructions that have the ability to enforce a specific execution order of other  instructions.],
 
-            [Hardware Thread, \ Hart, \ Logical Core], [Are used to refer to a particular physical instance of an instruction stream.],
+            [Hardware Thread \ Hart \ Logical Core], [Are used to refer to a particular physical instance of an instruction stream.],
 
-            [Instruction Set Architecture, \ ISA], [Are used to refer to the architecture that a particular processor exposes to the software under the form of instructions, registers and other resources.],
+            [Instruction Set Architecture \ ISA], [Are used to refer to the architecture that a particular processor exposes to the software under the form of instructions, registers and other resources.],
 
-            [Instruction \ Macro Operation, \ Macro-Op], [Are used to refer to an idiomatic assembly machine command that a particular ISA defines.],
+            [Instruction \ Macro Operation \ Macro-Op], [Are used to refer to an idiomatic assembly machine command that a particular ISA defines.],
 
             [Interrupt], [Is used to refer to any external, non-deterministic event.],
 
-            [Micro Operation, \ Micro-Op], [Are used to refer to a partially or fully decoded instruction.],
+            [Micro Operation \ Micro-Op], [Are used to refer to a partially or fully decoded instruction.],
 
             [Microarchitectural State], [Is used to refer to the complete state of the processor, a single core or hardware thread, that might not be visible by the programmer in its entirety. The microarchitectural state can be seen as a superset of the architectural state.],
-
-            [Memory Mapped IO (MMIO)], [Is used to refer to the implementation of IO (input-output) via memory mapping, that is, mapping the state of external devices to memory addresses.],
 
             [Microarchitecture], [Is used to refer to a particular physical implementation or realization of a given architecture.],
             [Page], [Is used to refer to a logical partition of the main system memory.],
@@ -87,7 +89,7 @@
 
             [Trap], [Is used to refer to the transition from a state of normal execution to the launch of an event handler after receiving an event.],
 
-            [Unaligned, \ Misaligned], [Are used to refer to any memory item that is not naturally aligned, that is, the address of the item modulo its size, is not equal to zero.]
+            [Unaligned \ Misaligned], [Are used to refer to any memory item that is not naturally aligned, that is, the address of the item modulo its size, is not equal to zero.]
         ))
     )
 )
