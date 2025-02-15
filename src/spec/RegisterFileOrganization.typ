@@ -33,7 +33,7 @@
             [`SPRB`], [*Special Purpose Register Bank*: \ This bank is composed of various special purpose registers used to keep track of the system status and configuration. The number of these registers, as well as their width, can vary depending on which modules are chosen. They are always hart-private, however, privileges are defined for each individual register later in this section.]
         )),
 
-        [FabRISC provides the *Scalar Register File Size* (`SRFS`) 2 bit ISA parameter, to indicate the number of registers of the scalar file. Depending on the value of this parameter, the calling convention differs slightly. The possible values are listed in the following table:],
+        [FabRISC provides the *Scalar Register File Size* (`SRFS`), *Vector Register File Size* (`VRFS`), *Helper Register File Size* (`HRFS`) and the *Counter Register File Size* (`CRFS`) 2 bit ISA parameters, to indicate the number of registers in the scalar, vector, helper and counter files respectively. Depending on the value of `SRFS`, the calling convention differs slightly. If the system doesn't support the `HLPR` or `PERFC` or any module that necessitates the vector register file, then their corresponding parameter has no meaning and must be set to zero for convention. The possible values are listed in the following table:],
 
         tableWrapper([Scalar register file sizes.], table(
 
@@ -48,24 +48,8 @@
             [3], [Reserved for future uses.]
         )),
 
-        [FabRISC provides the *Vector Register File Size* (`VRFS`) 2 bit ISA parameter, to indicate the number of registers of the vector file. If the system doesn't support any module that necessitates the vector register file, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
+        [FabRISC provides the *Maximum Vector Length* (`MXVL`) 3 bit ISA parameter, to indicate the maximum vector length in bits. If the system doesn't support any vector capability, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the following table:],
 
-        tableWrapper([Vector register file sizes.], table(
-
-            columns: (auto, auto),
-            align: (x, y) => (center, left + top).at(x),
-
-            [#middle([*Code*])], [#middle([*Value*])],
-
-            [0], [8 entries. ],
-            [1], [16 entries.],
-            [2], [32 entries.],
-            [3], [Reserved for future uses.]
-        )),
-
-        [FabRISC provides the *Maximum Vector Length* (`MXVL`) 3 bit ISA parameter, to indicate the maximum vector length in bits. If the system doesn't support any vector capability, then this parameter must be set to zero for convention. The possible values are listed in the following table:],
-
-        pagebreak(),
         tableWrapper([Maximum vector length sizes.], table(
 
             columns: (auto, auto),
@@ -79,38 +63,7 @@
             [3], [128 bit wide for 8, 16, 32 and 64 bit machines ($"WLEN" = 1, 2, 3$).],
             [4], [256 bit wide for 8, 16, 32 and 64 bit machines ($"WLEN" = 2, 3$).],
             [5], [512 bit wide for 16, 32 and 64 bit machines ($"WLEN" = 3$).],
-            [6], [Reserved for future uses.],
-            [7], [Reserved for future uses.],
-        )),
-
-        [FabRISC provides the *Helper Register File Size* (`HRFS`) 2 bit ISA parameter, to indicate the number of registers of the helper file. If the system doesn't support the `HLPR` module, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
-
-        tableWrapper([Helper register file sizes.], table(
-
-            columns: (auto, auto),
-            align: (x, y) => (center, left + top).at(x),
-
-            [#middle([*Code*])], [#middle([*Value*])],
-
-            [0], [8 entries. ],
-            [1], [16 entries.],
-            [2], [32 entries.],
-            [3], [Reserved for future uses.]
-        )),
-
-        [FabRISC provides the *Counter Register File Size* (`CRFS`) 2 bit ISA parameter, to indicate the number of registers of the performance counter file. If the system doesn't support the `PERFC` module, then this parameter has no meaning and must be set to zero for convention. The possible values are listed in the table below:],
-
-        tableWrapper([Counter register file sizes.], table(
-
-            columns: (auto, auto),
-            align: (x, y) => (center, left + top).at(x),
-
-            [#middle([*Code*])], [#middle([*Value*])],
-
-            [0], [8 entries. ],
-            [1], [16 entries.],
-            [2], [32 entries.],
-            [3], [Reserved for future uses.]
+            [6,7], [Reserved for future uses.],
         )),
 
         comment([
@@ -155,8 +108,9 @@
             [RA], [*Return Address*: \ This register is used to hold the return address for the currently executing function. The calling convention for this register is caller-save.]
         )),
 
-        [Depending on the `SRFS` parameter, the layout of the `SGPRB` is different. In order to maintain compatibility across different `SRFS` values, the registers are placed at strategic points:],
+        [Depending on the `SRFS` parameter, the layout of the `SGPRB` is different. In order to maintain compatibility across different `SRFS` values, the registers are placed at strategic points. This way, the smaller ABI is a subset of the bigger one:],
 
+        pagebreak(),
         tableWrapper([`SGPRB` ABI sizes.], table(
 
             columns: (auto, auto, auto),
@@ -200,7 +154,7 @@
 
         [Some compressed instructions are limited in the number of registers that they can address due to their reduced size. The specifiers are 3 or 4 bits long allowing the top eight or sixteen registers to be addressed only. The proposed ABI already accounts for this by placing the most important registers at the top of the bank.],
 
-        [Vector registers are all considered volatile, which means that the caller-save scheme must be utilized since it's assumed that their value won't be retained across function calls. Special instructions are also provided to move these registers, or part of them, to and from the `SGPRB` to ease data transfer.],
+        [Vector registers are all considered volatile, which means that the caller-save scheme must be utilized since it's assumed that their value won't be retained across function calls. Special instructions are also provided to move these registers, or part of them, between the `VGPRB` and `SGPRB` to ease data transfer.],
 
         comment([
 
@@ -219,6 +173,7 @@
 
         [This bank houses the helper registers which, as mentioned earlier, can be used for debugging, address range checks and triggering exceptions. These registers are all `WLEN` bits wide and their operating mode can be programmed via an additional 8 bits attached to each one. The `HLPR` module requires the implementation of this bank, special instructions to manipulate its state, all exception events listed in the `EXC` module plus additional ones listed below. The operating modes are the following:],
 
+        pagebreak(),
         tableWrapper([Helper register modes.], table(
 
             columns: (auto, auto),
@@ -289,17 +244,18 @@
 
         [The `COVRnT`, `CUNDT`, `OVFLnT` and `UNFLnT` events must override the `COVRE`, `CUNDE`, `OVFLE`, `UNFLE` and `DIV0E` arithmetic exceptions of the `EXC` module if present, where $n = 1/8 dot 2^"WLEN"$. This means that the listed events take precedence and suppress the standard arithmetic exceptions when both are triggered for the same instruction address.],
 
+        pagebreak(),
         comment([
 
-            This bank can be used to aid the programmer in a variety of situations. A big one is memory safety: by specifying address ranges on instruction fetch, loads and stores, the system can automatically throw the appropriate exception / traps when the constraint is violated without explicitly checking with a branch each time. This is helpful to avoid unintentionally overwriting portions of memory, thus reducing chances of exploits and increase memory safety with no performance hit. The triggered events can be caught in order to execute handling / recovery code without needing to invoke the operating system.
+            This bank can be used to aid the programmer in a variety of situations. A big one is memory safety: by specifying address ranges on instruction fetch, loads and stores, the system can automatically throw the appropriate exception when the constraint is violated without explicitly checking with a branch each time. This is helpful to avoid unintentionally overwriting portions of memory, thus reducing chances of exploits and increase memory safety with no performance hit. The triggered events can be caught in order to execute handling code without needing to invoke the operating system.
 
             Another situation is debugging: by placing the desired breakpoints in the desired spots of the program, exceptions can be triggered and handled to perform things like memory / state dumping, or any other action that might help the programmer understand what is going on in the system. All of this can be achieved with near zero interference with the actual code.
 
-            One final application can be in handling unavoidable arithmetic edge cases without performance penalties, enabling safer arithmetic as well as aiding arbitrary precision data types.
+            Another application can be in handling unavoidable arithmetic edge cases without performance penalties, enabling safer arithmetic as well as aiding arbitrary precision data types.
 
-            Finally, these registers can also be used as an extra `SGPRB` as an additional container for register spills before going to memory.
+            Finally, these registers can also be used as an extra `SGPRB` as an additional container for register spills before going to memory. In this case, they are treated as simple volatile registers.
 
-            This bank is one of the more unique features of FabRISC. I initially wanted to provide a simpler mechanism to trap on arithmetic edge cases, in a more traditional way by adding a bit to each instruction that enables or suppresses exceptions. This, however, reduced the encoding and operand space in the instructions forcing me to create more formats to ease the pressure. In the end i decided to scrap that solution in favor of the helper registers.
+            This bank is one of the more unique features of FabRISC. I initially wanted to provide a simpler mechanism to trap on arithmetic edge cases, in a more traditional way by adding a bit to each instruction that enables or suppresses exceptions. This, however, reduced the encoding and operand space in the instructions forcing me to create more formats to ease the pressure. Another alternative would have been to provide additional state in the registers themselves or in the `SR`, however, in the end i decided to scrap those solutions in favor of the helper registers with the main reason being flexibility and options.
         ])
     ),
 
@@ -310,6 +266,7 @@
 
         [This bank houses the performance counters which, as mentioned earlier, can be used for performance diagnostic, timers and counters. These registers are all `CLEN` bits wide and their operating mode can be programmed via an extra 8 bits attached to each of them. The `PERFC` module requires the implementation of this bank and special instructions to manipulate its state. It is important to note that counters silently wrap around when they reach their maximum value. The operating modes are the following:],
 
+        pagebreak(),
         tableWrapper([Performance counter modes.], table(
 
             columns: (auto, auto),
@@ -352,7 +309,7 @@
 
         tableWrapper([`PERFCB` sizes.], table(
 
-            columns: (15%, 20%),
+            columns: (10%, 25%),
             align: (x, y) => (center, left + top).at(x),
 
             [#middle([*Code*])], [#middle([*Value*])],
@@ -369,7 +326,7 @@
 
             I wanted to leave as much freedom to the hardware designers as possible here as it can depend a lot on how the microarchitecture is implemented, which is why there are few predefined modes.
 
-            Additionally, i designed these counters to be unprivileged and private for each hart. This means that on context switches the counters are halted, which is useful for isolating the behavior of the program from other things like the OS.
+            Additionally, i designed these counters to be unprivileged and private for each hart. This means that on context switches the counters are halted, which is useful for isolating the behavior of the program from other things like the operating system.
         ])
     ),
 
@@ -378,7 +335,7 @@
 
         [Special Purpose Bank],
 
-        [In this subsection the special purpose registers are discussed. Some of these registers are unprivileged, that is, accessible to any thread of any process at any time regardless of the privilege, while others are machine mode only and the `ILLI` fault must be triggered if an access is performed in user mode to such resources. The special purpose registers are the following:],
+        [In this subsection the special purpose registers are discussed. Some of these registers are unprivileged, that is, accessible to any thread of any process at any time regardless of the privilege, while others are machine mode only and the `ILLI` fault must be triggered if an access is performed in user mode to such resources. The only register that is not included in this bank is the program counter (`PC`), which is considered a separate resource. The special purpose registers are the following:],
 
         tableWrapper([`SPRB` layout.], table(
 
@@ -391,7 +348,7 @@
 
             [`VSH`], [8 bits], [*Vector Shape*: \ This register specifies the current vector configuration and is divided into two parts: the most significant two bits specify the size of the singular element: 8, 16, 32 or `WLEN` bit, while the remaining least significant bits specify the number of active elements. Illegal configurations must generate the `ILLI` fault. `VSH` is not privileged and is only needed when the system implements the `VC` module, otherwise the default vector shape must always dictate the maximum number of `WLEN` sized elements.],
 
-            [`MEPC`], [`WLEN`], [*Machine Event PC*: \ This register holds the program counter (instruction pointer) of the last instruction before the machine event handler, which can then be used to return back from it. `MEPC` is privileged and is only needed when the system implements any combination of the following modules: `EXC`, `IOINT`, `IPCINT`, `USER`.],
+            [`MEPC`], [`WLEN`], [*Machine Event PC*: \ This register holds the program counter of the last instruction before the machine event handler, which can then be used to return back from it. `MEPC` is privileged and is only needed when the system implements any combination of the following modules: `EXC`, `IOINT`, `IPCINT`, `USER`.],
 
             [`MESR`], [32 bits], [*Machine Event SR*: \ This register holds the latest `SR` before the machine event handler, which can then be used to restore the `SR` when returning from it. `MESR` is privileged and is only needed when the system implements any combination of the following modules: `EXC`, `IOINT`, `IPCINT`, `USER`.],
 
@@ -405,7 +362,7 @@
 
             [`MET1`], [`WLEN`], [*Machine Event Temporary 1*: \ This register can be used as a temporary register during event handling, often for saving and restoring the various banks. `MET1` is privileged and is only needed when the system implements any combination of the following modules: `EXC`, `IOINT`, `IPCINT`, `USER`.],
 
-            [`UEPC`], [`WLEN`], [*User Event PC*: \ This register holds the program counter (instruction pointer) of the last instruction before the user event handler, which can then be used to return back from it. `UEPC` is not privileged and is needed if the system implements the `USER` module.],
+            [`UEPC`], [`WLEN`], [*User Event PC*: \ This register holds the program counter of the last instruction before the user event handler, which can then be used to return back from it. `UEPC` is not privileged and is needed if the system implements the `USER` module.],
 
             [`UESR`], [32 bits], [*User Event Status Register*: \ This register holds the latest `SR` just before the user event handler, which can then be used to restore the `SR` when returning from it. `UESR` has the same privilege as the `SR` and is only needed when the system implements the `USER` module.],
 
@@ -434,7 +391,9 @@
 
             This bank houses a variety of registers used to track and change the behavior of the system while it operates. Many of the modules require the presence of some special purpose registers in order to function such as vector instructions, helper registers, performance counters, eventing and others.
 
-            The registers prefixed with "User Event" or "Machine Event" hold the so called "critical state" of the hart, that is, state that is particularly delicate for event handling in privileged and non privileged implementations. Access to privileged resources in user mode is forbidden and must be blocked in order to protect the operating system from exploits. I decided to decouple user-level events from machine-level events in order to void calling the OS on every exception, as well as for a cleaner separation of the two environments.
+            The registers prefixed with "User Event" or "Machine Event" hold the so called "critical state" of the hart, that is, state that is particularly delicate for event handling in privileged and non privileged implementations.
+
+            Access to privileged resources in user mode is forbidden and must be blocked in order to protect the operating system from exploits. I decided to decouple user-level events from machine-level events in order to void calling the OS on every exception, as well as for a cleaner separation of the two environments.
         ])
     ),
 
@@ -445,6 +404,7 @@
 
         [In this section the Status Register bit layout is discussed. The `SR` contains several flags and status bits of different privilege levels. The status that the system must implement depends on which modules are chosen and any write to bits of non implemented modules must throw the `ILLI` fault. The `SR` bit layout is explained in the following table:],
 
+        pagebreak(),
         tableWrapper([`SR` bit layout.], table(
 
             columns: (auto, auto, auto),
@@ -454,7 +414,7 @@
 
             [`GEE`], [2 bit], [*Global Arithmetic Exceptions Enable*: \ Enables or disables immediate traps on arithmetic exceptions.  The arithmetic flags must always be generated if the `HLPR` module is implemented, regardless of the value of these bits. `GEE` is not privileged and is only needed when the `EXC` module is implemented, otherwise the default value must always be zero. The enable modes are:
 
-                #enum(tight: false, start: 0,
+                #enum(tight: true, start: 0,
 
                     [_All disabled._],
                     [_Enable integer arithmetic exceptions._],
@@ -467,16 +427,14 @@
 
             [`RMD`], [3 bits], [*FP Rounding Mode*: \ Dictates the current floating point rounding mode. `RMD` is not privileged, is only needed when the system implements the `FRMD` module and, if not present, the default mode must always be zero. The possible modes are IEEE-754 compliant and are the following:
 
-                #enum(tight: false, start: 0,
+                #enum(tight: true, start: 0,
 
                     [_Round to nearest even._],
                     [_Round to nearest away from zero._],
                     [_Round towards zero._],
                     [_Round towards negative infinity._],
                     [_Round towards positive infinity._],
-                    [_Reserved for future use._],
-                    [_Reserved for future use._],
-                    [_Reserved for future use._]
+                    [_Remaining combinations are reserved for future use._]
                 )
             ],
 
@@ -490,12 +448,11 @@
 
             [`PMOD`], [2 bits], [*Privilege Mode*: \ Dictates the current hart privilege level. `PMOD` is privileged and only needed when the system implements the `USER` module, otherwise the default value must always be zero. The possible modes are:
 
-                #enum(tight: false, start: 0,
+                #enum(tight: true, start: 0,
 
                     [_Machine mode._],
                     [_User mode._],
-                    [_Reserved for future use._],
-                    [_Reserved for future use._]
+                    [_Remaining combinations are reserved for future use._]
                 )
             ],
 
@@ -505,22 +462,20 @@
 
             [`HLTS`], [3 bit], [*Halt State*: \ Holds the current hart halting state. `HLTS` is privileged, always mandatory and can only be changed via the `HLT`, `WINT` instructions or via interrupts. The possible states are:
 
-                #enum(tight: false, start: 0,
+                #enum(tight: true, start: 0,
 
                     [_Not halted._],
                     [_Explicit halt: the halt was caused by the HLT instruction._],
                     [_Waiting for interrupt._],
                     [_Double event halt: the halt was caused by the "double event" situation (see section 7)._],
-                    [_Reserved for future use._],
-                    [_Reserved for future use._],
-                    [_Reserved for future use._],
-                    [_Reserved for future use._]
+                    [_Remaining combinations are reserved for future use._]
                 )
             ],
 
             [-], [5 bits], [Reserved for future use.],
         )),
 
+        pagebreak(),
         comment([
 
             The `SR` holds many different configuration bits, and because of this, it is the only resource that has distinct privileges: the first 8 bits are user level, while the remaining are machine level.
@@ -538,7 +493,6 @@
 
         [This document has introduced, and will introduce, several different configuration constants which describe the features that any system must have in order to be considered compliant to the FabRISC architecture. These parameters must be stored in a dedicated static, read-only memory-like region that is byte addressable. Some of these parameters are global for all harts, while others are private. The parameters are all unprivileged and are listed in the following table:],
 
-        pagebreak(),
         tableWrapper([Configuration segment.], table(
 
             columns: (auto, auto, auto, auto, auto),
@@ -575,6 +529,7 @@
             [ 256], [1023], [-],          [-],       [Left as implementation specific.]
         )),
 
+        pagebreak(),
         comment([
 
             These read-only parameters describe the hardware configuration and capabilities. Some have already been explained in earlier sections, while others are new and are introduced in the following sections. Global parameters are the same for all harts in the system, while private parameters depends on which hart is targeted.

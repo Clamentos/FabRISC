@@ -193,9 +193,9 @@
         [Class A], [instruction specific], [Function specifier: instruction specific.],
         [Class B], [`.L1`, `.L2`, \ `.L4`, `.LM `], [Data type size in bytes. `.LM` is used to signify the maximum `WLEN`.],
         [Class C], [`.SGPRB`, \ `.VGPRB`, \ `.HLPRB`, \ `.PERFCB`], [Register file selector.],
-        [Class D], [-], [Extra immediate bits (always most significant).],
+        [Class D], [-], [Extra immediate bits, always most significant.],
         [Class E], [`.UMSK`, `.MSK`, \ `.IMSK`, -], [Vector mask modes: unmasked, masked, inverted mask.],
-        [Class F], [`.B0`, `.B1`, \ `.B2`, `.B3`], [Register bank specifier (currently only for compressed formats).],
+        [Class F], [`.B0`, `.B1`, \ `.B2`, `.B3`], [Register bank specifier. Currently only for compressed formats.],
 
         [Class G], [`.MA`, `.NMA`, \ `.MS`, `.NMS`], [Multiply-Accumulate modes: multiply-add, negative multiply-add, multiply-subtract, negative multiply-subtract.]
     ))
@@ -209,7 +209,7 @@
 
         [#middle([*Modifier*])], [#middle([*Labels*])], [#middle([*Description*])],
 
-        [vm(6)], [`.VV`, `.VS`, `.MVV`, \ `.MVS`, `.IMVV`, `.IMVS`], [Vector modes and masking combinations:
+        [vm(6)], [`.VV`, \ `.VS`, \ `.MVV`, \ `.MVS`, \ `.IMVV`, \ `.IMVS`], [Vector modes and masking combinations:
 
             #list(tight: true,
 

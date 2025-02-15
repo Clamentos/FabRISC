@@ -8,7 +8,7 @@
 
     [This is the official specification document for the FabRISC instruction set architecture, intended to introduce and explain concepts, features and capabilities of the specification.],
 
-    [FabRISC is a feature rich, register-register, load-store architecture with variable length encodings of 2, 4 and 6 bytes. This specification is designed to be highly modular allowing the realization of various different microarchitectures ranging from simple 8 and 16 bit widths, all the way to advanced 32 and 64 bit high performance multithreaded systems. The ISA includes scalar, vector, floating-point, compressed and atomic memory instructions, as well as, privileges, system related instructions, interrupts, exceptions, faults and more, helping with the implementation of various kinds of operating systems with or without memory management needs. The ISA can be further expanded and enriched by allocating unused encoding space to custom application specific instructions, increasing both performance and code density in such areas.],
+    [FabRISC is a feature rich, register-register, load-store architecture with variable length encodings of 2, 4 and 6 bytes. The specification is designed to be highly modular allowing the realization of various different microarchitectures ranging from simple 8 and 16 bit widths, all the way to advanced 32 and 64 bit high performance multithreaded systems. The ISA includes scalar, vector, floating-point, compressed and atomic memory instructions, as well as, privileges, system related instructions, interrupts, exceptions, faults and more, helping with the implementation of various kinds of operating systems with or without memory management needs. The ISA can be further expanded and enriched by allocating unused encoding space to custom application specific instructions, increasing both performance and code density in such areas.],
 
     [FabRISC is free and open-source, available to anyone interested in the project via the official GitHub page: #monospace(link("https://github.com/Clamentos/FabRISC")) (license details can be found at the very end of this writing as well as in the linked repository). The document is divided into multiple sections each explaining a particular aspect of the architecture in detail with the help of tables, figures and suggestions in order to aid the hardware designers in creating an efficient implementation of the FabRISC ISA.],
 
@@ -60,18 +60,18 @@
 
             [Event], [Is used to generically refer to any extraordinary situation that needs to be taken care of as soon as possible, potentially interrupting and redirecting the current flow of execution.],
 
-            [Exception], [Is used to refer to any non severe internal, deterministic event.],
-            [Fault], [Is used to refer to any severe internal, deterministic event.],
+            [Exception], [Is used to refer to any non severe internal synchronous event.],
+            [Fault], [Is used to refer to any severe internal synchronous event.],
 
-            [Fence], [Is used to refer to particular instructions that have the ability to enforce a specific execution order of other  instructions.],
+            [Fence], [Is used to refer to a particular instruction that has the ability to affect the execution order of other  instructions.],
 
             [Hardware Thread \ Hart \ Logical Core], [Are used to refer to a particular physical instance of an instruction stream.],
 
-            [Instruction Set Architecture \ ISA], [Are used to refer to the architecture that a particular processor exposes to the software under the form of instructions, registers and other resources.],
+            [Instruction Set Architecture \ ISA], [Are used to refer to the architecture that a particular processor exposes to the software under the form of instructions, registers and other resources and features.],
 
             [Instruction \ Macro Operation \ Macro-Op], [Are used to refer to an idiomatic assembly machine command that a particular ISA defines.],
 
-            [Interrupt], [Is used to refer to any external, non-deterministic event.],
+            [Interrupt], [Is used to refer to any external asynchronous event.],
 
             [Micro Operation \ Micro-Op], [Are used to refer to a partially or fully decoded instruction.],
 
@@ -81,7 +81,7 @@
             [Page], [Is used to refer to a logical partition of the main system memory.],
             [Promotion], [Is used to refer to the transition from a lower privilege mode to a higher privilege one.],
 
-            [Privileged \ Privilege Level], [Is used to refer to a system resource that needs "elevated" permissions in order to be accessed.],
+            [Privileged \ Privilege Level], [Is used to refer to a protected system resource that needs "elevated" permissions in order to be accessed.],
 
             [Transaction \ Memory Transaction], [Are used to refer to a particular series of operations that behave atomically within the system.],
 

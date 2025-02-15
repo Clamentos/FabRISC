@@ -41,6 +41,7 @@
             [15], [$2^40$ bytes for 64 bit systems ($"WLEN" = 3$).],
         )),
 
+        pagebreak(),
         comment([
 
             I decided to go with memory mapped IO because of its flexibility and simplicity compared to port based solutions. The IO region can be considered plain memory by the processor internally, which allows for advanced and fancy operations that use locks, barriers, fences and transactions to be done by multiple threads to the same device. The IO space should not be cached since it's considered separate from the actual memory one. 
@@ -58,7 +59,7 @@
 
         [Direct Memory Access],
 
-        [FabRISC provides the ability for IO devices to access regions of the main system memory without interfering with the CPU. A dedicated centralized controller serving as arbiter may be utilized to achieve this, but the hardware designers are free to choose any another alternative considered appropriate. If this method of communication is chosen to be used, coherence must be ensured between the processor and the IO devices too. Some possible options can be:],
+        [FabRISC provides the ability for IO devices to access regions of the main system memory without interfering with the CPU. A dedicated centralized controller serving as the main interface may be utilized to achieve this, but the hardware designers are free to choose any another alternative considered appropriate. If this method of communication is chosen to be used, coherence must be ensured between the processor and the IO devices too. Some possible options can be:],
 
         list(tight: false,
 
@@ -71,7 +72,6 @@
 
         [FabRISC provides the *DMA Mode* (`DMAMOD`) 2 bit ISA parameter, to indicate which solution the hardware exposes for DMA. If the system doesn't support any DMA capability, then this parameter must be set to zero for convention. The possible values are listed in following table:],
 
-        pagebreak(),
         tableWrapper([DMA modes.], table(
 
             columns: (auto, auto),

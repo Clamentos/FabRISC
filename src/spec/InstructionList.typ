@@ -13,7 +13,6 @@
     [Unused bits, often designated with "-" or "x", must have a value of zero by default for convention.]
 )
 
-// FIXME: shifts with registers: the shift amount is always unsigned, explain that better
 #page(flipped: true, textWrap(
 
     subSection(
@@ -49,9 +48,9 @@
 
             [`IMP`], [`0x7BB3`], [3R.A], [`A`], [-], [*Bitwise IMP*: Performs `ra = !(!rb & rc)`. This instruction class specifies: `10` (`-`) as default mode and `11` (`.N`) as negated mode, which simply negates the result.],
 
-            [`LSH`], [`0x7BB4`], [3R.A], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Left Shift*: Performs `ra = rb << rc`, filling the least significant bits with zeros. This instruction class specifies: `00` (`.S`) as signed mode and `01` (`.U`) as unsigned mode.],
+            [`LSH`], [`0x7BB4`], [3R.A], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Left Shift*: Performs `ra = rb << rc`, filling the least significant bits with zeros. The shift amount in `rc` is always unsigned. This instruction class specifies: `00` (`.S`) as signed mode and `01` (`.U`) as unsigned mode.],
 
-            [`RSH`], [`0x7BB4`], [3R.A], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Right Shift*: Performs `ra = rb >> rc`, filling the most significant bits with either zeros or the sign depending on the mode. This instruction class specifies: `10` (`.S`) as signed mode and `11` (`.U`) as unsigned mode.],
+            [`RSH`], [`0x7BB4`], [3R.A], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Right Shift*: Performs `ra = rb >> rc`, filling the most significant bits with either zeros or the sign depending on the mode. The shift amount in `rc` is always unsigned. This instruction class specifies: `10` (`.S`) as signed mode and `11` (`.U`) as unsigned mode.],
 
             [`SEQ`], [`0x7BB5`], [3R.A], [`A`], [-], [*Set If Equal*: Performs `ra = (rb == rc) ? 1 : 0`. This instruction class specifies: `00` (`-`) as default mode and `01` (`.N`) as negated mode, which simply negates the checking condition.],
 
@@ -254,9 +253,9 @@
 
             [`BSUB`], [`0x3CB`], [4R.A], [`A`], [-], [*Big Subtraction*: Performs `ra = rb - rc - rd; rd = carry_out`. Must always have a class mode value of `10`.],
 
-            [`BLSH`], [`0x3CC`], [4R.A], [`A`], [-], [*Big Left Shift*: Performs `ra = rb << rc (rd); rd = shifted_out`. This instruction shifts in bits from `rd` instead of zeros. Must always have a class mode value of `00`.],
+            [`BLSH`], [`0x3CC`], [4R.A], [`A`], [-], [*Big Left Shift*: Performs `ra = rb << rc (rd); rd = shifted_out`. This instruction shifts in bits from `rd` instead of zeros. The shift amount in `rc` is always unsigned. Must always have a class mode value of `00`.],
 
-            [`BRSH`], [`0x3CD`], [4R.A], [`A`], [-], [*Big Right Shift*: Performs `ra = rb >> rc (rd); rd = shifted_out`. This instruction shifts in bits from `rd` instead of zeros. This instruction class specifies: `10` (`.S`) as signed mode and `11` (`.U`) as unsigned mode.]
+            [`BRSH`], [`0x3CD`], [4R.A], [`A`], [-], [*Big Right Shift*: Performs `ra = rb >> rc (rd); rd = shifted_out`. This instruction shifts in bits from `rd` instead of zeros. The shift amount in `rc` is always unsigned. This instruction class specifies: `10` (`.S`) as signed mode and `11` (`.U`) as unsigned mode.]
         ))
     )
 ))
@@ -294,9 +293,9 @@
 
             [`VIMP`], [`0xF8643`], [4R.B], [`A`], [-], [*Vector Bitwise IMP*: Performs `va = MASK(~(~vc & vd), vb)`. This instruction class specifies: `10` (`-`) as default mode and `11` (`.N`) as negated mode, which simply negates the result.],
 
-            [`VLSH`], [`0xF8644`], [4R.B], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Vector Left Shift*: Performs `va = MASK(vc << vd, vb)` filling the least significant bits with zeros. This instruction class specifies: `00` (`.S`) as signed mode and `01` (`.U`) as unsigned mode.],
+            [`VLSH`], [`0xF8644`], [4R.B], [`A`], [`OVFLn`, `UNFLn` in `.S` mode \ `COVRn` in `.U` mode], [*Vector Left Shift*: Performs `va = MASK(vc << vd, vb)` filling the least significant bits with zeros. The shift amount in `vd` is always unsigned. This instruction class specifies: `00` (`.S`) as signed mode and `01` (`.U`) as unsigned mode.],
 
-            [`VRSH`], [`0xF8644`], [4R.B], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Vector Right Shift*: Performs `va = MASK(vc >> vd, vb)` filling the most significant bits with either zeros or the sign depending on the mode. This instruction class specifies: `10` (`.S`) as signed mode and `11` (`.U`) as unsigned mode.],
+            [`VRSH`], [`0xF8644`], [4R.B], [`A`], [`OVFLn`, `UNFLn`, `CUND` in `.S` mode \ `CUND` in `.U` mode], [*Vector Right Shift*: Performs `va = MASK(vc >> vd, vb)` filling the most significant bits with either zeros or the sign depending on the mode. The shift amount in `vd` is always unsigned. This instruction class specifies: `10` (`.S`) as signed mode and `11` (`.U`) as unsigned mode.],
 
             [`VLDI`], [`0x7B80`], [2RI.B], [`E`], [-], [*Vector Load Immediate*: Performs `va = MASK(SIGN_EXT(imm), vb)`. This instruction broadcasts the immediate to all the configured vector elements.],
 
@@ -534,9 +533,9 @@
             [`CMOV`], [`0xBA`], [2R.B], [`F`], [-], [*Compressed Move*: Performs `ra = rb`.],
             [`CAND`], [`0xBB`], [2R.B], [`F`], [-], [*Compressed Bitwise AND*: Performs `ra = ra & rb`.],
 
-            [`CLSH`], [`0xBC`], [2R.B], [`F`], [`OVFLn`, `UNFLn`], [*Compressed Left Shift*: Performs `ra = ra << rb`, filling the least significant bits with zeros. `ra` is always considered signed.],
+            [`CLSH`], [`0xBC`], [2R.B], [`F`], [`OVFLn`, `UNFLn`], [*Compressed Left Shift*: Performs `ra = ra << rb`, filling the least significant bits with zeros. `ra` is always considered signed, while the shift amount in `rb` is always unsigned.],
 
-            [`CRSH`], [`0xBD`], [2R.B], [`F`], [`OVFLn`, `UNFLn`, `CUND`], [*Compressed Right Shift*: Performs `ra = ra >> rb`, filling the most significant bits with the sign. `ra` is always considered signed.],
+            [`CRSH`], [`0xBD`], [2R.B], [`F`], [`OVFLn`, `UNFLn`, `CUND`], [*Compressed Right Shift*: Performs `ra = ra >> rb`, filling the most significant bits with the sign. `ra` is always considered signed, while the shift amount in `rb` is always unsigned.],
 
             [`CADDI`], [`0x0A`], [RI.B], [-], [`OVFLn`, `UNFLn`], [*Compressed Addition Immediate*: Performs `ra = ra + SIGN_EXT(imm)`. The operands are always considered signed.],
 
@@ -1475,8 +1474,7 @@
 
             [#middle([*Name*])], [#middle([*Opcode*])], [#middle([*Format*])], [#middle([*Class*])], [#middle([*Flags*])], [#middle([*Description*])],
 
-            // call id goes into the event data register
-            [`SYSCL`], [`0xF8626`], [2R.A], [`A`], [-], [*System Call*: Performs `SYSTEM_CALL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `00`.],
+            [`SYSCL`], [`0xF8626`], [2R.A], [`A`], [-], [*System Call*: Performs `MED = SYSTEM_CALL(ra)`, where `ra` holds the call id and `rb` is not used. This instruction is privileged and must always have a class mode value of `00`.],
 
             [`UERET`], [`0xF8626`], [2R.A], [`A`], [-], [*User Event Return*: Performs the unprivileged event returning sequence, see section 7. Must always have a class mode of `01`.],
 

@@ -13,7 +13,7 @@
 
         [*Synchronous: * _Synchronous events are triggered by an instruction, for example a division by zero, or by other sources such as helper registers. This category is further subdivided in two subcategories:_
         
-            #list(tight: false, marker: [--],
+            #list(tight: true, marker: [--],
 
                 [*Exceptions:* _Exceptions are low severity events and are non-promoting._],
                 [*Faults:* _Faults are high severity events and are promoting._]
@@ -22,7 +22,7 @@
 
         [*Asynchronous:* _Asynchronous events are triggered by other harts or any external IO device. This category is further divided into two subcategories, both promoting:_
 
-            #list(tight: false, marker: [--],
+            #list(tight: true, marker: [--],
 
                 [*IO-Interrupts:* _These events are triggered by external IO devices._],
                 [*IPC-Interrupts:* _These events are triggered by other harts._]
@@ -232,11 +232,11 @@
 
         Events are a very powerful way to react to different things "on the fly", which is very useful for event-driven programming, managing external devices at low latency and are essential for privileged architectures.
 
-        The division in different categories might seem a bit strange at first, but the two broad classes are the usual ones: synchronous and asynchronous events, that is, deterministic and non-deterministic ones. The different types of events within each class are roughly based on "severity".
+        The division in different categories might seem a bit strange at first, but the two broad classes are the usual ones: synchronous and asynchronous events, which roughly align with them being deterministic and non-deterministic respectively. The different types of events within each class are more or less based on "severity".
 
-        Exceptions are the lowest severity among all other events and the program order defines the order in which they must be handled. The only complication to this rule is for helper register exceptions, which have a higher priority. These exceptions might also clash with the previously mentioned regular arithmetic ones but, since the helper ones have a higher priority, they all take over and override. This behavior stems from the fact that `HLPR` registers allow for fine control, while the `GEE` bit allows exceptions to be enabled or disabled globally. In both instances, it's possible to distinguish if the exception was caused by a `HLPR` register or not. Helper register exceptions are also the only events where a higher priority event doesn't necessarily suppress a lower one, thus having the possibility of handling more than one on the same instruction address.
+        Exceptions are the lowest severity among all other events and the program order defines the order in which they must be handled. The only complication to this rule is for helper register exceptions, which have a higher priority. These exceptions might also clash with the previously mentioned regular arithmetic ones but, since the helper ones have a higher priority, they all take over and override them. This behavior stems from the fact that `HLPR` registers allow for finer control, while the `GEE` bit allows exceptions to be enabled or disabled globally. In both instances, it's possible to distinguish if the exception was caused by a `HLPR` register or not. Helper register exceptions are also the only events where a higher priority event doesn't necessarily suppress a lower one, thus having the possibility of handling more than one on the same instruction address in "groups" as mentioned in section 4.
 
-        Faults are also synchronous just like exceptions, but their severity is the highest among any other event and they often signify that something seriously wrong happened, such as an access to an illegal memory address or an invalid / unsupported instruction. Since they are synchronous, they must be handled in program order.
+        Faults are also synchronous just like exceptions, but their severity is the highest among any other event and they often signify that something seriously wrong happened, such as an access to an illegal memory address or an invalid / unsupported instruction. Since they are synchronous, they must be handled in program order. The only exception to this is the system call, which has a low priority. This is because faults are the only type of synchronous events that can promote, which is what is needed to invoke the operating system.
 
         In some situations it may be necessary to queue an interrupt in order to handle it after another, thus avoiding loss of information. If the queue is full, the events must be discarded and, whoever generated the event, must be notified. This includes IO devices or other harts that generated an IPC-interrupt, in this last case, it could be achieved by making the IPC-interrupt generating instruction fail.
     ])

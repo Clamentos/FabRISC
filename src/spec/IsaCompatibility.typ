@@ -84,7 +84,7 @@
             [ 37], [`EXC`   ], [*Exceptions*: \ Provides arithmetic exceptions and the associated configuration instructions.],
             [ 38], [`IOINT` ], [*IO-Interrupts*: \ Provides IO interrupts.],
             [ 39], [`IPCINT`], [*IPC-Interrupts*: \ Provides inter-processor interrupts.],
-            [ 40], [`DALIGN`], [*Data-Alignment*: \ Provides the unaligned data fault.],
+            [ 40], [`DALIGN`], [*Data-Alignment*: \ Provides the misaligned data fault.],
 
             [ 41], [-],   [Reserved for future use.],
             [...], [...], [...],
@@ -115,7 +115,7 @@
 
             I consider this modular approach to be a wise idea because it allows the hardware designers to only implement what they really need with high degree of granularity and little extra. Another advantage is that it's easier to add and remove pieces from the specification in a cleaner way. The fact that there is no explicit mandatory subset of the ISA may seem odd, but it can help with specialized systems, as well as to greatly simplify the specification. With this, it becomes perfectly possible to create, for example, a floating-point only processor with very few integer instructions to alleviate overheads and extra complexities. This decision, however, makes silly and nonsensical things possible such as having no flow transfer or no memory operations. The ISA, in the end, kind of relies on the common sense of the hardware designers when it comes to realizing sensible microarchitectures.
 
-            The miscellaneous modules also contain the `USER` module, which is responsible for giving the ISA different privilege levels by restricting access to some critical resources and functionalities. FabRISC currently only supports a maximum of two privilege levels: "user mode" and "machine mode". I wanted and tried to include a third "supervisor mode" since it could have been useful for easing virtualization, but i decided not to for the sake of simplicity.
+            The miscellaneous modules also contain the `USER` module, which is responsible for giving the ISA different privilege levels by restricting access to some critical resources and functionalities. FabRISC currently only supports a maximum of two privilege levels: "user mode" and "machine mode". I wanted to include a third "supervisor mode" since it could have been useful for easing virtualization, but i decided not to for the sake of simplicity.
 
             The `EXC`, `IOINT`, `IPCINT` and `HLPR` modules allow the implementation of hardware level event-driven computation which, in conjunction with the earlier mentioned modules, is what really helps in supporting fully fledged operating systems, proper memory and process virtualization techniques as well as aiding higher-level event-driven programming.
 

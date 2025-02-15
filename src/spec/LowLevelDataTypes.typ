@@ -12,7 +12,7 @@
 
     tableWrapper([Scalar word lengths.], table(
 
-        columns: (15%, 20%),
+        columns: (10%, 25%),
         align: (x, y) => (center + top, left + top).at(x),
 
         [#middle([*Code*])], [#middle([*Value*])],
@@ -32,7 +32,7 @@
 
         tableWrapper([Integer types.], table(
 
-            columns: (15%, 20%),
+            columns: (10%, 25%),
             align: (x, y) => (left + top, left + top).at(x),
 
             [#middle([*Type*])], [#middle([*Size*])],
@@ -45,7 +45,7 @@
 
         [Integer types are manipulated by integer instructions which, by default, behave in a modular fashion. Values that serve as pointers can be manipulated as signed 2's complement integers or as unsigned integers, with the latter being preferable when possible. Although the concept of the sign doesn't make much sense for addresses, signed arithmetic can still be applied in these situations. Addition and subtraction always yield the same exact bit pattern regardless of the interpretation of the operands. For comparisons, the only ones that do not depend on sign are equality and inequality because they simply amount to checking if each individual bit of one operand is equal or not to the ones in the other operand. Other comparisons, such as less than or greater than are risky if the object is close to or crosses the sign boundary from `0x7FFFFFFF`...`F` to `0x80000000`...`0`.],
 
-        [Edge cases, such as wraps-around or overflows can happen in particular situations depending if the operation is arithmetic or logical and they can raise exceptions. An operation is said to be "silent" if the exceptions that it can raise are suppressed or disabled, otherwise the operation is said to be "signalling". The following is the list of edge cases for the integer data types:],
+        [Edge cases, such as wraps-around or overflows can happen in particular situations depending if the operation is arithmetic or logical and they can raise exceptions. An integer operation is said to be "silent" if the exceptions that it can raise are suppressed or disabled, otherwise the operation is said to be "signalling". The following is the list of edge cases for the integer data types:],
 
         tableWrapper([Integer edge cases.], table(
 
@@ -67,7 +67,7 @@
             [Invalid operation], [This situation arises when an operation is deemed invalid or illegal and does not fall in any other of the previous cases, for example: `0/0`. For silent operations, the default value is zero for this edge case.]
         )),
 
-        [When an operation triggers an exception, the destination variable must not be modified. This way, the old state is present at the during the execution of the exception handler.]
+        [When an arithmetic or logic operation triggers an exception, the destination variable must not be modified. This way, the old state is present at the during the execution of the exception handler.]
     ),
 
     ///.
@@ -80,7 +80,7 @@
 
         tableWrapper([Floating point formats.], table(
 
-            columns: (18%, 18%, 18%, 18%),
+            columns: (13%, 29%, 29%, 29%),
             align: (x, y) => (left + top, center + top, center + top, center + top).at(x),
 
             [#middle([*Size*])], [#middle([*Mantissa*])], [#middle([*Exponent*])], [#middle([*Sign*])],
@@ -96,7 +96,7 @@
 
         [The 21 bit variant is only used for immediate values of some instructions and should always be converted to the specified length before being used.],
 
-        [Floating point types are manipulated via floating point instructions (prefixed with `FP`). Edge cases such as overflows, underflows can happen in the specific situations dictated by the IEEE-754 standard and can raise exceptions. An operation is said to be "silent" if the exceptions that it can raise are suppressed or disabled, otherwise the operation is said to be "signalling". The following is the list of edge cases for the floating point data types:],
+        [Floating point types are manipulated via floating point instructions (prefixed with `FP`). Edge cases such as overflows, underflows can happen in the specific situations dictated by the IEEE-754 standard and can raise exceptions. A floating point operation is said to be "silent" if the exceptions that it can raise are suppressed or disabled, otherwise the operation is said to be "signalling". The following is the list of edge cases for the floating point data types:],
 
         tableWrapper([Floating point edge cases.], table(
 
@@ -207,7 +207,9 @@
 
         The proposed flags might seem weird and unnecessary, however they allow the detection of arithmetic edge cases in a very granular manner. Many ISAs don't have any way of easily detecting overflows and, when present, they either provide instructions that trap or a flag register. In both cases the system only allows the programmer to check if an overflow occurred at the word length only. FabRISC, not only provides the ability to check at all the standard lengths, but it also distinguishes overflows into two categories depending on the direction. This is useful to provide to the programmer a greater control and insight of the underlying system, as well as, potentially enabling better emulation of CPUs with smaller word lengths.
 
-        Floating point is mostly similar to the IEEE-754 standard but with some rearrangements. The motivation behind the reordering of the sections is mainly to enable better bit manipulation. Thanks to this, the most "important" bits (sign and exponent) of the number can be easily reached with many of the bitwise immediate instructions. The IEEE-754 standard doesn't define the behavior of the so called "NaN payload" when two `NaN` values interact. I chose to dictate that the least significant four bits as a cause vector for the `NaN` generation, this way, the payloads can be OR-ed and this information can then be used to understand potential issues in the code or to simply redirect control flow based on the cause.
+        Floating point is mostly similar to the IEEE-754 standard but with some rearrangements. The motivation behind the reordering of the sections is mainly to enable better bit manipulation. Thanks to this, the most "important" bits (sign and exponent) of the number can be easily reached with many of the bitwise immediate instructions.
+
+        The IEEE-754 standard doesn't define the behavior of the so called "NaN payload" when two `NaN` values interact. I chose to dictate that the least significant four bits as a cause vector for the `NaN` generation, this way, the payloads can be OR-ed and this information can then be used to understand potential issues in the code or to simply redirect control flow based on the cause.
     ])
 )
 
